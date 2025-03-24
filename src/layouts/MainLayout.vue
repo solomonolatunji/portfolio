@@ -2,9 +2,9 @@
     <div class="flex h-screen bg-[#121212] overflow-hidden">
         <!-- Main Content Area -->
         <div class="flex flex-1 flex-col">
-            <div class="w-full p-4 md:p-8 flex flex-col items-center justify-center text-white h-full">
+            <div class="w-full h-full flex items-center justify-center text-white">
                 <!-- Router View to load different pages -->
-                <div class="w-full h-full overflow-auto">
+                <div class="w-full max-w-6xl h-full overflow-auto px-4">
                     <router-view />
                 </div>
 
