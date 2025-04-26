@@ -178,9 +178,11 @@ import { useRouter } from 'vue-router';
 import { usePortfolioStore } from '@/stores/portfolioProjects';
 import type { Project, ProjectForm } from '@/interfaces/portfolio';
 import { ArrowLeftIcon, XMarkIcon, CameraIcon } from '@heroicons/vue/24/outline';
+import { useToast } from 'vue-toastification';
 
 const router = useRouter();
 const portfolioStore = usePortfolioStore();
+const toast = useToast();
 
 const imageInput = ref<HTMLInputElement | null>(null);
 const imagePreview = ref<string | null>(null);
@@ -188,10 +190,8 @@ const imageError = ref<string | null>(null);
 const technologiesError = ref<string | null>(null);
 const newTech = ref('');
 
-// Get current year for year input max value
 const currentYear = computed(() => new Date().getFullYear());
 
-// Form data - using our interface
 const form = ref<ProjectForm & { image: File | string | null, client?: string, featured?: boolean }>({
     title: '',
     description: '',
@@ -336,9 +336,14 @@ async function handleSubmit() {
         // Add to store
         portfolioStore.addProject(newProject);
 
+        // Show success toast notification
+        toast.success(`Project "${form.value.title}" has been created successfully!`);
+
         // Navigate to portfolio manager
         router.push('/admin/portfolio');
     } catch (error) {
+        // Show error toast notification
+        toast.error('Failed to create project. Please try again.');
         console.error('Failed to create project:', error);
     }
 }

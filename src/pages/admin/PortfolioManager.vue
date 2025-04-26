@@ -142,8 +142,10 @@ import {
     DeviceTabletIcon,
     XMarkIcon
 } from '@heroicons/vue/24/outline';
+import { useToast } from 'vue-toastification';
 
 const portfolioStore = usePortfolioStore();
+const toast = useToast();
 
 // Filters
 const search = ref('');
@@ -201,6 +203,7 @@ function confirmDelete(project: Project) {
 function deleteProject() {
     if (projectToDelete.value) {
         portfolioStore.deleteProject(projectToDelete.value.id);
+        toast.success(`Project "${projectToDelete.value.title}" has been deleted`);
         showDeleteModal.value = false;
         projectToDelete.value = null;
     }

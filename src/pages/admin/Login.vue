@@ -15,10 +15,6 @@
 
             <!-- Login Form -->
             <div class="bg-[#1e1e1e] rounded-xl p-8 shadow-xl border border-[#333]">
-                <div v-if="loginError" class="bg-red-900/30 text-red-300 border border-red-900 rounded-lg p-4 mb-6">
-                    <p>{{ loginError }}</p>
-                </div>
-
                 <form @submit.prevent="handleLogin">
                     <div class="mb-6">
                         <label for="username" class="block text-gray-400 text-sm font-medium mb-2">Username</label>
@@ -69,9 +65,11 @@ import { useRouter } from 'vue-router';
 import { useAdminAuthStore } from '@/stores/adminAuth';
 import type { AdminCredentials } from '@/interfaces/auth';
 import { UserIcon, UserCircleIcon, LockClosedIcon } from '@heroicons/vue/24/outline';
+import { useToast } from 'vue-toastification';
 
 const router = useRouter();
 const adminStore = useAdminAuthStore();
+const toast = useToast();
 
 const form = reactive<AdminCredentials>({
     username: '',
@@ -79,7 +77,6 @@ const form = reactive<AdminCredentials>({
 });
 
 const isLoading = ref(false);
-const loginError = ref('');
 
 const SpinnerIcon = defineComponent({
     setup() {
@@ -108,7 +105,6 @@ const SpinnerIcon = defineComponent({
 
 const handleLogin = async () => {
     isLoading.value = true;
-    loginError.value = '';
 
     try {
         // Simulate network delay
@@ -117,12 +113,13 @@ const handleLogin = async () => {
         const success = adminStore.login(form.username, form.password);
 
         if (success) {
+            toast.success('Login successful! Redirecting to dashboard...');
             router.push('/admin');
         } else {
-            loginError.value = 'Invalid username or password. Please try again.';
+            toast.error('Invalid username or password. Please try again.');
         }
     } catch (error) {
-        loginError.value = 'An error occurred. Please try again later.';
+        toast.error('An error occurred. Please try again later.');
         console.error(error);
     } finally {
         isLoading.value = false;
