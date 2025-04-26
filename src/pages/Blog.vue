@@ -167,24 +167,18 @@
             <!-- Newsletter Signup -->
             <div
                 class="mt-10 sm:mt-16 bg-gradient-to-r from-[#4c1d95] to-[#6d28d9] rounded-xl p-4 sm:p-6 md:p-8 shadow-lg">
-                <div class="flex flex-col md:flex-row justify-between items-center gap-4 md:gap-6">
-                    <div class="mb-4 md:mb-0 w-full md:w-2/3 text-center md:text-left">
-                        <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-white mb-2">Subscribe to my newsletter
-                        </h2>
-                        <p class="text-sm sm:text-base text-purple-200">Get the latest articles, tutorials and updates
-                            delivered to your
-                            inbox.</p>
-                    </div>
-                    <div class="w-full md:w-1/3">
-                        <form @submit.prevent="subscribeNewsletter" class="flex">
-                            <input type="email" v-model="newsletterEmail" placeholder="Your email" required
-                                class="flex-1 px-3 sm:px-4 py-2 rounded-l-full focus:outline-none focus:ring-2 focus:ring-purple-300 text-gray-900 text-sm sm:text-base">
-                            <button type="submit"
-                                class="bg-white text-[#6d28d9] px-3 sm:px-4 py-2 rounded-r-full font-medium hover:bg-gray-100 transition-colors text-sm sm:text-base whitespace-nowrap">
-                                Subscribe
-                            </button>
-                        </form>
-                    </div>
+                <div class="text-center">
+                    <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-white mb-2">Subscribe to my newsletter</h2>
+                    <p class="text-sm sm:text-base text-purple-200 mb-4">Get the latest articles, tutorials and updates
+                        delivered to your inbox.</p>
+                    <form @submit.prevent="subscribeNewsletter" class="flex flex-col sm:flex-row max-w-md mx-auto">
+                        <input type="email" v-model="newsletterEmail" placeholder="Your email" required
+                            class="w-full px-4 py-2 rounded-l-md sm:rounded-r-none rounded-r-md sm:rounded-l-md mb-2 sm:mb-0 focus:outline-none focus:ring-2 focus:ring-purple-300 text-white bg-transparent border border-white placeholder-white placeholder-opacity-75">
+                        <button type="submit"
+                            class="w-full sm:w-auto bg-white text-[#6d28d9] px-4 py-2 rounded-r-md sm:rounded-l-none rounded-l-md sm:rounded-r-md font-medium hover:bg-gray-100 transition-colors whitespace-nowrap">
+                            Subscribe
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>

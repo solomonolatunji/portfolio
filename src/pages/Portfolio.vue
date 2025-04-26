@@ -69,7 +69,7 @@
                                 <h3 class="font-bold text-lg text-white">{{ project.title }}</h3>
                             </router-link>
                             <span class="text-xs bg-[#2d2d2d] text-gray-300 px-2 py-1 rounded-full">{{ project.year
-                                }}</span>
+                            }}</span>
                         </div>
                         <p class="text-gray-400 text-sm mb-3">{{ project.description }}</p>
                         <div class="flex flex-wrap gap-2">
@@ -127,7 +127,7 @@ export default {
                     id: '2',
                     title: 'Team Collaboration Platform',
                     description: 'A modern collaboration tool with real-time document editing, task management, video conferencing, and AI-powered workflow automation.',
-                    image: 'https://images.unsplash.com/photo-1623039405147-547794f94fda?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+                    image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80',
                     year: '2024',
                     category: 'web',
                     technologies: ['React 18', 'NextJS 14', 'TypeScript', 'tRPC', 'Prisma'],
@@ -138,7 +138,7 @@ export default {
                     id: '3',
                     title: 'Fintech Mobile Application',
                     description: 'A comprehensive financial management app with AI-powered insights, investment portfolio tracking, and advanced security features.',
-                    image: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236e3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+                    image: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80',
                     year: '2024',
                     category: 'mobile',
                     technologies: ['React Native', 'TypeScript', 'Redux Toolkit', 'Firebase', 'Stripe API'],
@@ -171,7 +171,7 @@ export default {
                     id: '6',
                     title: 'EdTech Platform Redesign',
                     description: 'Complete UX/UI overhaul for an education technology platform with personalized learning paths, interactive content modules, and accessibility improvements.',
-                    image: 'https://images.unsplash.com/photo-1613479205646-c0dc1ee8511f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80',
+                    image: 'https://images.unsplash.com/photo-1501504905252-473c47e087f8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80',
                     year: '2022',
                     category: 'ui',
                     technologies: ['Figma', 'Prototyping', 'Design Systems', 'User Research'],
