@@ -122,30 +122,9 @@
             </router-link>
         </div>
 
-        <!-- Delete Confirmation Modal -->
-        <div v-if="showDeleteModal" class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-70">
-            <div class="bg-[#1e1e1e] rounded-lg p-6 max-w-md w-full">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-xl font-bold text-white">Confirm Deletion</h3>
-                    <button @click="showDeleteModal = false" class="text-gray-400 hover:text-white">
-                        <XMarkIcon class="h-6 w-6" />
-                    </button>
-                </div>
-                <p class="text-gray-300 mb-6">Are you sure you want to delete the blog post <span
-                        class="font-medium text-white">{{ postToDelete?.title }}</span>? This action cannot be undone.
-                </p>
-                <div class="flex justify-end space-x-4">
-                    <button @click="showDeleteModal = false"
-                        class="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors">
-                        Cancel
-                    </button>
-                    <button @click="deletePost"
-                        class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors">
-                        Delete
-                    </button>
-                </div>
-            </div>
-        </div>
+        <!-- Use the reusable DeleteConfirmationModal component -->
+        <DeleteConfirmationModal v-model="showDeleteModal" item-type="blog post" :item-title="postToDelete?.title || ''"
+            :item-id="postToDelete?.id || ''" @confirm="deletePost" />
     </div>
 </template>
 
@@ -160,10 +139,12 @@ import {
     TrashIcon,
     ArrowTopRightOnSquareIcon,
     DocumentTextIcon,
-    XMarkIcon
 } from '@heroicons/vue/24/outline';
+import DeleteConfirmationModal from '@/components/admin/DeleteConfirmationModal.vue';
+import { useToast } from 'vue-toastification';
 
 const blogStore = useBlogStore();
+const toast = useToast();
 
 // Filters
 const search = ref('');
@@ -215,17 +196,15 @@ function getCategoryClass(category: string): string {
     }
 }
 
-// Delete functionality
 function confirmDelete(post: BlogPost) {
     postToDelete.value = post;
     showDeleteModal.value = true;
 }
 
-function deletePost() {
-    if (postToDelete.value) {
-        blogStore.deletePost(postToDelete.value.id);
-        showDeleteModal.value = false;
-        postToDelete.value = null;
-    }
+function deletePost(id: string | number) {
+    blogStore.deletePost(String(id));
+    toast.success(`Blog post "${postToDelete.value?.title}" has been deleted`);
+    showDeleteModal.value = false;
+    postToDelete.value = null;
 }
 </script>

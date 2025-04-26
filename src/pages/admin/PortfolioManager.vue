@@ -102,30 +102,9 @@
             </router-link>
         </div>
 
-        <!-- Delete Confirmation Modal -->
-        <div v-if="showDeleteModal" class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-70">
-            <div class="bg-[#1e1e1e] rounded-lg p-6 max-w-md w-full">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-xl font-bold text-white">Confirm Deletion</h3>
-                    <button @click="showDeleteModal = false" class="text-gray-400 hover:text-white">
-                        <XMarkIcon class="h-6 w-6" />
-                    </button>
-                </div>
-                <p class="text-gray-300 mb-6">Are you sure you want to delete the project <span
-                        class="font-medium text-white">{{ projectToDelete?.title }}</span>? This action cannot be
-                    undone.</p>
-                <div class="flex justify-end space-x-4">
-                    <button @click="showDeleteModal = false"
-                        class="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors">
-                        Cancel
-                    </button>
-                    <button @click="deleteProject"
-                        class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors">
-                        Delete
-                    </button>
-                </div>
-            </div>
-        </div>
+        <!-- Use the reusable DeleteConfirmationModal component -->
+        <DeleteConfirmationModal v-model="showDeleteModal" item-type="project"
+            :item-title="projectToDelete?.title || ''" :item-id="projectToDelete?.id || ''" @confirm="deleteProject" />
     </div>
 </template>
 
@@ -140,8 +119,8 @@ import {
     TrashIcon,
     ArrowTopRightOnSquareIcon,
     DeviceTabletIcon,
-    XMarkIcon
 } from '@heroicons/vue/24/outline';
+import DeleteConfirmationModal from '@/components/admin/DeleteConfirmationModal.vue';
 import { useToast } from 'vue-toastification';
 
 const portfolioStore = usePortfolioStore();
@@ -194,18 +173,15 @@ function getCategoryClass(category: string): string {
     }
 }
 
-// Delete functionality
 function confirmDelete(project: Project) {
     projectToDelete.value = project;
     showDeleteModal.value = true;
 }
 
-function deleteProject() {
-    if (projectToDelete.value) {
-        portfolioStore.deleteProject(projectToDelete.value.id);
-        toast.success(`Project "${projectToDelete.value.title}" has been deleted`);
-        showDeleteModal.value = false;
-        projectToDelete.value = null;
-    }
+function deleteProject(id: string | number) {
+    portfolioStore.deleteProject(String(id));
+    toast.success(`Project "${projectToDelete.value?.title}" has been deleted`);
+    showDeleteModal.value = false;
+    projectToDelete.value = null;
 }
 </script>
