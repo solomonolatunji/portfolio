@@ -26,7 +26,7 @@
                     </div>
 
                     <div class="mt-10 pt-6 border-t border-[#333]">
-                        <a @click.prevent="confirmLogout" href="#"
+                        <a @click.prevent="showSignOutModal = true" href="#"
                             class="flex items-center px-4 py-3 text-red-500 rounded-lg hover:bg-[#2d2d2d] transition-colors hover:text-red-400">
                             <ArrowRightOnRectangleIcon class="h-5 w-5 mr-3" />
                             Sign Out
@@ -59,11 +59,14 @@
                 <router-view />
             </div>
         </div>
+
+        <!-- Sign Out Confirmation Modal -->
+        <SignOutConfirmationModal v-model="showSignOutModal" @confirm="logoutAdmin" />
     </div>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useAdminAuthStore } from '@/stores/adminAuth';
 import { useRoute, useRouter } from 'vue-router';
 import {
@@ -73,10 +76,12 @@ import {
     ArrowRightOnRectangleIcon,
     GlobeAltIcon
 } from '@heroicons/vue/24/outline';
+import SignOutConfirmationModal from '@/components/admin/SignOutConfirmationModal.vue';
 
 const adminStore = useAdminAuthStore();
 const router = useRouter();
 const route = useRoute();
+const showSignOutModal = ref(false);
 
 // Initialize auth from session storage
 onMounted(() => {
@@ -121,12 +126,5 @@ const currentPageTitle = computed(() => {
 const logoutAdmin = () => {
     adminStore.logout();
     router.push('/admin/login');
-};
-
-// Confirm Logout function
-const confirmLogout = () => {
-    if (confirm('Are you sure you want to sign out?')) {
-        logoutAdmin();
-    }
 };
 </script>

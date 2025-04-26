@@ -155,7 +155,7 @@ import { useBlogStore } from '@/stores/blogPosts';
 import { type BlogPost } from '@/interfaces/blog';
 import Editor from '@tinymce/tinymce-vue';
 import { XMarkIcon, ArrowLeftIcon, DocumentPlusIcon } from '@heroicons/vue/24/outline';
-import ApiKeyAlert from '@/components/admin/ApiKeyAlert.vue';
+import ApiKeyAlert from '@/components/ApiKeyAlert.vue';
 import { tinymceConfig, getTinymceApiKey } from '@/config/tinymce';
 
 // Using a custom spinner icon component since Heroicons might not have the exact spinner we need

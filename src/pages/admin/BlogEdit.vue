@@ -165,7 +165,7 @@ import { useBlogStore } from '@/stores/blogPosts';
 import type { BlogPost } from '@/interfaces/blog';
 import Editor from '@tinymce/tinymce-vue';
 import { XMarkIcon, FaceFrownIcon } from '@heroicons/vue/24/outline';
-import ApiKeyAlert from '@/components/admin/ApiKeyAlert.vue';
+import ApiKeyAlert from '@/components/ApiKeyAlert.vue';
 import { tinymceConfig, getTinymceApiKey } from '@/config/tinymce';
 
 const router = useRouter();
