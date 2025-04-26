@@ -46,11 +46,9 @@
                     <div
                         class="glass-card backdrop-blur-sm p-5 rounded-xl border border-white/10 mb-6 animate-fadeIn delay-300">
                         <p class="text-gray-300 leading-relaxed text-base md:text-lg max-w-2xl">
-                            I'm a Full Stack Software Engineer specializing in modern web technologies.
-                            With expertise in both frontend and backend development, I create
-                            scalable, responsive, and user-friendly digital experiences. Passionate about
-                            clean code, performance optimization, and building innovative solutions
-                            that deliver real business value.
+                            Full Stack Engineer building modern, scalable web & mobile apps with clean code and
+                            performance in
+                            mind.
                         </p>
                     </div>
 
