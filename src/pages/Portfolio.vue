@@ -45,7 +45,8 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" ref="projectsGrid">
                 <div v-for="(project, index) in filteredProjects" :key="index"
-                    class="project-card bg-[#1e1e1e]/70 rounded-xl overflow-hidden shadow-lg transform transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl backdrop-blur-sm border border-white/5 hover:border-[#6d28d9]/50 group">
+                    class="project-card bg-[#1e1e1e]/70 rounded-xl overflow-hidden shadow-lg transform transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl backdrop-blur-sm border border-white/5 hover:border-[#6d28d9]/50 group"
+                    @click="toggleProjectActive(index)">
                     <div class="relative overflow-hidden project-image-container">
                         <img :src="project.image" :alt="project.title"
                             class="w-full h-56 object-cover transition-transform duration-700 group-hover:scale-110">
@@ -54,14 +55,17 @@
                             class="absolute inset-0 bg-gradient-to-t from-[#121212] via-transparent to-transparent opacity-60">
                         </div>
 
-                        <div
-                            class="absolute inset-0 bg-gradient-to-b from-[#6d28d9]/80 to-[#4c1d95]/80 flex items-center justify-center gap-6 transition-all duration-500 opacity-0 group-hover:opacity-100">
+                        <div :class="['absolute inset-0 bg-gradient-to-b from-[#6d28d9]/80 to-[#4c1d95]/80 flex items-center justify-center gap-6 transition-all duration-500',
+                            (isMobile && activeProjectIndex === index) || !isMobile ? 'md:opacity-0 md:group-hover:opacity-100' : 'opacity-0',
+                            (isMobile && activeProjectIndex === index) ? 'opacity-100' : '']">
                             <router-link :to="'/portfolio/' + project.id"
-                                class="bg-white text-[#6d28d9] p-3 rounded-full hover:bg-gray-100 transition-all duration-300 transform hover:scale-110 hover:shadow-glow">
+                                class="bg-white text-[#6d28d9] p-3 rounded-full hover:bg-gray-100 transition-all duration-300 transform hover:scale-110 hover:shadow-glow"
+                                @click.stop>
                                 <EyeIcon class="w-5 h-5" />
                             </router-link>
                             <a :href="project.codeUrl" target="_blank"
-                                class="bg-white text-[#6d28d9] p-3 rounded-full hover:bg-gray-100 transition-all duration-300 transform hover:scale-110 hover:shadow-glow">
+                                class="bg-white text-[#6d28d9] p-3 rounded-full hover:bg-gray-100 transition-all duration-300 transform hover:scale-110 hover:shadow-glow"
+                                @click.stop>
                                 <CodeBracketIcon class="w-5 h-5" />
                             </a>
                         </div>
@@ -120,7 +124,10 @@ export default {
     data() {
         return {
             activeFilter: 'all',
-            projects
+            projects,
+            isMobile: false,
+            activeProjectIndex: null,
+            ticking: false
         }
     },
     computed: {
@@ -132,13 +139,30 @@ export default {
         }
     },
     mounted() {
+        this.checkIfMobile();
         this.animateProjectCards();
         window.addEventListener('scroll', this.handleScroll);
+        window.addEventListener('resize', this.checkIfMobile);
     },
     beforeUnmount() {
         window.removeEventListener('scroll', this.handleScroll);
+        window.removeEventListener('resize', this.checkIfMobile);
     },
     methods: {
+        checkIfMobile() {
+            this.isMobile = window.innerWidth < 768;
+            if (!this.isMobile) {
+                this.activeProjectIndex = null;
+            }
+        },
+        toggleProjectActive(index) {
+            if (!this.isMobile) return;
+            if (this.activeProjectIndex === index) {
+                this.activeProjectIndex = null;
+            } else {
+                this.activeProjectIndex = index;
+            }
+        },
         handleScroll() {
             if (!this.ticking) {
                 window.requestAnimationFrame(() => {
@@ -167,6 +191,8 @@ export default {
         },
         setActiveFilter(filter) {
             this.activeFilter = filter;
+            this.activeProjectIndex = null;
+
             this.$nextTick(() => {
                 const projectCards = document.querySelectorAll('.project-card');
                 projectCards.forEach((card) => {
