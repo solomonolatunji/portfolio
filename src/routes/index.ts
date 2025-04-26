@@ -13,6 +13,18 @@ const routes = [
     path: "/contact",
     component: () => import("@/pages/Contact.vue"),
   },
+  {
+    path: "/portfolio",
+    component: () => import("@/pages/Portfolio.vue"),
+  },
+  {
+    path: "/blog",
+    component: () => import("@/pages/Blog.vue"),
+  },
+  {
+    path: "/blog/:id",
+    component: () => import("@/pages/BlogPost.vue"),
+  },
 ];
 
 const router = createRouter({
