@@ -7,33 +7,34 @@
                 </h1>
             </div>
 
-            <div class="flex flex-wrap justify-center gap-3 mb-12">
-                <button @click="activeFilter = 'all'" :class="[
-                    'px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 filter-button',
+            <!-- Reduce button size on mobile for all 4 buttons to fit on one row -->
+            <div class="flex flex-nowrap justify-start md:justify-center gap-1 sm:gap-3 mb-12 pb-2">
+                <button @click="setActiveFilter('all')" :class="[
+                    'px-2 sm:px-5 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all duration-300 filter-button whitespace-nowrap',
                     activeFilter === 'all'
                         ? 'bg-[#6d28d9] text-white filter-active shadow-glow'
                         : 'bg-[#1e1e1e]/70 text-gray-300 hover:bg-[#2d2d2d] backdrop-blur-sm border border-white/10'
                 ]">
                     All Projects
                 </button>
-                <button @click="activeFilter = 'web'" :class="[
-                    'px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 filter-button',
+                <button @click="setActiveFilter('web')" :class="[
+                    'px-2 sm:px-5 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all duration-300 filter-button whitespace-nowrap',
                     activeFilter === 'web'
                         ? 'bg-[#6d28d9] text-white filter-active shadow-glow'
                         : 'bg-[#1e1e1e]/70 text-gray-300 hover:bg-[#2d2d2d] backdrop-blur-sm border border-white/10'
                 ]">
                     Web Apps
                 </button>
-                <button @click="activeFilter = 'mobile'" :class="[
-                    'px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 filter-button',
+                <button @click="setActiveFilter('mobile')" :class="[
+                    'px-2 sm:px-5 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all duration-300 filter-button whitespace-nowrap',
                     activeFilter === 'mobile'
                         ? 'bg-[#6d28d9] text-white filter-active shadow-glow'
                         : 'bg-[#1e1e1e]/70 text-gray-300 hover:bg-[#2d2d2d] backdrop-blur-sm border border-white/10'
                 ]">
                     Mobile Apps
                 </button>
-                <button @click="activeFilter = 'ui'" :class="[
-                    'px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 filter-button',
+                <button @click="setActiveFilter('ui')" :class="[
+                    'px-2 sm:px-5 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all duration-300 filter-button whitespace-nowrap',
                     activeFilter === 'ui'
                         ? 'bg-[#6d28d9] text-white filter-active shadow-glow'
                         : 'bg-[#1e1e1e]/70 text-gray-300 hover:bg-[#2d2d2d] backdrop-blur-sm border border-white/10'
@@ -229,6 +230,19 @@ export default {
                 rect.top <= (window.innerHeight || document.documentElement.clientHeight) * 0.9 &&
                 rect.bottom >= 0
             );
+        },
+        setActiveFilter(filter) {
+            this.activeFilter = filter;
+            this.$nextTick(() => {
+                const projectCards = document.querySelectorAll('.project-card');
+                projectCards.forEach((card) => {
+                    card.classList.remove('fadeInUp');
+                    void card.offsetWidth;
+                });
+                setTimeout(() => {
+                    this.animateProjectCards();
+                }, 50);
+            });
         }
     }
 }
