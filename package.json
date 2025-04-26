@@ -15,6 +15,7 @@
     "@tailwindcss/vite": "^4.0.15",
     "@tinymce/tinymce-vue": "^6.1.0",
     "@vueuse/core": "^13.0.0",
+    "@vueuse/head": "^2.0.0",
     "aos": "^2.3.4",
     "axios": "^1.8.4",
     "dayjs": "^1.11.13",
