@@ -9,6 +9,7 @@
         <!-- API Key Alert (only shown if API key is missing) -->
         <ApiKeyAlert v-if="!tinymceApiKey" />
 
+        <!-- Post not found message -->
         <div v-if="!post">
             <div class="bg-[#1e1e1e] rounded-xl p-8 text-center border border-[#333]">
                 <FaceFrownIcon class="mx-auto h-12 w-12 text-gray-500 mb-4" />
@@ -19,35 +20,80 @@
             </div>
         </div>
 
-        <!-- Form -->
-        <form v-if="post" @submit.prevent="savePost" class="space-y-8">
-            <div class="bg-[#1e1e1e] rounded-xl border border-[#333] p-6 shadow-lg">
-                <h2 class="text-lg font-semibold text-white mb-4">Post Details</h2>
+        <!-- Two Column Layout -->
+        <div v-if="post" class="flex flex-col lg:flex-row gap-6">
+            <!-- Left Column - Content Editor -->
+            <div class="flex-grow lg:w-2/3">
+                <!-- Post Title -->
+                <div class="bg-[#1e1e1e] rounded-xl border border-[#333] p-6 shadow-lg mb-6">
+                    <input type="text" v-model="post.title"
+                        class="w-full px-4 py-3.5 bg-[#2d2d2d] border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#6d28d9] text-white text-xl font-semibold"
+                        placeholder="Post Title" required />
+                </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <!-- Post Title -->
-                    <div class="lg:col-span-2">
-                        <label for="title" class="block text-sm font-medium text-gray-300 mb-1">Post Title <span
-                                class="text-red-500">*</span></label>
-                        <input type="text" id="title" v-model="post.title"
-                            class="w-full px-4 py-2.5 bg-[#2d2d2d] border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#6d28d9] text-white"
-                            required />
-                    </div>
-
-                    <!-- Featured Image URL -->
-                    <div class="lg:col-span-2">
-                        <label for="image" class="block text-sm font-medium text-gray-300 mb-1">Featured Image URL <span
-                                class="text-red-500">*</span></label>
-                        <input type="url" id="image" v-model="post.image"
-                            class="w-full px-4 py-2.5 bg-[#2d2d2d] border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#6d28d9] text-white"
-                            placeholder="https://example.com/image.jpg" required />
-                        <p class="text-xs text-gray-500 mt-1">Recommended size: 1200×630 pixels</p>
-                    </div>
-
-                    <!-- Category & Date-->
+                <!-- Content Editor -->
+                <div class="bg-[#1e1e1e] rounded-xl border border-[#333] p-6 shadow-lg mb-6">
                     <div>
-                        <label for="category" class="block text-sm font-medium text-gray-300 mb-1">Category <span
-                                class="text-red-500">*</span></label>
+                        <!-- TinyMCE Editor -->
+                        <Editor v-model="post.content" :api-key="tinymceApiKey" :init="editorConfig" />
+                    </div>
+                </div>
+
+                <!-- Publish Panel - Moved below content -->
+                <div class="bg-[#1e1e1e] rounded-xl border border-[#333] p-6 shadow-lg">
+                    <h2 class="text-lg font-semibold text-white mb-4">Publish</h2>
+
+                    <div class="flex flex-wrap items-center gap-6">
+                        <!-- Publication Date -->
+                        <div class="flex-grow">
+                            <label for="date" class="block text-sm font-medium text-gray-300 mb-1">Publication
+                                Date</label>
+                            <input type="date" id="date" v-model="publishDate"
+                                class="w-full px-4 py-2.5 bg-[#2d2d2d] border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#6d28d9] text-white"
+                                required />
+                        </div>
+
+                        <!-- Featured Post Toggle -->
+                        <div class="flex items-center self-end mb-2.5">
+                            <input type="checkbox" id="featured" v-model="post.featured"
+                                class="w-5 h-5 bg-[#2d2d2d] border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-[#6d28d9] text-[#6d28d9]" />
+                            <label for="featured" class="ml-2 text-gray-300">Mark as featured post</label>
+                        </div>
+
+                        <!-- Update Button -->
+                        <div class="flex justify-end self-end mb-2 ml-auto">
+                            <button type="button" @click="savePost"
+                                class="px-6 py-2.5 bg-gradient-to-r from-[#6d28d9] to-[#8b5cf6] text-white rounded-lg hover:from-[#5b21b6] hover:to-[#7c3aed] transition-colors flex items-center">
+                                <SpinnerIcon v-if="isSubmitting" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" />
+                                Update Post
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column - Post Settings -->
+            <div class="lg:w-1/3 space-y-6">
+                <!-- Featured Image -->
+                <div class="bg-[#1e1e1e] rounded-xl border border-[#333] p-6 shadow-lg">
+                    <h2 class="text-lg font-semibold text-white mb-4">Featured Image</h2>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label for="image" class="block text-sm font-medium text-gray-300 mb-1">Image URL</label>
+                            <input type="url" id="image" v-model="post.image"
+                                class="w-full px-4 py-2.5 bg-[#2d2d2d] border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#6d28d9] text-white"
+                                placeholder="https://example.com/image.jpg" required />
+                            <p class="text-xs text-gray-500 mt-1">Recommended size: 1200×630 pixels</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category -->
+                <div class="bg-[#1e1e1e] rounded-xl border border-[#333] p-6 shadow-lg">
+                    <h2 class="text-lg font-semibold text-white mb-4">Category</h2>
+
+                    <div>
                         <select id="category" v-model="post.category"
                             class="w-full px-4 py-2.5 bg-[#2d2d2d] border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#6d28d9] text-white"
                             required>
@@ -57,110 +103,58 @@
                             <option value="tech">Technology</option>
                         </select>
                     </div>
+                </div>
 
-                    <div>
-                        <label for="date" class="block text-sm font-medium text-gray-300 mb-1">Publication Date <span
-                                class="text-red-500">*</span></label>
-                        <input type="date" id="date" v-model="publishDate"
-                            class="w-full px-4 py-2.5 bg-[#2d2d2d] border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#6d28d9] text-white"
-                            required />
-                    </div>
+                <!-- Tags -->
+                <div class="bg-[#1e1e1e] rounded-xl border border-[#333] p-6 shadow-lg">
+                    <h2 class="text-lg font-semibold text-white mb-4">Tags</h2>
 
-                    <!-- Excerpt -->
-                    <div class="lg:col-span-2">
-                        <label for="excerpt" class="block text-sm font-medium text-gray-300 mb-1">Excerpt <span
-                                class="text-red-500">*</span></label>
-                        <textarea id="excerpt" v-model="post.excerpt" rows="3"
-                            class="w-full px-4 py-2.5 bg-[#2d2d2d] border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#6d28d9] text-white resize-none"
-                            placeholder="A short description of your blog post (displayed in post listings)"
-                            required></textarea>
-                    </div>
-
-                    <!-- Tags -->
-                    <div class="lg:col-span-2">
-                        <label class="block text-sm font-medium text-gray-300 mb-2">Tags</label>
+                    <div class="space-y-4">
+                        <!-- Tag list -->
                         <div class="flex flex-wrap gap-2 mb-3">
                             <span v-for="(tag, index) in post.tags" :key="index"
                                 class="px-3 py-1.5 bg-[#2d2d2d] text-white rounded-full flex items-center">
                                 {{ tag }}
                                 <button type="button" @click="removeTag(index)"
                                     class="ml-2 text-gray-400 hover:text-white">
-                                    <XMarkIcon class="h-4 w-4" />
+                                    <XMarkIcon class="w-4 h-4" />
                                 </button>
                             </span>
                         </div>
 
+                        <!-- Add tag input -->
                         <div class="flex gap-2">
                             <input type="text" v-model="newTag" placeholder="Add tag (e.g. Vue.js)"
                                 class="flex-1 px-4 py-2 bg-[#2d2d2d] border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#6d28d9] text-white"
                                 @keydown.enter.prevent="addTag" />
                             <button type="button" @click="addTag"
-                                class="px-4 py-2 bg-[#6d28d9] text-white rounded-md hover:bg-[#5b21b6] transition-colors">
+                                class="px-3 py-2 bg-[#6d28d9] text-white rounded-md hover:bg-[#5b21b6] transition-colors">
                                 Add
                             </button>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Content Editor -->
-            <div class="bg-[#1e1e1e] rounded-xl border border-[#333] p-6 shadow-lg">
-                <h2 class="text-lg font-semibold text-white mb-4">Post Content <span class="text-red-500">*</span></h2>
-
-                <div class="mt-2">
-                    <!-- TinyMCE Editor -->
-                    <Editor v-model="post.content" :api-key="tinymceApiKey" :init="editorConfig" />
-                </div>
-            </div>
-
-            <!-- Author Details -->
-            <div class="bg-[#1e1e1e] rounded-xl border border-[#333] p-6 shadow-lg">
-                <h2 class="text-lg font-semibold text-white mb-4">Author Details</h2>
-
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div>
-                        <label for="authorName" class="block text-sm font-medium text-gray-300 mb-1">Author Name <span
-                                class="text-red-500">*</span></label>
-                        <input type="text" id="authorName" v-model="post.author.name"
-                            class="w-full px-4 py-2.5 bg-[#2d2d2d] border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#6d28d9] text-white"
-                            required />
-                    </div>
+                <!-- Excerpt -->
+                <div class="bg-[#1e1e1e] rounded-xl border border-[#333] p-6 shadow-lg">
+                    <h2 class="text-lg font-semibold text-white mb-4">Excerpt</h2>
 
                     <div>
-                        <label for="authorAvatar" class="block text-sm font-medium text-gray-300 mb-1">Author Avatar URL
-                            <span class="text-red-500">*</span></label>
-                        <input type="url" id="authorAvatar" v-model="post.author.avatar"
-                            class="w-full px-4 py-2.5 bg-[#2d2d2d] border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#6d28d9] text-white"
-                            placeholder="https://example.com/avatar.jpg" required />
+                        <textarea id="excerpt" v-model="post.excerpt" rows="4"
+                            class="w-full px-4 py-2.5 bg-[#2d2d2d] border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#6d28d9] text-white resize-none"
+                            placeholder="A short description of your blog post (displayed in post listings)"
+                            required></textarea>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Publishing Options -->
-            <div class="bg-[#1e1e1e] rounded-xl border border-[#333] p-6 shadow-lg">
-                <h2 class="text-lg font-semibold text-white mb-4">Publishing Options</h2>
-
-                <div class="flex items-center">
-                    <input type="checkbox" id="featured" v-model="post.featured"
-                        class="w-5 h-5 bg-[#2d2d2d] border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-[#6d28d9] text-[#6d28d9]" />
-                    <label for="featured" class="ml-2 text-gray-300">Mark as featured post</label>
-                </div>
-                <p class="text-xs text-gray-500 mt-1">Featured posts appear prominently on your blog homepage</p>
-            </div>
-
-            <!-- Form Actions -->
-            <div class="flex justify-end space-x-4 mt-6">
-                <router-link to="/admin/blog"
-                    class="px-6 py-3 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors">
-                    Cancel
-                </router-link>
-                <button type="submit"
-                    class="px-6 py-3 bg-gradient-to-r from-[#6d28d9] to-[#8b5cf6] text-white rounded-lg hover:from-[#5b21b6] hover:to-[#7c3aed] transition-colors flex items-center">
-                    <SpinnerIcon v-if="isSubmitting" class="animate-spin -ml-1 mr-2 h-5 w-5 text-white" />
-                    Update Post
-                </button>
-            </div>
-        </form>
+        <!-- Back to Dashboard Link -->
+        <div class="mt-8" v-if="post">
+            <router-link to="/admin/blog" class="text-[#6d28d9] hover:text-[#8b5cf6] flex items-center">
+                &larr; Back to Blog Manager
+            </router-link>
+        </div>
     </div>
 </template>
 
@@ -172,6 +166,7 @@ import type { BlogPost } from '@/interfaces/blog';
 import Editor from '@tinymce/tinymce-vue';
 import { XMarkIcon, FaceFrownIcon } from '@heroicons/vue/24/outline';
 import ApiKeyAlert from '@/components/admin/ApiKeyAlert.vue';
+import { tinymceConfig, getTinymceApiKey } from '@/config/tinymce';
 
 const router = useRouter();
 const route = useRoute();
@@ -211,23 +206,8 @@ const SpinnerIcon = defineComponent({
 });
 
 // TinyMCE Config
-const tinymceApiKey = import.meta.env.VITE_TINYMCE_API_KEY || '';
-const editorConfig = {
-    height: 500,
-    menubar: true,
-    plugins: [
-        'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
-        'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-        'insertdatetime', 'media', 'table', 'help', 'wordcount'
-    ],
-    toolbar: 'undo redo | blocks | ' +
-        'bold italic forecolor | alignleft aligncenter ' +
-        'alignright alignjustify | bullist numlist outdent indent | ' +
-        'removeformat | help',
-    content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }',
-    skin: 'oxide-dark',
-    content_css: 'dark'
-};
+const tinymceApiKey = getTinymceApiKey();
+const editorConfig = tinymceConfig;
 
 // Date handling
 const publishDate = ref('');
@@ -311,6 +291,7 @@ async function savePost() {
     border-radius: 0.375rem !important;
     border-color: #4B5563 !important;
     overflow: hidden;
+    min-height: 500px !important;
 }
 
 .tox .tox-statusbar {

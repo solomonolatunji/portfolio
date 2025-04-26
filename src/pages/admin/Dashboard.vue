@@ -26,8 +26,8 @@
                     </div>
 
                     <div class="mt-10 pt-6 border-t border-[#333]">
-                        <a @click.prevent="logoutAdmin" href="#"
-                            class="flex items-center px-4 py-3 text-gray-300 rounded-lg hover:bg-[#2d2d2d] transition-colors hover:text-white">
+                        <a @click.prevent="confirmLogout" href="#"
+                            class="flex items-center px-4 py-3 text-red-500 rounded-lg hover:bg-[#2d2d2d] transition-colors hover:text-red-400">
                             <ArrowRightOnRectangleIcon class="h-5 w-5 mr-3" />
                             Sign Out
                         </a>
@@ -121,5 +121,12 @@ const currentPageTitle = computed(() => {
 const logoutAdmin = () => {
     adminStore.logout();
     router.push('/admin/login');
+};
+
+// Confirm Logout function
+const confirmLogout = () => {
+    if (confirm('Are you sure you want to sign out?')) {
+        logoutAdmin();
+    }
 };
 </script>
