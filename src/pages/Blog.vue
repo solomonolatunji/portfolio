@@ -203,10 +203,10 @@
                 <Pagination v-if="totalPages > 1" :current-page="currentPage" :total-pages="totalPages" @prev="prevPage"
                     @next="nextPage" @goto="goToPage" class="mt-10" />
             </div>
-        </div>
 
-        <!-- Newsletter Component -->
-        <Newsletter @subscribed="handleNewsletterSubscription" />
+            <!-- Newsletter Component -->
+            <Newsletter @subscribed="handleNewsletterSubscription" />
+        </div>
     </div>
 </template>
 
