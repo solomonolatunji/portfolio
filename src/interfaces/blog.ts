@@ -13,6 +13,7 @@ export interface BlogPost {
   category: string;
   author: Author;
   featured?: boolean;
+  readTime?: string;
   tags?: string[];
 }
 

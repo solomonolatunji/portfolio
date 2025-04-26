@@ -2,7 +2,7 @@
     <div class="flex min-h-screen main-background">
         <div class="flex flex-1 flex-col relative z-10">
             <div class="w-full flex items-center justify-center text-white">
-                <div class="w-full max-w-6xl px-4 pb-16 md:pb-0">
+                <div class="w-full px-4 pb-16 md:pb-0">
                     <router-view />
                 </div>
 
