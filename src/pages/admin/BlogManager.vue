@@ -6,12 +6,7 @@
             <div>
                 <router-link to="/admin/blog/create"
                     class="bg-gradient-to-r from-[#6d28d9] to-[#8b5cf6] hover:from-[#5b21b6] hover:to-[#7c3aed] text-white py-2.5 px-4 rounded-lg font-medium transition-all duration-300 flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20"
-                        fill="currentColor">
-                        <path fill-rule="evenodd"
-                            d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-                            clip-rule="evenodd" />
-                    </svg>
+                    <PlusIcon class="h-5 w-5 mr-2" />
                     Write New Post
                 </router-link>
             </div>
@@ -21,12 +16,7 @@
         <div class="bg-[#1e1e1e] rounded-xl p-4 mb-6 border border-[#333] flex flex-col sm:flex-row gap-4">
             <div class="relative flex-1">
                 <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" viewBox="0 0 20 20"
-                        fill="currentColor">
-                        <path fill-rule="evenodd"
-                            d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                            clip-rule="evenodd" />
-                    </svg>
+                    <MagnifyingGlassIcon class="h-5 w-5 text-gray-500" />
                 </div>
                 <input type="text" v-model="search" placeholder="Search posts..."
                     class="w-full pl-10 pr-4 py-2.5 bg-[#2d2d2d] border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#6d28d9] text-white" />
@@ -99,33 +89,18 @@
                             <div class="flex space-x-2">
                                 <router-link :to="`/admin/blog/edit/${post.id}`"
                                     class="text-[#a78bfa] hover:text-[#8b5cf6] flex items-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20"
-                                        fill="currentColor">
-                                        <path
-                                            d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
-                                    </svg>
+                                    <PencilIcon class="h-4 w-4 mr-1" />
                                     Edit
                                 </router-link>
                                 <button @click="confirmDelete(post)"
                                     class="text-red-400 hover:text-red-500 flex items-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20"
-                                        fill="currentColor">
-                                        <path fill-rule="evenodd"
-                                            d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                                            clip-rule="evenodd" />
-                                    </svg>
+                                    <TrashIcon class="h-4 w-4 mr-1" />
                                     Delete
                                 </button>
                                 <router-link :to="`/blog/${post.id}`"
                                     class="text-gray-400 hover:text-white flex items-center">
                                     Preview
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" viewBox="0 0 20 20"
-                                        fill="currentColor">
-                                        <path
-                                            d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
-                                        <path
-                                            d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
-                                    </svg>
+                                    <ArrowTopRightOnSquareIcon class="h-4 w-4 ml-1" />
                                 </router-link>
                             </div>
                         </div>
@@ -136,21 +111,13 @@
 
         <!-- Empty state -->
         <div v-else class="bg-[#1e1e1e] rounded-xl p-10 text-center border border-[#333] mt-6">
-            <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-16 w-16 text-gray-600 mb-4" fill="none"
-                viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
-            </svg>
+            <DocumentTextIcon class="mx-auto h-16 w-16 text-gray-600 mb-4" />
             <h3 class="text-xl font-medium text-white mb-2">No blog posts found</h3>
             <p class="text-gray-400 mb-6">{{ categoryFilter === 'all' ? 'You don\'t have any blog posts yet' : `No posts
                 in the ${getCategoryName(categoryFilter)} category` }}</p>
             <router-link to="/admin/blog/create"
                 class="bg-gradient-to-r from-[#6d28d9] to-[#8b5cf6] hover:from-[#5b21b6] hover:to-[#7c3aed] text-white py-2.5 px-6 rounded-lg font-medium transition-all duration-300 inline-flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd"
-                        d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-                        clip-rule="evenodd" />
-                </svg>
+                <PlusIcon class="h-5 w-5 mr-2" />
                 Write Your First Post
             </router-link>
         </div>
@@ -161,11 +128,7 @@
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="text-xl font-bold text-white">Confirm Deletion</h3>
                     <button @click="showDeleteModal = false" class="text-gray-400 hover:text-white">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12" />
-                        </svg>
+                        <XMarkIcon class="h-6 w-6" />
                     </button>
                 </div>
                 <p class="text-gray-300 mb-6">Are you sure you want to delete the blog post <span
@@ -188,7 +151,17 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { useBlogStore, type BlogPost } from '@/stores/blogPosts';
+import { useBlogStore } from '@/stores/blogPosts';
+import type { BlogPost } from '@/interfaces/blog';
+import {
+    PlusIcon,
+    MagnifyingGlassIcon,
+    PencilIcon,
+    TrashIcon,
+    ArrowTopRightOnSquareIcon,
+    DocumentTextIcon,
+    XMarkIcon
+} from '@heroicons/vue/24/outline';
 
 const blogStore = useBlogStore();
 

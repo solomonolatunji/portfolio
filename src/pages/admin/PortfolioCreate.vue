@@ -3,11 +3,7 @@
         <div class="mb-6 flex justify-between items-center">
             <h1 class="text-2xl font-bold text-white">Add New Project</h1>
             <router-link to="/admin/portfolio/manager" class="text-[#a78bfa] hover:text-[#8b5cf6] flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd"
-                        d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
-                        clip-rule="evenodd" />
-                </svg>
+                <ArrowLeftIcon class="h-5 w-5 mr-1" />
                 Back to Projects
             </router-link>
         </div>
@@ -44,7 +40,7 @@
                                 Project URL
                                 <span class="text-gray-500 text-xs">(optional)</span>
                             </label>
-                            <input type="url" id="projectUrl" v-model="form.projectUrl"
+                            <input type="url" id="projectUrl" v-model="form.demoUrl"
                                 class="w-full bg-[#2d2d2d] border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-[#6d28d9]"
                                 placeholder="https://" />
                         </div>
@@ -55,7 +51,7 @@
                                 Repository URL
                                 <span class="text-gray-500 text-xs">(optional)</span>
                             </label>
-                            <input type="url" id="repoUrl" v-model="form.repoUrl"
+                            <input type="url" id="repoUrl" v-model="form.codeUrl"
                                 class="w-full bg-[#2d2d2d] border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-[#6d28d9]"
                                 placeholder="https://github.com/username/repo" />
                         </div>
@@ -114,12 +110,7 @@
                                     {{ tech }}
                                     <button type="button" @click="removeTechnology(index)"
                                         class="ml-2 text-gray-400 hover:text-red-400">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20"
-                                            fill="currentColor">
-                                            <path fill-rule="evenodd"
-                                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                                clip-rule="evenodd" />
-                                        </svg>
+                                        <XMarkIcon class="h-4 w-4" />
                                     </button>
                                 </div>
                             </div>
@@ -148,12 +139,7 @@
                                     <label for="image" class="cursor-pointer">
                                         <div
                                             class="bg-gray-800 hover:bg-gray-700 text-white rounded-lg py-3 px-4 inline-flex items-center transition-colors">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2"
-                                                viewBox="0 0 20 20" fill="currentColor">
-                                                <path fill-rule="evenodd"
-                                                    d="M4 5a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V7a2 2 0 00-2-2h-1.586a1 1 0 01-.707-.293l-1.121-1.121A2 2 0 0011.172 3H8.828a2 2 0 00-1.414.586L6.293 4.707A1 1 0 015.586 5H4zm6 9a3 3 0 100-6 3 3 0 000 6z"
-                                                    clip-rule="evenodd" />
-                                            </svg>
+                                            <CameraIcon class="h-5 w-5 mr-2" />
                                             {{ imagePreview ? 'Change Image' : 'Choose Image' }}
                                         </div>
                                     </label>
@@ -190,6 +176,8 @@
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { usePortfolioStore } from '@/stores/portfolioProjects';
+import type { Project, ProjectForm } from '@/interfaces/portfolio';
+import { ArrowLeftIcon, XMarkIcon, CameraIcon } from '@heroicons/vue/24/outline';
 
 const router = useRouter();
 const portfolioStore = usePortfolioStore();
@@ -203,18 +191,23 @@ const newTech = ref('');
 // Get current year for year input max value
 const currentYear = computed(() => new Date().getFullYear());
 
-// Form data
-const form = ref({
+// Form data - using our interface
+const form = ref<ProjectForm & { image: File | string | null, client?: string, featured?: boolean }>({
     title: '',
     description: '',
-    category: '',
-    projectUrl: '',
-    repoUrl: '',
-    technologies: [] as string[],
-    year: currentYear.value,
+    detailedDescription: '',
+    category: '' as "web" | "mobile" | "ui",
+    demoUrl: '',
+    codeUrl: '',
+    technologies: [],
+    year: currentYear.value.toString(),
+    role: '',
+    challenges: '',
+    features: [],
+    gallery: [],
     client: '',
     featured: false,
-    image: null as File | null,
+    image: "",
 });
 
 // Methods
@@ -267,14 +260,19 @@ function resetForm() {
     form.value = {
         title: '',
         description: '',
-        category: '',
-        projectUrl: '',
-        repoUrl: '',
+        detailedDescription: '',
+        category: '' as "web" | "mobile" | "ui",
+        demoUrl: '',
+        codeUrl: '',
         technologies: [],
-        year: currentYear.value,
+        year: currentYear.value.toString(),
+        role: '',
+        challenges: '',
+        features: [],
+        gallery: [],
         client: '',
         featured: false,
-        image: null,
+        image: "null",
     };
 
     newTech.value = '';
@@ -317,26 +315,29 @@ async function handleSubmit() {
         // and get the URL back. For now we'll just simulate that.
         const imageUrl = URL.createObjectURL(form.value.image as File);
 
-        // Create a new project
-        const newProject = {
+        // Create a new project using our interface
+        const newProject: Project = {
             id: Date.now().toString(),
             title: form.value.title,
             description: form.value.description,
+            detailedDescription: form.value.detailedDescription,
             image: imageUrl,
-            category: form.value.category,
-            projectUrl: form.value.projectUrl,
-            repoUrl: form.value.repoUrl,
-            technologies: form.value.technologies,
             year: form.value.year,
-            client: form.value.client,
-            featured: form.value.featured,
+            category: form.value.category,
+            technologies: form.value.technologies,
+            features: form.value.features,
+            role: form.value.role,
+            challenges: form.value.challenges,
+            gallery: form.value.gallery,
+            demoUrl: form.value.demoUrl,
+            codeUrl: form.value.codeUrl,
         };
 
         // Add to store
         portfolioStore.addProject(newProject);
 
         // Navigate to portfolio manager
-        router.push('/admin/portfolio/manager');
+        router.push('/admin/portfolio');
     } catch (error) {
         console.error('Failed to create project:', error);
     }

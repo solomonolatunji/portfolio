@@ -72,7 +72,7 @@
                                 {{ tag }}
                                 <button type="button" @click="removeTag(index)"
                                     class="ml-2 text-gray-400 hover:text-white">
-                                    &times;
+                                    <XMarkIcon class="w-4 h-4" />
                                 </button>
                             </span>
                         </div>
@@ -138,19 +138,14 @@
             <!-- Form Actions -->
             <div class="flex justify-end space-x-4 mt-6">
                 <router-link to="/admin/blog"
-                    class="px-6 py-3 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors">
+                    class="px-6 py-3 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors flex items-center">
+                    <ArrowLeftIcon class="w-5 h-5 mr-2" />
                     Cancel
                 </router-link>
                 <button type="submit"
                     class="px-6 py-3 bg-gradient-to-r from-[#6d28d9] to-[#8b5cf6] text-white rounded-lg hover:from-[#5b21b6] hover:to-[#7c3aed] transition-colors flex items-center">
-                    <svg v-if="isSubmitting" class="animate-spin -ml-1 mr-2 h-5 w-5 text-white"
-                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
-                        </circle>
-                        <path class="opacity-75" fill="currentColor"
-                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                        </path>
-                    </svg>
+                    <SpinnerIcon v-if="isSubmitting" class="animate-spin -ml-1 mr-2 h-5 w-5 text-white" />
+                    <DocumentPlusIcon v-else class="w-5 h-5 mr-2" />
                     Publish Post
                 </button>
             </div>
@@ -159,10 +154,37 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue';
+import { ref, reactive, h, defineComponent } from 'vue';
 import { useRouter } from 'vue-router';
-import { useBlogStore, type BlogPost } from '@/stores/blogPosts';
+import { useBlogStore } from '@/stores/blogPosts';
+import { type BlogPost } from '@/interfaces/blog';
 import Editor from '@tinymce/tinymce-vue';
+import { XMarkIcon, ArrowLeftIcon, DocumentPlusIcon } from '@heroicons/vue/24/outline';
+
+// Using a custom spinner icon component since Heroicons might not have the exact spinner we need
+const SpinnerIcon = defineComponent({
+    setup() {
+        return () => h('svg', {
+            xmlns: 'http://www.w3.org/2000/svg',
+            fill: 'none',
+            viewBox: '0 0 24 24'
+        }, [
+            h('circle', {
+                class: 'opacity-25',
+                cx: '12',
+                cy: '12',
+                r: '10',
+                stroke: 'currentColor',
+                'stroke-width': '4'
+            }),
+            h('path', {
+                class: 'opacity-75',
+                fill: 'currentColor',
+                d: 'M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z'
+            })
+        ]);
+    }
+});
 
 const router = useRouter();
 const blogStore = useBlogStore();
@@ -203,7 +225,9 @@ function addTag() {
 }
 
 function removeTag(index: number) {
-    post.tags.splice(index, 1);
+    if (post.tags) {
+        post.tags.splice(index, 1);
+    }
 }
 
 // New post initial data
@@ -230,7 +254,7 @@ async function savePost() {
 
         // Format the date nicely
         const dateObj = new Date(publishDate.value);
-        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
         post.date = dateObj.toLocaleDateString('en-US', options);
 
         // Add post to the store

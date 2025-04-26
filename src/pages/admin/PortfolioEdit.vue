@@ -2,12 +2,8 @@
     <div>
         <div class="mb-6 flex justify-between items-center">
             <h1 class="text-2xl font-bold text-white">Edit Project</h1>
-            <router-link to="/admin/portfolio/manager" class="text-[#a78bfa] hover:text-[#8b5cf6] flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd"
-                        d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
-                        clip-rule="evenodd" />
-                </svg>
+            <router-link to="/admin/portfolio" class="text-[#a78bfa] hover:text-[#8b5cf6] flex items-center">
+                <ArrowLeftIcon class="h-5 w-5 mr-1" />
                 Back to Projects
             </router-link>
         </div>
@@ -18,14 +14,10 @@
 
         <div v-else-if="error" class="bg-[#1e1e1e] rounded-xl p-6 border border-[#333]">
             <div class="text-center py-10">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-red-500 mb-4" fill="none"
-                    viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                </svg>
+                <ExclamationTriangleIcon class="h-16 w-16 mx-auto text-red-500 mb-4" />
                 <h2 class="text-xl font-bold text-red-400 mb-2">Error Loading Project</h2>
                 <p class="text-gray-400">{{ error }}</p>
-                <router-link to="/admin/portfolio/manager"
+                <router-link to="/admin/portfolio"
                     class="inline-block mt-6 px-4 py-2 bg-[#6d28d9] hover:bg-[#5b21b6] text-white rounded-lg">
                     Return to Projects
                 </router-link>
@@ -60,22 +52,22 @@
 
                         <!-- Project URL -->
                         <div>
-                            <label for="projectUrl" class="block text-white text-sm font-medium mb-2">
+                            <label for="demoUrl" class="block text-white text-sm font-medium mb-2">
                                 Project URL
                                 <span class="text-gray-500 text-xs">(optional)</span>
                             </label>
-                            <input type="url" id="projectUrl" v-model="form.projectUrl"
+                            <input type="url" id="demoUrl" v-model="form.demoUrl"
                                 class="w-full bg-[#2d2d2d] border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-[#6d28d9]"
                                 placeholder="https://" />
                         </div>
 
                         <!-- Project Repository -->
                         <div>
-                            <label for="repoUrl" class="block text-white text-sm font-medium mb-2">
+                            <label for="codeUrl" class="block text-white text-sm font-medium mb-2">
                                 Repository URL
                                 <span class="text-gray-500 text-xs">(optional)</span>
                             </label>
-                            <input type="url" id="repoUrl" v-model="form.repoUrl"
+                            <input type="url" id="codeUrl" v-model="form.codeUrl"
                                 class="w-full bg-[#2d2d2d] border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-[#6d28d9]"
                                 placeholder="https://github.com/username/repo" />
                         </div>
@@ -83,9 +75,9 @@
                         <!-- Completion Year -->
                         <div>
                             <label for="year" class="block text-white text-sm font-medium mb-2">Year *</label>
-                            <input type="number" id="year" v-model="form.year"
+                            <input type="text" id="year" v-model="form.year"
                                 class="w-full bg-[#2d2d2d] border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-[#6d28d9]"
-                                required min="2000" :max="currentYear" placeholder="Year completed" />
+                                required placeholder="Year completed" />
                         </div>
 
                         <!-- Client Name -->
@@ -134,12 +126,7 @@
                                     {{ tech }}
                                     <button type="button" @click="removeTechnology(index)"
                                         class="ml-2 text-gray-400 hover:text-red-400">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20"
-                                            fill="currentColor">
-                                            <path fill-rule="evenodd"
-                                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                                clip-rule="evenodd" />
-                                        </svg>
+                                        <XMarkIcon class="h-4 w-4" />
                                     </button>
                                 </div>
                             </div>
@@ -168,12 +155,7 @@
                                     <label for="image" class="cursor-pointer">
                                         <div
                                             class="bg-gray-800 hover:bg-gray-700 text-white rounded-lg py-3 px-4 inline-flex items-center transition-colors">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2"
-                                                viewBox="0 0 20 20" fill="currentColor">
-                                                <path fill-rule="evenodd"
-                                                    d="M4 5a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V7a2 2 0 00-2-2h-1.586a1 1 0 01-.707-.293l-1.121-1.121A2 2 0 0011.172 3H8.828a2 2 0 00-1.414.586L6.293 4.707A1 1 0 015.586 5H4zm6 9a3 3 0 100-6 3 3 0 000 6z"
-                                                    clip-rule="evenodd" />
-                                            </svg>
+                                            <CameraIcon class="h-5 w-5 mr-2" />
                                             {{ imagePreview ? 'Change Image' : 'Choose Image' }}
                                         </div>
                                     </label>
@@ -210,6 +192,13 @@
 import { ref, computed, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { usePortfolioStore } from '@/stores/portfolioProjects';
+import type { Project, ProjectForm } from '@/interfaces/portfolio';
+import {
+    ArrowLeftIcon,
+    XMarkIcon,
+    CameraIcon,
+    ExclamationTriangleIcon
+} from '@heroicons/vue/24/outline';
 
 const router = useRouter();
 const route = useRoute();
@@ -226,20 +215,31 @@ const error = ref<string | null>(null);
 // Get current year for year input max value
 const currentYear = computed(() => new Date().getFullYear());
 
-// Form data
-const form = ref({
+// Form data with proper typing
+const form = ref<ProjectForm & {
+    id: string,
+    image: File | null,
+    imageUrl: string,
+    client?: string,
+    featured?: boolean
+}>({
     id: '',
     title: '',
     description: '',
-    category: '',
-    projectUrl: '',
-    repoUrl: '',
-    technologies: [] as string[],
-    year: currentYear.value,
+    detailedDescription: '',
+    category: '' as "web" | "mobile" | "ui",
+    demoUrl: '',
+    codeUrl: '',
+    technologies: [],
+    year: currentYear.value.toString(),
+    role: '',
+    challenges: '',
+    features: [],
+    gallery: [],
+    image: null,
+    imageUrl: '',
     client: '',
     featured: false,
-    image: null as File | null,
-    imageUrl: '',
 });
 
 // Load project data
@@ -260,13 +260,18 @@ onMounted(async () => {
             id: project.id,
             title: project.title,
             description: project.description,
+            detailedDescription: project.detailedDescription || '',
             category: project.category,
-            projectUrl: project.projectUrl || '',
-            repoUrl: project.repoUrl || '',
+            demoUrl: project.demoUrl || '',
+            codeUrl: project.codeUrl || '',
             technologies: [...project.technologies],
             year: project.year,
-            client: project.client || '',
-            featured: project.featured || false,
+            role: project.role || '',
+            challenges: project.challenges || '',
+            features: project.features || [],
+            gallery: project.gallery || [],
+            client: '',  // Optional fields
+            featured: false, // Optional fields
             imageUrl: project.image,
         };
 
@@ -335,13 +340,16 @@ function resetForm() {
             ...form.value,
             title: project.title,
             description: project.description,
+            detailedDescription: project.detailedDescription || '',
             category: project.category,
-            projectUrl: project.projectUrl || '',
-            repoUrl: project.repoUrl || '',
+            demoUrl: project.demoUrl || '',
+            codeUrl: project.codeUrl || '',
             technologies: [...project.technologies],
             year: project.year,
-            client: project.client || '',
-            featured: project.featured || false,
+            role: project.role || '',
+            challenges: project.challenges || '',
+            features: project.features || [],
+            gallery: project.gallery || [],
             image: null,
         };
 
@@ -382,26 +390,29 @@ async function handleSubmit() {
             ? URL.createObjectURL(form.value.image)
             : form.value.imageUrl;
 
-        // Update project
-        const updatedProject = {
+        // Update project using our interface
+        const updatedProject: Project = {
             id: form.value.id,
             title: form.value.title,
             description: form.value.description,
+            detailedDescription: form.value.detailedDescription,
             image: imageUrl,
             category: form.value.category,
-            projectUrl: form.value.projectUrl,
-            repoUrl: form.value.repoUrl,
             technologies: form.value.technologies,
             year: form.value.year,
-            client: form.value.client,
-            featured: form.value.featured,
+            features: form.value.features,
+            role: form.value.role,
+            challenges: form.value.challenges,
+            gallery: form.value.gallery,
+            demoUrl: form.value.demoUrl,
+            codeUrl: form.value.codeUrl,
         };
 
         // Update store
         portfolioStore.updateProject(updatedProject);
 
         // Navigate to portfolio manager
-        router.push('/admin/portfolio/manager');
+        router.push('/admin/portfolio');
     } catch (error) {
         console.error('Failed to update project:', error);
     }

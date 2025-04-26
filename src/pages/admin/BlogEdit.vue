@@ -8,11 +8,7 @@
 
         <div v-if="!post">
             <div class="bg-[#1e1e1e] rounded-xl p-8 text-center border border-[#333]">
-                <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-12 w-12 text-gray-500 mb-4" fill="none"
-                    viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
+                <FaceFrownIcon class="mx-auto h-12 w-12 text-gray-500 mb-4" />
                 <p class="text-gray-300 mb-4">Blog post not found.</p>
                 <router-link to="/admin/blog" class="text-[#6d28d9] hover:text-[#8b5cf6]">
                     &larr; Return to Blog Manager
@@ -86,7 +82,7 @@
                                 {{ tag }}
                                 <button type="button" @click="removeTag(index)"
                                     class="ml-2 text-gray-400 hover:text-white">
-                                    &times;
+                                    <XMarkIcon class="h-4 w-4" />
                                 </button>
                             </span>
                         </div>
@@ -157,14 +153,7 @@
                 </router-link>
                 <button type="submit"
                     class="px-6 py-3 bg-gradient-to-r from-[#6d28d9] to-[#8b5cf6] text-white rounded-lg hover:from-[#5b21b6] hover:to-[#7c3aed] transition-colors flex items-center">
-                    <svg v-if="isSubmitting" class="animate-spin -ml-1 mr-2 h-5 w-5 text-white"
-                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
-                        </circle>
-                        <path class="opacity-75" fill="currentColor"
-                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                        </path>
-                    </svg>
+                    <SpinnerIcon v-if="isSubmitting" class="animate-spin -ml-1 mr-2 h-5 w-5 text-white" />
                     Update Post
                 </button>
             </div>
@@ -173,21 +162,49 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, h, defineComponent } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import { useBlogStore, type BlogPost } from '@/stores/blogPosts';
+import { useBlogStore } from '@/stores/blogPosts';
+import type { BlogPost } from '@/interfaces/blog';
 import Editor from '@tinymce/tinymce-vue';
+import { XMarkIcon, FaceFrownIcon } from '@heroicons/vue/24/outline';
 
 const router = useRouter();
 const route = useRoute();
 const blogStore = useBlogStore();
 const isSubmitting = ref(false);
 
-// Blog post data
+// Blog post data with proper typing
 const post = ref<BlogPost | null>(null);
 
 // Get post ID from route params
 const postId = computed(() => route.params.id as string);
+
+// Custom spinner component
+const SpinnerIcon = defineComponent({
+    setup() {
+        return () => h('svg', {
+            xmlns: 'http://www.w3.org/2000/svg',
+            class: 'animate-spin',
+            fill: 'none',
+            viewBox: '0 0 24 24'
+        }, [
+            h('circle', {
+                class: 'opacity-25',
+                cx: '12',
+                cy: '12',
+                r: '10',
+                stroke: 'currentColor',
+                'stroke-width': '4'
+            }),
+            h('path', {
+                class: 'opacity-75',
+                fill: 'currentColor',
+                d: 'M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z'
+            })
+        ]);
+    }
+});
 
 // TinyMCE Config
 const tinymceApiKey = ''; // You would use your own API key in a production environment
@@ -220,13 +237,13 @@ onMounted(() => {
         post.value = JSON.parse(JSON.stringify(postData));
 
         // Convert the date string to a date object for the input
-        if (post.value.date) {
+        if (post.value && post.value.date) {
             const dateObj = new Date(post.value.date);
             publishDate.value = dateObj.toISOString().substr(0, 10);
         }
 
         // Ensure tags array exists
-        if (!post.value.tags) {
+        if (post.value && !post.value.tags) {
             post.value.tags = [];
         }
     }
@@ -237,14 +254,17 @@ const newTag = ref('');
 
 function addTag() {
     if (post.value && newTag.value.trim()) {
-        if (!post.value.tags) post.value.tags = [];
+        // Ensure tags array exists
+        if (!post.value.tags) {
+            post.value.tags = [];
+        }
         post.value.tags.push(newTag.value.trim());
         newTag.value = '';
     }
 }
 
 function removeTag(index: number) {
-    if (post.value) {
+    if (post.value && post.value.tags) {
         post.value.tags.splice(index, 1);
     }
 }
@@ -258,7 +278,11 @@ async function savePost() {
 
         // Format the date nicely
         const dateObj = new Date(publishDate.value);
-        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        const options: Intl.DateTimeFormatOptions = {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        };
         post.value.date = dateObj.toLocaleDateString('en-US', options);
 
         // Update post in the store

@@ -1,23 +1,6 @@
+import type { BlogPost } from "@/interfaces/blog";
 import { defineStore } from "pinia";
 import { ref } from "vue";
-
-export interface Author {
-  name: string;
-  avatar: string;
-}
-
-export interface BlogPost {
-  id: string;
-  title: string;
-  excerpt: string;
-  content: string;
-  image: string;
-  date: string;
-  category: string;
-  author: Author;
-  featured?: boolean;
-  tags?: string[];
-}
 
 export const useBlogStore = defineStore("blog", () => {
   // State

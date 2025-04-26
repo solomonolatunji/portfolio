@@ -1,11 +1,12 @@
+import type { AdminCredentials, AdminUser } from "@/interfaces/auth";
 import { defineStore } from "pinia";
 import { ref } from "vue";
 
 export const useAdminAuthStore = defineStore("adminAuth", () => {
   const isAuthenticated = ref(false);
-  const user = ref<{ username: string } | null>(null);
+  const user = ref<AdminUser | null>(null);
 
-  const adminUser = {
+  const adminUser: AdminCredentials = {
     username: "admin",
     password: "admin123",
   };
