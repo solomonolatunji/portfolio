@@ -3,48 +3,60 @@
         <div class="w-full max-w-5xl mx-auto">
             <div class="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-8">
                 <div class="w-full md:w-2/5 flex items-center justify-center">
-                    <div class="relative">
+                    <div class="relative floating">
+                        <div class="profile-gradient absolute inset-0 rounded-full animate-spin-slow"></div>
+
                         <div
-                            class="w-48 h-48 md:w-60 md:h-60 lg:w-64 lg:h-64 rounded-full overflow-hidden border-4 border-[#6d28d9] shadow-xl animate-fadeIn">
+                            class="profile-image-container w-52 h-52 md:w-64 md:h-64 lg:w-72 lg:h-72 rounded-full overflow-hidden border-4 border-[#6d28d9] shadow-xl animate-fadeIn">
                             <img src="https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
-                                alt="Solomon Olatunji" class="w-full h-full object-cover" />
+                                alt="Solomon Olatunji"
+                                class="w-full h-full object-cover hover:scale-110 transition-transform duration-700" />
                         </div>
-                        <div class="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-[#6d28d9] animate-bounce delay-300">
+
+                        <div
+                            class="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-[#6d28d9] animate-bounce delay-300 shadow-glow">
                         </div>
                         <div
-                            class="absolute -bottom-2 -right-2 w-6 h-6 rounded-full bg-[#9f7aea] animate-ping delay-700">
+                            class="absolute -bottom-2 -right-2 w-6 h-6 rounded-full bg-[#9f7aea] animate-ping delay-700 shadow-glow">
                         </div>
-                        <div class="absolute top-1/2 -right-4 w-4 h-4 rounded-full bg-[#4c1d95] animate-pulse"></div>
+                        <div
+                            class="absolute top-1/2 -right-4 w-4 h-4 rounded-full bg-[#4c1d95] animate-pulse shadow-glow">
+                        </div>
                     </div>
                 </div>
 
                 <div class="w-full md:w-3/5 flex flex-col items-center md:items-start text-center md:text-left">
                     <div class="animate-slideDown">
-                        <p class="text-[#6d28d9] font-medium mb-3 tracking-wider">HELLO THERE 👋</p>
-                        <h1 class="text-xl md:text-3xl lg:text-4xl font-bold mb-3 md:mb-4 modern-title">
+                        <p class="text-[#6d28d9] font-medium mb-3 tracking-wider flex items-center">
+                            <span class="w-5 h-0.5 bg-[#6d28d9] mr-2 hidden md:block"></span>
+                            HELLO THERE 👋
+                        </p>
+                        <h1 class="text-2xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4">
                             I'm <span
-                                class="text-gradient bg-clip-text text-transparent bg-gradient-to-r from-[#6d28d9] to-[#9f7aea]">SOLOMON
+                                class="text-gradient bg-clip-text text-transparent bg-gradient-to-r from-[#6d28d9] via-[#8b5cf6] to-[#9f7aea]">SOLOMON
                                 OLATUNJI</span>
                         </h1>
                         <h2
-                            class="text-lg md:text-xl lg:text-2xl font-medium mb-4 md:mb-6 text-gray-400 flex items-center justify-center md:justify-start">
+                            class="text-lg md:text-xl lg:text-2xl font-medium mb-4 md:mb-6 text-gray-300 flex items-center justify-center md:justify-start typewriter">
                             <span class="mr-3">SOFTWARE ENGINEER</span>
                             <span class="animate-blink">|</span>
                         </h2>
                     </div>
 
-                    <p
-                        class="mb-6 text-gray-300 leading-relaxed text-base md:text-lg max-w-2xl animate-fadeIn delay-300">
-                        I'm a Full Stack Software Engineer specializing in modern web technologies.
-                        With expertise in both frontend and backend development, I create
-                        scalable, responsive, and user-friendly digital experiences. Passionate about
-                        clean code, performance optimization, and building innovative solutions
-                        that deliver real business value.
-                    </p>
+                    <div
+                        class="glass-card backdrop-blur-sm p-5 rounded-xl border border-white/10 mb-6 animate-fadeIn delay-300">
+                        <p class="text-gray-300 leading-relaxed text-base md:text-lg max-w-2xl">
+                            I'm a Full Stack Software Engineer specializing in modern web technologies.
+                            With expertise in both frontend and backend development, I create
+                            scalable, responsive, and user-friendly digital experiences. Passionate about
+                            clean code, performance optimization, and building innovative solutions
+                            that deliver real business value.
+                        </p>
+                    </div>
 
-                    <div class="flex gap-4 mb-8 animate-slideUp delay-500">
+                    <div class="flex gap-5 mb-8 animate-slideUp delay-500">
                         <a href="https://github.com/eminisolomon" target="_blank"
-                            class="bg-[#1e1e1e] hover:bg-[#2d2d2d] border border-[#333] w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 hover:-translate-y-1">
+                            class="social-link bg-[#1e1e1e]/70 hover:bg-[#2d2d2d] border border-white/5 hover:border-[#6d28d9]/30 w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300 hover:-translate-y-2 backdrop-blur-sm">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#6d28d9]" viewBox="0 0 24 24"
                                 fill="currentColor">
                                 <path
@@ -52,7 +64,7 @@
                             </svg>
                         </a>
                         <a href="https://twitter.com/eminisolomon" target="_blank"
-                            class="bg-[#1e1e1e] hover:bg-[#2d2d2d] border border-[#333] w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 hover:-translate-y-1">
+                            class="social-link bg-[#1e1e1e]/70 hover:bg-[#2d2d2d] border border-white/5 hover:border-[#6d28d9]/30 w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300 hover:-translate-y-2 backdrop-blur-sm">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#6d28d9]" viewBox="0 0 24 24"
                                 fill="currentColor">
                                 <path
@@ -60,7 +72,7 @@
                             </svg>
                         </a>
                         <a href="https://linkedin.com/in/eminisolomon" target="_blank"
-                            class="bg-[#1e1e1e] hover:bg-[#2d2d2d] border border-[#333] w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 hover:-translate-y-1">
+                            class="social-link bg-[#1e1e1e]/70 hover:bg-[#2d2d2d] border border-white/5 hover:border-[#6d28d9]/30 w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300 hover:-translate-y-2 backdrop-blur-sm">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#6d28d9]" viewBox="0 0 24 24"
                                 fill="currentColor">
                                 <path
@@ -69,17 +81,17 @@
                         </a>
                     </div>
 
-                    <div class="flex flex-col sm:flex-row gap-4 animate-slideUp delay-700">
+                    <div class="flex flex-row sm:flex-row gap-4 animate-slideUp delay-700">
                         <router-link to="/about"
-                            class="bg-[#6d28d9] hover:bg-[#5b21b6] text-white transition-colors px-6 py-3 rounded-full inline-flex items-center font-medium text-base md:text-lg shadow-md hover:shadow-lg transform hover:-translate-y-1">
-                            MORE ABOUT ME
+                            class="cta-button bg-[#6d28d9] hover:bg-[#5b21b6] text-white transition-all duration-300 px-5 py-2 sm:px-8 sm:py-4 rounded-lg sm:rounded-xl inline-flex items-center font-medium text-sm sm:text-base md:text-lg shadow-md sm:shadow-lg hover:shadow-[#6d28d9]/30 transform hover:-translate-y-1">
+                            ABOUT ME
                             <span
-                                class="ml-2 bg-white text-[#6d28d9] rounded-full w-6 h-6 flex items-center justify-center text-sm">→</span>
+                                class="ml-2 sm:ml-3 bg-white text-[#6d28d9] rounded-full w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-xs sm:text-sm">→</span>
                         </router-link>
 
                         <router-link to="/contact"
-                            class="bg-[#1e1e1e] hover:bg-[#2d2d2d] text-white border border-[#333] transition-colors px-6 py-3 rounded-full inline-flex items-center font-medium text-base md:text-lg shadow-md hover:shadow-lg transform hover:-translate-y-1">
-                            <EnvelopeIcon class="h-5 w-5 mr-2 text-[#6d28d9]" />
+                            class="cta-button bg-[#1e1e1e]/70 hover:bg-[#2d2d2d] text-white border border-white/10 hover:border-[#6d28d9]/30 transition-all duration-300 px-5 py-2 sm:px-8 sm:py-4 rounded-lg sm:rounded-xl inline-flex items-center font-medium text-sm sm:text-base md:text-lg shadow-md sm:shadow-lg backdrop-blur-sm hover:-translate-y-1">
+                            <EnvelopeIcon class="h-4 w-4 sm:h-5 sm:w-5 mr-2 text-[#6d28d9]" />
                             CONTACT ME
                         </router-link>
                     </div>
@@ -101,11 +113,147 @@ export default {
 </script>
 
 <style scoped>
+.glass-card {
+    background: rgba(30, 30, 30, 0.4);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+}
+
+.profile-gradient {
+    background: linear-gradient(135deg, #6d28d9, #9333ea, #6d28d9, #4c1d95);
+    opacity: 0.5;
+    transform: scale(1.05);
+    filter: blur(8px);
+}
+
+.profile-image-container {
+    position: relative;
+    z-index: 1;
+}
+
+.shadow-glow {
+    box-shadow: 0 0 15px rgba(109, 40, 217, 0.4);
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+.floating {
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes spin-slow {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.animate-spin-slow {
+    animation: spin-slow 12s linear infinite;
+}
+
+.text-gradient {
+    background-size: 200% 200%;
+    animation: gradient-shift 8s ease infinite;
+}
+
+@keyframes gradient-shift {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.cta-button {
+    position: relative;
+    overflow: hidden;
+}
+
+.cta-button::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.cta-button:hover::after {
+    opacity: 1;
+}
+
+.typewriter {
+    overflow: hidden;
+    white-space: nowrap;
+    border-right: transparent;
+    animation: typing 3.5s steps(30, end);
+}
+
+@keyframes typing {
+    from {
+        width: 0
+    }
+
+    to {
+        width: 100%
+    }
+}
+
 .animate-blink {
     animation: blink 1s step-end infinite;
 }
 
+.social-link {
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.social-link::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(109, 40, 217, 0.15);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.4s ease, height 0.4s ease;
+    z-index: -1;
+}
+
+.social-link:hover::after {
+    width: 120%;
+    height: 120%;
+}
+
 .animate-fadeIn {
+    opacity: 0;
     animation: fadeIn 1s ease forwards;
 }
 

@@ -1,6 +1,7 @@
 <template>
     <div class="w-full min-h-screen flex items-center justify-center py-12 pb-24 md:pb-12">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
+            <!-- Restored original title -->
             <div class="title-with-bg-shadow" data-text="ABOUT ME">
                 <h1 class="text-2xl sm:text-3xl lg:text-4xl mb-8 text-center modern-title">
                     <span class="accent">—</span> ABOUT ME
@@ -8,131 +9,129 @@
             </div>
 
             <div class="flex flex-col md:flex-row items-center justify-center gap-8 lg:gap-12">
+                <!-- Modernized profile image with floating animation and gradient border -->
                 <div class="w-full md:w-1/3 flex items-center justify-center mb-8 md:mb-0">
-                    <div class="relative">
+                    <div class="relative floating">
+                        <div class="profile-gradient absolute inset-0 rounded-full animate-spin-slow"></div>
                         <div
-                            class="w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 rounded-full overflow-hidden shadow-xl border-4 border-[#6d28d9]">
+                            class="w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 lg:w-72 lg:h-72 rounded-full overflow-hidden shadow-2xl border-4 border-[#6d28d9] profile-image-container">
                             <img src="https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
-                                alt="Solomon Olatunji" class="w-full h-full object-cover" />
-                        </div>
-                        <div
-                            class="absolute -z-10 -bottom-3 -right-3 w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 rounded-full border-4 border-[#6d28d9] opacity-30">
+                                alt="Solomon Olatunji"
+                                class="w-full h-full object-cover hover:scale-110 transition-transform duration-700" />
                         </div>
                     </div>
                 </div>
 
+                <!-- Modernized profile info with glass-morphism card -->
                 <div class="w-full md:w-2/3">
-                    <div class="grid grid-cols-2 gap-y-4 gap-x-4 sm:gap-x-6">
-                        <div class="mb-2">
-                            <p class="text-gray-400 text-xs sm:text-sm flex items-center">
-                                <UserIcon class="w-4 h-4 mr-1.5 text-[#6d28d9]" />
-                                First Name:
-                            </p>
-                            <p class="text-white font-medium text-base sm:text-lg">Solomon</p>
+                    <div class="glass-card p-6 rounded-2xl border border-white/10 backdrop-blur-sm">
+                        <div class="grid grid-cols-2 gap-y-4 gap-x-4 sm:gap-x-6">
+                            <div class="mb-2 info-item hover:translate-x-1 transition-transform">
+                                <p class="text-gray-400 text-xs sm:text-sm flex items-center">
+                                    <UserIcon class="w-4 h-4 mr-1.5 text-[#6d28d9]" />
+                                    First Name:
+                                </p>
+                                <p class="text-white font-medium text-base sm:text-lg">Solomon</p>
+                            </div>
+                            <div class="mb-2 info-item hover:translate-x-1 transition-transform">
+                                <p class="text-gray-400 text-xs sm:text-sm flex items-center">
+                                    <UserIcon class="w-4 h-4 mr-1.5 text-[#6d28d9]" />
+                                    Last Name:
+                                </p>
+                                <p class="text-white font-medium text-base sm:text-lg">Olatunji</p>
+                            </div>
+                            <div class="mb-2 info-item hover:translate-x-1 transition-transform">
+                                <p class="text-gray-400 text-xs sm:text-sm flex items-center">
+                                    <GlobeAltIcon class="w-4 h-4 mr-1.5 text-[#6d28d9]" />
+                                    Nationality:
+                                </p>
+                                <p class="text-white font-medium text-base sm:text-lg">Nigerian</p>
+                            </div>
+                            <div class="mb-2 info-item hover:translate-x-1 transition-transform">
+                                <p class="text-gray-400 text-xs sm:text-sm flex items-center">
+                                    <BriefcaseIcon class="w-4 h-4 mr-1.5 text-[#6d28d9]" />
+                                    Freelance:
+                                </p>
+                                <p class="text-white font-medium text-base sm:text-lg">Available</p>
+                            </div>
+                            <div class="mb-2 info-item hover:translate-x-1 transition-transform">
+                                <p class="text-gray-400 text-xs sm:text-sm flex items-center">
+                                    <MapPinIcon class="w-4 h-4 mr-1.5 text-[#6d28d9]" />
+                                    Address:
+                                </p>
+                                <p class="text-white font-medium text-base sm:text-lg">Ilorin, Nigeria</p>
+                            </div>
+                            <div class="mb-2 info-item hover:translate-x-1 transition-transform">
+                                <p class="text-gray-400 text-xs sm:text-sm flex items-center">
+                                    <PhoneIcon class="w-4 h-4 mr-1.5 text-[#6d28d9]" />
+                                    Phone:
+                                </p>
+                                <p class="text-white font-medium text-base sm:text-lg">+2349017818024</p>
+                            </div>
+                            <div class="mb-2 col-span-2 info-item hover:translate-x-1 transition-transform">
+                                <p class="text-gray-400 text-xs sm:text-sm flex items-center">
+                                    <EnvelopeIcon class="w-4 h-4 mr-1.5 text-[#6d28d9]" />
+                                    Email:
+                                </p>
+                                <p class="text-white font-medium text-base sm:text-lg break-all">
+                                    hello@solomonolatunji.com
+                                </p>
+                            </div>
                         </div>
-                        <div class="mb-2">
-                            <p class="text-gray-400 text-xs sm:text-sm flex items-center">
-                                <UserIcon class="w-4 h-4 mr-1.5 text-[#6d28d9]" />
-                                Last Name:
-                            </p>
-                            <p class="text-white font-medium text-base sm:text-lg">Olatunji</p>
-                        </div>
-                        <div class="mb-2">
-                            <p class="text-gray-400 text-xs sm:text-sm flex items-center">
-                                <GlobeAltIcon class="w-4 h-4 mr-1.5 text-[#6d28d9]" />
-                                Nationality:
-                            </p>
-                            <p class="text-white font-medium text-base sm:text-lg">Nigerian</p>
-                        </div>
-                        <div class="mb-2">
-                            <p class="text-gray-400 text-xs sm:text-sm flex items-center">
-                                <BriefcaseIcon class="w-4 h-4 mr-1.5 text-[#6d28d9]" />
-                                Freelance:
-                            </p>
-                            <p class="text-white font-medium text-base sm:text-lg">Available</p>
-                        </div>
-                        <div class="mb-2">
-                            <p class="text-gray-400 text-xs sm:text-sm flex items-center">
-                                <MapPinIcon class="w-4 h-4 mr-1.5 text-[#6d28d9]" />
-                                Address:
-                            </p>
-                            <p class="text-white font-medium text-base sm:text-lg">Ilorin, Nigeria</p>
-                        </div>
-                        <div class="mb-2">
-                            <p class="text-gray-400 text-xs sm:text-sm flex items-center">
-                                <PhoneIcon class="w-4 h-4 mr-1.5 text-[#6d28d9]" />
-                                Phone:
-                            </p>
-                            <p class="text-white font-medium text-base sm:text-lg">+2349017818024</p>
-                        </div>
-                        <div class="mb-2 col-span-2">
-                            <p class="text-gray-400 text-xs sm:text-sm flex items-center">
-                                <EnvelopeIcon class="w-4 h-4 mr-1.5 text-[#6d28d9]" />
-                                Email:
-                            </p>
-                            <p class="text-white font-medium text-base sm:text-lg break-all">hello@solomonolatunji.com
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="mt-6 p-4 bg-[#1e1e1e] rounded-lg border border-[#333]">
-                        <h3 class="text-lg font-semibold mb-3 flex items-center">
-                            <DocumentTextIcon class="w-5 h-5 mr-2 text-[#6d28d9]" />
-                            About Me
-                        </h3>
-                        <p class="text-gray-300 text-sm leading-relaxed">
-                            I am a versatile Full Stack Software Engineer with over 5 years of experience crafting
-                            robust web and mobile applications. My technical expertise spans the entire development
-                            lifecycle, from concept and design to deployment and maintenance. I specialize in creating
-                            seamless user experiences with modern frontend frameworks while building scalable backend
-                            systems. I'm committed to writing clean, maintainable code and implementing best practices
-                            for performance and security. Beyond coding, I actively contribute to open-source projects
-                            and mentor aspiring developers in the tech community.
-                        </p>
                     </div>
                 </div>
             </div>
 
-            <div class="mt-12 lg:mt-16">
-                <h2 class="text-xl sm:text-2xl mb-6 text-center modern-section-title">
-                    <span class="accent">—</span> MY SKILLS
-                </h2>
+            <!-- Modernized skills section with animated cards -->
+            <div class="mt-16 lg:mt-24" id="skills-section">
+                <div class="section-title mb-10 text-center">
+                    <h2 class="text-2xl sm:text-3xl font-bold text-white">
+                        <span class="text-[#6d28d9]">—</span> MY SKILLS
+                    </h2>
+                    <div class="h-1 w-16 bg-[#6d28d9] mx-auto mt-4"></div>
+                </div>
 
                 <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-6 md:gap-8">
                     <div v-for="(tech, index) in technologies" :key="index"
-                        class="flex flex-col items-center justify-center group transition-transform duration-300 hover:-translate-y-1">
-                        <img :src="tech.icon" :alt="tech.name" class="w-12 h-12 mb-2" />
+                        class="skill-card p-4 backdrop-blur-sm border border-white/10 rounded-xl flex flex-col items-center justify-center transition-all duration-300 hover:transform hover:scale-110 hover:shadow-glow">
+                        <img :src="tech.icon" :alt="tech.name" class="w-12 h-12 mb-3 animate-pulse-slow" />
                         <span class="text-gray-300 font-medium text-sm sm:text-base">{{ tech.name }}</span>
                     </div>
                 </div>
             </div>
 
-            <div class="mt-16">
-                <h2 class="text-xl sm:text-2xl mb-6 text-center modern-section-title">
-                    <span class="accent">—</span> EXPERIENCE
-                </h2>
+            <!-- Modernized experience timeline -->
+            <div class="mt-20" id="experience-section">
+                <div class="section-title mb-10 text-center">
+                    <h2 class="text-2xl sm:text-3xl font-bold text-white">
+                        <span class="text-[#6d28d9]">—</span> EXPERIENCE
+                    </h2>
+                    <div class="h-1 w-16 bg-[#6d28d9] mx-auto mt-4"></div>
+                </div>
 
                 <div class="relative">
-                    <div class="absolute left-0 md:left-1/2 transform md:-translate-x-1/2 h-full w-1 bg-[#333]"></div>
+                    <div
+                        class="absolute left-0 md:left-1/2 transform md:-translate-x-1/2 h-full w-1 bg-gradient-to-b from-[#6d28d9]/30 via-[#6d28d9] to-[#6d28d9]/30">
+                    </div>
 
-                    <div class="flex flex-col space-y-8">
+                    <div class="flex flex-col space-y-12">
                         <div v-for="(exp, index) in experiences" :key="index" :class="[
-                            'relative flex flex-col md:flex-row md:items-center',
+                            'relative flex flex-col md:flex-row md:items-center timeline-item',
                             index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
                         ]">
                             <div
-                                class="absolute left-0 md:left-1/2 transform -translate-x-1/2 w-5 h-5 rounded-full border-4 border-[#6d28d9] bg-[#121212] z-10">
+                                class="absolute left-0 md:left-1/2 transform -translate-x-1/2 w-6 h-6 rounded-full border-4 border-[#6d28d9] bg-[#121212] z-10 timeline-dot">
                             </div>
 
-                            <div class="ml-8 md:ml-0 md:w-1/2" :class="index % 2 === 0 ? 'md:pr-10' : 'md:pl-10'">
+                            <div class="ml-8 md:ml-0 md:w-1/2" :class="index % 2 === 0 ? 'md:pr-12' : 'md:pl-12'">
                                 <div
-                                    class="bg-[#1e1e1e] p-4 rounded-lg border border-[#333] hover:border-[#6d28d9] transition-all">
+                                    class="bg-[#1e1e1e]/70 p-6 rounded-xl border border-[#333] hover:border-[#6d28d9] transition-all duration-300 shadow-xl hover:shadow-[#6d28d9]/20 timeline-card">
                                     <span
-                                        class="inline-block px-3 py-1 bg-[#2d2d2d] text-[#6d28d9] text-xs rounded-full mb-2">{{
+                                        class="inline-block px-4 py-1.5 bg-[#2d2d2d] text-[#6d28d9] text-xs font-bold rounded-full mb-3">{{
                                             exp.period }}</span>
-                                    <h3 class="text-white font-bold text-lg mb-1">{{ exp.role }}</h3>
-                                    <h4 class="text-gray-400 mb-3">{{ exp.company }}</h4>
-                                    <p class="text-gray-300 text-sm">{{ exp.description }}</p>
+                                    <h3 class="text-white font-bold text-xl mb-2">{{ exp.role }}</h3>
+                                    <h4 class="text-[#6d28d9]/90 mb-3 font-medium">{{ exp.company }}</h4>
+                                    <p class="text-gray-300 text-sm leading-relaxed">{{ exp.description }}</p>
                                 </div>
                             </div>
                         </div>
@@ -140,36 +139,42 @@
                 </div>
             </div>
 
-            <div class="mt-16">
-                <h2 class="text-xl sm:text-2xl mb-6 text-center modern-section-title">
-                    <span class="accent">—</span> EDUCATION
-                </h2>
+            <!-- Modernized education section -->
+            <div class="mt-20" id="education-section">
+                <div class="section-title mb-10 text-center">
+                    <h2 class="text-2xl sm:text-3xl font-bold text-white">
+                        <span class="text-[#6d28d9]">—</span> EDUCATION
+                    </h2>
+                    <div class="h-1 w-16 bg-[#6d28d9] mx-auto mt-4"></div>
+                </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div v-for="(edu, index) in education" :key="index"
-                        class="bg-[#1e1e1e] p-5 rounded-lg border border-[#333] hover:border-[#6d28d9] transition-all">
+                        class="glass-card p-6 rounded-xl border border-white/10 hover:border-[#6d28d9] transition-all duration-300 shadow-xl hover:shadow-[#6d28d9]/20 backdrop-blur-sm edu-card">
                         <div class="flex items-start">
-                            <div class="bg-[#2d2d2d] p-2 rounded-lg mr-4">
-                                <AcademicCapIcon class="w-6 h-6 text-[#6d28d9]" />
+                            <div class="bg-[#6d28d9]/20 p-3 rounded-lg mr-4 edu-icon">
+                                <AcademicCapIcon class="w-7 h-7 text-[#6d28d9]" />
                             </div>
                             <div>
-                                <span class="text-xs bg-[#2d2d2d] text-[#6d28d9] px-2 py-0.5 rounded-full">{{ edu.period
+                                <span class="text-xs bg-[#2d2d2d] text-[#6d28d9] px-3 py-1 rounded-full font-bold">{{
+                                    edu.period
                                     }}</span>
-                                <h3 class="text-white font-bold text-lg mt-1 mb-1">{{ edu.degree }}</h3>
-                                <h4 class="text-gray-400 mb-2">{{ edu.institution }}</h4>
-                                <p class="text-gray-300 text-sm">{{ edu.description }}</p>
+                                <h3 class="text-white font-bold text-xl mt-2 mb-1">{{ edu.degree }}</h3>
+                                <h4 class="text-[#6d28d9]/80 mb-3 font-medium">{{ edu.institution }}</h4>
+                                <p class="text-gray-300 text-sm leading-relaxed">{{ edu.description }}</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="mt-12 lg:mt-16 flex justify-center mb-16 md:mb-0">
+            <!-- Modernized CTA button -->
+            <div class="mt-16 lg:mt-20 flex justify-center mb-16 md:mb-0">
                 <router-link to="/portfolio"
-                    class="bg-[#6d28d9] hover:bg-[#5b21b6] text-white transition-all duration-300 px-6 py-3 rounded-full inline-flex items-center font-medium text-base sm:text-lg shadow-md hover:shadow-lg transform hover:-translate-y-1">
+                    class="cta-button bg-[#6d28d9] hover:bg-[#5b21b6] text-white transition-all duration-300 px-8 py-4 rounded-xl inline-flex items-center font-bold text-base sm:text-lg shadow-lg hover:shadow-[#6d28d9]/50 transform hover:-translate-y-1">
                     VIEW MY PROJECTS
                     <span
-                        class="ml-2 bg-white text-[#6d28d9] rounded-full w-6 h-6 flex items-center justify-center text-sm">→</span>
+                        class="ml-3 bg-white text-[#6d28d9] rounded-full w-7 h-7 flex items-center justify-center text-sm">→</span>
                 </router-link>
             </div>
         </div>
@@ -259,30 +264,239 @@ export default {
         }
     },
     mounted() {
-        this.animateProgressBars();
-        window.addEventListener('scroll', this.animateProgressBars);
+        this.animateElements();
+        window.addEventListener('scroll', this.handleScroll);
     },
     beforeUnmount() {
-        window.removeEventListener('scroll', this.animateProgressBars);
+        window.removeEventListener('scroll', this.handleScroll);
     },
     methods: {
-        animateProgressBars() {
-            const bars = document.querySelectorAll('.progress-bar');
-            bars.forEach(bar => {
-                const rect = bar.getBoundingClientRect();
-                if (rect.top < window.innerHeight) {
-                    const level = bar.getAttribute('data-level');
-                    bar.style.width = level + '%';
-                    bar.style.transition = 'width 1s ease-out';
+        animateElements() {
+            // Initialize animations for elements that are initially visible
+            this.animateOnScroll();
+        },
+        handleScroll() {
+            // Throttle the scroll event
+            if (!this.ticking) {
+                window.requestAnimationFrame(() => {
+                    this.animateOnScroll();
+                    this.ticking = false;
+                });
+                this.ticking = true;
+            }
+        },
+        animateOnScroll() {
+            // Animate elements when they come into view
+            const sections = ['skills-section', 'experience-section', 'education-section'];
+            sections.forEach(section => {
+                const el = document.getElementById(section);
+                if (el && this.isInViewport(el)) {
+                    el.classList.add('fade-in-section');
                 }
             });
+
+            // Animate timeline items
+            const timelineItems = document.querySelectorAll('.timeline-item');
+            timelineItems.forEach(item => {
+                if (this.isInViewport(item)) {
+                    item.classList.add('timeline-item-visible');
+                }
+            });
+
+            // Animate education cards
+            const eduCards = document.querySelectorAll('.edu-card');
+            eduCards.forEach(card => {
+                if (this.isInViewport(card)) {
+                    card.classList.add('edu-card-visible');
+                }
+            });
+        },
+        isInViewport(element) {
+            const rect = element.getBoundingClientRect();
+            return (
+                rect.top <= (window.innerHeight || document.documentElement.clientHeight) * 0.8 &&
+                rect.bottom >= 0
+            );
         }
     }
 }
 </script>
 
 <style scoped>
-.progress-bar {
-    width: 0;
+/* Glass morphism effect */
+.glass-card {
+    background: rgba(30, 30, 30, 0.5);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+    backdrop-filter: blur(8px);
+}
+
+/* Animations */
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+.floating {
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes spin-slow {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.animate-spin-slow {
+    animation: spin-slow 12s linear infinite;
+}
+
+@keyframes pulse-slow {
+    0% {
+        opacity: 0.6;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.6;
+    }
+}
+
+.animate-pulse-slow {
+    animation: pulse-slow 3s ease-in-out infinite;
+}
+
+/* Profile image gradient border */
+.profile-gradient {
+    background: linear-gradient(135deg, #6d28d9, #9333ea, #6d28d9, #4c1d95);
+    opacity: 0.5;
+    transform: scale(1.05);
+    filter: blur(8px);
+}
+
+.profile-image-container {
+    position: relative;
+    z-index: 1;
+}
+
+/* Shadow effects */
+.shadow-glow {
+    box-shadow: 0 0 15px rgba(109, 40, 217, 0.5);
+}
+
+/* Timeline animations */
+.timeline-item {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.timeline-item-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.timeline-dot {
+    box-shadow: 0 0 0 4px rgba(109, 40, 217, 0.3);
+}
+
+/* Section fade in animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in-section {
+    animation: fadeIn 1s ease forwards;
+}
+
+/* Education card animations */
+.edu-card {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.edu-card-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Skill card hover effect */
+.skill-card {
+    background: rgba(30, 30, 30, 0.3);
+    overflow: hidden;
+    position: relative;
+}
+
+.skill-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(109, 40, 217, 0.1) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.skill-card:hover::before {
+    opacity: 1;
+}
+
+/* Info item hover effect */
+.info-item {
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.info-item:hover {
+    background-color: rgba(109, 40, 217, 0.1);
+}
+
+/* CTA button glow effect */
+.cta-button {
+    position: relative;
+    overflow: hidden;
+}
+
+.cta-button::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.cta-button:hover::after {
+    opacity: 1;
 }
 </style>
