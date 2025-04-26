@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full h-full flex items-center justify-center">
+    <div class="w-full pt-24 md:pt-52 lg:pt-64 pb-16 md:pb-20">
         <div class="w-full max-w-5xl mx-auto">
             <div class="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-8">
                 <!-- Image Area -->
@@ -81,6 +81,7 @@
 
                         <router-link to="/contact"
                             class="bg-[#1e1e1e] hover:bg-[#2d2d2d] text-white border border-[#333] transition-colors px-6 py-3 rounded-full inline-flex items-center font-medium text-base md:text-lg shadow-md hover:shadow-lg transform hover:-translate-y-1">
+                            <EnvelopeIcon class="h-5 w-5 mr-2 text-[#6d28d9]" />
                             CONTACT ME
                         </router-link>
                     </div>
@@ -91,8 +92,13 @@
 </template>
 
 <script>
+import { EnvelopeIcon } from '@heroicons/vue/24/solid'
+
 export default {
-    name: 'Home'
+    name: 'Home',
+    components: {
+        EnvelopeIcon
+    }
 }
 </script>
 

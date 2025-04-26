@@ -1,10 +1,10 @@
 <template>
-    <div class="flex h-screen bg-[#121212] overflow-hidden">
+    <div class="flex min-h-screen bg-[#121212]">
         <!-- Main Content Area -->
         <div class="flex flex-1 flex-col">
-            <div class="w-full h-full flex items-center justify-center text-white">
+            <div class="w-full flex items-center justify-center text-white">
                 <!-- Router View to load different pages -->
-                <div class="w-full max-w-6xl h-full overflow-auto px-4">
+                <div class="w-full max-w-6xl px-4 pb-16 md:pb-0">
                     <router-view />
                 </div>
 
@@ -83,7 +83,6 @@ export default {
 
 <style>
 body {
-    overflow: hidden;
     margin: 0;
     padding: 0;
 }

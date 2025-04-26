@@ -96,7 +96,7 @@
                     <div class="p-4 sm:p-5">
                         <div class="flex items-center mb-2 sm:mb-3">
                             <span class="text-xs bg-[#2d2d2d] text-gray-300 px-2 py-1 rounded-full">{{ article.category
-                            }}</span>
+                                }}</span>
                             <span class="mx-2 text-gray-500">•</span>
                             <span class="text-gray-400 text-xs">{{ article.date }}</span>
                         </div>
