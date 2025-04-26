@@ -2,7 +2,6 @@
     <div class="w-full pt-24 md:pt-52 lg:pt-64 pb-16 md:pb-20">
         <div class="w-full max-w-5xl mx-auto">
             <div class="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-8">
-                <!-- Image Area -->
                 <div class="w-full md:w-2/5 flex items-center justify-center">
                     <div class="relative">
                         <div
@@ -10,7 +9,6 @@
                             <img src="https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
                                 alt="Solomon Olatunji" class="w-full h-full object-cover" />
                         </div>
-                        <!-- Decoration circles -->
                         <div class="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-[#6d28d9] animate-bounce delay-300">
                         </div>
                         <div
@@ -20,7 +18,6 @@
                     </div>
                 </div>
 
-                <!-- Content Area -->
                 <div class="w-full md:w-3/5 flex flex-col items-center md:items-start text-center md:text-left">
                     <div class="animate-slideDown">
                         <p class="text-[#6d28d9] font-medium mb-3 tracking-wider">HELLO THERE 👋</p>
@@ -38,10 +35,11 @@
 
                     <p
                         class="mb-6 text-gray-300 leading-relaxed text-base md:text-lg max-w-2xl animate-fadeIn delay-300">
-                        I'm a Nigerian-based Software Engineer with expertise in frontend development,
-                        focused on building scalable and user-friendly applications. I'm passionate
-                        about creating innovative solutions and contributing to projects that make a
-                        positive impact.
+                        I'm a Full Stack Software Engineer specializing in modern web technologies.
+                        With expertise in both frontend and backend development, I create
+                        scalable, responsive, and user-friendly digital experiences. Passionate about
+                        clean code, performance optimization, and building innovative solutions
+                        that deliver real business value.
                     </p>
 
                     <div class="flex gap-4 mb-8 animate-slideUp delay-500">

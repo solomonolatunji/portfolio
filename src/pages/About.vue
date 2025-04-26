@@ -8,7 +8,6 @@
             </div>
 
             <div class="flex flex-col md:flex-row items-center justify-center gap-8 lg:gap-12">
-                <!-- Profile Area -->
                 <div class="w-full md:w-1/3 flex items-center justify-center mb-8 md:mb-0">
                     <div class="relative">
                         <div
@@ -16,14 +15,12 @@
                             <img src="https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
                                 alt="Solomon Olatunji" class="w-full h-full object-cover" />
                         </div>
-                        <!-- Background decoration -->
                         <div
                             class="absolute -z-10 -bottom-3 -right-3 w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 rounded-full border-4 border-[#6d28d9] opacity-30">
                         </div>
                     </div>
                 </div>
 
-                <!-- Personal Information -->
                 <div class="w-full md:w-2/3">
                     <div class="grid grid-cols-2 gap-y-4 gap-x-4 sm:gap-x-6">
                         <div class="mb-2">
@@ -84,41 +81,23 @@
                             About Me
                         </h3>
                         <p class="text-gray-300 text-sm leading-relaxed">
-                            I am a passionate Software Engineer with over 5 years of experience developing web and
-                            mobile applications.
-                            My expertise spans frontend and backend technologies, with a particular focus on creating
-                            responsive,
-                            user-friendly interfaces. I enjoy solving complex problems and continuously learning new
-                            technologies to
-                            stay at the forefront of the industry. When I'm not coding, I contribute to open-source
-                            projects and
-                            mentor aspiring developers.
+                            I am a versatile Full Stack Software Engineer with over 5 years of experience crafting
+                            robust web and mobile applications. My technical expertise spans the entire development
+                            lifecycle, from concept and design to deployment and maintenance. I specialize in creating
+                            seamless user experiences with modern frontend frameworks while building scalable backend
+                            systems. I'm committed to writing clean, maintainable code and implementing best practices
+                            for performance and security. Beyond coding, I actively contribute to open-source projects
+                            and mentor aspiring developers in the tech community.
                         </p>
                     </div>
                 </div>
             </div>
 
-            <!-- Skills Section with Progress Bars -->
             <div class="mt-12 lg:mt-16">
                 <h2 class="text-xl sm:text-2xl mb-6 text-center modern-section-title">
                     <span class="accent">—</span> MY SKILLS
                 </h2>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-                    <div v-for="(skill, index) in skills" :key="index"
-                        class="bg-[#1e1e1e] rounded-lg p-4 border border-[#333]">
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="text-white font-medium">{{ skill.name }}</span>
-                            <span class="text-[#6d28d9] font-semibold">{{ skill.level }}%</span>
-                        </div>
-                        <div class="w-full bg-[#2d2d2d] h-2.5 rounded-full overflow-hidden">
-                            <div class="bg-gradient-to-r from-[#6d28d9] to-[#9f7aea] h-full rounded-full progress-bar"
-                                :style="{ width: skill.level + '%' }" :data-level="skill.level"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Technologies Icons -->
                 <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-6 md:gap-8">
                     <div v-for="(tech, index) in technologies" :key="index"
                         class="flex flex-col items-center justify-center group transition-transform duration-300 hover:-translate-y-1">
@@ -128,14 +107,12 @@
                 </div>
             </div>
 
-            <!-- Experience Timeline -->
             <div class="mt-16">
                 <h2 class="text-xl sm:text-2xl mb-6 text-center modern-section-title">
                     <span class="accent">—</span> EXPERIENCE
                 </h2>
 
                 <div class="relative">
-                    <!-- Timeline line -->
                     <div class="absolute left-0 md:left-1/2 transform md:-translate-x-1/2 h-full w-1 bg-[#333]"></div>
 
                     <div class="flex flex-col space-y-8">
@@ -143,12 +120,10 @@
                             'relative flex flex-col md:flex-row md:items-center',
                             index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
                         ]">
-                            <!-- Timeline dot -->
                             <div
                                 class="absolute left-0 md:left-1/2 transform -translate-x-1/2 w-5 h-5 rounded-full border-4 border-[#6d28d9] bg-[#121212] z-10">
                             </div>
 
-                            <!-- Content -->
                             <div class="ml-8 md:ml-0 md:w-1/2" :class="index % 2 === 0 ? 'md:pr-10' : 'md:pl-10'">
                                 <div
                                     class="bg-[#1e1e1e] p-4 rounded-lg border border-[#333] hover:border-[#6d28d9] transition-all">
@@ -165,7 +140,6 @@
                 </div>
             </div>
 
-            <!-- Education -->
             <div class="mt-16">
                 <h2 class="text-xl sm:text-2xl mb-6 text-center modern-section-title">
                     <span class="accent">—</span> EDUCATION
@@ -190,7 +164,6 @@
                 </div>
             </div>
 
-            <!-- CTA Button -->
             <div class="mt-12 lg:mt-16 flex justify-center mb-16 md:mb-0">
                 <router-link to="/portfolio"
                     class="bg-[#6d28d9] hover:bg-[#5b21b6] text-white transition-all duration-300 px-6 py-3 rounded-full inline-flex items-center font-medium text-base sm:text-lg shadow-md hover:shadow-lg transform hover:-translate-y-1">
@@ -229,16 +202,6 @@ export default {
     },
     data() {
         return {
-            skills: [
-                { name: 'JavaScript', level: 95 },
-                { name: 'Vue.js', level: 90 },
-                { name: 'React', level: 85 },
-                { name: 'TypeScript', level: 80 },
-                { name: 'Node.js', level: 85 },
-                { name: 'PHP/Laravel', level: 75 },
-                { name: 'HTML/CSS', level: 95 },
-                { name: 'Golang', level: 65 }
-            ],
             technologies: [
                 { name: 'JavaScript', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg' },
                 { name: 'Vue.js', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vuejs/vuejs-original.svg' },
@@ -256,21 +219,21 @@ export default {
             experiences: [
                 {
                     period: '2023 - Present',
-                    role: 'Senior Frontend Engineer',
+                    role: 'Lead Full Stack Engineer',
                     company: 'TechVision Inc.',
-                    description: 'Leading the frontend development team, architecting scalable web applications, and implementing modern frontend practices including CI/CD pipelines and automated testing.'
+                    description: 'Leading cross-functional development teams in building scalable cloud-native applications. Architecting microservices with Vue.js, TypeScript, and Node.js. Implementing CI/CD pipelines and automated testing strategies that reduced deployment time by 65%.'
                 },
                 {
                     period: '2021 - 2023',
-                    role: 'Full Stack Developer',
+                    role: 'Senior Full Stack Developer',
                     company: 'InnovateSoft',
-                    description: 'Developed and maintained full-stack applications using Vue.js, Node.js, and PostgreSQL. Improved application performance by 40% through code optimization.'
+                    description: 'Developed enterprise-grade applications using Vue.js, GraphQL, and PostgreSQL. Optimized database queries and frontend rendering, improving application performance by 40%. Mentored junior developers and introduced modern development practices.'
                 },
                 {
                     period: '2019 - 2021',
-                    role: 'Web Developer',
+                    role: 'Frontend Developer',
                     company: 'CreativeTech Solutions',
-                    description: 'Built responsive websites and web applications using JavaScript frameworks. Collaborated with designers and backend developers to implement user-friendly interfaces.'
+                    description: 'Built responsive, accessible web applications using modern JavaScript frameworks. Collaborated with UX designers to implement pixel-perfect interfaces. Reduced loading times by 60% through asset optimization and lazy loading techniques.'
                 }
             ],
             education: [
@@ -278,19 +241,24 @@ export default {
                     period: '2015 - 2019',
                     degree: 'Bachelor of Science, Computer Science',
                     institution: 'University of Lagos',
-                    description: 'Focused on software engineering, database systems, and web technologies. Graduated with honors.'
+                    description: 'Graduated with first-class honors. Specialized in software engineering, distributed systems, and data structures & algorithms. Completed thesis on optimizing microservice architectures.'
+                },
+                {
+                    period: '2022',
+                    degree: 'AWS Certified Solutions Architect',
+                    institution: 'Amazon Web Services',
+                    description: 'Professional certification validating expertise in designing distributed systems on AWS. Focused on security, reliability, and performance efficiency in cloud architecture.'
                 },
                 {
                     period: '2020',
                     degree: 'Advanced Frontend Development',
                     institution: 'Tech Academy Online',
-                    description: 'Intensive program covering modern JavaScript frameworks, responsive design patterns, and performance optimization.'
+                    description: 'Intensive program covering modern JavaScript frameworks, state management, responsive design patterns, and frontend performance optimization techniques.'
                 }
             ]
         }
     },
     mounted() {
-        // Animate progress bars on scroll
         this.animateProgressBars();
         window.addEventListener('scroll', this.animateProgressBars);
     },
@@ -316,6 +284,5 @@ export default {
 <style scoped>
 .progress-bar {
     width: 0;
-    /* Start at 0 and animate to the target width */
 }
 </style>
