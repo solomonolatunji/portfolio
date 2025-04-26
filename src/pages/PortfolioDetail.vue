@@ -186,6 +186,9 @@ import {
     CodeBracketIcon,
     EyeIcon
 } from '@heroicons/vue/24/solid'
+import { useHead } from '@vueuse/head';
+import { computed, ref } from 'vue';
+import { useRoute } from 'vue-router';
 
 export default {
     name: 'PortfolioDetail',
@@ -195,186 +198,289 @@ export default {
         CodeBracketIcon,
         EyeIcon
     },
-    data() {
-        return {
-            projects: [
+    setup() {
+        const route = useRoute(); // Changed from useRouter().currentRoute to useRoute()
+
+        const projects = ref([
+            {
+                id: '1',
+                title: 'E-commerce Dashboard',
+                description: 'A comprehensive admin dashboard for e-commerce platforms with sales analytics, inventory management, and customer insights.',
+                detailedDescription: 'This e-commerce dashboard serves as a central control panel for online store owners to manage their business operations efficiently. It provides a real-time overview of sales performance, inventory levels, customer behavior, and marketing campaign effectiveness, all in one intuitive interface.',
+                image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+                year: '2024',
+                category: 'web',
+                technologies: ['Vue.js', 'Tailwind CSS', 'Chart.js', 'Node.js'],
+                features: [
+                    'Interactive sales analytics with customizable date ranges and filters',
+                    'Inventory management system with low-stock alerts and reorder recommendations',
+                    'Customer insights with segmentation based on purchasing behavior',
+                    'Order management with status tracking and processing tools',
+                    'Marketing campaign performance tracking and ROI calculation'
+                ],
+                role: 'As the lead frontend developer, I designed and implemented the user interface using Vue.js and Tailwind CSS. I worked closely with UX designers to create intuitive data visualizations and dashboards that make complex information accessible and actionable for store owners.',
+                challenges: 'The main challenge was creating a responsive dashboard that could display large amounts of data without overwhelming users or causing performance issues. I solved this by implementing lazy loading, virtual scrolling for large data sets, and optimizing chart rendering based on viewport visibility.',
+                gallery: [
+                    'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1533628635777-112b2239b1c7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80'
+                ],
+                demoUrl: 'https://demo-link.com',
+                codeUrl: 'https://github.com/eminisolomon'
+            },
+            {
+                id: '2',
+                title: 'Task Management App',
+                description: 'A cross-platform task management application with real-time collaboration, reminders, and progress tracking.',
+                detailedDescription: 'This task management application helps individuals and teams organize their work efficiently. With features like real-time collaboration, customizable workflows, deadline tracking, and automated reminders, it streamlines project management and boosts productivity.',
+                image: 'https://images.unsplash.com/photo-1623039405147-547794f94fda?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+                year: '2023',
+                category: 'web',
+                technologies: ['React', 'Redux', 'Firebase', 'Material UI'],
+                features: [
+                    'Real-time collaboration with multiple team members',
+                    'Customizable task boards with drag-and-drop functionality',
+                    'Deadline tracking with automatic reminders',
+                    'File attachments and comment threads for each task',
+                    'Progress tracking with visual reports and analytics'
+                ],
+                role: 'As a full-stack developer on this project, I implemented the frontend using React and Material UI, set up the state management architecture with Redux, and built the backend services using Firebase for real-time data synchronization and authentication.',
+                challenges: 'Ensuring seamless real-time updates across multiple clients was challenging, particularly when handling conflicts and maintaining consistent state. I implemented an optimistic UI pattern with conflict resolution strategies to provide a responsive experience while maintaining data integrity.',
+                gallery: [
+                    'https://images.unsplash.com/photo-1623039405147-547794f94fda?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1607706189992-eae578626c86?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1557568192-225f9f3d88b6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80'
+                ],
+                demoUrl: 'https://demo-link.com',
+                codeUrl: 'https://github.com/eminisolomon'
+            },
+            {
+                id: '3',
+                title: 'Finance Mobile App',
+                description: 'A sleek mobile application for personal finance tracking, budgeting, and investment monitoring.',
+                detailedDescription: 'This mobile application helps users manage their personal finances effectively by tracking expenses, setting and monitoring budgets, managing investments, and providing insights for better financial decision-making. The clean, intuitive interface makes financial management accessible to everyone.',
+                image: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236e3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+                year: '2023',
+                category: 'mobile',
+                technologies: ['React Native', 'TypeScript', 'Redux', 'Node.js'],
+                features: [
+                    'Expense tracking with automatic categorization',
+                    'Budget creation and monitoring with visual progress indicators',
+                    'Integration with financial institutions for automatic transaction imports',
+                    'Investment portfolio tracking and performance analytics',
+                    'Secure authentication with biometric options'
+                ],
+                role: 'I led the mobile app development using React Native and TypeScript, ensuring a consistent experience across iOS and Android platforms. I also worked on the Node.js backend API that powers the financial data processing and synchronization.',
+                challenges: 'Handling sensitive financial data securely while maintaining a smooth user experience was our biggest challenge. I implemented end-to-end encryption for financial data, secure API communication patterns, and local caching strategies to balance security with performance.',
+                gallery: [
+                    'https://images.unsplash.com/photo-1611974789855-9c2a0a7236e3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1579621970590-9d624316904b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80'
+                ],
+                demoUrl: 'https://demo-link.com',
+                codeUrl: 'https://github.com/eminisolomon'
+            },
+            {
+                id: '4',
+                title: 'Health & Fitness Tracker',
+                description: 'A comprehensive health and fitness mobile app with workout plans, nutrition tracking, and progress analytics.',
+                detailedDescription: 'This health and fitness application helps users maintain their wellness goals by tracking workouts, nutrition, and health metrics. It provides personalized workout recommendations, meal planning tools, and progress visualization to keep users motivated and informed about their fitness journey.',
+                image: 'https://images.unsplash.com/photo-1605296867724-fa87a8ef53fd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+                year: '2022',
+                category: 'mobile',
+                technologies: ['Flutter', 'Dart', 'Firebase', 'GraphQL'],
+                features: [
+                    'Personalized workout plans based on fitness goals and equipment availability',
+                    'Nutrition tracking with barcode scanning and meal suggestions',
+                    'Health metrics monitoring (weight, body measurements, sleep, etc.)',
+                    'Progress visualization with charts and comparison tools',
+                    'Community features for sharing achievements and participating in challenges'
+                ],
+                role: 'I developed this app using Flutter and Dart, focusing on creating a smooth, performant experience with attractive animations and transitions. I implemented the GraphQL API for efficient data fetching and Firebase for user authentication and real-time features.',
+                challenges: 'Creating accurate workout tracking mechanisms and nutrition calculations required extensive research and validation. I collaborated with fitness professionals to ensure the exercise demonstrations were accurate and safe, and worked with nutritionists to implement proper calorie and macronutrient calculations.',
+                gallery: [
+                    'https://images.unsplash.com/photo-1605296867724-fa87a8ef53fd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80',
+                    'https://images.unsplash.com/photo-1576678927484-cc907957088c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2074&q=80'
+                ],
+                demoUrl: 'https://demo-link.com',
+                codeUrl: 'https://github.com/eminisolomon'
+            },
+            {
+                id: '5',
+                title: 'Social Media Dashboard',
+                description: 'A modern UI design for a social media analytics dashboard with dark mode and customizable widgets.',
+                detailedDescription: 'This UI/UX design project focuses on creating an intuitive, visually appealing dashboard for social media managers and marketers. The design emphasizes clear data visualization, customizable widgets for different social platforms, and accessibility features including a well-implemented dark mode.',
+                image: 'https://images.unsplash.com/photo-1573152958734-1922c188fba3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+                year: '2022',
+                category: 'ui',
+                technologies: ['Figma', 'Adobe XD', 'Illustrator'],
+                features: [
+                    'Unified dashboard for analytics across multiple social media platforms',
+                    'Customizable widget system with drag-and-drop functionality',
+                    'Responsive design adapting to desktop, tablet, and mobile screens',
+                    'Thoughtfully designed dark mode with proper color contrast',
+                    'Interactive prototype demonstrating user flows and animations'
+                ],
+                role: 'As the UI/UX designer for this project, I conducted user research to understand the pain points of social media professionals. I created wireframes, design systems, high-fidelity mockups, and interactive prototypes to showcase the solution.',
+                challenges: 'Consolidating analytics from different social platforms with their unique metrics into a cohesive, understandable interface was challenging. I created a flexible widget system with standardized data visualization components that could adapt to different types of metrics while maintaining visual consistency.',
+                gallery: [
+                    'https://images.unsplash.com/photo-1573152958734-1922c188fba3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1614332287897-cdc485fa562d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1618788372246-79faff0c3742?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80'
+                ],
+                demoUrl: 'https://www.figma.com/',
+                codeUrl: ''
+            },
+            {
+                id: '6',
+                title: 'E-learning Platform UI',
+                description: 'A comprehensive UI/UX design for an e-learning platform with course navigation, video player, and student dashboard.',
+                detailedDescription: 'This UI/UX design project is a complete visual system for an online learning platform that focuses on providing an engaging and distraction-free learning experience. The design includes student dashboards, course catalogs, lesson pages with video integration, progress tracking, and community features.',
+                image: 'https://images.unsplash.com/photo-1613479205646-c0dc1ee8511f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80',
+                year: '2021',
+                category: 'ui',
+                technologies: ['Sketch', 'Figma', 'Principle'],
+                features: [
+                    'Intuitive course navigation system with progress tracking',
+                    'Custom video player with note-taking, bookmarking, and speed control',
+                    'Student dashboard with personalized recommendations and achievement tracking',
+                    'Discussion forums and community features integrated within the course interface',
+                    'Mobile-responsive design for learning on any device'
+                ],
+                role: 'I led the UI/UX design process from user research through wireframing to high-fidelity mockups and interactive prototypes. I collaborated with educational experts to ensure the design supported effective learning experiences and incorporated feedback from user testing sessions.',
+                challenges: 'Creating an interface that supports focused learning while providing all necessary features without overwhelming students was the main challenge. I implemented a minimalist design with progressive disclosure principles, revealing features contextually when needed while keeping the main learning interface clean and focused.',
+                gallery: [
+                    'https://images.unsplash.com/photo-1613479205646-c0dc1ee8511f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80',
+                    'https://images.unsplash.com/photo-1508780709619-79562169bc64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80'
+                ],
+                demoUrl: 'https://www.figma.com/',
+                codeUrl: ''
+            }
+        ]);
+
+        const project = computed(() => {
+            const projectId = route.params.id; // Changed from route.value.params.id
+            return projects.value.find(p => p.id === projectId);
+        });
+
+        const nextProject = computed(() => {
+            if (!project.value) return null;
+            const currentIndex = projects.value.findIndex(p => p.id === project.value.id);
+            return currentIndex < projects.value.length - 1 ? projects.value[currentIndex + 1] : null;
+        });
+
+        const prevProject = computed(() => {
+            if (!project.value) return null;
+            const currentIndex = projects.value.findIndex(p => p.id === project.value.id);
+            return currentIndex > 0 ? projects.value[currentIndex - 1] : null;
+        });
+
+        // SEO meta tags setup
+        const pageTitle = computed(() => project.value ? `${project.value.title} | Solomon Olatunji's Portfolio` : 'Project Not Found');
+        const pageDescription = computed(() => project.value ? project.value.description : 'Explore my portfolio of web applications, mobile apps, and UI/UX design projects.');
+        const ogImage = computed(() => project.value ? project.value.image : 'https://solomonolatunji.com/og-image.jpg');
+        const canonicalUrl = computed(() => `https://solomonolatunji.com/portfolio/${route.params.id}`); // Changed from route.value.params.id
+
+        // Schema.org structured data for portfolio project
+        const projectSchema = computed(() => {
+            if (!project.value) return null;
+
+            return {
+                '@context': 'https://schema.org',
+                '@type': 'CreativeWork',
+                'name': project.value.title,
+                'description': project.value.description,
+                'image': project.value.image,
+                'dateCreated': `${project.value.year}-01-01`,
+                'creator': {
+                    '@type': 'Person',
+                    'name': 'Solomon Olatunji',
+                    'url': 'https://solomonolatunji.com/about'
+                },
+                'keywords': project.value.technologies.join(', '),
+                'url': canonicalUrl.value,
+                'thumbnailUrl': project.value.image,
+                'mainEntityOfPage': {
+                    '@type': 'WebPage',
+                    '@id': canonicalUrl.value
+                },
+                'publisher': {
+                    '@type': 'Person',
+                    'name': 'Solomon Olatunji',
+                    'url': 'https://solomonolatunji.com'
+                }
+            };
+        });
+
+        // Set meta tags for SEO
+        useHead({
+            title: pageTitle,
+            meta: [
                 {
-                    id: '1',
-                    title: 'E-commerce Dashboard',
-                    description: 'A comprehensive admin dashboard for e-commerce platforms with sales analytics, inventory management, and customer insights.',
-                    detailedDescription: 'This e-commerce dashboard serves as a central control panel for online store owners to manage their business operations efficiently. It provides a real-time overview of sales performance, inventory levels, customer behavior, and marketing campaign effectiveness, all in one intuitive interface.',
-                    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-                    year: '2024',
-                    category: 'web',
-                    technologies: ['Vue.js', 'Tailwind CSS', 'Chart.js', 'Node.js'],
-                    features: [
-                        'Interactive sales analytics with customizable date ranges and filters',
-                        'Inventory management system with low-stock alerts and reorder recommendations',
-                        'Customer insights with segmentation based on purchasing behavior',
-                        'Order management with status tracking and processing tools',
-                        'Marketing campaign performance tracking and ROI calculation'
-                    ],
-                    role: 'As the lead frontend developer, I designed and implemented the user interface using Vue.js and Tailwind CSS. I worked closely with UX designers to create intuitive data visualizations and dashboards that make complex information accessible and actionable for store owners.',
-                    challenges: 'The main challenge was creating a responsive dashboard that could display large amounts of data without overwhelming users or causing performance issues. I solved this by implementing lazy loading, virtual scrolling for large data sets, and optimizing chart rendering based on viewport visibility.',
-                    gallery: [
-                        'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-                        'https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-                        'https://images.unsplash.com/photo-1533628635777-112b2239b1c7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80'
-                    ],
-                    demoUrl: 'https://demo-link.com',
-                    codeUrl: 'https://github.com/eminisolomon'
+                    name: 'description',
+                    content: pageDescription,
+                },
+                // OpenGraph tags
+                {
+                    property: 'og:title',
+                    content: pageTitle,
                 },
                 {
-                    id: '2',
-                    title: 'Task Management App',
-                    description: 'A cross-platform task management application with real-time collaboration, reminders, and progress tracking.',
-                    detailedDescription: 'This task management application helps individuals and teams organize their work efficiently. With features like real-time collaboration, customizable workflows, deadline tracking, and automated reminders, it streamlines project management and boosts productivity.',
-                    image: 'https://images.unsplash.com/photo-1623039405147-547794f94fda?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-                    year: '2023',
-                    category: 'web',
-                    technologies: ['React', 'Redux', 'Firebase', 'Material UI'],
-                    features: [
-                        'Real-time collaboration with multiple team members',
-                        'Customizable task boards with drag-and-drop functionality',
-                        'Deadline tracking with automatic reminders',
-                        'File attachments and comment threads for each task',
-                        'Progress tracking with visual reports and analytics'
-                    ],
-                    role: 'As a full-stack developer on this project, I implemented the frontend using React and Material UI, set up the state management architecture with Redux, and built the backend services using Firebase for real-time data synchronization and authentication.',
-                    challenges: 'Ensuring seamless real-time updates across multiple clients was challenging, particularly when handling conflicts and maintaining consistent state. I implemented an optimistic UI pattern with conflict resolution strategies to provide a responsive experience while maintaining data integrity.',
-                    gallery: [
-                        'https://images.unsplash.com/photo-1623039405147-547794f94fda?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-                        'https://images.unsplash.com/photo-1607706189992-eae578626c86?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-                        'https://images.unsplash.com/photo-1557568192-225f9f3d88b6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80'
-                    ],
-                    demoUrl: 'https://demo-link.com',
-                    codeUrl: 'https://github.com/eminisolomon'
+                    property: 'og:description',
+                    content: pageDescription,
                 },
                 {
-                    id: '3',
-                    title: 'Finance Mobile App',
-                    description: 'A sleek mobile application for personal finance tracking, budgeting, and investment monitoring.',
-                    detailedDescription: 'This mobile application helps users manage their personal finances effectively by tracking expenses, setting and monitoring budgets, managing investments, and providing insights for better financial decision-making. The clean, intuitive interface makes financial management accessible to everyone.',
-                    image: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236e3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-                    year: '2023',
-                    category: 'mobile',
-                    technologies: ['React Native', 'TypeScript', 'Redux', 'Node.js'],
-                    features: [
-                        'Expense tracking with automatic categorization',
-                        'Budget creation and monitoring with visual progress indicators',
-                        'Integration with financial institutions for automatic transaction imports',
-                        'Investment portfolio tracking and performance analytics',
-                        'Secure authentication with biometric options'
-                    ],
-                    role: 'I led the mobile app development using React Native and TypeScript, ensuring a consistent experience across iOS and Android platforms. I also worked on the Node.js backend API that powers the financial data processing and synchronization.',
-                    challenges: 'Handling sensitive financial data securely while maintaining a smooth user experience was our biggest challenge. I implemented end-to-end encryption for financial data, secure API communication patterns, and local caching strategies to balance security with performance.',
-                    gallery: [
-                        'https://images.unsplash.com/photo-1611974789855-9c2a0a7236e3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-                        'https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-                        'https://images.unsplash.com/photo-1579621970590-9d624316904b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80'
-                    ],
-                    demoUrl: 'https://demo-link.com',
-                    codeUrl: 'https://github.com/eminisolomon'
+                    property: 'og:type',
+                    content: 'website',
                 },
                 {
-                    id: '4',
-                    title: 'Health & Fitness Tracker',
-                    description: 'A comprehensive health and fitness mobile app with workout plans, nutrition tracking, and progress analytics.',
-                    detailedDescription: 'This health and fitness application helps users maintain their wellness goals by tracking workouts, nutrition, and health metrics. It provides personalized workout recommendations, meal planning tools, and progress visualization to keep users motivated and informed about their fitness journey.',
-                    image: 'https://images.unsplash.com/photo-1605296867724-fa87a8ef53fd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-                    year: '2022',
-                    category: 'mobile',
-                    technologies: ['Flutter', 'Dart', 'Firebase', 'GraphQL'],
-                    features: [
-                        'Personalized workout plans based on fitness goals and equipment availability',
-                        'Nutrition tracking with barcode scanning and meal suggestions',
-                        'Health metrics monitoring (weight, body measurements, sleep, etc.)',
-                        'Progress visualization with charts and comparison tools',
-                        'Community features for sharing achievements and participating in challenges'
-                    ],
-                    role: 'I developed this app using Flutter and Dart, focusing on creating a smooth, performant experience with attractive animations and transitions. I implemented the GraphQL API for efficient data fetching and Firebase for user authentication and real-time features.',
-                    challenges: 'Creating accurate workout tracking mechanisms and nutrition calculations required extensive research and validation. I collaborated with fitness professionals to ensure the exercise demonstrations were accurate and safe, and worked with nutritionists to implement proper calorie and macronutrient calculations.',
-                    gallery: [
-                        'https://images.unsplash.com/photo-1605296867724-fa87a8ef53fd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-                        'https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80',
-                        'https://images.unsplash.com/photo-1576678927484-cc907957088c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2074&q=80'
-                    ],
-                    demoUrl: 'https://demo-link.com',
-                    codeUrl: 'https://github.com/eminisolomon'
+                    property: 'og:image',
+                    content: ogImage,
                 },
                 {
-                    id: '5',
-                    title: 'Social Media Dashboard',
-                    description: 'A modern UI design for a social media analytics dashboard with dark mode and customizable widgets.',
-                    detailedDescription: 'This UI/UX design project focuses on creating an intuitive, visually appealing dashboard for social media managers and marketers. The design emphasizes clear data visualization, customizable widgets for different social platforms, and accessibility features including a well-implemented dark mode.',
-                    image: 'https://images.unsplash.com/photo-1573152958734-1922c188fba3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-                    year: '2022',
-                    category: 'ui',
-                    technologies: ['Figma', 'Adobe XD', 'Illustrator'],
-                    features: [
-                        'Unified dashboard for analytics across multiple social media platforms',
-                        'Customizable widget system with drag-and-drop functionality',
-                        'Responsive design adapting to desktop, tablet, and mobile screens',
-                        'Thoughtfully designed dark mode with proper color contrast',
-                        'Interactive prototype demonstrating user flows and animations'
-                    ],
-                    role: 'As the UI/UX designer for this project, I conducted user research to understand the pain points of social media professionals. I created wireframes, design systems, high-fidelity mockups, and interactive prototypes to showcase the solution.',
-                    challenges: 'Consolidating analytics from different social platforms with their unique metrics into a cohesive, understandable interface was challenging. I created a flexible widget system with standardized data visualization components that could adapt to different types of metrics while maintaining visual consistency.',
-                    gallery: [
-                        'https://images.unsplash.com/photo-1573152958734-1922c188fba3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-                        'https://images.unsplash.com/photo-1614332287897-cdc485fa562d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-                        'https://images.unsplash.com/photo-1618788372246-79faff0c3742?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80'
-                    ],
-                    demoUrl: 'https://www.figma.com/',
-                    codeUrl: ''
+                    property: 'og:url',
+                    content: canonicalUrl,
+                },
+                // Twitter tags
+                {
+                    name: 'twitter:card',
+                    content: 'summary_large_image',
                 },
                 {
-                    id: '6',
-                    title: 'E-learning Platform UI',
-                    description: 'A comprehensive UI/UX design for an e-learning platform with course navigation, video player, and student dashboard.',
-                    detailedDescription: 'This UI/UX design project is a complete visual system for an online learning platform that focuses on providing an engaging and distraction-free learning experience. The design includes student dashboards, course catalogs, lesson pages with video integration, progress tracking, and community features.',
-                    image: 'https://images.unsplash.com/photo-1613479205646-c0dc1ee8511f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80',
-                    year: '2021',
-                    category: 'ui',
-                    technologies: ['Sketch', 'Figma', 'Principle'],
-                    features: [
-                        'Intuitive course navigation system with progress tracking',
-                        'Custom video player with note-taking, bookmarking, and speed control',
-                        'Student dashboard with personalized recommendations and achievement tracking',
-                        'Discussion forums and community features integrated within the course interface',
-                        'Mobile-responsive design for learning on any device'
-                    ],
-                    role: 'I led the UI/UX design process from user research through wireframing to high-fidelity mockups and interactive prototypes. I collaborated with educational experts to ensure the design supported effective learning experiences and incorporated feedback from user testing sessions.',
-                    challenges: 'Creating an interface that supports focused learning while providing all necessary features without overwhelming students was the main challenge. I implemented a minimalist design with progressive disclosure principles, revealing features contextually when needed while keeping the main learning interface clean and focused.',
-                    gallery: [
-                        'https://images.unsplash.com/photo-1613479205646-c0dc1ee8511f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80',
-                        'https://images.unsplash.com/photo-1508780709619-79562169bc64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-                        'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80'
-                    ],
-                    demoUrl: 'https://www.figma.com/',
-                    codeUrl: ''
+                    name: 'twitter:title',
+                    content: pageTitle,
+                },
+                {
+                    name: 'twitter:description',
+                    content: pageDescription,
+                },
+                {
+                    name: 'twitter:image',
+                    content: ogImage,
+                },
+                // Project specific tags
+                ...project.value?.technologies.map(tech => ({
+                    property: 'article:tag',
+                    content: tech
+                })) || []
+            ],
+            link: [
+                {
+                    rel: 'canonical',
+                    href: canonicalUrl,
+                }
+            ],
+            script: [
+                {
+                    type: 'application/ld+json',
+                    children: computed(() => JSON.stringify(projectSchema.value))
                 }
             ]
-        };
-    },
-    computed: {
-        project() {
-            const projectId = this.$route.params.id;
-            return this.projects.find(p => p.id === projectId);
-        },
-        nextProject() {
-            if (!this.project) return null;
-            const currentIndex = this.projects.findIndex(p => p.id === this.project.id);
-            return currentIndex < this.projects.length - 1 ? this.projects[currentIndex + 1] : null;
-        },
-        prevProject() {
-            if (!this.project) return null;
-            const currentIndex = this.projects.findIndex(p => p.id === this.project.id);
-            return currentIndex > 0 ? this.projects[currentIndex - 1] : null;
-        }
-    },
-    methods: {
-        getCategoryName(category) {
+        });
+
+        function getCategoryName(category) {
             const categories = {
                 'web': 'Web Application',
                 'mobile': 'Mobile Application',
@@ -382,10 +488,13 @@ export default {
             };
             return categories[category] || category;
         }
-    },
-    metaInfo() {
+
         return {
-            title: this.project ? `${this.project.title} | Portfolio` : 'Project Not Found'
+            projects,
+            project,
+            nextProject,
+            prevProject,
+            getCategoryName
         };
     }
 }

@@ -128,65 +128,19 @@
             </div>
 
             <!-- Pagination -->
-            <div v-if="totalPages > 1" class="flex justify-center mt-10">
-                <div class="flex items-center space-x-1">
-                    <!-- Previous Button -->
-                    <button @click="prevPage" :disabled="currentPage === 1" :class="[
-                        'flex items-center justify-center w-10 h-10 rounded-full',
-                        currentPage === 1
-                            ? 'bg-[#1e1e1e] text-gray-500 cursor-not-allowed'
-                            : 'bg-[#1e1e1e] text-white hover:bg-[#2d2d2d]'
-                    ]">
-                        <ChevronLeftIcon class="w-5 h-5" />
-                    </button>
+            <Pagination v-if="totalPages > 1" :current-page="currentPage" :total-pages="totalPages" @prev="prevPage"
+                @next="nextPage" @goto="goToPage" class="mt-10" />
 
-                    <!-- Page Numbers -->
-                    <div class="flex space-x-1">
-                        <button v-for="page in displayedPages" :key="page" @click="goToPage(page)" :class="[
-                            'flex items-center justify-center w-10 h-10 rounded-full font-medium',
-                            page === currentPage
-                                ? 'bg-[#6d28d9] text-white'
-                                : 'bg-[#1e1e1e] text-white hover:bg-[#2d2d2d]'
-                        ]">
-                            {{ page }}
-                        </button>
-                    </div>
-
-                    <!-- Next Button -->
-                    <button @click="nextPage" :disabled="currentPage === totalPages" :class="[
-                        'flex items-center justify-center w-10 h-10 rounded-full',
-                        currentPage === totalPages
-                            ? 'bg-[#1e1e1e] text-gray-500 cursor-not-allowed'
-                            : 'bg-[#1e1e1e] text-white hover:bg-[#2d2d2d]'
-                    ]">
-                        <ChevronRightIcon class="w-5 h-5" />
-                    </button>
-                </div>
-            </div>
-
-            <!-- Newsletter Signup -->
-            <div
-                class="mt-10 sm:mt-16 bg-gradient-to-r from-[#4c1d95] to-[#6d28d9] rounded-xl p-4 sm:p-6 md:p-8 shadow-lg">
-                <div class="text-center">
-                    <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-white mb-2">Subscribe to my newsletter</h2>
-                    <p class="text-sm sm:text-base text-purple-200 mb-4">Get the latest articles, tutorials and updates
-                        delivered to your inbox.</p>
-                    <form @submit.prevent="subscribeNewsletter" class="flex flex-col sm:flex-row max-w-md mx-auto">
-                        <input type="email" v-model="newsletterEmail" placeholder="Your email" required
-                            class="w-full px-4 py-2 rounded-l-md sm:rounded-r-none rounded-r-md sm:rounded-l-md mb-2 sm:mb-0 focus:outline-none focus:ring-2 focus:ring-purple-300 text-white bg-transparent border border-white placeholder-white placeholder-opacity-75">
-                        <button type="submit"
-                            class="w-full sm:w-auto bg-white text-[#6d28d9] px-4 py-2 rounded-r-md sm:rounded-l-none rounded-l-md sm:rounded-r-md font-medium hover:bg-gray-100 transition-colors whitespace-nowrap">
-                            Subscribe
-                        </button>
-                    </form>
-                </div>
-            </div>
+            <!-- Newsletter Component -->
+            <Newsletter @subscribed="handleNewsletterSubscription" />
         </div>
     </div>
 </template>
 
 <script>
 import { MagnifyingGlassIcon, DocumentIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/24/solid'
+import Newsletter from '../components/Newsletter.vue';
+import Pagination from '../components/Pagination.vue';
 
 export default {
     name: 'Blog',
@@ -194,13 +148,14 @@ export default {
         MagnifyingGlassIcon,
         DocumentIcon,
         ChevronLeftIcon,
-        ChevronRightIcon
+        ChevronRightIcon,
+        Newsletter,
+        Pagination
     },
     data() {
         return {
             searchQuery: '',
             activeCategory: 'all',
-            newsletterEmail: '',
             currentPage: 1,
             postsPerPage: 6,
             articles: [
@@ -410,12 +365,10 @@ export default {
         filteredArticles() {
             let filtered = this.articles;
 
-            // Filter by category
             if (this.activeCategory !== 'all') {
                 filtered = filtered.filter(article => article.category === this.activeCategory);
             }
 
-            // Filter by search query
             if (this.searchQuery.trim() !== '') {
                 const query = this.searchQuery.toLowerCase().trim();
                 filtered = filtered.filter(article =>
@@ -424,55 +377,21 @@ export default {
                 );
             }
 
-            // Remove featured from regular list
             return filtered.filter(article => !article.featured);
         },
-        // Paginated articles based on current page
         paginatedArticles() {
             const startIndex = (this.currentPage - 1) * this.postsPerPage;
             const endIndex = startIndex + this.postsPerPage;
             return this.filteredArticles.slice(startIndex, endIndex);
         },
-        // Total number of pages
         totalPages() {
             return Math.ceil(this.filteredArticles.length / this.postsPerPage);
-        },
-        // Calculate which page numbers to display
-        displayedPages() {
-            const pages = [];
-            const totalToShow = 5; // Maximum number of page buttons to show
-
-            if (this.totalPages <= totalToShow) {
-                // If total pages is less than or equal to totalToShow, display all pages
-                for (let i = 1; i <= this.totalPages; i++) {
-                    pages.push(i);
-                }
-            } else {
-                // Complex pagination logic when there are many pages
-                let startPage = Math.max(1, this.currentPage - Math.floor(totalToShow / 2));
-                let endPage = startPage + totalToShow - 1;
-
-                // Adjust if endPage exceeds total pages
-                if (endPage > this.totalPages) {
-                    endPage = this.totalPages;
-                    startPage = Math.max(1, endPage - totalToShow + 1);
-                }
-
-                for (let i = startPage; i <= endPage; i++) {
-                    pages.push(i);
-                }
-            }
-
-            return pages;
         }
     },
     methods: {
-        subscribeNewsletter() {
-            // Simulate subscription process
-            alert(`Thank you for subscribing with ${this.newsletterEmail}!`);
-            this.newsletterEmail = '';
+        handleNewsletterSubscription(email) {
+            alert(`Thank you for subscribing with ${email}!`);
         },
-        // Pagination control methods
         prevPage() {
             if (this.currentPage > 1) {
                 this.currentPage--;
@@ -489,14 +408,12 @@ export default {
             this.currentPage = page;
             window.scrollTo({ top: 0, behavior: 'smooth' });
         },
-        // Reset to page 1 when filters change
         setCategory(category) {
             this.activeCategory = category;
-            this.currentPage = 1; // Reset to first page
+            this.currentPage = 1;
         }
     },
     watch: {
-        // Reset pagination when search query changes
         searchQuery() {
             this.currentPage = 1;
         }

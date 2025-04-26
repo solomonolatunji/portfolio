@@ -1,39 +1,41 @@
 <template>
-    <div class="w-full min-h-screen flex items-center justify-center py-8 md:py-12 pb-16 md:pb-24">
+    <div class="w-full min-h-screen flex items-center justify-center py-4 sm:py-8 md:py-12 pb-12 sm:pb-16 md:pb-24">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl">
             <!-- Back Button -->
-            <router-link to="/blog" class="inline-flex items-center text-[#6d28d9] hover:text-[#8b5cf6] mb-8">
-                <ArrowLeftIcon class="w-4 h-4 mr-1" />
-                <span>Back to all posts</span>
+            <router-link to="/blog" class="inline-flex items-center text-[#6d28d9] hover:text-[#8b5cf6] mb-4 sm:mb-8">
+                <ArrowLeftIcon class="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+                <span class="text-sm sm:text-base">Back to all posts</span>
             </router-link>
 
-            <div v-if="post" class="mb-12">
+            <div v-if="post" class="mb-8 sm:mb-12">
                 <!-- Post Header -->
-                <div class="mb-8">
-                    <div class="flex flex-wrap items-center gap-2 mb-4">
-                        <span class="bg-[#2d2d2d] text-gray-300 px-3 py-1 text-xs font-medium rounded-full">{{
+                <div class="mb-6 sm:mb-8">
+                    <div class="flex flex-wrap items-center gap-2 mb-3 sm:mb-4">
+                        <span class="bg-[#2d2d2d] text-gray-300 px-2 sm:px-3 py-1 text-xs font-medium rounded-full">{{
                             post.category }}</span>
                         <span class="text-gray-500">•</span>
-                        <span class="text-gray-400 text-sm">{{ post.date }}</span>
+                        <span class="text-gray-400 text-xs sm:text-sm">{{ post.date }}</span>
                     </div>
-                    <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-6">{{ post.title }}</h1>
+                    <h1 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-4 sm:mb-6">{{
+                        post.title }}</h1>
                     <div class="flex items-center">
-                        <img :src="post.author.avatar" :alt="post.author.name" class="w-12 h-12 rounded-full mr-3">
+                        <img :src="post.author.avatar" :alt="post.author.name"
+                            class="w-10 h-10 sm:w-12 sm:h-12 rounded-full mr-3">
                         <div>
-                            <div class="text-white font-medium">{{ post.author.name }}</div>
-                            <div class="text-gray-400 text-sm">Author</div>
+                            <div class="text-white font-medium text-sm sm:text-base">{{ post.author.name }}</div>
+                            <div class="text-gray-400 text-xs sm:text-sm">Author</div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Featured Image -->
-                <div class="mb-8">
+                <div class="mb-6 sm:mb-8">
                     <img :src="post.image" :alt="post.title"
-                        class="w-full h-auto rounded-xl object-cover max-h-[500px]">
+                        class="w-full h-auto rounded-lg sm:rounded-xl object-cover max-h-[300px] sm:max-h-[400px] md:max-h-[500px]">
                 </div>
 
                 <!-- Post Content -->
-                <div class="prose prose-invert prose-lg max-w-none">
+                <div class="prose prose-sm sm:prose prose-invert max-w-none">
                     <!-- If content is available -->
                     <div v-if="post.content" v-html="post.content"></div>
 
@@ -84,38 +86,33 @@ function example() {
                 </div>
 
                 <!-- Tags -->
-                <div class="mt-10 pt-6 border-t border-[#333]">
-                    <h3 class="text-lg font-medium text-white mb-3">Tags</h3>
+                <div class="mt-8 sm:mt-10 pt-4 sm:pt-6 border-t border-[#333]">
+                    <h3 class="text-base sm:text-lg font-medium text-white mb-2 sm:mb-3">Tags</h3>
                     <div class="flex flex-wrap gap-2">
-                        <span
-                            class="bg-[#1e1e1e] text-gray-300 px-3 py-1 text-xs font-medium rounded-full">Vue.js</span>
-                        <span
-                            class="bg-[#1e1e1e] text-gray-300 px-3 py-1 text-xs font-medium rounded-full">Frontend</span>
-                        <span
-                            class="bg-[#1e1e1e] text-gray-300 px-3 py-1 text-xs font-medium rounded-full">Development</span>
-                        <span class="bg-[#1e1e1e] text-gray-300 px-3 py-1 text-xs font-medium rounded-full">Tailwind
-                            CSS</span>
+                        <span v-for="(tag, index) in postTags" :key="index"
+                            class="bg-[#1e1e1e] text-gray-300 px-2 sm:px-3 py-1 text-xs font-medium rounded-full">{{ tag
+                            }}</span>
                     </div>
                 </div>
             </div>
 
             <!-- Related Posts -->
-            <div class="mt-16">
-                <h2 class="text-xl sm:text-2xl font-bold mb-6 text-white">Related Posts</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="mt-10 sm:mt-16">
+                <h2 class="text-lg sm:text-xl md:text-2xl font-bold mb-4 sm:mb-6 text-white">Related Posts</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                     <div v-for="article in relatedArticles" :key="article.id"
-                        class="bg-[#1e1e1e] rounded-xl overflow-hidden shadow-lg transform transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
-                        <img :src="article.image" :alt="article.title" class="w-full h-40 object-cover">
-                        <div class="p-4">
-                            <div class="flex items-center mb-2">
+                        class="bg-[#1e1e1e] rounded-lg sm:rounded-xl overflow-hidden shadow-lg transform transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
+                        <img :src="article.image" :alt="article.title" class="w-full h-32 sm:h-40 object-cover">
+                        <div class="p-3 sm:p-4">
+                            <div class="flex flex-wrap items-center mb-2">
                                 <span class="text-xs bg-[#2d2d2d] text-gray-300 px-2 py-1 rounded-full">{{
                                     article.category }}</span>
                                 <span class="mx-2 text-gray-500">•</span>
                                 <span class="text-gray-400 text-xs">{{ article.date }}</span>
                             </div>
-                            <h3 class="font-bold text-white mb-2">{{ article.title }}</h3>
+                            <h3 class="font-bold text-sm sm:text-base text-white mb-2">{{ article.title }}</h3>
                             <router-link :to="'/blog/' + article.id"
-                                class="text-[#6d28d9] hover:text-[#8b5cf6] text-sm">
+                                class="text-[#6d28d9] hover:text-[#8b5cf6] text-xs sm:text-sm">
                                 Read More
                             </router-link>
                         </div>
@@ -123,43 +120,24 @@ function example() {
                 </div>
             </div>
 
-            <!-- Newsletter -->
-            <div class="mt-16 bg-gradient-to-r from-[#4c1d95] to-[#6d28d9] rounded-xl p-4 sm:p-6 md:p-8 shadow-lg">
-                <div class="flex flex-col md:flex-row justify-between items-center gap-4 md:gap-6">
-                    <div class="mb-4 md:mb-0 w-full md:w-2/3 text-center md:text-left">
-                        <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-white mb-2">Subscribe to my newsletter
-                        </h2>
-                        <p class="text-sm sm:text-base text-purple-200">Get the latest articles, tutorials and updates
-                            delivered to your inbox.</p>
-                    </div>
-                    <div class="w-full md:w-1/3">
-                        <form @submit.prevent="subscribeNewsletter" class="flex">
-                            <input type="email" v-model="newsletterEmail" placeholder="Your email" required
-                                class="flex-1 px-3 sm:px-4 py-2 rounded-l-full focus:outline-none focus:ring-2 focus:ring-purple-300 text-gray-900 text-sm sm:text-base">
-                            <button type="submit"
-                                class="bg-white text-[#6d28d9] px-3 sm:px-4 py-2 rounded-r-full font-medium hover:bg-gray-100 transition-colors text-sm sm:text-base whitespace-nowrap">
-                                Subscribe
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
+            <!-- Newsletter Component -->
+            <Newsletter @subscribed="handleNewsletterSubscription" />
         </div>
     </div>
 </template>
 
 <script>
 import { ArrowLeftIcon } from '@heroicons/vue/24/solid';
+import Newsletter from '../components/Newsletter.vue';
 
 export default {
     name: 'BlogPost',
     components: {
-        ArrowLeftIcon
+        ArrowLeftIcon,
+        Newsletter
     },
     data() {
         return {
-            newsletterEmail: '',
-            // Sample articles data (in production, you'd want to fetch this from an API)
             articles: [
                 {
                     id: '1',
@@ -236,17 +214,16 @@ export default {
             return this.articles.find(article => article.id === postId);
         },
         relatedArticles() {
-            // Get posts with the same category, excluding the current post
             return this.articles
                 .filter(article => article.id !== this.$route.params.id && article.category === this.post?.category)
-                .slice(0, 3); // Show maximum 3 related articles
+                .slice(0, 3);
         }
     },
     methods: {
+        handleNewsletterSubscription(email) {
+            alert(`Thank you for subscribing with ${email}!`);
+        },
         subscribeNewsletter() {
-            // Simulate subscription process
-            alert(`Thank you for subscribing with ${this.newsletterEmail}!`);
-            this.newsletterEmail = '';
         }
     },
     metaInfo() {
@@ -258,10 +235,8 @@ export default {
 </script>
 
 <style>
-/* Add Tailwind typography styles or custom styles for blog content */
 .prose {
     color: #e5e7eb;
-    /* text-gray-200 */
 }
 
 .prose h1,
@@ -285,7 +260,6 @@ export default {
 
 .prose a {
     color: #8b5cf6;
-    /* purple-500 */
     text-decoration: underline;
 }
 
@@ -311,7 +285,6 @@ export default {
 
 .prose code {
     color: #e5e7eb;
-    /* text-gray-200 */
     background-color: #2d2d2d;
     padding: 0.2em 0.4em;
     border-radius: 0.25rem;

@@ -1,46 +1,80 @@
 import { computed } from "vue";
 import { useRoute } from "vue-router";
 import { useHead } from "@vueuse/head";
+import {
+  DEFAULT_TITLE,
+  DEFAULT_DESCRIPTION,
+  DEFAULT_OG_IMAGE,
+  PAGE_TITLES,
+  ADMIN_TITLES,
+  PAGE_DESCRIPTIONS,
+} from "../constants/pageMeta";
+import { createMetaTags, createLinkTags } from "../constants/metaConfigs";
 
 export function usePageTitle() {
   const route = useRoute();
-  const defaultTitle = "Solomon Olatunji | Software Engineer";
+  const currentPath = computed(() => route.path);
 
   const pageTitle = computed(() => {
-    if (route.path === "/") {
-      return defaultTitle;
+    const pathTitleMap: { [key: string]: string } = {
+      "/": PAGE_TITLES.home,
+      "/about": PAGE_TITLES.about,
+      "/contact": PAGE_TITLES.contact,
+      "/portfolio": PAGE_TITLES.portfolio,
+      "/blog": PAGE_TITLES.blog,
+      "/admin": ADMIN_TITLES.dashboard,
+      "/admin/portfolio": ADMIN_TITLES.portfolioManagement,
+      "/admin/blog": ADMIN_TITLES.blogManagement,
+      "/admin/login": ADMIN_TITLES.login,
+    };
+
+    if (pathTitleMap[route.path]) {
+      return pathTitleMap[route.path];
     }
 
-    if (route.path.startsWith("/admin")) {
-      if (route.path === "/admin") return "Dashboard | Admin Portal";
-      if (route.path.includes("/portfolio/create"))
-        return "Create Project | Admin Portal";
-      if (route.path.includes("/portfolio/edit"))
-        return "Edit Project | Admin Portal";
-      if (route.path.includes("/blog/create"))
-        return "Create Blog Post | Admin Portal";
-      if (route.path.includes("/blog/edit"))
-        return "Edit Blog Post | Admin Portal";
-      if (route.path === "/admin/portfolio")
-        return "Portfolio Management | Admin Portal";
-      if (route.path === "/admin/blog") return "Blog Management | Admin Portal";
-      if (route.path === "/admin/login") return "Login | Admin Portal";
-      return "Admin Portal";
+    return DEFAULT_TITLE;
+  });
+
+  const pageDescription = computed<string>(() => {
+    const descriptionMap: Record<string, string> = {
+      "/": PAGE_DESCRIPTIONS.home,
+      "/about": PAGE_DESCRIPTIONS.about,
+      "/contact": PAGE_DESCRIPTIONS.contact,
+      "/portfolio": PAGE_DESCRIPTIONS.portfolio,
+      "/blog": PAGE_DESCRIPTIONS.blog,
+    };
+
+    if (descriptionMap[route.path]) {
+      return descriptionMap[route.path];
     }
 
-    if (route.path === "/about") return "About Me | Solomon Olatunji";
-    if (route.path === "/contact") return "Contact | Solomon Olatunji";
-    if (route.path === "/portfolio") return "Portfolio | Solomon Olatunji";
-    if (route.path === "/blog") return "Blog | Solomon Olatunji";
+    if (route.meta?.description) {
+      return String(route.meta.description);
+    }
 
-    return defaultTitle;
+    return DEFAULT_DESCRIPTION;
+  });
+
+  const ogImage = computed<string>(() => {
+    if (route.path === "/blog" && route.meta?.image) {
+      return String(route.meta.image);
+    }
+    if (route.path === "/portfolio" && route.meta?.image) {
+      return String(route.meta.image);
+    }
+
+    return DEFAULT_OG_IMAGE;
   });
 
   useHead({
     title: pageTitle,
+    meta: createMetaTags(pageTitle, pageDescription, ogImage, currentPath),
+    link: createLinkTags(currentPath),
   });
 
   return {
     pageTitle,
+    pageDescription,
+    ogImage,
   };
 }
