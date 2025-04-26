@@ -1,4 +1,4 @@
-import { computed, watch } from "vue";
+import { computed } from "vue";
 import { useRoute } from "vue-router";
 import { useHead } from "@vueuse/head";
 
@@ -36,18 +36,9 @@ export function usePageTitle() {
     return defaultTitle;
   });
 
-  const setupHead = () => {
-    useHead({
-      title: pageTitle.value,
-    });
-  };
-
-  setupHead();
-
-  watch(
-    () => route.path,
-    () => setupHead()
-  );
+  useHead({
+    title: pageTitle,
+  });
 
   return {
     pageTitle,

@@ -1,6 +1,6 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
-import { createHead } from "@vueuse/head";
+import { createHead, VueHeadMixin } from "@vueuse/head";
 import "@/assets/css/style.css";
 import App from "./App.vue";
 import router from "./routes";
@@ -25,9 +25,12 @@ const toastOptions = {
 
 const app = createApp(App);
 const head = createHead();
+const pinia = createPinia();
 
-app.use(createPinia());
+app.use(head);
+app.use(pinia);
 app.use(router);
 app.use(Toast, toastOptions);
-app.use(head);
+app.mixin(VueHeadMixin);
+
 app.mount("#app");
