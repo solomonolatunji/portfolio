@@ -1,7 +1,7 @@
 <template>
     <div class="min-h-screen flex bg-[#121212]">
         <!-- Mobile Sidebar Toggle Button -->
-        <button @click="sidebarOpen = !sidebarOpen"
+        <button v-if="!sidebarOpen" @click="sidebarOpen = !sidebarOpen"
             class="fixed top-4 left-4 z-30 lg:hidden p-2 rounded-md bg-[#1e1e1e] text-gray-300 hover:bg-[#2d2d2d] focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[#6d28d9]">
             <Bars3Icon class="h-6 w-6" />
         </button>
@@ -9,7 +9,7 @@
         <!-- Sidebar -->
         <div
             :class="['w-64 bg-[#1e1e1e] border-r border-[#333] fixed h-full shadow-lg z-20 transition-transform duration-300 ease-in-out', sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0']">
-            <div class="flex items-center justify-center h-16 border-b border-[#333]">
+            <div class="flex items-center justify-start lg:justify-center h-16 border-b border-[#333] pl-4 lg:pl-0">
                 <h1 class="text-xl font-bold text-white">Admin Dashboard</h1>
             </div>
             <div class="px-4 py-6">
@@ -56,10 +56,10 @@
         <div v-if="sidebarOpen" @click="sidebarOpen = false" class="fixed inset-0 bg-black/50 z-10 lg:hidden"></div>
 
         <!-- Main Content -->
-        <div class="lg:ml-64 w-full transition-all duration-300 ease-in-out">
+        <div class="lg:ml-64 w-full transition-all duration-300 ease-in-out flex flex-col">
             <!-- Top bar -->
-            <div class="h-16 bg-[#1e1e1e] border-b border-[#333] px-6 flex items-center justify-between">
-                <!-- Adjusted padding for mobile toggle button space -->
+            <div
+                class="sticky top-0 z-10 h-16 bg-[#1e1e1e] border-b border-[#333] px-6 flex items-center justify-between flex-shrink-0">
                 <h1 class="text-lg font-medium text-white lg:pl-0 pl-12">{{ currentPageTitle }}</h1>
                 <div class="flex items-center space-x-4">
                     <span class="text-gray-400 hidden sm:inline">{{ currentDate }}</span>
@@ -70,7 +70,7 @@
             </div>
 
             <!-- Content -->
-            <div class="p-4 sm:p-6">
+            <div class="p-4 sm:p-6 flex-grow">
                 <router-view />
             </div>
         </div>
@@ -98,19 +98,16 @@ const adminStore = useAdminAuthStore();
 const router = useRouter();
 const route = useRoute();
 const showSignOutModal = ref(false);
-const sidebarOpen = ref(false); // State for sidebar visibility
+const sidebarOpen = ref(false);
 
-// Initialize auth from session storage
 onMounted(() => {
     adminStore.initializeFromStorage();
 
-    // Redirect to login if not authenticated
     if (!adminStore.isAuthenticated) {
         router.push('/admin/login');
     }
 });
 
-// Get the first letter of the username for the avatar
 const userInitial = computed(() => {
     return adminStore.user?.username.charAt(0).toUpperCase() || 'A';
 });
@@ -126,7 +123,6 @@ const currentDate = computed(() => {
     });
 });
 
-// Get the current page title based on the route
 const currentPageTitle = computed(() => {
     const path = route.path;
     if (path === '/admin') return 'Dashboard Overview';
