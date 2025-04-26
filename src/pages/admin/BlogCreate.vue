@@ -11,16 +11,16 @@
         <!-- Two Column Layout -->
         <div class="flex flex-col lg:flex-row gap-6">
             <!-- Left Column - Content Editor -->
-            <div class="flex-grow lg:w-2/3">
+            <div class="flex-grow lg:w-2/3 space-y-6">
                 <!-- Post Title -->
-                <div class="bg-[#1e1e1e] rounded-xl border border-[#333] p-6 shadow-lg mb-6">
+                <div class="bg-[#1e1e1e] rounded-xl border border-[#333] p-4 sm:p-6 shadow-lg">
                     <input type="text" v-model="post.title"
-                        class="w-full px-4 py-3.5 bg-[#2d2d2d] border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#6d28d9] text-white text-xl font-semibold"
+                        class="w-full px-4 py-3 bg-[#2d2d2d] border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#6d28d9] text-white text-xl font-semibold"
                         placeholder="Post Title" required />
                 </div>
 
                 <!-- Content Editor -->
-                <div class="bg-[#1e1e1e] rounded-xl border border-[#333] p-6 shadow-lg mb-6">
+                <div class="bg-[#1e1e1e] rounded-xl border border-[#333] p-4 sm:p-6 shadow-lg">
                     <div>
                         <!-- TinyMCE Editor -->
                         <Editor v-model="post.content" :api-key="tinymceApiKey" :init="editorConfig" />
@@ -28,12 +28,12 @@
                 </div>
 
                 <!-- Publish Panel - Moved below content -->
-                <div class="bg-[#1e1e1e] rounded-xl border border-[#333] p-6 shadow-lg">
+                <div class="bg-[#1e1e1e] rounded-xl border border-[#333] p-4 sm:p-6 shadow-lg">
                     <h2 class="text-lg font-semibold text-white mb-4">Publish</h2>
 
-                    <div class="flex flex-wrap items-center gap-6">
+                    <div class="flex flex-col sm:flex-row flex-wrap items-end gap-4">
                         <!-- Publication Date -->
-                        <div class="flex-grow">
+                        <div class="flex-grow w-full sm:w-auto">
                             <label for="date" class="block text-sm font-medium text-gray-300 mb-1">Publication
                                 Date</label>
                             <input type="date" id="date" v-model="publishDate"
@@ -42,16 +42,16 @@
                         </div>
 
                         <!-- Featured Post Toggle -->
-                        <div class="flex items-center self-end mb-2.5">
+                        <div class="flex items-center w-full sm:w-auto">
                             <input type="checkbox" id="featured" v-model="post.featured"
                                 class="w-5 h-5 bg-[#2d2d2d] border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-[#6d28d9] text-[#6d28d9]" />
-                            <label for="featured" class="ml-2 text-gray-300">Mark as featured post</label>
+                            <label for="featured" class="ml-2 text-gray-300">Mark as featured</label>
                         </div>
 
                         <!-- Publish Button -->
-                        <div class="flex justify-end self-end mb-2 ml-auto">
+                        <div class="w-full sm:w-auto sm:ml-auto">
                             <button type="button" @click="savePost"
-                                class="px-6 py-2.5 bg-gradient-to-r from-[#6d28d9] to-[#8b5cf6] text-white rounded-lg hover:from-[#5b21b6] hover:to-[#7c3aed] transition-colors flex items-center">
+                                class="w-full sm:w-auto px-6 py-2.5 bg-gradient-to-r from-[#6d28d9] to-[#8b5cf6] text-white rounded-lg hover:from-[#5b21b6] hover:to-[#7c3aed] transition-colors flex items-center justify-center">
                                 <SpinnerIcon v-if="isSubmitting" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" />
                                 <DocumentPlusIcon v-else class="w-5 h-5 mr-2" />
                                 Publish
@@ -64,7 +64,7 @@
             <!-- Right Column - Post Settings -->
             <div class="lg:w-1/3 space-y-6">
                 <!-- Featured Image -->
-                <div class="bg-[#1e1e1e] rounded-xl border border-[#333] p-6 shadow-lg">
+                <div class="bg-[#1e1e1e] rounded-xl border border-[#333] p-4 sm:p-6 shadow-lg">
                     <h2 class="text-lg font-semibold text-white mb-4">Featured Image</h2>
 
                     <div class="space-y-4">
@@ -79,7 +79,7 @@
                 </div>
 
                 <!-- Category -->
-                <div class="bg-[#1e1e1e] rounded-xl border border-[#333] p-6 shadow-lg">
+                <div class="bg-[#1e1e1e] rounded-xl border border-[#333] p-4 sm:p-6 shadow-lg">
                     <h2 class="text-lg font-semibold text-white mb-4">Category</h2>
 
                     <div>
@@ -95,7 +95,7 @@
                 </div>
 
                 <!-- Tags -->
-                <div class="bg-[#1e1e1e] rounded-xl border border-[#333] p-6 shadow-lg">
+                <div class="bg-[#1e1e1e] rounded-xl border border-[#333] p-4 sm:p-6 shadow-lg">
                     <h2 class="text-lg font-semibold text-white mb-4">Tags</h2>
 
                     <div class="space-y-4">
@@ -125,7 +125,7 @@
                 </div>
 
                 <!-- Excerpt -->
-                <div class="bg-[#1e1e1e] rounded-xl border border-[#333] p-6 shadow-lg">
+                <div class="bg-[#1e1e1e] rounded-xl border border-[#333] p-4 sm:p-6 shadow-lg">
                     <h2 class="text-lg font-semibold text-white mb-4">Excerpt</h2>
 
                     <div>

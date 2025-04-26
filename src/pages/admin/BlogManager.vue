@@ -54,7 +54,7 @@
                     </div>
 
                     <!-- Content -->
-                    <div class="p-6 md:w-2/3 flex flex-col justify-between">
+                    <div class="p-4 sm:p-6 md:w-2/3 flex flex-col justify-between">
                         <div>
                             <div class="flex justify-between items-center mb-2">
                                 <span class="hidden md:inline-block px-2 py-1 text-xs rounded-full"
@@ -79,26 +79,27 @@
                             </div>
                         </div>
 
-                        <div class="flex justify-between items-center mt-4">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-4 gap-4">
                             <div class="flex items-center">
                                 <img :src="post.author.avatar" :alt="post.author.name"
                                     class="w-8 h-8 rounded-full mr-3" />
                                 <span class="text-sm text-gray-300">{{ post.author.name }}</span>
                             </div>
 
-                            <div class="flex space-x-2">
+                            <!-- Action Buttons: Stack vertically on small screens -->
+                            <div class="flex flex-col sm:flex-row sm:space-x-3 space-y-2 sm:space-y-0 w-full sm:w-auto">
                                 <router-link :to="`/admin/blog/edit/${post.id}`"
-                                    class="text-[#a78bfa] hover:text-[#8b5cf6] flex items-center">
+                                    class="text-[#a78bfa] hover:text-[#8b5cf6] flex items-center text-sm justify-center sm:justify-start px-3 py-1.5 rounded bg-purple-900/30 hover:bg-purple-900/50 transition-colors">
                                     <PencilIcon class="h-4 w-4 mr-1" />
                                     Edit
                                 </router-link>
                                 <button @click="confirmDelete(post)"
-                                    class="text-red-400 hover:text-red-500 flex items-center">
+                                    class="text-red-400 hover:text-red-500 flex items-center text-sm justify-center sm:justify-start px-3 py-1.5 rounded bg-red-900/30 hover:bg-red-900/50 transition-colors">
                                     <TrashIcon class="h-4 w-4 mr-1" />
                                     Delete
                                 </button>
-                                <router-link :to="`/blog/${post.id}`"
-                                    class="text-gray-400 hover:text-white flex items-center">
+                                <router-link :to="`/blog/${post.id}`" target="_blank"
+                                    class="text-gray-400 hover:text-white flex items-center text-sm justify-center sm:justify-start px-3 py-1.5 rounded bg-gray-700/50 hover:bg-gray-600/50 transition-colors">
                                     Preview
                                     <ArrowTopRightOnSquareIcon class="h-4 w-4 ml-1" />
                                 </router-link>

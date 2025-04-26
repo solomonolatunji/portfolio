@@ -35,7 +35,7 @@
         <!-- Projects Grid -->
         <div v-if="filteredProjects.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
             <div v-for="project in filteredProjects" :key="project.id"
-                class="bg-[#1e1e1e] rounded-xl overflow-hidden border border-[#333] shadow-lg group hover:border-purple-500 transition-all duration-300">
+                class="bg-[#1e1e1e] rounded-xl overflow-hidden border border-[#333] shadow-lg group hover:border-purple-500 transition-all duration-300 flex flex-col">
                 <div class="relative h-48 overflow-hidden">
                     <img :src="project.image" :alt="project.title"
                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
@@ -52,9 +52,9 @@
                     </div>
                 </div>
 
-                <div class="p-5">
+                <div class="p-4 sm:p-5 flex flex-col flex-grow">
                     <h3 class="font-bold text-white text-lg mb-2 truncate">{{ project.title }}</h3>
-                    <p class="text-gray-400 text-sm mb-4 line-clamp-2">{{ project.description }}</p>
+                    <p class="text-gray-400 text-sm mb-4 line-clamp-2 flex-grow">{{ project.description }}</p>
 
                     <div class="flex flex-wrap gap-2 mb-4">
                         <span v-for="(tech, index) in project.technologies?.slice(0, 3)" :key="index"
@@ -67,20 +67,22 @@
                         </span>
                     </div>
 
-                    <div class="flex justify-between items-center mt-4">
-                        <div class="flex space-x-3">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-4 gap-3">
+                        <!-- Action Buttons: Stack vertically on small screens -->
+                        <div class="flex flex-col sm:flex-row sm:space-x-3 space-y-2 sm:space-y-0 w-full sm:w-auto">
                             <router-link :to="`/admin/portfolio/edit/${project.id}`"
-                                class="text-[#a78bfa] hover:text-[#8b5cf6] flex items-center">
+                                class="text-[#a78bfa] hover:text-[#8b5cf6] flex items-center text-sm justify-center sm:justify-start px-3 py-1.5 rounded bg-purple-900/30 hover:bg-purple-900/50 transition-colors">
                                 <PencilIcon class="h-4 w-4 mr-1" />
                                 Edit
                             </router-link>
                             <button @click="confirmDelete(project)"
-                                class="text-red-400 hover:text-red-500 flex items-center">
+                                class="text-red-400 hover:text-red-500 flex items-center text-sm justify-center sm:justify-start px-3 py-1.5 rounded bg-red-900/30 hover:bg-red-900/50 transition-colors">
                                 <TrashIcon class="h-4 w-4 mr-1" />
                                 Delete
                             </button>
                         </div>
-                        <router-link :to="`/portfolio/${project.id}`" class="text-gray-400 hover:text-white">
+                        <router-link :to="`/portfolio/${project.id}`" target="_blank"
+                            class="text-gray-400 hover:text-white flex items-center text-sm justify-center sm:justify-end w-full sm:w-auto px-3 py-1.5 rounded bg-gray-700/50 hover:bg-gray-600/50 transition-colors mt-2 sm:mt-0">
                             Preview
                             <ArrowTopRightOnSquareIcon class="h-4 w-4 inline-block ml-1" />
                         </router-link>

@@ -1,8 +1,9 @@
 <template>
     <div>
         <!-- Dashboard stats -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div class="bg-[#1e1e1e] rounded-xl p-6 border border-[#333] shadow-lg">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
+            <!-- Stat Card 1: Portfolio Items -->
+            <div class="bg-[#1e1e1e] rounded-xl p-4 sm:p-6 border border-[#333] shadow-lg">
                 <div class="flex items-center justify-between">
                     <div>
                         <h2 class="text-gray-400 text-sm font-medium">Portfolio Items</h2>
@@ -21,7 +22,8 @@
                 </div>
             </div>
 
-            <div class="bg-[#1e1e1e] rounded-xl p-6 border border-[#333] shadow-lg">
+            <!-- Stat Card 2: Blog Posts -->
+            <div class="bg-[#1e1e1e] rounded-xl p-4 sm:p-6 border border-[#333] shadow-lg">
                 <div class="flex items-center justify-between">
                     <div>
                         <h2 class="text-gray-400 text-sm font-medium">Blog Posts</h2>
@@ -40,13 +42,14 @@
                 </div>
             </div>
 
-            <div class="bg-[#1e1e1e] rounded-xl p-6 border border-[#333] shadow-lg">
+            <!-- Stat Card 3: Current Date -->
+            <div class="bg-[#1e1e1e] rounded-xl p-4 sm:p-6 border border-[#333] shadow-lg md:col-span-2 lg:col-span-1">
                 <div class="flex items-center justify-between">
                     <div>
                         <h2 class="text-gray-400 text-sm font-medium">Current Date</h2>
-                        <p class="text-xl font-bold text-white mt-1">{{ currentDate }}</p>
+                        <p class="text-xl sm:text-2xl font-bold text-white mt-1">{{ currentDate }}</p>
                     </div>
-                    <div class="bg-[#2d2d2d] p-3 rounded-full">
+                    <div class="bg-[#2d2d2d] p-3 rounded-full flex-shrink-0">
                         <CalendarIcon class="h-6 w-6 text-[#6d28d9]" />
                     </div>
                 </div>
@@ -57,52 +60,52 @@
         </div>
 
         <!-- Quick Actions -->
-        <div class="bg-[#1e1e1e] rounded-xl p-6 border border-[#333] shadow-lg mb-8">
+        <div class="bg-[#1e1e1e] rounded-xl p-4 sm:p-6 border border-[#333] shadow-lg mb-6 sm:mb-8">
             <h2 class="text-lg font-bold text-white mb-4">Quick Actions</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4">
                 <router-link to="/admin/portfolio/create"
-                    class="bg-[#2d2d2d] hover:bg-[#3d3d3d] border border-[#444] p-4 rounded-lg flex flex-col items-center justify-center text-center h-32 transition-all">
-                    <PlusIcon class="h-8 w-8 text-[#6d28d9] mb-2" />
-                    <span class="text-white font-medium">Add New Project</span>
+                    class="bg-[#2d2d2d] hover:bg-[#3d3d3d] border border-[#444] p-4 rounded-lg flex flex-col items-center justify-center text-center h-28 sm:h-32 transition-all">
+                    <PlusIcon class="h-6 sm:h-8 w-6 sm:w-8 text-[#6d28d9] mb-2" />
+                    <span class="text-white font-medium text-sm sm:text-base">Add Project</span>
                 </router-link>
 
                 <router-link to="/admin/blog/create"
-                    class="bg-[#2d2d2d] hover:bg-[#3d3d3d] border border-[#444] p-4 rounded-lg flex flex-col items-center justify-center text-center h-32 transition-all">
-                    <PencilSquareIcon class="h-8 w-8 text-[#6d28d9] mb-2" />
-                    <span class="text-white font-medium">Create Blog Post</span>
+                    class="bg-[#2d2d2d] hover:bg-[#3d3d3d] border border-[#444] p-4 rounded-lg flex flex-col items-center justify-center text-center h-28 sm:h-32 transition-all">
+                    <PencilSquareIcon class="h-6 sm:h-8 w-6 sm:w-8 text-[#6d28d9] mb-2" />
+                    <span class="text-white font-medium text-sm sm:text-base">Create Post</span>
                 </router-link>
 
                 <a href="/" target="_blank"
-                    class="bg-[#2d2d2d] hover:bg-[#3d3d3d] border border-[#444] p-4 rounded-lg flex flex-col items-center justify-center text-center h-32 transition-all">
-                    <EyeIcon class="h-8 w-8 text-[#6d28d9] mb-2" />
-                    <span class="text-white font-medium">View Website</span>
+                    class="bg-[#2d2d2d] hover:bg-[#3d3d3d] border border-[#444] p-4 rounded-lg flex flex-col items-center justify-center text-center h-28 sm:h-32 transition-all">
+                    <EyeIcon class="h-6 sm:h-8 w-6 sm:w-8 text-[#6d28d9] mb-2" />
+                    <span class="text-white font-medium text-sm sm:text-base">View Website</span>
                 </a>
 
                 <button @click="reloadStats"
-                    class="bg-[#2d2d2d] hover:bg-[#3d3d3d] border border-[#444] p-4 rounded-lg flex flex-col items-center justify-center text-center h-32 transition-all">
-                    <ArrowPathIcon class="h-8 w-8 text-[#6d28d9] mb-2" />
-                    <span class="text-white font-medium">Refresh Stats</span>
+                    class="bg-[#2d2d2d] hover:bg-[#3d3d3d] border border-[#444] p-4 rounded-lg flex flex-col items-center justify-center text-center h-28 sm:h-32 transition-all">
+                    <ArrowPathIcon class="h-6 sm:h-8 w-6 sm:w-8 text-[#6d28d9] mb-2" />
+                    <span class="text-white font-medium text-sm sm:text-base">Refresh Stats</span>
                 </button>
             </div>
         </div>
 
         <!-- Recent Activity -->
-        <div class="bg-[#1e1e1e] rounded-xl p-6 border border-[#333] shadow-lg">
+        <div class="bg-[#1e1e1e] rounded-xl p-4 sm:p-6 border border-[#333] shadow-lg">
             <h2 class="text-lg font-bold text-white mb-4">Recent Activity</h2>
             <div class="space-y-4">
                 <div v-for="(activity, index) in recentActivity" :key="index"
-                    class="bg-[#2d2d2d] border border-[#444] rounded-lg p-4">
-                    <div class="flex items-center">
-                        <div
-                            class="w-10 h-10 rounded-full bg-[#6d28d9] flex items-center justify-center flex-shrink-0 mr-4">
+                    class="bg-[#2d2d2d] border border-[#444] rounded-lg p-3 sm:p-4">
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
+                        <div class="w-10 h-10 rounded-full bg-[#6d28d9] flex items-center justify-center flex-shrink-0">
                             <ComputerDesktopIcon v-if="activity.type === 'portfolio'" class="h-5 w-5 text-white" />
                             <DocumentTextIcon v-else class="h-5 w-5 text-white" />
                         </div>
-                        <div class="flex-1">
-                            <h3 class="text-white font-medium">{{ activity.title }}</h3>
-                            <p class="text-gray-400 text-sm">{{ activity.description }}</p>
+                        <div class="flex-1 min-w-0">
+                            <h3 class="text-white font-medium truncate">{{ activity.title }}</h3>
+                            <p class="text-gray-400 text-sm truncate">{{ activity.description }}</p>
                         </div>
-                        <div class="text-gray-500 text-sm">{{ activity.time }}</div>
+                        <div class="text-gray-500 text-xs sm:text-sm flex-shrink-0 sm:ml-auto pt-1 sm:pt-0">{{
+                            activity.time }}</div>
                     </div>
                 </div>
             </div>

@@ -8,7 +8,7 @@
             </router-link>
         </div>
 
-        <div class="bg-[#1e1e1e] rounded-xl p-6 border border-[#333]">
+        <div class="bg-[#1e1e1e] rounded-xl p-4 sm:p-6 border border-[#333]">
             <form @submit.prevent="handleSubmit">
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
                     <!-- Left Column -->
@@ -115,12 +115,12 @@
                                 </div>
                             </div>
 
-                            <div class="flex">
+                            <div class="flex flex-col sm:flex-row">
                                 <input type="text" v-model="newTech" @keydown.enter.prevent="addTechnology"
-                                    class="flex-1 bg-[#2d2d2d] border border-gray-700 rounded-l-lg px-4 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-[#6d28d9]"
+                                    class="flex-1 bg-[#2d2d2d] border border-gray-700 rounded-t-lg sm:rounded-l-lg sm:rounded-tr-none px-4 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-[#6d28d9]"
                                     placeholder="Add a technology (e.g., Vue.js)" />
                                 <button type="button" @click="addTechnology"
-                                    class="bg-[#6d28d9] hover:bg-[#5b21b6] text-white rounded-r-lg px-4 py-2.5 transition-colors">
+                                    class="bg-[#6d28d9] hover:bg-[#5b21b6] text-white rounded-b-lg sm:rounded-r-lg sm:rounded-bl-none px-4 py-2.5 transition-colors w-full sm:w-auto">
                                     Add
                                 </button>
                             </div>
@@ -139,8 +139,8 @@
                                 <div class="text-center">
                                     <label for="image" class="cursor-pointer">
                                         <div
-                                            class="bg-gray-800 hover:bg-gray-700 text-white rounded-lg py-3 px-4 inline-flex items-center transition-colors">
-                                            <CameraIcon class="h-5 w-5 mr-2" />
+                                            class="bg-gray-800 hover:bg-gray-700 text-white rounded-lg py-2 px-4 sm:py-3 sm:px-4 inline-flex items-center transition-colors text-sm sm:text-base">
+                                            <CameraIcon class="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
                                             {{ imagePreview ? 'Change Image' : 'Choose Image' }}
                                         </div>
                                     </label>
@@ -158,13 +158,14 @@
                 </div>
 
                 <!-- Submit Buttons -->
-                <div class="border-t border-gray-700 pt-6 flex justify-end space-x-4">
+                <div
+                    class="border-t border-gray-700 pt-6 flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-4">
                     <button type="button" @click="resetForm"
-                        class="px-5 py-2.5 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors">
+                        class="w-full sm:w-auto px-5 py-2.5 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors order-2 sm:order-1">
                         Reset
                     </button>
                     <button type="submit"
-                        class="px-6 py-2.5 bg-gradient-to-r from-[#6d28d9] to-[#8b5cf6] hover:from-[#5b21b6] hover:to-[#7c3aed] text-white font-medium rounded-lg transition-all duration-300">
+                        class="w-full sm:w-auto px-6 py-2.5 bg-gradient-to-r from-[#6d28d9] to-[#8b5cf6] hover:from-[#5b21b6] hover:to-[#7c3aed] text-white font-medium rounded-lg transition-all duration-300 order-1 sm:order-2">
                         Create Project
                     </button>
                 </div>
