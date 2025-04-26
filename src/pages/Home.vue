@@ -24,7 +24,7 @@
                 <div class="w-full md:w-3/5 flex flex-col items-center md:items-start text-center md:text-left">
                     <div class="animate-slideDown">
                         <p class="text-[#6d28d9] font-medium mb-3 tracking-wider">HELLO THERE 👋</p>
-                        <h1 class="text-xl md:text-3xl lg:text-4xl font-bold mb-3 md:mb-4">
+                        <h1 class="text-xl md:text-3xl lg:text-4xl font-bold mb-3 md:mb-4 modern-title">
                             I'm <span
                                 class="text-gradient bg-clip-text text-transparent bg-gradient-to-r from-[#6d28d9] to-[#9f7aea]">SOLOMON
                                 OLATUNJI</span>

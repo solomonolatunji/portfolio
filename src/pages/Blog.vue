@@ -1,9 +1,11 @@
 <template>
     <div class="w-full min-h-screen flex items-center justify-center py-8 md:py-12 pb-16 md:pb-24">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
-            <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold mb-6 sm:mb-8 text-center">
-                <span class="text-[#6d28d9]">—</span> BLOG
-            </h1>
+            <div class="title-with-bg-shadow" data-text="BLOG">
+                <h1 class="text-2xl sm:text-3xl lg:text-4xl mb-6 sm:mb-8 text-center modern-title">
+                    <span class="accent">—</span> BLOG
+                </h1>
+            </div>
 
             <!-- Search and Categories -->
             <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-8 md:mb-10">
@@ -96,7 +98,7 @@
                     <div class="p-4 sm:p-5">
                         <div class="flex items-center mb-2 sm:mb-3">
                             <span class="text-xs bg-[#2d2d2d] text-gray-300 px-2 py-1 rounded-full">{{ article.category
-                                }}</span>
+                            }}</span>
                             <span class="mx-2 text-gray-500">•</span>
                             <span class="text-gray-400 text-xs">{{ article.date }}</span>
                         </div>

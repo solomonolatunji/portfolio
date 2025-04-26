@@ -1,15 +1,17 @@
 <template>
     <div class="w-full min-h-screen flex items-center justify-center py-12 pb-24 md:pb-12">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
-            <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold mb-8 text-center">
-                <span class="text-[#6d28d9]">—</span> CONTACT ME
-            </h1>
+            <div class="title-with-bg-shadow" data-text="CONTACT ME">
+                <h1 class="text-2xl sm:text-3xl lg:text-4xl mb-8 text-center modern-title">
+                    <span class="accent">—</span> CONTACT ME
+                </h1>
+            </div>
 
             <div class="flex flex-col md:flex-row gap-10 lg:gap-16">
                 <!-- Contact Form -->
                 <div class="w-full md:w-7/12">
                     <div class="bg-[#1e1e1e] p-6 sm:p-8 rounded-lg shadow-lg">
-                        <h2 class="text-xl font-bold mb-6">Send Me a Message</h2>
+                        <h2 class="text-xl font-bold mb-6 modern-section-title">Send Me a Message</h2>
 
                         <form @submit.prevent="submitForm">
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
@@ -53,7 +55,7 @@
                 <!-- Contact Information -->
                 <div class="w-full md:w-5/12">
                     <div class="bg-[#1e1e1e] p-6 sm:p-8 rounded-lg shadow-lg mb-8">
-                        <h2 class="text-xl font-bold mb-6">Contact Information</h2>
+                        <h2 class="text-xl font-bold mb-6 modern-section-title">Contact Information</h2>
 
                         <div class="space-y-5">
                             <div class="flex items-start">
@@ -100,7 +102,7 @@
 
                     <!-- Social Media Links -->
                     <div class="bg-[#1e1e1e] p-6 sm:p-8 rounded-lg shadow-lg">
-                        <h2 class="text-xl font-bold mb-6">Find Me On</h2>
+                        <h2 class="text-xl font-bold mb-6 modern-section-title">Find Me On</h2>
 
                         <div class="flex flex-wrap gap-4">
                             <a href="https://github.com/eminisolomon" target="_blank"

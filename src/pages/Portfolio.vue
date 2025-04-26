@@ -1,9 +1,11 @@
 <template>
     <div class="w-full min-h-screen flex items-center justify-center py-12 pb-24 md:pb-12">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
-            <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold mb-8 text-center">
-                <span class="text-[#6d28d9]">—</span> MY PORTFOLIO
-            </h1>
+            <div class="title-with-bg-shadow" data-text="MY PORTFOLIO">
+                <h1 class="text-2xl sm:text-3xl lg:text-4xl mb-8 text-center modern-title">
+                    <span class="accent">—</span> MY PORTFOLIO
+                </h1>
+            </div>
 
             <!-- Project Filters -->
             <div class="flex flex-wrap justify-center gap-3 mb-10">
@@ -50,10 +52,10 @@
                         <!-- Overlay with actions -->
                         <div
                             class="absolute inset-0 bg-[#6d28d9] bg-opacity-0 group-hover:bg-opacity-80 flex items-center justify-center gap-4 transition-all duration-300 opacity-0 group-hover:opacity-100">
-                            <a :href="project.demoUrl" target="_blank"
+                            <router-link :to="'/portfolio/' + project.id"
                                 class="bg-white text-[#6d28d9] p-2 rounded-full hover:bg-gray-100 transition-all">
                                 <EyeIcon class="w-5 h-5" />
-                            </a>
+                            </router-link>
                             <a :href="project.codeUrl" target="_blank"
                                 class="bg-white text-[#6d28d9] p-2 rounded-full hover:bg-gray-100 transition-all">
                                 <CodeBracketIcon class="w-5 h-5" />
@@ -62,9 +64,12 @@
                     </div>
                     <div class="p-5">
                         <div class="flex justify-between items-center mb-2">
-                            <h3 class="font-bold text-lg text-white">{{ project.title }}</h3>
+                            <router-link :to="'/portfolio/' + project.id"
+                                class="hover:text-[#6d28d9] transition-colors">
+                                <h3 class="font-bold text-lg text-white">{{ project.title }}</h3>
+                            </router-link>
                             <span class="text-xs bg-[#2d2d2d] text-gray-300 px-2 py-1 rounded-full">{{ project.year
-                                }}</span>
+                            }}</span>
                         </div>
                         <p class="text-gray-400 text-sm mb-3">{{ project.description }}</p>
                         <div class="flex flex-wrap gap-2">
@@ -108,6 +113,7 @@ export default {
             activeFilter: 'all',
             projects: [
                 {
+                    id: '1',
                     title: 'E-commerce Dashboard',
                     description: 'A comprehensive admin dashboard for e-commerce platforms with sales analytics, inventory management, and customer insights.',
                     image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
@@ -118,6 +124,7 @@ export default {
                     codeUrl: 'https://github.com/eminisolomon'
                 },
                 {
+                    id: '2',
                     title: 'Task Management App',
                     description: 'A cross-platform task management application with real-time collaboration, reminders, and progress tracking.',
                     image: 'https://images.unsplash.com/photo-1623039405147-547794f94fda?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
@@ -128,6 +135,7 @@ export default {
                     codeUrl: 'https://github.com/eminisolomon'
                 },
                 {
+                    id: '3',
                     title: 'Finance Mobile App',
                     description: 'A sleek mobile application for personal finance tracking, budgeting, and investment monitoring.',
                     image: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236e3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
@@ -138,6 +146,7 @@ export default {
                     codeUrl: 'https://github.com/eminisolomon'
                 },
                 {
+                    id: '4',
                     title: 'Health & Fitness Tracker',
                     description: 'A comprehensive health and fitness mobile app with workout plans, nutrition tracking, and progress analytics.',
                     image: 'https://images.unsplash.com/photo-1605296867724-fa87a8ef53fd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
@@ -148,6 +157,7 @@ export default {
                     codeUrl: 'https://github.com/eminisolomon'
                 },
                 {
+                    id: '5',
                     title: 'Social Media Dashboard',
                     description: 'A modern UI design for a social media analytics dashboard with dark mode and customizable widgets.',
                     image: 'https://images.unsplash.com/photo-1573152958734-1922c188fba3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
@@ -158,6 +168,7 @@ export default {
                     codeUrl: 'https://github.com/eminisolomon'
                 },
                 {
+                    id: '6',
                     title: 'E-learning Platform UI',
                     description: 'A comprehensive UI/UX design for an e-learning platform with course navigation, video player, and student dashboard.',
                     image: 'https://images.unsplash.com/photo-1613479205646-c0dc1ee8511f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80',

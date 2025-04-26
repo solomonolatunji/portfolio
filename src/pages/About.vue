@@ -1,9 +1,11 @@
 <template>
     <div class="w-full min-h-screen flex items-center justify-center py-12 pb-24 md:pb-12">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
-            <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold mb-8 text-center">
-                <span class="text-[#6d28d9]">—</span> ABOUT ME
-            </h1>
+            <div class="title-with-bg-shadow" data-text="ABOUT ME">
+                <h1 class="text-2xl sm:text-3xl lg:text-4xl mb-8 text-center modern-title">
+                    <span class="accent">—</span> ABOUT ME
+                </h1>
+            </div>
 
             <div class="flex flex-col md:flex-row items-center justify-center gap-8 lg:gap-12">
                 <!-- Profile Area -->
@@ -98,8 +100,8 @@
 
             <!-- Skills Section with Progress Bars -->
             <div class="mt-12 lg:mt-16">
-                <h2 class="text-xl sm:text-2xl font-bold mb-6 text-center">
-                    <span class="text-[#6d28d9]">—</span> MY SKILLS
+                <h2 class="text-xl sm:text-2xl mb-6 text-center modern-section-title">
+                    <span class="accent">—</span> MY SKILLS
                 </h2>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
@@ -128,8 +130,8 @@
 
             <!-- Experience Timeline -->
             <div class="mt-16">
-                <h2 class="text-xl sm:text-2xl font-bold mb-6 text-center">
-                    <span class="text-[#6d28d9]">—</span> EXPERIENCE
+                <h2 class="text-xl sm:text-2xl mb-6 text-center modern-section-title">
+                    <span class="accent">—</span> EXPERIENCE
                 </h2>
 
                 <div class="relative">
@@ -165,8 +167,8 @@
 
             <!-- Education -->
             <div class="mt-16">
-                <h2 class="text-xl sm:text-2xl font-bold mb-6 text-center">
-                    <span class="text-[#6d28d9]">—</span> EDUCATION
+                <h2 class="text-xl sm:text-2xl mb-6 text-center modern-section-title">
+                    <span class="accent">—</span> EDUCATION
                 </h2>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">

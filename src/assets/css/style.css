@@ -1,1 +1,74 @@
 @import "tailwindcss";
+
+/* Modern title styles */
+.modern-title {
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  position: relative;
+  display: inline-block;
+  color: white;
+  text-shadow: 0 2px 4px rgba(109, 40, 217, 0.3);
+  padding-bottom: 0.5rem;
+}
+
+.modern-title::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40%;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    rgba(109, 40, 217, 0.2),
+    rgba(109, 40, 217, 0.8),
+    rgba(109, 40, 217, 0.2)
+  );
+  border-radius: 2px;
+}
+
+.modern-title .accent {
+  color: #6d28d9;
+  margin-right: 0.5rem;
+  display: inline-block;
+  position: relative;
+  top: -1px;
+}
+
+.modern-section-title {
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: white;
+  text-shadow: 0 1px 3px rgba(109, 40, 217, 0.25);
+  position: relative;
+  display: inline-block;
+}
+
+.modern-section-title .accent {
+  color: #6d28d9;
+  margin-right: 0.5rem;
+  display: inline-block;
+}
+
+.title-with-bg-shadow {
+  position: relative;
+}
+
+.title-with-bg-shadow::before {
+  content: attr(data-text);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 6em;
+  font-weight: 900;
+  text-transform: uppercase;
+  opacity: 0.03;
+  white-space: nowrap;
+  letter-spacing: 0.05em;
+  pointer-events: none;
+  z-index: -1;
+}
