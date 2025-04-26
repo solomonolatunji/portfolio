@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { useAdminAuthStore } from "@/stores/adminAuth";
 
 const routes = [
   {
@@ -29,11 +30,65 @@ const routes = [
     path: "/blog/:id",
     component: () => import("@/pages/BlogPost.vue"),
   },
+  {
+    path: "/admin/login",
+    component: () => import("@/pages/admin/Login.vue"),
+  },
+  {
+    path: "/admin",
+    component: () => import("@/pages/admin/Dashboard.vue"),
+    meta: { requiresAuth: true },
+    children: [
+      {
+        path: "",
+        component: () => import("@/pages/admin/Overview.vue"),
+      },
+      {
+        path: "portfolio",
+        component: () => import("@/pages/admin/PortfolioManager.vue"),
+      },
+      {
+        path: "portfolio/edit/:id",
+        component: () => import("@/pages/admin/PortfolioEdit.vue"),
+      },
+      {
+        path: "portfolio/create",
+        component: () => import("@/pages/admin/PortfolioCreate.vue"),
+      },
+      {
+        path: "blog",
+        component: () => import("@/pages/admin/BlogManager.vue"),
+      },
+      {
+        path: "blog/edit/:id",
+        component: () => import("@/pages/admin/BlogEdit.vue"),
+      },
+      {
+        path: "blog/create",
+        component: () => import("@/pages/admin/BlogCreate.vue"),
+      },
+    ],
+  },
 ];
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
+});
+
+router.beforeEach((to, _from, next) => {
+  const adminStore = useAdminAuthStore();
+  adminStore.initializeFromStorage();
+
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (!adminStore.isAuthenticated) {
+      next({ path: "/admin/login" });
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
 });
 
 export default router;
