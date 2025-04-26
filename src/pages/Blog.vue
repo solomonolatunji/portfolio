@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full min-h-screen flex items-center justify-center py-8 md:py-12 pb-16 md:pb-24">
+    <div class="w-full min-h-screen py-8 md:py-12 pb-16 md:pb-24">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
             <div class="title-with-bg-shadow" data-text="BLOG">
                 <h1 class="text-2xl sm:text-3xl lg:text-4xl mb-6 sm:mb-8 text-center modern-title">
@@ -11,125 +11,197 @@
             <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-8 md:mb-10">
                 <div class="relative w-full md:w-72">
                     <input type="text" v-model="searchQuery" placeholder="Search articles"
-                        class="w-full bg-[#1e1e1e] border border-[#333] rounded-full px-4 py-2 pl-10 focus:outline-none focus:ring-2 focus:ring-[#6d28d9] text-white">
+                        class="w-full bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-2 pl-10 focus:outline-none focus:ring-2 focus:ring-purple-400 text-white placeholder-white/70">
                     <MagnifyingGlassIcon class="absolute left-3 top-2.5 w-5 h-5 text-gray-400" />
                 </div>
                 <div class="flex flex-wrap justify-center gap-2 w-full md:w-auto">
-                    <button @click="setCategory('all')" :class="[
+                    <button v-for="category in categories" :key="category.id" @click="setCategory(category.id)" :class="[
                         'px-3 py-1 rounded-full text-xs font-medium transition-all duration-300',
-                        activeCategory === 'all'
-                            ? 'bg-[#6d28d9] text-white'
+                        activeCategory === category.id
+                            ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-md'
                             : 'bg-[#1e1e1e] text-gray-300 hover:bg-[#2d2d2d]'
                     ]">
-                        All
-                    </button>
-                    <button @click="setCategory('web-dev')" :class="[
-                        'px-3 py-1 rounded-full text-xs font-medium transition-all duration-300',
-                        activeCategory === 'web-dev'
-                            ? 'bg-[#6d28d9] text-white'
-                            : 'bg-[#1e1e1e] text-gray-300 hover:bg-[#2d2d2d]'
-                    ]">
-                        Web Development
-                    </button>
-                    <button @click="setCategory('ui-ux')" :class="[
-                        'px-3 py-1 rounded-full text-xs font-medium transition-all duration-300',
-                        activeCategory === 'ui-ux'
-                            ? 'bg-[#6d28d9] text-white'
-                            : 'bg-[#1e1e1e] text-gray-300 hover:bg-[#2d2d2d]'
-                    ]">
-                        UI/UX Design
-                    </button>
-                    <button @click="setCategory('career')" :class="[
-                        'px-3 py-1 rounded-full text-xs font-medium transition-all duration-300',
-                        activeCategory === 'career'
-                            ? 'bg-[#6d28d9] text-white'
-                            : 'bg-[#1e1e1e] text-gray-300 hover:bg-[#2d2d2d]'
-                    ]">
-                        Career
+                        {{ category.name }}
                     </button>
                 </div>
             </div>
 
-            <!-- Featured Article -->
-            <div v-if="featuredArticle" class="mb-8 md:mb-12">
-                <div class="bg-[#1e1e1e] rounded-xl overflow-hidden shadow-lg">
-                    <div class="flex flex-col md:flex-row">
-                        <div class="w-full md:w-1/2">
-                            <img :src="featuredArticle.image" :alt="featuredArticle.title"
-                                class="w-full h-56 sm:h-64 md:h-full object-cover">
-                        </div>
-                        <div class="p-4 sm:p-6 w-full md:w-1/2 flex flex-col justify-between">
-                            <div>
-                                <div class="flex flex-wrap items-center mb-3 sm:mb-4 gap-2 sm:gap-0">
+            <div class="mb-8 md:mb-12">
+                <!-- Featured Article -->
+                <div v-if="featuredArticle" class="mb-10 md:mb-16">
+                    <h2 class="text-xl md:text-2xl font-bold text-white mb-6 flex items-center">
+                        <span class="bg-gradient-to-r from-purple-500 to-indigo-500 w-8 h-1 rounded mr-3"></span>
+                        Featured Post
+                    </h2>
+
+                    <div
+                        class="bg-[#1e1e1e] rounded-2xl overflow-hidden shadow-xl transform transition-all duration-500 hover:shadow-purple-900/20">
+                        <div class="flex flex-col md:flex-row">
+                            <div class="w-full md:w-1/2 relative">
+                                <img :src="featuredArticle.image" :alt="featuredArticle.title"
+                                    class="w-full h-64 md:h-full object-cover">
+                                <div
+                                    class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent md:bg-gradient-to-r">
+                                </div>
+                                <div class="absolute bottom-4 left-4 md:hidden">
                                     <span
-                                        class="bg-[#6d28d9] text-white px-3 py-1 text-xs font-medium rounded-full">Featured</span>
-                                    <span class="hidden sm:inline mx-2 text-gray-500">•</span>
-                                    <span class="text-gray-400 text-xs sm:text-sm">{{ featuredArticle.date }}</span>
+                                        class="bg-purple-600 text-white px-3 py-1 text-xs font-medium rounded-full">Featured</span>
                                 </div>
-                                <h2 class="text-lg sm:text-xl md:text-2xl font-bold mb-2 sm:mb-3 text-white">{{
-                                    featuredArticle.title }}
-                                </h2>
-                                <p class="text-sm md:text-base text-gray-400 mb-4 sm:mb-6 line-clamp-2 sm:line-clamp-3">
-                                    {{ featuredArticle.excerpt }}</p>
                             </div>
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center">
-                                    <img :src="featuredArticle.author.avatar" :alt="featuredArticle.author.name"
-                                        class="w-8 h-8 sm:w-10 sm:h-10 rounded-full mr-2 sm:mr-3">
-                                    <span class="text-sm sm:text-base text-white font-medium">{{
-                                        featuredArticle.author.name }}</span>
+                            <div class="p-6 md:p-8 w-full md:w-1/2 flex flex-col justify-between">
+                                <div>
+                                    <div class="flex flex-wrap items-center mb-4 gap-2">
+                                        <span
+                                            class="hidden md:inline-block bg-purple-600 text-white px-3 py-1 text-xs font-medium rounded-full">Featured</span>
+                                        <span
+                                            class="bg-[#2d2d2d] text-gray-300 px-3 py-1 text-xs font-medium rounded-full">{{
+                                                featuredArticle.category }}</span>
+                                        <span class="text-gray-400 text-xs">{{ featuredArticle.date }}</span>
+                                    </div>
+                                    <h2
+                                        class="text-xl sm:text-2xl md:text-3xl font-bold mb-4 text-white hover:text-purple-300 transition-colors">
+                                        <router-link :to="'/blog/' + featuredArticle.id">
+                                            {{ featuredArticle.title }}
+                                        </router-link>
+                                    </h2>
+                                    <p class="text-sm md:text-base text-gray-300 mb-6 line-clamp-3">
+                                        {{ featuredArticle.excerpt }}
+                                    </p>
                                 </div>
-                                <router-link :to="'/blog/' + featuredArticle.id"
-                                    class="text-sm sm:text-base text-[#6d28d9] hover:text-[#8b5cf6]">
-                                    Read More →
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <img :src="featuredArticle.author.avatar" :alt="featuredArticle.author.name"
+                                            class="w-10 h-10 rounded-full mr-3 border-2 border-purple-600">
+                                        <div>
+                                            <span class="text-sm text-white font-medium block">{{
+                                                featuredArticle.author.name }}</span>
+                                            <span class="text-xs text-gray-400">Author</span>
+                                        </div>
+                                    </div>
+                                    <router-link :to="'/blog/' + featuredArticle.id"
+                                        class="inline-flex items-center gap-1 text-purple-400 hover:text-purple-300 font-medium transition-colors">
+                                        Read Article
+                                        <ArrowRightIcon class="w-4 h-4" />
+                                    </router-link>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Blog Posts Grid -->
+                <div>
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-xl md:text-2xl font-bold text-white flex items-center">
+                            <span class="bg-gradient-to-r from-purple-500 to-indigo-500 w-8 h-1 rounded mr-3"></span>
+                            Latest Articles
+                        </h2>
+                        <div class="flex gap-2">
+                            <button @click="setViewMode('grid')" class="p-2 rounded-md"
+                                :class="viewMode === 'grid' ? 'bg-[#2d2d2d] text-white' : 'text-gray-400'">
+                                <Squares2X2Icon class="w-5 h-5" />
+                            </button>
+                            <button @click="setViewMode('list')" class="p-2 rounded-md"
+                                :class="viewMode === 'list' ? 'bg-[#2d2d2d] text-white' : 'text-gray-400'">
+                                <ListBulletIcon class="w-5 h-5" />
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Grid View -->
+                    <div v-if="viewMode === 'grid' && paginatedArticles.length > 0"
+                        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+                        <div v-for="article in paginatedArticles" :key="article.id"
+                            class="bg-[#1e1e1e] rounded-xl overflow-hidden shadow-lg transform transition-all duration-300 hover:-translate-y-2 hover:shadow-purple-800/10">
+                            <div class="relative">
+                                <img :src="article.image" :alt="article.title" class="w-full h-48 object-cover">
+                                <div class="absolute top-3 right-3">
+                                    <span
+                                        class="bg-[#2d2d2d]/80 backdrop-blur-sm text-gray-300 px-2 py-1 text-xs rounded-md">
+                                        {{ article.category }}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="p-5">
+                                <div class="text-gray-400 text-xs mb-2">{{ article.date }}</div>
+                                <router-link :to="'/blog/' + article.id">
+                                    <h3
+                                        class="font-bold text-lg text-white mb-2 hover:text-purple-400 transition-colors">
+                                        {{ article.title }}
+                                    </h3>
                                 </router-link>
+                                <p class="text-gray-400 text-sm mb-4 line-clamp-2">
+                                    {{ article.excerpt }}
+                                </p>
+                                <div class="flex justify-between items-center mt-4 pt-4 border-t border-gray-800">
+                                    <div class="flex items-center">
+                                        <img :src="article.author.avatar" :alt="article.author.name"
+                                            class="w-8 h-8 rounded-full mr-2 border border-purple-600">
+                                        <span class="text-gray-300 text-xs">{{ article.author.name }}</span>
+                                    </div>
+                                    <router-link :to="'/blog/' + article.id"
+                                        class="text-purple-400 hover:text-purple-300 text-sm flex items-center gap-1">
+                                        Read
+                                        <ArrowSmallRightIcon class="w-3.5 h-3.5" />
+                                    </router-link>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
 
-            <!-- Blog Posts Grid -->
-            <div v-if="paginatedArticles.length > 0"
-                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                <div v-for="article in paginatedArticles" :key="article.id"
-                    class="bg-[#1e1e1e] rounded-xl overflow-hidden shadow-lg transform transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
-                    <img :src="article.image" :alt="article.title" class="w-full h-40 sm:h-48 object-cover">
-                    <div class="p-4 sm:p-5">
-                        <div class="flex items-center mb-2 sm:mb-3">
-                            <span class="text-xs bg-[#2d2d2d] text-gray-300 px-2 py-1 rounded-full">{{ article.category
-                            }}</span>
-                            <span class="mx-2 text-gray-500">•</span>
-                            <span class="text-gray-400 text-xs">{{ article.date }}</span>
-                        </div>
-                        <h3 class="font-bold text-base sm:text-lg text-white mb-2">{{ article.title }}</h3>
-                        <p class="text-gray-400 text-xs sm:text-sm mb-3 sm:mb-4 line-clamp-2 sm:line-clamp-3">{{
-                            article.excerpt }}</p>
-                        <div class="flex justify-between items-center">
-                            <div class="flex items-center">
-                                <img :src="article.author.avatar" :alt="article.author.name"
-                                    class="w-6 h-6 sm:w-8 sm:h-8 rounded-full mr-2">
-                                <span class="text-gray-300 text-xs sm:text-sm">{{ article.author.name }}</span>
+                    <!-- List View -->
+                    <div v-else-if="viewMode === 'list' && paginatedArticles.length > 0" class="space-y-5 mb-10">
+                        <div v-for="article in paginatedArticles" :key="article.id"
+                            class="bg-[#1e1e1e] rounded-xl overflow-hidden shadow-lg transform transition-all duration-300 hover:-translate-y-1 hover:shadow-purple-800/10 flex flex-col sm:flex-row">
+                            <img :src="article.image" :alt="article.title"
+                                class="w-full sm:w-48 h-48 sm:h-32 md:h-36 object-cover">
+                            <div class="p-5 flex-1 flex flex-col justify-between">
+                                <div>
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="text-xs bg-[#2d2d2d] text-gray-300 px-2 py-1 rounded-md">{{
+                                            article.category }}</span>
+                                        <span class="text-gray-400 text-xs">{{ article.date }}</span>
+                                    </div>
+                                    <router-link :to="'/blog/' + article.id">
+                                        <h3
+                                            class="font-bold text-lg text-white mb-2 hover:text-purple-400 transition-colors">
+                                            {{ article.title }}</h3>
+                                    </router-link>
+                                    <p class="text-gray-400 text-sm line-clamp-2">{{ article.excerpt }}</p>
+                                </div>
+                                <div class="flex justify-between items-center mt-4">
+                                    <div class="flex items-center">
+                                        <img :src="article.author.avatar" :alt="article.author.name"
+                                            class="w-6 h-6 rounded-full mr-2">
+                                        <span class="text-gray-300 text-xs">{{ article.author.name }}</span>
+                                    </div>
+                                    <router-link :to="'/blog/' + article.id"
+                                        class="text-purple-400 hover:text-purple-300 text-sm flex items-center gap-1">
+                                        Read Article
+                                        <ArrowSmallRightIcon class="w-3.5 h-3.5" />
+                                    </router-link>
+                                </div>
                             </div>
-                            <router-link :to="'/blog/' + article.id"
-                                class="text-[#6d28d9] hover:text-[#8b5cf6] text-xs sm:text-sm">
-                                Read More
-                            </router-link>
                         </div>
                     </div>
+
+                    <!-- Empty State -->
+                    <div v-else
+                        class="flex flex-col items-center justify-center py-16 text-center bg-[#1e1e1e] rounded-xl">
+                        <DocumentIcon class="w-16 h-16 text-gray-600 mb-4" />
+                        <h3 class="text-xl font-bold text-white mb-2">No articles found</h3>
+                        <p class="text-base text-gray-400 mb-6">Try adjusting your search or filter criteria</p>
+                        <button @click="resetFilters"
+                            class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-md transition-colors">
+                            Reset Filters
+                        </button>
+                    </div>
+
+                    <!-- Pagination -->
+                    <Pagination v-if="totalPages > 1" :current-page="currentPage" :total-pages="totalPages"
+                        @prev="prevPage" @next="nextPage" @goto="goToPage" class="mt-10" />
                 </div>
             </div>
-
-            <!-- Empty State -->
-            <div v-else class="flex flex-col items-center justify-center py-10 sm:py-16 text-center">
-                <DocumentIcon class="w-12 h-12 sm:w-16 sm:h-16 text-gray-600 mb-3 sm:mb-4" />
-                <h3 class="text-lg sm:text-xl font-bold text-white mb-1 sm:mb-2">No articles found</h3>
-                <p class="text-sm sm:text-base text-gray-400">Try adjusting your search or filter criteria</p>
-            </div>
-
-            <!-- Pagination -->
-            <Pagination v-if="totalPages > 1" :current-page="currentPage" :total-pages="totalPages" @prev="prevPage"
-                @next="nextPage" @goto="goToPage" class="mt-10" />
 
             <!-- Newsletter Component -->
             <Newsletter @subscribed="handleNewsletterSubscription" />
@@ -137,286 +209,309 @@
     </div>
 </template>
 
-<script>
-import { MagnifyingGlassIcon, DocumentIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/24/solid'
+<script setup lang="ts">
+import { ref, computed, watch } from 'vue';
+import { MagnifyingGlassIcon, DocumentIcon, ArrowRightIcon, ArrowSmallRightIcon, Squares2X2Icon, ListBulletIcon } from '@heroicons/vue/24/solid';
 import Newsletter from '../components/Newsletter.vue';
 import Pagination from '../components/Pagination.vue';
 
-export default {
-    name: 'Blog',
-    components: {
-        MagnifyingGlassIcon,
-        DocumentIcon,
-        ChevronLeftIcon,
-        ChevronRightIcon,
-        Newsletter,
-        Pagination
+// State
+const searchQuery = ref('');
+const activeCategory = ref('all');
+const currentPage = ref(1);
+const viewMode = ref('grid'); // 'grid' or 'list'
+const postsPerPage = 6;
+
+// Categories
+const categories = [
+    { id: 'all', name: 'All Posts' },
+    { id: 'web-dev', name: 'Web Development' },
+    { id: 'ui-ux', name: 'UI/UX Design' },
+    { id: 'career', name: 'Career' },
+    { id: 'tutorials', name: 'Tutorials' }
+];
+
+// Blog Articles Data
+const articles = [
+    {
+        id: '1',
+        title: 'Building Responsive Web Applications with Vue 3 and Tailwind CSS',
+        excerpt: 'Learn how to create beautiful, responsive interfaces using the power of Vue 3 combined with the utility-first approach of Tailwind CSS.',
+        content: '',
+        image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2072&q=80',
+        date: 'April 26, 2025',
+        category: 'web-dev',
+        author: {
+            name: 'Solomon Olatunji',
+            avatar: 'https://randomuser.me/api/portraits/men/32.jpg'
+        },
+        featured: true,
+        readTime: '8 min read',
+        tags: ['Vue.js', 'Tailwind CSS', 'Frontend']
     },
-    data() {
-        return {
-            searchQuery: '',
-            activeCategory: 'all',
-            currentPage: 1,
-            postsPerPage: 6,
-            articles: [
-                {
-                    id: '1',
-                    title: 'Building Responsive Web Applications with Vue 3 and Tailwind CSS',
-                    excerpt: 'Learn how to create beautiful, responsive interfaces using the power of Vue 3 combined with the utility-first approach of Tailwind CSS.',
-                    content: '',
-                    image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2072&q=80',
-                    date: 'April 15, 2025',
-                    category: 'web-dev',
-                    author: {
-                        name: 'Solomon Olatunji',
-                        avatar: 'https://randomuser.me/api/portraits/men/32.jpg'
-                    },
-                    featured: true
-                },
-                {
-                    id: '2',
-                    title: 'Modern UI/UX Design Principles Every Developer Should Know',
-                    excerpt: 'Explore essential design principles that can help developers create more user-friendly and aesthetically pleasing applications.',
-                    content: '',
-                    image: 'https://images.unsplash.com/photo-1587440871875-191322ee64b0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80',
-                    date: 'April 10, 2025',
-                    category: 'ui-ux',
-                    author: {
-                        name: 'Solomon Olatunji',
-                        avatar: 'https://randomuser.me/api/portraits/men/32.jpg'
-                    }
-                },
-                {
-                    id: '3',
-                    title: 'Optimizing Performance in JavaScript Applications',
-                    excerpt: 'Discover techniques and best practices for improving the performance of your JavaScript applications to provide a better user experience.',
-                    content: '',
-                    image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-                    date: 'April 2, 2025',
-                    category: 'web-dev',
-                    author: {
-                        name: 'Solomon Olatunji',
-                        avatar: 'https://randomuser.me/api/portraits/men/32.jpg'
-                    }
-                },
-                {
-                    id: '4',
-                    title: 'Navigating a Career in Software Development: Tips from the Field',
-                    excerpt: 'Insights and advice for both new and experienced developers to grow their skills and advance their careers in the ever-changing tech industry.',
-                    content: '',
-                    image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-                    date: 'March 25, 2025',
-                    category: 'career',
-                    author: {
-                        name: 'Solomon Olatunji',
-                        avatar: 'https://randomuser.me/api/portraits/men/32.jpg'
-                    }
-                },
-                {
-                    id: '5',
-                    title: 'Designing for Accessibility: Creating Inclusive Web Experiences',
-                    excerpt: 'Why accessibility matters and how to implement it effectively in your design process to create web applications that everyone can use.',
-                    content: '',
-                    image: 'https://images.unsplash.com/photo-1617791160536-598cf32026fb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1964&q=80',
-                    date: 'March 18, 2025',
-                    category: 'ui-ux',
-                    author: {
-                        name: 'Solomon Olatunji',
-                        avatar: 'https://randomuser.me/api/portraits/men/32.jpg'
-                    }
-                },
-                {
-                    id: '6',
-                    title: 'The Future of Front-End Development: Trends to Watch',
-                    excerpt: 'Explore the emerging technologies and methodologies that are shaping the future of front-end web development.',
-                    content: '',
-                    image: 'https://images.unsplash.com/photo-1516116216624-53e697fedbea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2028&q=80',
-                    date: 'March 10, 2025',
-                    category: 'web-dev',
-                    author: {
-                        name: 'Solomon Olatunji',
-                        avatar: 'https://randomuser.me/api/portraits/men/32.jpg'
-                    }
-                },
-                {
-                    id: '7',
-                    title: 'Building a Personal Brand as a Developer',
-                    excerpt: 'Learn how to establish your professional identity and stand out in the competitive tech industry.',
-                    content: '',
-                    image: 'https://images.unsplash.com/photo-1511376777868-611b54f68947?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-                    date: 'March 5, 2025',
-                    category: 'career',
-                    author: {
-                        name: 'Solomon Olatunji',
-                        avatar: 'https://randomuser.me/api/portraits/men/32.jpg'
-                    }
-                },
-                {
-                    id: '8',
-                    title: 'Color Theory for Web Design: Creating Harmonious Color Schemes',
-                    excerpt: 'Understanding the principles of color theory and how to apply them effectively in your web design projects.',
-                    content: '',
-                    image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2064&q=80',
-                    date: 'February 28, 2025',
-                    category: 'ui-ux',
-                    author: {
-                        name: 'Solomon Olatunji',
-                        avatar: 'https://randomuser.me/api/portraits/men/32.jpg'
-                    }
-                },
-                {
-                    id: '9',
-                    title: 'Mastering Git: Advanced Techniques for Efficient Workflow',
-                    excerpt: 'Take your Git skills to the next level with these advanced strategies and best practices for managing code.',
-                    content: '',
-                    image: 'https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2088&q=80',
-                    date: 'February 22, 2025',
-                    category: 'web-dev',
-                    author: {
-                        name: 'Solomon Olatunji',
-                        avatar: 'https://randomuser.me/api/portraits/men/32.jpg'
-                    }
-                },
-                {
-                    id: '10',
-                    title: 'How to Prepare for Technical Interviews: A Comprehensive Guide',
-                    excerpt: 'Strategies and tips to help you ace your next technical interview and land your dream job in tech.',
-                    content: '',
-                    image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-                    date: 'February 15, 2025',
-                    category: 'career',
-                    author: {
-                        name: 'Solomon Olatunji',
-                        avatar: 'https://randomuser.me/api/portraits/men/32.jpg'
-                    }
-                },
-                {
-                    id: '11',
-                    title: 'Creating Micro-interactions That Enhance User Experience',
-                    excerpt: 'Learn how small, thoughtful animations and interactions can significantly improve your application\'s usability and delight users.',
-                    content: '',
-                    image: 'https://images.unsplash.com/photo-1559028012-481c04fa702d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2072&q=80',
-                    date: 'February 8, 2025',
-                    category: 'ui-ux',
-                    author: {
-                        name: 'Solomon Olatunji',
-                        avatar: 'https://randomuser.me/api/portraits/men/32.jpg'
-                    }
-                },
-                {
-                    id: '12',
-                    title: 'Progressive Web Apps (PWAs): The Future of Web Development',
-                    excerpt: 'Discover how PWAs combine the best of web and mobile apps to provide users with a seamless, engaging experience.',
-                    content: '',
-                    image: 'https://images.unsplash.com/photo-1559028006-448665bd7c7b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2072&q=80',
-                    date: 'February 1, 2025',
-                    category: 'web-dev',
-                    author: {
-                        name: 'Solomon Olatunji',
-                        avatar: 'https://randomuser.me/api/portraits/men/32.jpg'
-                    }
-                },
-                {
-                    id: '13',
-                    title: 'The Importance of Mentorship in Tech Careers',
-                    excerpt: 'How finding the right mentor can accelerate your learning and help you navigate challenges in your professional journey.',
-                    content: '',
-                    image: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2032&q=80',
-                    date: 'January 25, 2025',
-                    category: 'career',
-                    author: {
-                        name: 'Solomon Olatunji',
-                        avatar: 'https://randomuser.me/api/portraits/men/32.jpg'
-                    }
-                },
-                {
-                    id: '14',
-                    title: 'Accessible Design: Making the Web Usable for Everyone',
-                    excerpt: 'Best practices for ensuring your websites and applications are accessible to users with different abilities and needs.',
-                    content: '',
-                    image: 'https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-                    date: 'January 18, 2025',
-                    category: 'ui-ux',
-                    author: {
-                        name: 'Solomon Olatunji',
-                        avatar: 'https://randomuser.me/api/portraits/men/32.jpg'
-                    }
-                },
-                {
-                    id: '15',
-                    title: 'Understanding Web Security: Protecting Your Users and Applications',
-                    excerpt: 'Essential security concepts and practices every web developer should know to build secure applications.',
-                    content: '',
-                    image: 'https://images.unsplash.com/photo-1562813733-b31f71025d54?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80',
-                    date: 'January 10, 2025',
-                    category: 'web-dev',
-                    author: {
-                        name: 'Solomon Olatunji',
-                        avatar: 'https://randomuser.me/api/portraits/men/32.jpg'
-                    }
-                }
-            ]
+    {
+        id: '2',
+        title: 'Modern UI/UX Design Principles Every Developer Should Know',
+        excerpt: 'Explore essential design principles that can help developers create more user-friendly and aesthetically pleasing applications.',
+        content: '',
+        image: 'https://images.unsplash.com/photo-1587440871875-191322ee64b0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80',
+        date: 'April 10, 2025',
+        category: 'ui-ux',
+        author: {
+            name: 'Solomon Olatunji',
+            avatar: 'https://randomuser.me/api/portraits/men/32.jpg'
         }
     },
-    computed: {
-        featuredArticle() {
-            return this.articles.find(article => article.featured);
-        },
-        filteredArticles() {
-            let filtered = this.articles;
-
-            if (this.activeCategory !== 'all') {
-                filtered = filtered.filter(article => article.category === this.activeCategory);
-            }
-
-            if (this.searchQuery.trim() !== '') {
-                const query = this.searchQuery.toLowerCase().trim();
-                filtered = filtered.filter(article =>
-                    article.title.toLowerCase().includes(query) ||
-                    article.excerpt.toLowerCase().includes(query)
-                );
-            }
-
-            return filtered.filter(article => !article.featured);
-        },
-        paginatedArticles() {
-            const startIndex = (this.currentPage - 1) * this.postsPerPage;
-            const endIndex = startIndex + this.postsPerPage;
-            return this.filteredArticles.slice(startIndex, endIndex);
-        },
-        totalPages() {
-            return Math.ceil(this.filteredArticles.length / this.postsPerPage);
+    {
+        id: '3',
+        title: 'Optimizing Performance in JavaScript Applications',
+        excerpt: 'Discover techniques and best practices for improving the performance of your JavaScript applications to provide a better user experience.',
+        content: '',
+        image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+        date: 'April 2, 2025',
+        category: 'web-dev',
+        author: {
+            name: 'Solomon Olatunji',
+            avatar: 'https://randomuser.me/api/portraits/men/32.jpg'
         }
     },
-    methods: {
-        handleNewsletterSubscription(email) {
-            alert(`Thank you for subscribing with ${email}!`);
-        },
-        prevPage() {
-            if (this.currentPage > 1) {
-                this.currentPage--;
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-        },
-        nextPage() {
-            if (this.currentPage < this.totalPages) {
-                this.currentPage++;
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-        },
-        goToPage(page) {
-            this.currentPage = page;
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        },
-        setCategory(category) {
-            this.activeCategory = category;
-            this.currentPage = 1;
+    {
+        id: '4',
+        title: 'Navigating a Career in Software Development: Tips from the Field',
+        excerpt: 'Insights and advice for both new and experienced developers to grow their skills and advance their careers in the ever-changing tech industry.',
+        content: '',
+        image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+        date: 'March 25, 2025',
+        category: 'career',
+        author: {
+            name: 'Solomon Olatunji',
+            avatar: 'https://randomuser.me/api/portraits/men/32.jpg'
         }
     },
-    watch: {
-        searchQuery() {
-            this.currentPage = 1;
+    {
+        id: '5',
+        title: 'Designing for Accessibility: Creating Inclusive Web Experiences',
+        excerpt: 'Why accessibility matters and how to implement it effectively in your design process to create web applications that everyone can use.',
+        content: '',
+        image: 'https://images.unsplash.com/photo-1617791160536-598cf32026fb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1964&q=80',
+        date: 'March 18, 2025',
+        category: 'ui-ux',
+        author: {
+            name: 'Solomon Olatunji',
+            avatar: 'https://randomuser.me/api/portraits/men/32.jpg'
+        }
+    },
+    {
+        id: '6',
+        title: 'The Future of Front-End Development: Trends to Watch',
+        excerpt: 'Explore the emerging technologies and methodologies that are shaping the future of front-end web development.',
+        content: '',
+        image: 'https://images.unsplash.com/photo-1516116216624-53e697fedbea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2028&q=80',
+        date: 'March 10, 2025',
+        category: 'web-dev',
+        author: {
+            name: 'Solomon Olatunji',
+            avatar: 'https://randomuser.me/api/portraits/men/32.jpg'
+        }
+    },
+    {
+        id: '7',
+        title: 'Building a Personal Brand as a Developer',
+        excerpt: 'Learn how to establish your professional identity and stand out in the competitive tech industry.',
+        content: '',
+        image: 'https://images.unsplash.com/photo-1511376777868-611b54f68947?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+        date: 'March 5, 2025',
+        category: 'career',
+        author: {
+            name: 'Solomon Olatunji',
+            avatar: 'https://randomuser.me/api/portraits/men/32.jpg'
+        }
+    },
+    {
+        id: '8',
+        title: 'Color Theory for Web Design: Creating Harmonious Color Schemes',
+        excerpt: 'Understanding the principles of color theory and how to apply them effectively in your web design projects.',
+        content: '',
+        image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2064&q=80',
+        date: 'February 28, 2025',
+        category: 'ui-ux',
+        author: {
+            name: 'Solomon Olatunji',
+            avatar: 'https://randomuser.me/api/portraits/men/32.jpg'
+        }
+    },
+    {
+        id: '9',
+        title: 'Mastering Git: Advanced Techniques for Efficient Workflow',
+        excerpt: 'Take your Git skills to the next level with these advanced strategies and best practices for managing code.',
+        content: '',
+        image: 'https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2088&q=80',
+        date: 'February 22, 2025',
+        category: 'web-dev',
+        author: {
+            name: 'Solomon Olatunji',
+            avatar: 'https://randomuser.me/api/portraits/men/32.jpg'
+        }
+    },
+    {
+        id: '10',
+        title: 'How to Prepare for Technical Interviews: A Comprehensive Guide',
+        excerpt: 'Strategies and tips to help you ace your next technical interview and land your dream job in tech.',
+        content: '',
+        image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+        date: 'February 15, 2025',
+        category: 'career',
+        author: {
+            name: 'Solomon Olatunji',
+            avatar: 'https://randomuser.me/api/portraits/men/32.jpg'
+        }
+    },
+    {
+        id: '11',
+        title: 'Creating Micro-interactions That Enhance User Experience',
+        excerpt: 'Learn how small, thoughtful animations and interactions can significantly improve your application\'s usability and delight users.',
+        content: '',
+        image: 'https://images.unsplash.com/photo-1559028012-481c04fa702d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2072&q=80',
+        date: 'February 8, 2025',
+        category: 'ui-ux',
+        author: {
+            name: 'Solomon Olatunji',
+            avatar: 'https://randomuser.me/api/portraits/men/32.jpg'
+        }
+    },
+    {
+        id: '12',
+        title: 'Progressive Web Apps (PWAs): The Future of Web Development',
+        excerpt: 'Discover how PWAs combine the best of web and mobile apps to provide users with a seamless, engaging experience.',
+        content: '',
+        image: 'https://images.unsplash.com/photo-1559028006-448665bd7c7b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2072&q=80',
+        date: 'February 1, 2025',
+        category: 'web-dev',
+        author: {
+            name: 'Solomon Olatunji',
+            avatar: 'https://randomuser.me/api/portraits/men/32.jpg'
+        }
+    },
+    {
+        id: '13',
+        title: 'The Importance of Mentorship in Tech Careers',
+        excerpt: 'How finding the right mentor can accelerate your learning and help you navigate challenges in your professional journey.',
+        content: '',
+        image: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2032&q=80',
+        date: 'January 25, 2025',
+        category: 'career',
+        author: {
+            name: 'Solomon Olatunji',
+            avatar: 'https://randomuser.me/api/portraits/men/32.jpg'
+        }
+    },
+    {
+        id: '14',
+        title: 'Accessible Design: Making the Web Usable for Everyone',
+        excerpt: 'Best practices for ensuring your websites and applications are accessible to users with different abilities and needs.',
+        content: '',
+        image: 'https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+        date: 'January 18, 2025',
+        category: 'ui-ux',
+        author: {
+            name: 'Solomon Olatunji',
+            avatar: 'https://randomuser.me/api/portraits/men/32.jpg'
+        }
+    },
+    {
+        id: '15',
+        title: 'Understanding Web Security: Protecting Your Users and Applications',
+        excerpt: 'Essential security concepts and practices every web developer should know to build secure applications.',
+        content: '',
+        image: 'https://images.unsplash.com/photo-1562813733-b31f71025d54?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80',
+        date: 'January 10, 2025',
+        category: 'web-dev',
+        author: {
+            name: 'Solomon Olatunji',
+            avatar: 'https://randomuser.me/api/portraits/men/32.jpg'
         }
     }
-}
+];
+
+const setCategory = (category: string) => {
+    activeCategory.value = category;
+    currentPage.value = 1;
+};
+
+const setViewMode = (mode: 'grid' | 'list') => {
+    viewMode.value = mode;
+};
+
+const resetFilters = () => {
+    searchQuery.value = '';
+    activeCategory.value = 'all';
+    currentPage.value = 1;
+};
+
+const handleNewsletterSubscription = (email: string) => {
+    console.log(`Subscribed with email: ${email}`);
+};
+
+const prevPage = () => {
+    if (currentPage.value > 1) {
+        currentPage.value--;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+};
+
+const nextPage = () => {
+    if (currentPage.value < totalPages.value) {
+        currentPage.value++;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+};
+
+const goToPage = (page: number) => {
+    currentPage.value = page;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+
+// Computed Properties
+const featuredArticle = computed(() =>
+    articles.find(article => article.featured)
+);
+
+const filteredArticles = computed(() => {
+    let filtered = articles;
+
+    if (activeCategory.value !== 'all') {
+        filtered = filtered.filter(article => article.category === activeCategory.value);
+    }
+
+    if (searchQuery.value.trim() !== '') {
+        const query = searchQuery.value.toLowerCase().trim();
+        filtered = filtered.filter(article =>
+            article.title.toLowerCase().includes(query) ||
+            article.excerpt.toLowerCase().includes(query)
+        );
+    }
+
+    return filtered.filter(article => !article.featured);
+});
+
+const paginatedArticles = computed(() => {
+    const startIndex = (currentPage.value - 1) * postsPerPage;
+    const endIndex = startIndex + postsPerPage;
+    return filteredArticles.value.slice(startIndex, endIndex);
+});
+
+const totalPages = computed(() =>
+    Math.ceil(filteredArticles.value.length / postsPerPage)
+);
+
+watch(searchQuery, () => {
+    currentPage.value = 1;
+});
 </script>
+
+<style scoped>
+.accent {
+    color: #6d28d9;
+    margin-right: 4px;
+}
+</style>
