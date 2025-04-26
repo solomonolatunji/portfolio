@@ -1,5 +1,3 @@
-// filepath: /home/eminisolomon/Dev/portfolio/src/data/blogArticles.ts
-// filepath: /home/eminisolomon/Dev/portfolio/src/data/blogArticles.ts
 import type { BlogPost } from "../interfaces/blog";
 
 export const articles: BlogPost[] = [
