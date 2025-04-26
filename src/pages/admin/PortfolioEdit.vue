@@ -96,7 +96,7 @@
                             <div class="relative inline-block w-12 align-middle select-none transition duration-200">
                                 <input type="checkbox" id="featured" v-model="form.featured"
                                     class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer transition-transform duration-300"
-                                    :class="{ 'translate-x-6 border-purple-500': form.featured, 'border-gray-600': !form.featured }" />
+                                    :class="{ 'transform-featured border-purple-500': form.featured, 'border-gray-600': !form.featured }" />
                                 <label for="featured"
                                     class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-700 cursor-pointer"
                                     :class="{ 'bg-purple-700': form.featured }" />
@@ -421,10 +421,15 @@ async function handleSubmit() {
 
 <style scoped>
 .toggle-checkbox:checked {
-    @apply translate-x-6 border-purple-500;
+    transform: translateX(1.5rem);
+    border-color: #8b5cf6;
 }
 
 .toggle-checkbox:checked+.toggle-label {
-    @apply bg-purple-700;
+    background-color: #7e22ce;
+}
+
+.transform-featured {
+    transform: translateX(1.5rem);
 }
 </style>

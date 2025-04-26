@@ -6,6 +6,9 @@
             <p class="text-gray-400 mt-1">Update your blog article</p>
         </div>
 
+        <!-- API Key Alert (only shown if API key is missing) -->
+        <ApiKeyAlert v-if="!tinymceApiKey" />
+
         <div v-if="!post">
             <div class="bg-[#1e1e1e] rounded-xl p-8 text-center border border-[#333]">
                 <FaceFrownIcon class="mx-auto h-12 w-12 text-gray-500 mb-4" />
@@ -168,6 +171,7 @@ import { useBlogStore } from '@/stores/blogPosts';
 import type { BlogPost } from '@/interfaces/blog';
 import Editor from '@tinymce/tinymce-vue';
 import { XMarkIcon, FaceFrownIcon } from '@heroicons/vue/24/outline';
+import ApiKeyAlert from '@/components/admin/ApiKeyAlert.vue';
 
 const router = useRouter();
 const route = useRoute();
@@ -207,7 +211,7 @@ const SpinnerIcon = defineComponent({
 });
 
 // TinyMCE Config
-const tinymceApiKey = ''; // You would use your own API key in a production environment
+const tinymceApiKey = import.meta.env.VITE_TINYMCE_API_KEY || '';
 const editorConfig = {
     height: 500,
     menubar: true,

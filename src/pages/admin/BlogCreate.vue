@@ -6,6 +6,8 @@
             <p class="text-gray-400 mt-1">Write and publish a new blog article</p>
         </div>
 
+        <ApiKeyAlert v-if="!tinymceApiKey" />
+
         <!-- Form -->
         <form @submit.prevent="savePost" class="space-y-8">
             <div class="bg-[#1e1e1e] rounded-xl border border-[#333] p-6 shadow-lg">
@@ -160,6 +162,7 @@ import { useBlogStore } from '@/stores/blogPosts';
 import { type BlogPost } from '@/interfaces/blog';
 import Editor from '@tinymce/tinymce-vue';
 import { XMarkIcon, ArrowLeftIcon, DocumentPlusIcon } from '@heroicons/vue/24/outline';
+import ApiKeyAlert from '@/components/admin/ApiKeyAlert.vue';
 
 // Using a custom spinner icon component since Heroicons might not have the exact spinner we need
 const SpinnerIcon = defineComponent({
@@ -191,10 +194,8 @@ const blogStore = useBlogStore();
 const isSubmitting = ref(false);
 
 // TinyMCE Config
-const tinymceApiKey = ''; // You would use your own API key in a production environment
+const tinymceApiKey = import.meta.env.VITE_TINYMCE_API_KEY || '';
 const editorConfig = {
-    height: 500,
-    menubar: true,
     plugins: [
         'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
         'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
