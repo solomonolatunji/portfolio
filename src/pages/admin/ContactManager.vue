@@ -241,6 +241,7 @@ import {
     XMarkIcon,
     InboxIcon,
 } from '@heroicons/vue/24/outline';
+import Pagination from '@/components/Pagination.vue';
 
 interface ContactMessage {
     id: number;
