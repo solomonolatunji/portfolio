@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400" fill="none">
+  <style>
+    .primary { fill: #3b82f6; }
+    .secondary { fill: #9ca3af; }
+    .accent { fill: #ef4444; }
+    @media (prefers-color-scheme: dark) {
+      .primary { fill: #60a5fa; }
+      .secondary { fill: #d1d5db; }
+    }
+  </style>
+  <rect width="600" height="400" fill="none"/>
+  <circle cx="300" cy="180" r="120" fill-opacity="0.1" class="primary"/>
+  <path d="M230 120L370 240" stroke-width="8" stroke-linecap="round" class="accent"/>
+  <path d="M370 120L230 240" stroke-width="8" stroke-linecap="round" class="accent"/>
+  <path d="M195 280C195 280 219 320 300 320C381 320 405 280 405 280" stroke-width="6" stroke-linecap="round" class="primary"/>
+  <path d="M150 100C150 100 191 70 300 70C409 70 450 100 450 100" stroke-width="6" stroke-linecap="round" class="secondary"/>
+  <rect x="180" y="340" width="240" height="10" rx="5" fill-opacity="0.2" class="secondary"/>
+</svg>

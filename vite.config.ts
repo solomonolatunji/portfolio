@@ -11,17 +11,4 @@ export default defineConfig({
       "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
   },
-  server: {
-    hmr: {
-      host: "solomonolatunji.com",
-      clientPort: 443,
-      protocol: "wss",
-    },
-  },
-  preview: {
-    host: true,
-    port: process.env.PORT ? Number(process.env.PORT) : 3000,
-    strictPort: true,
-  },
-  base: "/",
 });
