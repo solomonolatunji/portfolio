@@ -30,7 +30,10 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { XMarkIcon, ArrowPathIcon } from '@heroicons/vue/24/outline';
+import { useAdminAuthStore } from '@/stores/adminAuth';
+import { useToast } from 'vue-toastification';
 
 defineProps<{
     modelValue: boolean;
@@ -41,13 +44,25 @@ const emit = defineEmits<{
     'confirm': [];
 }>();
 
+const router = useRouter();
+const adminStore = useAdminAuthStore();
+const toast = useToast();
 const isSigningOut = ref(false);
 
-function confirmSignOut() {
+async function confirmSignOut() {
     isSigningOut.value = true;
-    emit('confirm');
-    setTimeout(() => {
+
+    try {
+        await adminStore.logout();
+        toast.success('You have been successfully signed out');
+        emit('update:modelValue', false);
+        emit('confirm');
+        router.push('/admin/login');
+    } catch (error) {
+        console.error('Error signing out:', error);
+        toast.error('An error occurred while signing out');
+    } finally {
         isSigningOut.value = false;
-    }, 500);
+    }
 }
 </script>

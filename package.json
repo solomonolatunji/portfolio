@@ -37,6 +37,7 @@
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.10",
     "@tailwindcss/typography": "^0.5.16",
+    "@types/node": "^22.15.3",
     "@vitejs/plugin-vue": "^5.2.3",
     "@vue/tsconfig": "^0.7.0",
     "autoprefixer": "^10.4.21",

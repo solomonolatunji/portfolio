@@ -67,6 +67,14 @@ const routes = [
         path: "blog/create",
         component: () => import("@/pages/admin/BlogCreate.vue"),
       },
+      {
+        path: "contact",
+        component: () => import("@/pages/admin/ContactManager.vue"),
+      },
+      {
+        path: "settings",
+        component: () => import("@/pages/admin/Settings.vue"),
+      },
     ],
   },
   {
@@ -84,7 +92,7 @@ const router = createRouter({
   },
 });
 
-router.beforeEach((to, _from, next) => {
+router.beforeEach(async (to, _from, next) => {
   const adminStore = useAdminAuthStore();
   adminStore.initializeFromStorage();
 
@@ -92,8 +100,23 @@ router.beforeEach((to, _from, next) => {
     if (!adminStore.isAuthenticated) {
       next({ path: "/admin/login" });
     } else {
-      next();
+      // Validate token before proceeding
+      const isTokenValid = await adminStore.ensureValidToken();
+
+      if (isTokenValid) {
+        next();
+      } else {
+        // Token is invalid or couldn't be refreshed, redirect to login
+        adminStore.clearAuthState();
+        next({
+          path: "/admin/login",
+          query: { redirect: to.fullPath },
+        });
+      }
     }
+  } else if (to.path === "/admin/login" && adminStore.isAuthenticated) {
+    // Redirect to admin dashboard if already authenticated
+    next({ path: "/admin" });
   } else {
     next();
   }

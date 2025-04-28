@@ -17,18 +17,20 @@
             <div class="bg-[#1e1e1e] rounded-xl p-8 shadow-xl border border-[#333]">
                 <form @submit.prevent="handleLogin">
                     <div class="mb-6">
-                        <label for="username" class="block text-gray-400 text-sm font-medium mb-2">Username</label>
+                        <label for="email" class="block text-gray-400 text-sm font-medium mb-2">Email</label>
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                 <UserIcon class="h-5 w-5 text-gray-500" />
                             </div>
-                            <input type="text" id="username" v-model="form.username"
+                            <input type="email" id="email" v-model="form.email"
                                 class="w-full pl-10 pr-4 py-3 bg-[#2d2d2d] border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#6d28d9] text-white"
-                                placeholder="Enter your username" required />
+                                placeholder="Enter your email" required />
                         </div>
+                        <p v-if="validationErrors.email" class="mt-2 text-sm text-red-500">{{ validationErrors.email[0]
+                            }}</p>
                     </div>
 
-                    <div class="mb-8">
+                    <div class="mb-6">
                         <label for="password" class="block text-gray-400 text-sm font-medium mb-2">Password</label>
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -38,14 +40,26 @@
                                 class="w-full pl-10 pr-4 py-3 bg-[#2d2d2d] border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#6d28d9] text-white"
                                 placeholder="Enter your password" required />
                         </div>
+                        <p v-if="validationErrors.password" class="mt-2 text-sm text-red-500">{{
+                            validationErrors.password[0] }}</p>
+                    </div>
+
+                    <div class="mb-8 flex items-center">
+                        <input type="checkbox" id="remember_me" v-model="form.remember_me"
+                            class="w-4 h-4 text-[#6d28d9] bg-[#2d2d2d] border-gray-700 rounded focus:ring-[#6d28d9] focus:ring-2" />
+                        <label for="remember_me" class="ml-2 text-sm text-gray-400">Remember me</label>
                     </div>
 
                     <button type="submit"
                         class="w-full bg-gradient-to-r from-[#6d28d9] to-[#8b5cf6] hover:from-[#5b21b6] hover:to-[#7c3aed] text-white py-3 px-4 rounded-lg font-medium transition-all duration-300 flex items-center justify-center"
-                        :disabled="isLoading">
-                        <SpinnerIcon v-if="isLoading" class="animate-spin -ml-1 mr-2 h-5 w-5 text-white" />
-                        <span>{{ isLoading ? 'Signing in...' : 'Sign in' }}</span>
+                        :disabled="adminStore.loading">
+                        <SpinnerIcon v-if="adminStore.loading" class="animate-spin -ml-1 mr-2 h-5 w-5 text-white" />
+                        <span>{{ adminStore.loading ? 'Signing in...' : 'Sign in' }}</span>
                     </button>
+
+                    <p v-if="adminStore.error" class="mt-4 text-center text-red-500 text-sm">
+                        {{ adminStore.error }}
+                    </p>
                 </form>
             </div>
 
@@ -60,7 +74,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, h, defineComponent } from 'vue';
+import { reactive, h, defineComponent } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAdminAuthStore } from '@/stores/adminAuth';
 import type { AdminCredentials } from '@/interfaces/auth';
@@ -72,11 +86,12 @@ const adminStore = useAdminAuthStore();
 const toast = useToast();
 
 const form = reactive<AdminCredentials>({
-    username: '',
+    email: '',
     password: '',
+    remember_me: false
 });
 
-const isLoading = ref(false);
+const validationErrors = reactive<Record<string, string[]>>({});
 
 const SpinnerIcon = defineComponent({
     setup() {
@@ -104,25 +119,27 @@ const SpinnerIcon = defineComponent({
 });
 
 const handleLogin = async () => {
-    isLoading.value = true;
+    // Reset validation errors
+    Object.keys(validationErrors).forEach(key => delete validationErrors[key]);
 
     try {
-        // Simulate network delay
-        await new Promise(resolve => setTimeout(resolve, 800));
-
-        const success = adminStore.login(form.username, form.password);
+        const success = await adminStore.login(form);
 
         if (success) {
             toast.success('Login successful! Redirecting to dashboard...');
             router.push('/admin');
-        } else {
-            toast.error('Invalid username or password. Please try again.');
+        } else if (adminStore.error) {
+            toast.error(adminStore.error);
         }
-    } catch (error) {
-        toast.error('An error occurred. Please try again later.');
-        console.error(error);
-    } finally {
-        isLoading.value = false;
+    } catch (error: any) {
+        if (error.response?.status === 422 && error.response?.data?.errors) {
+            // Handle validation errors
+            Object.assign(validationErrors, error.response.data.errors);
+            toast.error('Please correct the errors in the form.');
+        } else {
+            toast.error('An error occurred. Please try again later.');
+            console.error(error);
+        }
     }
 };
 </script>
