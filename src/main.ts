@@ -4,6 +4,7 @@ import { createHead, VueHeadMixin } from "@vueuse/head";
 import "@/assets/css/style.css";
 import App from "./App.vue";
 import router from "./routes";
+import { useAdminAuthStore } from "./stores/adminAuth";
 
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
@@ -29,6 +30,10 @@ const pinia = createPinia();
 
 app.use(head);
 app.use(pinia);
+
+const adminAuthStore = useAdminAuthStore();
+adminAuthStore.initializeFromStorage();
+
 app.use(router);
 app.use(Toast, toastOptions);
 app.mixin(VueHeadMixin);

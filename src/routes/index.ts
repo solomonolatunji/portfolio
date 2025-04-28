@@ -94,32 +94,44 @@ const router = createRouter({
 
 router.beforeEach(async (to, _from, next) => {
   const adminStore = useAdminAuthStore();
-  adminStore.initializeFromStorage();
 
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    if (!adminStore.isAuthenticated) {
-      next({ path: "/admin/login" });
+    if (adminStore.token) {
+      try {
+        const isTokenValid = await adminStore.ensureValidToken();
+
+        if (isTokenValid) {
+          return next();
+        }
+
+        adminStore.clearAuthState();
+      } catch (error) {
+        adminStore.clearAuthState();
+      }
+
+      return next({
+        path: "/admin/login",
+        query: { redirect: to.fullPath },
+      });
     } else {
-      // Validate token before proceeding
+      return next({
+        path: "/admin/login",
+        query: { redirect: to.fullPath },
+      });
+    }
+  } else if (to.path === "/admin/login" && adminStore.token) {
+    try {
       const isTokenValid = await adminStore.ensureValidToken();
 
       if (isTokenValid) {
-        next();
-      } else {
-        // Token is invalid or couldn't be refreshed, redirect to login
-        adminStore.clearAuthState();
-        next({
-          path: "/admin/login",
-          query: { redirect: to.fullPath },
-        });
+        return next({ path: "/admin" });
       }
+    } catch (error) {
+      adminStore.clearAuthState();
     }
-  } else if (to.path === "/admin/login" && adminStore.isAuthenticated) {
-    // Redirect to admin dashboard if already authenticated
-    next({ path: "/admin" });
-  } else {
-    next();
   }
+
+  next();
 });
 
 export default router;

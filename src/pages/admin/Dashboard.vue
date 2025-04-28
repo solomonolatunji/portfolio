@@ -191,15 +191,15 @@ const currentDate = computed(() => {
 
 const currentPageTitle = computed(() => {
     const path = route.path;
-    if (path === '/admin') return 'Dashboard Overview';
-    if (path === '/admin/portfolio') return 'Portfolio Management';
+    if (path === '/admin') return 'Dashboard';
+    if (path === '/admin/portfolio') return 'Portfolio';
     if (path.includes('/admin/portfolio/create')) return 'Create Project';
     if (path.includes('/admin/portfolio/edit')) return 'Edit Project';
-    if (path === '/admin/blog') return 'Blog Management';
+    if (path === '/admin/blog') return 'Blog';
     if (path.includes('/admin/blog/create')) return 'Create Blog Post';
     if (path.includes('/admin/blog/edit')) return 'Edit Blog Post';
     if (path === '/admin/contact') return 'Contact';
-    if (path === '/admin/settings') return 'System Settings';
+    if (path === '/admin/settings') return 'Settings';
     return 'Admin Dashboard';
 });
 

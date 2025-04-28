@@ -6,7 +6,7 @@ import type {
   UserProfileResponse,
 } from "@/interfaces/auth";
 import { defineStore } from "pinia";
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import axios from "axios";
 import { authApi } from "./api";
 
@@ -18,25 +18,32 @@ export const useAdminAuthStore = defineStore("adminAuth", () => {
   const loading = ref(false);
   const error = ref<string | null>(null);
 
-  const isTokenExpired = computed(() => {
-    if (!tokenExpiry.value) return true;
-    return Date.now() >= tokenExpiry.value * 1000;
-  });
-
   function initializeFromStorage() {
-    const storedToken = localStorage.getItem("admin_token");
-    const storedUser = localStorage.getItem("admin_user");
-    const storedExpiry = localStorage.getItem("token_expiry");
+    const storedToken =
+      localStorage.getItem("admin_token") ||
+      sessionStorage.getItem("admin_token");
+    const storedUser =
+      localStorage.getItem("admin_user") ||
+      sessionStorage.getItem("admin_user");
+    const storedExpiry =
+      localStorage.getItem("token_expiry") ||
+      sessionStorage.getItem("token_expiry");
 
     if (storedToken && storedUser && storedExpiry) {
       token.value = storedToken;
       user.value = JSON.parse(storedUser);
       tokenExpiry.value = parseInt(storedExpiry);
-      isAuthenticated.value = !isTokenExpired.value;
 
-      authApi.defaults.headers.common[
-        "Authorization"
-      ] = `Bearer ${token.value}`;
+      const currentTime = Math.floor(Date.now() / 1000);
+      const isExpired = tokenExpiry.value <= currentTime;
+
+      isAuthenticated.value = !isExpired;
+
+      if (isAuthenticated.value) {
+        authApi.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${token.value}`;
+      }
     }
   }
 
@@ -95,7 +102,7 @@ export const useAdminAuthStore = defineStore("adminAuth", () => {
     if (!token.value) return false;
 
     try {
-      const response = await authApi.get<UserProfileResponse>("/auth/me");
+      const response = await authApi.get<UserProfileResponse>("/auth/user");
 
       if (response.data.status) {
         user.value = response.data.data;
@@ -152,7 +159,6 @@ export const useAdminAuthStore = defineStore("adminAuth", () => {
     clearAuthState();
   }
 
-  // Clear auth state
   function clearAuthState(): void {
     isAuthenticated.value = false;
     user.value = null;
@@ -160,10 +166,8 @@ export const useAdminAuthStore = defineStore("adminAuth", () => {
     tokenExpiry.value = null;
     error.value = null;
 
-    // Clear axios header
     delete authApi.defaults.headers.common["Authorization"];
 
-    // Clear storage
     localStorage.removeItem("admin_token");
     localStorage.removeItem("admin_user");
     localStorage.removeItem("token_expiry");
@@ -179,6 +183,10 @@ export const useAdminAuthStore = defineStore("adminAuth", () => {
     const currentTime = Math.floor(Date.now() / 1000);
 
     if (tokenExpiry.value && tokenExpiry.value - currentTime < expiryBuffer) {
+      return await refreshToken();
+    }
+
+    if (tokenExpiry.value && currentTime >= tokenExpiry.value) {
       return await refreshToken();
     }
 
