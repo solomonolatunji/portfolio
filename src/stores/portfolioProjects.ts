@@ -1,71 +1,269 @@
 import { defineStore } from "pinia";
-import { ref } from "vue";
-import type { Project } from "@/interfaces/portfolio";
+import { ref, computed } from "vue";
+import { api } from "./api";
+import type {
+  Project,
+  ProjectsResponse,
+  ProjectResponse,
+  PaginationMeta,
+  ProjectForm,
+} from "@/interfaces/portfolio";
 
 export const usePortfolioStore = defineStore("portfolio", () => {
-  // State
-  const projects = ref<Project[]>([
-    {
-      id: "1",
-      title: "E-commerce Dashboard",
-      description:
-        "A comprehensive admin dashboard for e-commerce platforms with sales analytics, inventory management, and customer insights.",
-      detailedDescription:
-        "This e-commerce dashboard serves as a central control panel for online store owners to manage their business operations efficiently. It provides a real-time overview of sales performance, inventory levels, customer behavior, and marketing campaign effectiveness, all in one intuitive interface.",
-      image:
-        "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
-      year: "2024",
-      category: "web",
-      technologies: ["Vue.js", "Tailwind CSS", "Chart.js", "Node.js"],
-      features: [
-        "Interactive sales analytics with customizable date ranges and filters",
-        "Inventory management system with low-stock alerts and reorder recommendations",
-        "Customer insights with segmentation based on purchasing behavior",
-        "Order management with status tracking and processing tools",
-        "Marketing campaign performance tracking and ROI calculation",
-      ],
-      role: "As the lead frontend developer, I designed and implemented the user interface using Vue.js and Tailwind CSS. I worked closely with UX designers to create intuitive data visualizations and dashboards that make complex information accessible and actionable for store owners.",
-      challenges:
-        "The main challenge was creating a responsive dashboard that could display large amounts of data without overwhelming users or causing performance issues. I solved this by implementing lazy loading, virtual scrolling for large data sets, and optimizing chart rendering based on viewport visibility.",
-      gallery: [
-        "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
-        "https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
-        "https://images.unsplash.com/photo-1533628635777-112b2239b1c7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
-      ],
-      demoUrl: "https://demo-link.com",
-      codeUrl: "https://github.com/eminisolomon",
-    },
-    // Other projects would be included here
-  ]);
+  const projects = ref<Project[]>([]);
+  const loading = ref(false);
+  const error = ref<string | null>(null);
+  const currentProject = ref<Project | null>(null);
+  const pagination = ref<PaginationMeta | null>(null);
+  const categories = ref<string[]>(["web", "mobile", "ui"]);
 
-  // Actions
-  function addProject(project: Project) {
-    // Generate a unique ID (in a real app, this would come from the backend)
-    project.id = (projects.value.length + 1).toString();
-    projects.value.push(project);
-  }
+  const hasProjects = computed(() => projects.value.length > 0);
+  const featuredProjects = computed(() =>
+    projects.value.filter((project) =>
+      project.media?.some((media) => media.is_featured)
+    )
+  );
 
-  function updateProject(updatedProject: Project) {
-    const index = projects.value.findIndex((p) => p.id === updatedProject.id);
-    if (index !== -1) {
-      projects.value[index] = { ...updatedProject };
+  const mapApiProject = (project: Project): Project => {
+    const featuredMedia =
+      project.media?.find((m) => m.is_featured) || project.media?.[0];
+
+    return {
+      ...project,
+      detailedDescription: project.content,
+      image: featuredMedia?.url || project.image,
+      codeUrl: project.github_url,
+      demoUrl: project.demo_url,
+      technologies: project.technologies || [],
+    };
+  };
+
+  async function fetchProjects(params = { per_page: 10, page: 1 }) {
+    loading.value = true;
+    error.value = null;
+
+    try {
+      const response = await api.get<ProjectsResponse>("/portfolio/projects", {
+        params,
+      });
+      projects.value = response.data.data.map(mapApiProject);
+      pagination.value = response.data.meta;
+      return response.data;
+    } catch (err: any) {
+      error.value = err.response?.data?.message || "Failed to fetch projects";
+      throw err;
+    } finally {
+      loading.value = false;
     }
   }
 
-  function deleteProject(id: string) {
-    const index = projects.value.findIndex((p) => p.id === id);
-    if (index !== -1) {
-      projects.value.splice(index, 1);
+  async function fetchProjectsByCategory(
+    category: string,
+    params = { per_page: 10, page: 1 }
+  ) {
+    loading.value = true;
+    error.value = null;
+
+    try {
+      const response = await api.get<ProjectsResponse>(
+        `/portfolio/projects/category/${category}`,
+        { params }
+      );
+      projects.value = response.data.data.map(mapApiProject);
+      pagination.value = response.data.meta;
+      return response.data;
+    } catch (err: any) {
+      error.value =
+        err.response?.data?.message || "Failed to fetch projects by category";
+      throw err;
+    } finally {
+      loading.value = false;
     }
   }
 
-  function getProjectById(id: string) {
-    return projects.value.find((p) => p.id === id) || null;
+  async function fetchProjectBySlug(slug: string) {
+    loading.value = true;
+    error.value = null;
+    currentProject.value = null;
+
+    try {
+      const response = await api.get<ProjectResponse>(
+        `/portfolio/projects/${slug}`
+      );
+      currentProject.value = mapApiProject(response.data.data);
+      return currentProject.value;
+    } catch (err: any) {
+      error.value =
+        err.response?.data?.message || "Failed to fetch project details";
+      throw err;
+    } finally {
+      loading.value = false;
+    }
+  }
+
+  async function createProject(projectData: ProjectForm) {
+    loading.value = true;
+    error.value = null;
+
+    try {
+      const formData = new FormData();
+
+      Object.entries(projectData).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+          if (key === "featured_image" && value instanceof File) {
+            formData.append(key, value);
+          } else if (key === "gallery" && Array.isArray(value)) {
+            value.forEach((file: File) => {
+              formData.append("gallery[]", file);
+            });
+          } else if (key === "technologies" && Array.isArray(value)) {
+            value.forEach((tech: number) => {
+              formData.append("technologies[]", tech.toString());
+            });
+          } else if (key === "features" && Array.isArray(value)) {
+            value.forEach((feature, index) => {
+              formData.append(`features[${index}][title]`, feature.title);
+            });
+          } else if (key === "media_ids_to_delete" && Array.isArray(value)) {
+            value.forEach((id: number) => {
+              formData.append("media_ids_to_delete[]", id.toString());
+            });
+          } else if (typeof value !== "object") {
+            formData.append(key, value.toString());
+          }
+        }
+      });
+
+      const response = await api.post<ProjectResponse>(
+        "/portfolio/projects",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      const newProject = mapApiProject(response.data.data);
+      projects.value.unshift(newProject);
+
+      return response.data;
+    } catch (err: any) {
+      error.value = err.response?.data?.message || "Failed to create project";
+      throw err;
+    } finally {
+      loading.value = false;
+    }
+  }
+
+  async function updateProject(id: number | string, projectData: ProjectForm) {
+    loading.value = true;
+    error.value = null;
+
+    try {
+      const formData = new FormData();
+
+      formData.append("_method", "PUT");
+
+      Object.entries(projectData).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+          if (key === "featured_image" && value instanceof File) {
+            formData.append(key, value);
+          } else if (key === "gallery" && Array.isArray(value)) {
+            value.forEach((file: File) => {
+              formData.append("gallery[]", file);
+            });
+          } else if (key === "technologies" && Array.isArray(value)) {
+            value.forEach((tech: number) => {
+              formData.append("technologies[]", tech.toString());
+            });
+          } else if (key === "features" && Array.isArray(value)) {
+            value.forEach((feature, index) => {
+              formData.append(`features[${index}][title]`, feature.title);
+            });
+          } else if (key === "media_ids_to_delete" && Array.isArray(value)) {
+            value.forEach((mediaId: number) => {
+              formData.append("media_ids_to_delete[]", mediaId.toString());
+            });
+          } else if (typeof value !== "object") {
+            formData.append(key, value.toString());
+          }
+        }
+      });
+
+      const response = await api.post<ProjectResponse>(
+        `/portfolio/projects/${id}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      const updatedProject = mapApiProject(response.data.data);
+      const index = projects.value.findIndex((p) => p.id === id);
+      if (index !== -1) {
+        projects.value[index] = updatedProject;
+      }
+
+      if (currentProject.value && currentProject.value.id === id) {
+        currentProject.value = updatedProject;
+      }
+
+      return response.data;
+    } catch (err: any) {
+      error.value = err.response?.data?.message || "Failed to update project";
+      throw err;
+    } finally {
+      loading.value = false;
+    }
+  }
+
+  async function deleteProject(id: number | string) {
+    loading.value = true;
+    error.value = null;
+
+    try {
+      await api.delete(`/portfolio/projects/${id}`);
+
+      const index = projects.value.findIndex((p) => p.id === id);
+      if (index !== -1) {
+        projects.value.splice(index, 1);
+      }
+
+      if (currentProject.value && currentProject.value.id === id) {
+        currentProject.value = null;
+      }
+
+      return true;
+    } catch (err: any) {
+      error.value = err.response?.data?.message || "Failed to delete project";
+      throw err;
+    } finally {
+      loading.value = false;
+    }
+  }
+
+  function getProjectById(id: string | number) {
+    return projects.value.find((p) => p.id == id) || null;
   }
 
   return {
     projects,
-    addProject,
+    loading,
+    error,
+    currentProject,
+    pagination,
+    categories,
+
+    hasProjects,
+    featuredProjects,
+
+    fetchProjects,
+    fetchProjectsByCategory,
+    fetchProjectBySlug,
+    createProject,
     updateProject,
     deleteProject,
     getProjectById,
