@@ -8,7 +8,7 @@ import type {
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import axios from "axios";
-import { authApi } from "./api";
+import { api } from "./api";
 
 export const useAdminAuthStore = defineStore("adminAuth", () => {
   const isAuthenticated = ref(false);
@@ -40,9 +40,7 @@ export const useAdminAuthStore = defineStore("adminAuth", () => {
       isAuthenticated.value = !isExpired;
 
       if (isAuthenticated.value) {
-        authApi.defaults.headers.common[
-          "Authorization"
-        ] = `Bearer ${token.value}`;
+        api.defaults.headers.common["Authorization"] = `Bearer ${token.value}`;
       }
     }
   }
@@ -52,10 +50,7 @@ export const useAdminAuthStore = defineStore("adminAuth", () => {
     error.value = null;
 
     try {
-      const response = await authApi.post<AuthResponse>(
-        "/auth/login",
-        credentials
-      );
+      const response = await api.post<AuthResponse>("/auth/login", credentials);
 
       if (response.data.status && response.data.data) {
         const { access_token, expires_in, user: userData } = response.data.data;
@@ -65,9 +60,7 @@ export const useAdminAuthStore = defineStore("adminAuth", () => {
         isAuthenticated.value = true;
         tokenExpiry.value = Math.floor(Date.now() / 1000) + expires_in;
 
-        authApi.defaults.headers.common[
-          "Authorization"
-        ] = `Bearer ${access_token}`;
+        api.defaults.headers.common["Authorization"] = `Bearer ${access_token}`;
 
         if (credentials.remember_me) {
           localStorage.setItem("admin_token", access_token);
@@ -102,7 +95,7 @@ export const useAdminAuthStore = defineStore("adminAuth", () => {
     if (!token.value) return false;
 
     try {
-      const response = await authApi.get<UserProfileResponse>("/auth/user");
+      const response = await api.get<UserProfileResponse>("/auth/user");
 
       if (response.data.status) {
         user.value = response.data.data;
@@ -121,7 +114,7 @@ export const useAdminAuthStore = defineStore("adminAuth", () => {
 
   async function refreshToken(): Promise<boolean> {
     try {
-      const response = await authApi.post<AuthResponse>("/auth/refresh");
+      const response = await api.post<AuthResponse>("/auth/refresh");
 
       if (response.data.status && response.data.data) {
         const { access_token, expires_in, user: userData } = response.data.data;
@@ -131,9 +124,7 @@ export const useAdminAuthStore = defineStore("adminAuth", () => {
         tokenExpiry.value = Math.floor(Date.now() / 1000) + expires_in;
         isAuthenticated.value = true;
 
-        authApi.defaults.headers.common[
-          "Authorization"
-        ] = `Bearer ${access_token}`;
+        api.defaults.headers.common["Authorization"] = `Bearer ${access_token}`;
 
         localStorage.setItem("admin_token", access_token);
         localStorage.setItem("admin_user", JSON.stringify(userData));
@@ -150,7 +141,7 @@ export const useAdminAuthStore = defineStore("adminAuth", () => {
   async function logout(): Promise<void> {
     if (token.value) {
       try {
-        await authApi.post<LogoutResponse>("/auth/logout");
+        await api.post<LogoutResponse>("/auth/logout");
       } catch (err) {
         console.error("Logout API error:", err);
       }
@@ -166,7 +157,7 @@ export const useAdminAuthStore = defineStore("adminAuth", () => {
     tokenExpiry.value = null;
     error.value = null;
 
-    delete authApi.defaults.headers.common["Authorization"];
+    delete api.defaults.headers.common["Authorization"];
 
     localStorage.removeItem("admin_token");
     localStorage.removeItem("admin_user");
@@ -209,7 +200,7 @@ export const useAdminAuthStore = defineStore("adminAuth", () => {
   };
 });
 
-authApi.interceptors.request.use(async (config) => {
+api.interceptors.request.use(async (config) => {
   const authStore = useAdminAuthStore();
 
   if (authStore.isAuthenticated) {
@@ -222,4 +213,4 @@ authApi.interceptors.request.use(async (config) => {
   return config;
 });
 
-export { authApi };
+export { api };

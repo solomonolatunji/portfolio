@@ -72,6 +72,10 @@ const routes = [
         component: () => import("@/pages/admin/ContactManager.vue"),
       },
       {
+        path: "media",
+        component: () => import("@/pages/admin/MediaManager.vue"),
+      },
+      {
         path: "settings",
         component: () => import("@/pages/admin/Settings.vue"),
       },

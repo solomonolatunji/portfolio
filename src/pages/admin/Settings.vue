@@ -289,47 +289,8 @@
                                         Clear Cache
                                     </button>
                                 </div>
-                                <div class="pt-4 border-t border-[#333]">
-                                    <h4 class="text-sm font-medium text-red-400 mb-2">Reset All Settings</h4>
-                                    <p class="text-sm text-gray-400 mb-3">This will reset all settings to their default
-                                        values. This action cannot be undone.</p>
-                                    <button @click="showResetConfirmation = true"
-                                        class="px-4 py-2 bg-red-900/20 text-red-400 border border-red-900/30 rounded-md hover:bg-red-900/30 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 transition-colors">
-                                        Reset All Settings
-                                    </button>
-                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Reset Confirmation Modal -->
-        <div v-if="showResetConfirmation"
-            class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
-            <div class="bg-[#1e1e1e] border border-[#333] rounded-lg max-w-md w-full mx-4">
-                <div class="p-4 border-b border-[#333] flex justify-between items-center">
-                    <h3 class="text-lg font-medium text-red-400">Confirm Reset</h3>
-                    <button @click="showResetConfirmation = false" class="text-gray-400 hover:text-white">
-                        <XMarkIcon class="w-5 h-5" />
-                    </button>
-                </div>
-                <div class="p-6">
-                    <div class="flex items-center mb-4">
-                        <ExclamationTriangleIcon class="w-8 h-8 text-red-400 mr-3" />
-                        <p class="text-white">Are you sure you want to reset all settings to their default values? This
-                            action cannot be undone.</p>
-                    </div>
-                    <div class="flex justify-end gap-2 mt-6">
-                        <button @click="showResetConfirmation = false"
-                            class="px-4 py-2 bg-[#333] text-white rounded hover:bg-[#444] focus:outline-none">
-                            Cancel
-                        </button>
-                        <button @click="resetAllSettings"
-                            class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">
-                            Yes, Reset All
-                        </button>
                     </div>
                 </div>
             </div>
@@ -351,24 +312,19 @@ import {
     GlobeAltIcon,
     CogIcon,
     CheckCircleIcon,
-    XMarkIcon,
-    ExclamationTriangleIcon
 } from '@heroicons/vue/24/outline';
 
 const activeSection = ref(0);
-const showResetConfirmation = ref(false);
 const showToast = ref(false);
 const toastMessage = ref('');
 let toastTimer: number | null = null;
 
-// Setting sections with icons
 const settingSections = [
     { name: 'Account', icon: UserIcon },
     { name: 'Website', icon: GlobeAltIcon },
     { name: 'Advanced', icon: CogIcon }
 ];
 
-// User Settings
 const userSettings = ref({
     username: 'admin',
     email: 'admin@example.com',
@@ -376,7 +332,6 @@ const userSettings = ref({
     lastName: 'User'
 });
 
-// Password Form
 const passwordForm = ref({
     current: '',
     new: '',
@@ -425,36 +380,6 @@ const clearCache = () => {
     showToastMessage('Application cache cleared successfully!');
 };
 
-const resetAllSettings = () => {
-    userSettings.value = {
-        username: 'admin',
-        email: 'admin@example.com',
-        firstName: 'Admin',
-        lastName: 'User'
-    };
-
-    websiteSettings.value = {
-        title: 'My Portfolio',
-        description: 'Professional portfolio website showcasing my projects and skills in web development, design, and more.',
-        maintenanceMode: false,
-        social: {
-            twitter: '',
-            github: '',
-            linkedin: '',
-            instagram: ''
-        }
-    };
-
-    advancedSettings.value = {
-        googleAnalyticsId: '',
-        enableAnalytics: false,
-        apiKey: 'sk_portfolio_' + generateRandomString(32),
-        enableApi: false
-    };
-
-    showResetConfirmation.value = false;
-    showToastMessage('All settings have been reset to defaults!');
-};
 
 const showToastMessage = (message: string) => {
     toastMessage.value = message;
@@ -469,14 +394,6 @@ const showToastMessage = (message: string) => {
     }, 3000);
 };
 
-const generateRandomString = (length: number) => {
-    const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
-    let result = '';
-    for (let i = 0; i < length; i++) {
-        result += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return result;
-};
 
 onMounted(() => {
     document.title = "Settings | Admin Dashboard";

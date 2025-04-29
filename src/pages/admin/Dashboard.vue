@@ -56,6 +56,13 @@
                         <DocumentTextIcon class="h-5 w-5 mr-3" />
                         Blog
                     </router-link>
+                    <router-link to="/admin/media"
+                        active-class="bg-gradient-to-r from-[#6d28d9] to-[#7c3aed] text-white"
+                        class="flex items-center px-4 py-3 text-gray-300 rounded-lg hover:bg-[#2d2d2d] transition-all"
+                        @click="sidebarOpen = false">
+                        <PhotoIcon class="h-5 w-5 mr-3" />
+                        Media
+                    </router-link>
                     <router-link to="/admin/contact"
                         active-class="bg-gradient-to-r from-[#6d28d9] to-[#7c3aed] text-white"
                         class="flex items-center px-4 py-3 text-gray-300 rounded-lg hover:bg-[#2d2d2d] transition-all"
@@ -103,7 +110,7 @@
                 <div class="flex items-center">
                     <h1 class="text-lg font-medium text-white lg:pl-0 pl-12">{{ currentPageTitle }}</h1>
                     <span class="ml-3 px-3 py-1 bg-[#333] text-xs font-medium rounded-full text-gray-300">{{ pageSection
-                    }}</span>
+                        }}</span>
                 </div>
                 <div class="flex items-center space-x-4">
                     <span class="text-gray-400 hidden sm:inline">{{ currentDate }}</span>
@@ -153,7 +160,8 @@ import {
     XMarkIcon,
     BellIcon,
     EnvelopeIcon,
-    Cog6ToothIcon
+    Cog6ToothIcon,
+    PhotoIcon
 } from '@heroicons/vue/24/outline';
 import SignOutConfirmationModal from '@/components/admin/SignOutConfirmationModal.vue';
 
@@ -198,6 +206,7 @@ const currentPageTitle = computed(() => {
     if (path === '/admin/blog') return 'Blog';
     if (path.includes('/admin/blog/create')) return 'Create Blog Post';
     if (path.includes('/admin/blog/edit')) return 'Edit Blog Post';
+    if (path === '/admin/media') return 'Media';
     if (path === '/admin/contact') return 'Contact';
     if (path === '/admin/settings') return 'Settings';
     return 'Admin Dashboard';
@@ -207,6 +216,7 @@ const pageSection = computed(() => {
     const path = route.path;
     if (path.includes('/admin/portfolio')) return 'Portfolio';
     if (path.includes('/admin/blog')) return 'Blog';
+    if (path.includes('/admin/media')) return 'Media';
     if (path.includes('/admin/contact')) return 'Contact';
     if (path.includes('/admin/settings')) return 'Settings';
     return 'Dashboard';
