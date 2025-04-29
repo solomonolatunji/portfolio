@@ -1,6 +1,5 @@
 <template>
     <div>
-        <!-- Page Header -->
         <div class="flex items-center justify-between mb-6">
             <h1 class="text-2xl font-bold text-white">Media Manager</h1>
             <button @click="openUploadModal"
@@ -13,7 +12,6 @@
             </button>
         </div>
 
-        <!-- Filters -->
         <div class="p-4 mb-6 bg-[#1e1e1e] rounded-xl border border-[#333] shadow">
             <div class="grid grid-cols-1 gap-4 md:grid-cols-4">
                 <div>
@@ -62,7 +60,6 @@
             </div>
         </div>
 
-        <!-- Loading State -->
         <div v-if="mediaStore.isLoading" class="flex items-center justify-center py-10">
             <svg class="w-10 h-10 text-[#6d28d9] animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none"
                 viewBox="0 0 24 24">
@@ -73,7 +70,6 @@
             </svg>
         </div>
 
-        <!-- Error State -->
         <div v-else-if="mediaStore.error"
             class="p-4 mb-6 text-sm text-red-400 bg-red-900/20 border border-red-700 rounded-lg">
             <p>{{ mediaStore.error }}</p>
@@ -83,7 +79,6 @@
             </button>
         </div>
 
-        <!-- Empty State -->
         <div v-else-if="!mediaStore.mediaItems.length"
             class="flex flex-col items-center justify-center px-6 py-12 bg-[#1e1e1e] rounded-xl border border-[#333] shadow">
             <svg class="w-16 h-16 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -106,14 +101,12 @@
             </button>
         </div>
 
-        <!-- Media Grid -->
         <div v-else class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
             <div v-for="media in mediaStore.mediaItems" :key="media.id"
                 class="overflow-hidden bg-[#1e1e1e] rounded-lg border border-[#333] shadow group hover:border-[#6d28d9] transition-all duration-200">
-                <!-- Media Preview -->
                 <div class="relative aspect-w-16 aspect-h-12 bg-[#2d2d2d]">
-                    <img v-if="media.file_type.startsWith('image/')" :src="media.file_path" :alt="media.file_name"
-                        class="object-cover w-full h-full" />
+                    <img v-if="media.file_type.startsWith('image/')" :src="media.url" :alt="media.file_name"
+                        class="object-cover w-full h-full" style="aspect-ratio: 1/1; object-fit: cover;" />
                     <div v-else class="flex items-center justify-center h-full">
                         <svg class="w-12 h-12 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
                             <path
@@ -121,11 +114,10 @@
                         </svg>
                     </div>
 
-                    <!-- Overlay Actions -->
                     <div
                         class="absolute inset-0 flex flex-col items-center justify-center transition-opacity opacity-0 bg-black/70 group-hover:opacity-100">
                         <div class="flex space-x-2">
-                            <a :href="media.file_path" target="_blank"
+                            <a :href="media.url" target="_blank"
                                 class="p-2 text-gray-100 transition rounded-full hover:bg-gray-700 hover:text-white"
                                 title="View">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -161,20 +153,19 @@
                     </div>
                 </div>
 
-                <!-- Media Info -->
                 <div class="px-4 py-2">
                     <p class="text-sm font-medium text-white truncate" :title="media.file_name">
                         {{ media.file_name }}
                     </p>
                     <p class="mt-1 text-xs text-gray-400">
-                        <span class="mr-2">{{ formatFileSize(media.file_size) }}</span>
+                        <span v-if="media.width && media.height" class="mr-2">{{ media.width }}×{{ media.height
+                            }}</span>
                         <span>{{ formatDate(media.created_at) }}</span>
                     </p>
                 </div>
             </div>
         </div>
 
-        <!-- Pagination -->
         <div v-if="mediaStore.mediaItems.length" class="flex items-center justify-between py-4 mt-6">
             <div class="text-sm text-gray-400">
                 Showing {{ mediaStore.pagination.from }} to {{ mediaStore.pagination.to }} of {{
@@ -208,17 +199,14 @@
             </div>
         </div>
 
-        <!-- Error Toast -->
         <div v-if="toastMessage"
             class="fixed bottom-0 right-0 z-50 p-4 m-4 text-white bg-red-900/80 rounded-lg shadow-lg border border-red-700">
             {{ toastMessage }}
         </div>
 
-        <!-- Delete Confirmation Modal -->
         <DeleteMediaModal :is-visible="showConfirmDelete" :media-to-delete="mediaToDelete" @close="hideDeleteModal"
             @confirm="confirmDeleteMedia" />
 
-        <!-- Upload Media Modal -->
         <UploadMedia :is-visible="showUploadModal" @close="closeUploadModal" @upload="handleMediaUpload" />
     </div>
 </template>
@@ -231,11 +219,9 @@ import DeleteMediaModal from '@/components/admin/DeleteMediaModal.vue';
 import UploadMedia from '@/components/admin/UploadMedia.vue';
 import { useToast } from 'vue-toastification';
 
-// Store
 const mediaStore = useMediaStore();
 const toast = useToast();
 
-// State
 const toastMessage = ref<string | null>(null);
 const showConfirmDelete = ref(false);
 const mediaToDelete = ref<Media | null>(null);
@@ -248,17 +234,15 @@ const filters = ref<MediaFilters>({
     page: 1
 });
 
-// Methods
 const fetchMedia = async () => {
     try {
         await mediaStore.fetchMedia(filters.value);
     } catch (error) {
-        // Error is handled by the store
     }
 };
 
 const applyFilters = () => {
-    filters.value.page = 1; // Reset to first page
+    filters.value.page = 1;
     fetchMedia();
 };
 
@@ -298,9 +282,12 @@ const closeUploadModal = () => {
     showUploadModal.value = false;
 };
 
-const handleMediaUpload = async (uploadData: { file: File, isFeatured: boolean, altText: string }) => {
+const handleMediaUpload = async (uploadData: { file: File, isFeatured: boolean, altText: string, directory?: string }) => {
     try {
-        await mediaStore.uploadMedia(uploadData.file, uploadData.isFeatured, uploadData.altText);
+        await mediaStore.uploadMedia(
+            uploadData.file,
+            uploadData.directory
+        );
         closeUploadModal();
         toast.success('Media uploaded successfully');
     } catch (error: any) {
@@ -348,22 +335,10 @@ const confirmDeleteMedia = async () => {
     }
 };
 
-// Utility functions
-const formatFileSize = (bytes: number): string => {
-    if (bytes === 0) return '0 B';
-
-    const k = 1024;
-    const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-};
-
 const formatDate = (dateString: string): string => {
     return new Date(dateString).toLocaleDateString();
 };
 
-// Lifecycle hooks
 onMounted(() => {
     fetchMedia();
 });

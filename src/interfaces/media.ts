@@ -2,10 +2,12 @@ export interface Media {
   id: number;
   mediable_type: string;
   mediable_id: number;
-  file_path: string;
   file_name: string;
   file_type: string;
-  file_size: number;
+  public_id: string;
+  url: string;
+  width: number;
+  height: number;
   is_featured: boolean;
   created_at: string;
   updated_at: string;

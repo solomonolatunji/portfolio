@@ -56,28 +56,17 @@
                                 <span class="text-sm text-white">{{ selectedFile.name }}</span>
                             </div>
                             <div class="flex justify-between">
-                                <span class="text-sm text-gray-400">Size:</span>
-                                <span class="text-sm text-white">{{ formatFileSize(selectedFile.size) }}</span>
-                            </div>
-                            <div class="flex justify-between">
                                 <span class="text-sm text-gray-400">Type:</span>
                                 <span class="text-sm text-white">{{ selectedFile.type }}</span>
                             </div>
 
-                            <!-- Additional options -->
-                            <div class="mt-2">
-                                <label class="flex items-center text-sm text-gray-300">
-                                    <input type="checkbox" v-model="isFeatured"
-                                        class="form-checkbox rounded bg-[#2d2d2d] border-gray-600 text-[#6d28d9] focus:ring-[#6d28d9]">
-                                    <span class="ml-2">Set as featured</span>
-                                </label>
+                            <div class="mt-4 text-left">
+                                <label class="block text-sm font-medium text-gray-300">Directory (optional)</label>
+                                <input type="text" v-model="directory" placeholder="e.g., portfolio/projects"
+                                    class="block w-full px-3 py-2 mt-1 bg-[#2d2d2d] border border-gray-700 rounded-lg shadow-sm focus:outline-none focus:ring-[#6d28d9] focus:border-[#6d28d9] text-white">
+                                <p class="mt-1 text-xs text-gray-400">Specify a directory path for organizing your
+                                    uploads</p>
                             </div>
-                        </div>
-
-                        <div class="mt-4 text-left">
-                            <label class="block text-sm font-medium text-gray-300">Alt Text (for images)</label>
-                            <input type="text" v-model="altText" placeholder="Describe the content of the image"
-                                class="block w-full px-3 py-2 mt-1 bg-[#2d2d2d] border border-gray-700 rounded-lg shadow-sm focus:outline-none focus:ring-[#6d28d9] focus:border-[#6d28d9] text-white">
                         </div>
                     </div>
 
@@ -130,8 +119,7 @@ const selectedFile = ref<File | null>(null);
 const filePreviewUrl = ref<string | null>(null);
 const isUploading = ref(false);
 const dragOver = ref(false);
-const isFeatured = ref(false);
-const altText = ref('');
+const directory = ref('');
 
 const isImage = computed(() => {
     return selectedFile.value?.type.startsWith('image/') || false;
@@ -169,8 +157,7 @@ const resetSelection = () => {
     }
     selectedFile.value = null;
     filePreviewUrl.value = null;
-    isFeatured.value = false;
-    altText.value = '';
+    directory.value = '';
 };
 
 const cancel = () => {
@@ -185,21 +172,10 @@ const confirmUpload = async () => {
     try {
         emit('upload', {
             file: selectedFile.value,
-            isFeatured: isFeatured.value,
-            altText: altText.value
+            directory: directory.value
         });
     } finally {
         isUploading.value = false;
     }
-};
-
-const formatFileSize = (bytes: number): string => {
-    if (bytes === 0) return '0 B';
-
-    const k = 1024;
-    const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
 };
 </script>

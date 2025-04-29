@@ -53,25 +53,12 @@ export const useMediaStore = defineStore("media", () => {
   /**
    * Upload a new media file
    */
-  const uploadMedia = async (
-    file: File,
-    isFeatured?: boolean,
-    altText?: string,
-    directory?: string
-  ) => {
+  const uploadMedia = async (file: File, directory?: string) => {
     isLoading.value = true;
     error.value = null;
 
     const formData = new FormData();
     formData.append("file", file);
-
-    if (isFeatured !== undefined) {
-      formData.append("is_featured", isFeatured.toString());
-    }
-
-    if (altText) {
-      formData.append("alt_text", altText);
-    }
 
     if (directory) {
       formData.append("directory", directory);
@@ -88,7 +75,10 @@ export const useMediaStore = defineStore("media", () => {
         }
       );
 
-      mediaItems.value = [response.data.data, ...mediaItems.value];
+      // Add the newly uploaded media to the beginning of the list
+      if (response.data.status) {
+        mediaItems.value = [response.data.data, ...mediaItems.value];
+      }
       return response.data;
     } catch (err: any) {
       error.value =
