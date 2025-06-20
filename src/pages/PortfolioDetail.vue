@@ -227,7 +227,7 @@ import {
 import { useHead } from '@vueuse/head';
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
-import { projects } from '../data/projects';
+import { projects } from '../constants/projects';
 
 export default {
     name: 'PortfolioDetail',

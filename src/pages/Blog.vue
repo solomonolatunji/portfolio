@@ -215,7 +215,7 @@ import { ref, computed, watch } from 'vue';
 import { MagnifyingGlassIcon, DocumentIcon, ArrowRightIcon, ChevronRightIcon, Squares2X2Icon, ListBulletIcon } from '@heroicons/vue/24/solid';
 import Newsletter from '../components/Newsletter.vue';
 import Pagination from '../components/Pagination.vue';
-import { articles } from '../data/blogArticles';
+import { articles } from '../constants/blogArticles';
 
 // State
 const searchQuery = ref('');

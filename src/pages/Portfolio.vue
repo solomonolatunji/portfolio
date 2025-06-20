@@ -112,7 +112,7 @@
 
 <script>
 import { EyeIcon, CodeBracketIcon } from '@heroicons/vue/24/solid'
-import { projects } from '../data/projects';
+import { projects } from '../constants/projects';
 
 export default {
     name: 'Portfolio',

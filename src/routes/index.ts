@@ -1,38 +1,46 @@
 import { createRouter, createWebHistory } from "vue-router";
+import Home from "@/pages/Home.vue";
+import About from "@/pages/About.vue";
+import Contact from "@/pages/Contact.vue";
+import Portfolio from "@/pages/Portfolio.vue";
+import PortfolioDetail from "@/pages/PortfolioDetail.vue";
+import Blog from "@/pages/Blog.vue";
+import BlogPost from "@/pages/BlogPost.vue";
+import NotFound from "@/pages/NotFound.vue";
 
 const routes = [
   {
     path: "/",
-    component: () => import("@/pages/Home.vue"),
+    component: Home,
   },
   {
     path: "/about",
-    component: () => import("@/pages/About.vue"),
+    component: About,
   },
   {
     path: "/contact",
-    component: () => import("@/pages/Contact.vue"),
+    component: Contact,
   },
   {
     path: "/portfolio",
-    component: () => import("@/pages/Portfolio.vue"),
+    component: Portfolio,
   },
   {
     path: "/portfolio/:id",
-    component: () => import("@/pages/PortfolioDetail.vue"),
+    component: PortfolioDetail,
   },
   {
     path: "/blog",
-    component: () => import("@/pages/Blog.vue"),
+    component: Blog,
   },
   {
     path: "/blog/:id",
-    component: () => import("@/pages/BlogPost.vue"),
+    component: BlogPost,
   },
   {
     path: "/:pathMatch(.*)*",
     name: "NotFound",
-    component: () => import("@/pages/NotFound.vue"),
+    component: NotFound,
   },
 ];
 

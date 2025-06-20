@@ -131,7 +131,7 @@ import BlogTags from '../components/blog/BlogTags.vue';
 import BlogShareButtons from '../components/blog/BlogShareButtons.vue';
 import BlogAuthorBio from '../components/blog/BlogAuthorBio.vue';
 import BlogRelatedPosts from '../components/blog/BlogRelatedPosts.vue';
-import { articles } from '../data/blogArticles';
+import { articles } from '../constants/blogArticles';
 
 const route = useRoute();
 const readingProgress = ref(0);
