@@ -6,7 +6,6 @@ import {
   DEFAULT_DESCRIPTION,
   DEFAULT_OG_IMAGE,
   PAGE_TITLES,
-  ADMIN_TITLES,
   PAGE_DESCRIPTIONS,
 } from "../constants/pageMeta";
 import { createMetaTags, createLinkTags } from "../constants/metaConfigs";
@@ -22,17 +21,9 @@ export function usePageTitle() {
       "/contact": PAGE_TITLES.contact,
       "/portfolio": PAGE_TITLES.portfolio,
       "/blog": PAGE_TITLES.blog,
-      "/admin": ADMIN_TITLES.dashboard,
-      "/admin/portfolio": ADMIN_TITLES.portfolioManagement,
-      "/admin/blog": ADMIN_TITLES.blogManagement,
-      "/admin/login": ADMIN_TITLES.login,
     };
 
-    if (pathTitleMap[route.path]) {
-      return pathTitleMap[route.path];
-    }
-
-    return DEFAULT_TITLE;
+    return pathTitleMap[route.path] || DEFAULT_TITLE;
   });
 
   const pageDescription = computed<string>(() => {
@@ -44,22 +35,15 @@ export function usePageTitle() {
       "/blog": PAGE_DESCRIPTIONS.blog,
     };
 
-    if (descriptionMap[route.path]) {
-      return descriptionMap[route.path];
-    }
-
-    if (route.meta?.description) {
-      return String(route.meta.description);
-    }
-
-    return DEFAULT_DESCRIPTION;
+    return (
+      descriptionMap[route.path] ||
+      route.meta?.description?.toString() ||
+      DEFAULT_DESCRIPTION
+    );
   });
 
   const ogImage = computed<string>(() => {
-    if (route.path === "/blog" && route.meta?.image) {
-      return String(route.meta.image);
-    }
-    if (route.path === "/portfolio" && route.meta?.image) {
+    if (["/blog", "/portfolio"].includes(route.path) && route.meta?.image) {
       return String(route.meta.image);
     }
 

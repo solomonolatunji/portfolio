@@ -7,7 +7,6 @@
                 </h1>
             </div>
 
-            <!-- Reduce button size on mobile for all 4 buttons to fit on one row -->
             <div class="flex flex-nowrap justify-start md:justify-center gap-1 sm:gap-3 mb-12 pb-2">
                 <button @click="setActiveFilter('all')" :class="[
                     'px-2 sm:px-5 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all duration-300 filter-button whitespace-nowrap',
