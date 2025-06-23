@@ -1,5 +1,10 @@
 <template>
     <div class="grid grid-cols-1 gap-8 px-2 sm:grid-cols-2 sm:px-0 lg:grid-cols-3" ref="productsGrid">
+        <!-- Empty State -->
+        <div v-if="products.length === 0" class="col-span-full text-center text-gray-300 py-8">
+            No products available
+        </div>
+        <!-- Product Cards -->
         <div v-for="(product, index) in products" :key="product.id"
             class="product-card group transform overflow-hidden rounded-xl border border-white/5 bg-[#1e1e1e]/70 shadow-lg backdrop-blur-sm transition-all duration-500 hover:-translate-y-2 hover:border-[#6d28d9]/50 hover:shadow-2xl"
             @click="handleProductClick(index)">
@@ -111,6 +116,7 @@ export default {
     data() {
         return {
             activeIndex: null,
+            ticking: false,
         };
     },
     emits: ["view-product", "add-to-cart"],
@@ -120,15 +126,6 @@ export default {
                 this.activeIndex = this.activeIndex === index ? null : index;
             }
         },
-    },
-    mounted() {
-        this.animateProductCards();
-        window.addEventListener("scroll", this.handleScroll);
-    },
-    beforeUnmount() {
-        window.removeEventListener("scroll", this.handleScroll);
-    },
-    methods: {
         handleScroll() {
             if (!this.ticking) {
                 window.requestAnimationFrame(() => {
@@ -139,8 +136,7 @@ export default {
             }
         },
         animateProductCards() {
-            const productCards =
-                this.$refs.productsGrid.querySelectorAll(".product-card");
+            const productCards = this.$refs.productsGrid.querySelectorAll(".product-card");
             productCards.forEach((card, index) => {
                 if (this.isInViewport(card)) {
                     setTimeout(() => {
@@ -152,11 +148,17 @@ export default {
         isInViewport(element) {
             const rect = element.getBoundingClientRect();
             return (
-                rect.top <=
-                (window.innerHeight || document.documentElement.clientHeight) * 0.9 &&
+                rect.top <= (window.innerHeight || document.documentElement.clientHeight) * 0.9 &&
                 rect.bottom >= 0
             );
         },
+    },
+    mounted() {
+        this.animateProductCards();
+        window.addEventListener("scroll", this.handleScroll);
+    },
+    beforeUnmount() {
+        window.removeEventListener("scroll", this.handleScroll);
     },
 };
 </script>

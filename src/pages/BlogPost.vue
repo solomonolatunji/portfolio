@@ -1,13 +1,9 @@
 <template>
   <div class="min-h-screen w-full py-6 pb-12 md:py-12 md:pb-24">
     <div class="container mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-      <router-link
-        to="/blog"
-        class="group mb-4 inline-flex items-center text-purple-400 transition-colors hover:text-purple-300 sm:mb-8"
-      >
-        <ArrowLeftIcon
-          class="mr-2 h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1"
-        />
+      <router-link to="/blog"
+        class="group mb-4 inline-flex items-center text-purple-400 transition-colors hover:text-purple-300 sm:mb-8">
+        <ArrowLeftIcon class="mr-2 h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1" />
         <span class="text-sm font-medium sm:text-base">Back to all posts</span>
       </router-link>
 
@@ -16,29 +12,18 @@
 
         <div
           class="fixed top-0 left-0 z-50 h-1 bg-gradient-to-r from-purple-600 to-indigo-600 transition-all duration-200"
-          :style="{ width: `${readingProgress}%` }"
-        ></div>
+          :style="{ width: `${readingProgress}%` }"></div>
 
         <BlogTableOfContents :headings="tableOfContents" />
 
         <div class="mb-8 sm:mb-10">
-          <div
-            class="relative max-w-full overflow-hidden rounded-2xl shadow-xl"
-          >
-            <img
-              :src="post.image"
-              :alt="post.title"
-              class="h-auto max-h-[500px] w-full object-cover"
-            />
-            <div
-              class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"
-            ></div>
+          <div class="relative max-w-full overflow-hidden rounded-2xl shadow-xl">
+            <img :src="post.image" :alt="post.title" class="h-auto max-h-[500px] w-full object-cover" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
           </div>
         </div>
 
-        <div
-          class="prose prose-sm sm:prose lg:prose-lg prose-invert prose-purple clear-both max-w-none"
-        >
+        <div class="prose prose-sm sm:prose lg:prose-lg prose-invert prose-purple clear-both max-w-none">
           <div v-if="post.content" v-html="post.content"></div>
 
           <div v-else>
@@ -142,7 +127,7 @@
 
       <BlogRelatedPosts :articles="relatedArticles" />
 
-      <Newsletter @subscribed="handleNewsletterSubscription" />
+      <Newsletter />
     </div>
   </div>
 </template>
@@ -193,10 +178,6 @@ const postTags = computed(() => {
     post.value?.tags || ["Development", "Web", "Technology", "Programming"]
   );
 });
-
-const handleNewsletterSubscription = (email: string) => {
-  console.log(`Subscribed with email: ${email}`);
-};
 
 const updateReadingProgress = () => {
   const contentElement = document.querySelector(".prose") as HTMLElement;

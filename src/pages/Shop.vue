@@ -57,8 +57,13 @@
             </div>
 
             <!-- Products Grid Component -->
-            <ProductsGrid :products="filteredProducts" :is-mobile="isMobile" :active-product-index="activeProductIndex"
-                @view-product="openProductModal" @add-to-cart="addToCart" />
+            <Loading v-if="loading" text="Loading products..." size="md" />
+            <ProductsGrid v-else :products="paginatedProducts" :is-mobile="isMobile"
+                :active-product-index="activeProductIndex" @view-product="openProductModal" @add-to-cart="addToCart" />
+
+            <!-- Pagination Component -->
+            <Pagination v-if="!loading && filteredProducts.length > itemsPerPage" :current-page="currentPage"
+                :total-pages="totalPages" @prev="prevPage" @next="nextPage" @goto="gotoPage" />
 
             <!-- Shopping Cart Sidebar Component -->
             <ShoppingCartSidebar :show="showCart" :items="cart" :total="cartTotal" @close="toggleCart"
@@ -67,6 +72,9 @@
             <!-- Product Modal Component -->
             <ProductModal :show="showProductModal" :product="selectedProduct" @close="closeProductModal"
                 @add-to-cart="addToCart" />
+
+            <!-- Newsletter Component -->
+            <Newsletter />
         </div>
     </div>
 </template>
@@ -77,6 +85,9 @@ import { PRODUCTS } from "@/constants/products";
 import ShoppingCartSidebar from "@/components/Shop/ShoppingCartSidebar.vue";
 import ProductsGrid from "@/components/Shop/ProductsGrid.vue";
 import ProductModal from "@/components/Shop/ProductModal.vue";
+import Loading from "@/components/Loading.vue";
+import Newsletter from "@/components/Newsletter.vue";
+import Pagination from "@/components/Pagination.vue";
 
 export default {
     name: "Shop",
@@ -85,6 +96,9 @@ export default {
         ShoppingCartSidebar,
         ProductsGrid,
         ProductModal,
+        Loading,
+        Newsletter,
+        Pagination
     },
     data() {
         return {
@@ -96,7 +110,11 @@ export default {
             email: "",
             isMobile: false,
             activeProductIndex: null,
-            products: PRODUCTS,
+            products: [],
+            loading: true,
+            ticking: false,
+            currentPage: 1,
+            itemsPerPage: 6
         };
     },
     computed: {
@@ -105,8 +123,16 @@ export default {
                 return this.products;
             }
             return this.products.filter(
-                (product) => product.category === this.activeFilter,
+                (product) => product.category === this.activeFilter
             );
+        },
+        totalPages() {
+            return Math.ceil(this.filteredProducts.length / this.itemsPerPage);
+        },
+        paginatedProducts() {
+            const start = (this.currentPage - 1) * this.itemsPerPage;
+            const end = start + this.itemsPerPage;
+            return this.filteredProducts.slice(start, end);
         },
         cartItemsCount() {
             return this.cart.reduce((total, item) => total + item.quantity, 0);
@@ -114,16 +140,23 @@ export default {
         cartTotal() {
             return this.cart.reduce(
                 (total, item) => total + item.price * item.quantity,
-                0,
+                0
             );
-        },
+        }
     },
     mounted() {
         this.checkIfMobile();
         window.addEventListener("resize", this.checkIfMobile);
+        window.addEventListener("scroll", this.handleScroll);
+        setTimeout(() => {
+            this.products = PRODUCTS;
+            this.loading = false;
+            this.animateProductCards();
+        }, 2000);
     },
     beforeUnmount() {
         window.removeEventListener("resize", this.checkIfMobile);
+        window.removeEventListener("scroll", this.handleScroll);
     },
     methods: {
         checkIfMobile() {
@@ -134,7 +167,19 @@ export default {
         },
         setActiveFilter(filter) {
             this.activeFilter = filter;
+            this.currentPage = 1;
             this.activeProductIndex = null;
+
+            this.$nextTick(() => {
+                const productCards = document.querySelectorAll(".product-card");
+                productCards.forEach((card) => {
+                    card.classList.remove("fadeInUp");
+                    void card.offsetWidth;
+                });
+                setTimeout(() => {
+                    this.animateProductCards();
+                }, 50);
+            });
         },
         toggleCart() {
             this.showCart = !this.showCart;
@@ -170,7 +215,50 @@ export default {
         checkout() {
             alert(`Proceeding to checkout with total: $${this.cartTotal.toFixed(2)}`);
         },
-    },
+        handleScroll() {
+            if (!this.ticking) {
+                window.requestAnimationFrame(() => {
+                    this.animateProductCards();
+                    this.ticking = false;
+                });
+                this.ticking = true;
+            }
+        },
+        animateProductCards() {
+            const productCards = document.querySelectorAll(".product-card");
+            productCards.forEach((card, index) => {
+                if (this.isInViewport(card)) {
+                    setTimeout(() => {
+                        card.classList.add("fadeInUp");
+                    }, index * 100);
+                }
+            });
+        },
+        isInViewport(element) {
+            const rect = element.getBoundingClientRect();
+            return (
+                rect.top <=
+                (window.innerHeight || document.documentElement.clientHeight) * 0.9 &&
+                rect.bottom >= 0
+            );
+        },
+        prevPage() {
+            if (this.currentPage > 1) {
+                this.currentPage--;
+                this.animateProductCards();
+            }
+        },
+        nextPage() {
+            if (this.currentPage < this.totalPages) {
+                this.currentPage++;
+                this.animateProductCards();
+            }
+        },
+        gotoPage(page) {
+            this.currentPage = page;
+            this.animateProductCards();
+        }
+    }
 };
 </script>
 

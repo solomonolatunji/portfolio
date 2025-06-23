@@ -81,4 +81,84 @@ export const PRODUCTS: Product[] = [
     rating: 4.9,
     features: ["Ceramic", "Dishwasher Safe", "Gift Box"],
   },
+  {
+    id: 7,
+    title: "Node.js Backend Course",
+    description:
+      "Master backend development with Node.js, Express, and MongoDB through hands-on projects.",
+    price: 89,
+    originalPrice: 129,
+    image:
+      "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80",
+    category: "courses",
+    type: "Course",
+    rating: 4.8,
+    features: ["15 Hours", "REST APIs", "Database", "Certificate"],
+  },
+  {
+    id: 8,
+    title: "Icon Set Pro",
+    description:
+      "Over 1,000 customizable icons for web and mobile apps in SVG and PNG formats.",
+    price: 39,
+    image:
+      "https://images.unsplash.com/photo-1559028012-481c04fa702d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1064&q=80",
+    category: "digital",
+    type: "Digital",
+    rating: 4.6,
+    features: ["1000+ Icons", "SVG & PNG", "Commercial Use"],
+  },
+  {
+    id: 9,
+    title: "Hacker Hoodie",
+    description:
+      "Cozy hoodie with minimalist hacker design. Ideal for coding marathons.",
+    price: 49,
+    image:
+      "https://images.unsplash.com/photo-1593795899630-3f4851e072b9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1259&q=80",
+    category: "physical",
+    type: "Merch",
+    rating: 4.7,
+    features: ["Cotton Blend", "Unisex", "Free Shipping"],
+  },
+  {
+    id: 10,
+    title: "GraphQL Essentials",
+    description:
+      "Learn GraphQL to build efficient APIs with this comprehensive course.",
+    price: 69,
+    originalPrice: 99,
+    image:
+      "https://images.unsplash.com/photo-1516321497487-e288fb19713f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80",
+    category: "courses",
+    type: "Course",
+    rating: 4.7,
+    features: ["8 Hours", "Projects", "Support"],
+  },
+  {
+    id: 11,
+    title: "Wireframe Kit",
+    description:
+      "Prototyping made easy with this extensive wireframe kit for UX designers.",
+    price: 29,
+    image:
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1064&q=80",
+    category: "digital",
+    type: "Digital",
+    rating: 4.5,
+    features: ["200+ Components", "Sketch & Figma", "Updates"],
+  },
+  {
+    id: 12,
+    title: "Code Sticker Pack",
+    description:
+      "Fun vinyl stickers with coding themes to decorate your laptop or water bottle.",
+    price: 15,
+    image:
+      "https://images.unsplash.com/photo-1535968905361-76e0ed3a0be2?ixlib=rb-4.0.3&auto=format&fit=crop&w=688&q=80",
+    category: "physical",
+    type: "Merch",
+    rating: 4.9,
+    features: ["Waterproof", "10 Stickers", "Giftable"],
+  },
 ];
