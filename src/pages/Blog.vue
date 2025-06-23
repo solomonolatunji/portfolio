@@ -215,38 +215,39 @@
                   class="h-48 w-full object-cover sm:h-32 sm:w-48 md:h-36"
                 />
                 <div class="flex flex-1 flex-col justify-between p-5">
-                  <div></div>
-                  <div class="mb-2 flex items-center justify-between">
-                    <span class="rounded-md bg-[#2d2d2d] px-2 py-1 text-xs text-gray-300">
-                      {{ article.category }}
-                    </span>
-                    <span class="text-xs text-gray-400">{{ article.date }}</span>
+                  <div>
+                    <div class="mb-2 flex items-center justify-between">
+                      <span class="rounded-md bg-[#2d2d2d] px-2 py-1 text-xs text-gray-300">
+                        {{ article.category }}
+                      </span>
+                      <span class="text-xs text-gray-400">{{ article.date }}</span>
+                    </div>
+                    <router-link :to="'/blog/' + article.id">
+                      <h3
+                        class="mb-2 text-lg font-bold text-white transition-colors hover:text-purple-400"
+                      >
+                        {{ article.title }}
+                      </h3>
+                    </router-link>
+                    <p class="line-clamp-2 text-sm text-gray-400">{{ article.excerpt }}</p>
                   </div>
-                  <router-link :to="'/blog/' + article.id">
-                    <h3
-                      class="mb-2 text-lg font-bold text-white transition-colors hover:text-purple-400"
+                  <div class="mt-4 flex items-center justify-between gap-4">
+                    <div class="flex items-center">
+                      <img
+                        :src="article.author.avatar"
+                        :alt="article.author.name"
+                        class="mr-2 h-6 w-6 rounded-full"
+                      />
+                      <span class="text-xs text-gray-300">{{ article.author.name }}</span>
+                    </div>
+                    <router-link
+                      :to="'/blog/' + article.id"
+                      class="flex items-center gap-1 text-sm text-purple-400 hover:text-purple-300"
                     >
-                      {{ article.title }}
-                    </h3>
-                  </router-link>
-                  <p class="line-clamp-2 text-sm text-gray-400">{{ article.excerpt }}</p>
-                </div>
-                <div class="mt-4 flex items-center justify-between">
-                  <div class="flex items-center">
-                    <img
-                      :src="article.author.avatar"
-                      :alt="article.author.name"
-                      class="mr-2 h-6 w-6 rounded-full"
-                    />
-                    <span class="text-xs text-gray-300">{{ article.author.name }}</span>
+                      Read Article
+                      <ChevronRightIcon class="h-3.5 w-3.5" />
+                    </router-link>
                   </div>
-                  <router-link
-                    :to="'/blog/' + article.id"
-                    class="flex items-center gap-1 text-sm text-purple-400 hover:text-purple-300"
-                  >
-                    Read Article
-                    <ChevronRightIcon class="h-3.5 w-3.5" />
-                  </router-link>
                 </div>
               </div>
             </div>
@@ -299,9 +300,9 @@
     Squares2X2Icon,
     ListBulletIcon,
   } from '@heroicons/vue/24/solid'
-  import Newsletter from '../components/Newsletter.vue'
-  import Pagination from '../components/Pagination.vue'
-  import { articles } from '../constants/blogArticles'
+  import Newsletter from '@/components/Newsletter.vue'
+  import Pagination from '@/components/Pagination.vue'
+  import { articles } from '@/constants/blogArticles'
 
   // State
   const searchQuery = ref('')

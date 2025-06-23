@@ -7,6 +7,7 @@ import PortfolioDetail from '@/pages/PortfolioDetail.vue'
 import Blog from '@/pages/Blog.vue'
 import BlogPost from '@/pages/BlogPost.vue'
 import NotFound from '@/pages/NotFound.vue'
+import Shop from '@/pages/Shop.vue'
 
 const routes = [
   {
@@ -24,6 +25,10 @@ const routes = [
   {
     path: '/portfolio',
     component: Portfolio,
+  },
+  {
+    path: '/shop',
+    component: Shop,
   },
   {
     path: '/portfolio/:id',

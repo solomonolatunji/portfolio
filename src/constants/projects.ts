@@ -80,5 +80,3 @@ export const projects: Project[] = [
     codeUrl: 'https://github.com/eminisolomon',
   },
 ]
-
-export default projects

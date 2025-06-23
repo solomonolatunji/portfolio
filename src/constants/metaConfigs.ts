@@ -12,13 +12,11 @@ export const createMetaTags = (
   currentPath: ComputedRef<string>
 ) => {
   return [
-    // Basic meta tags
     {
       name: 'description',
       content: pageDescription,
     },
 
-    // OpenGraph tags
     {
       property: 'og:title',
       content: pageTitle,
@@ -40,7 +38,6 @@ export const createMetaTags = (
       content: 'website',
     },
 
-    // Twitter Card tags
     {
       name: 'twitter:card',
       content: 'summary_large_image',
@@ -65,7 +62,6 @@ export const createMetaTags = (
  */
 export const createLinkTags = (currentPath: ComputedRef<string>) => {
   return [
-    // Canonical URL
     {
       rel: 'canonical',
       href: computed(() => `${BASE_URL}${currentPath.value}`),

@@ -5,7 +5,6 @@ export const DEFAULT_DESCRIPTION =
 export const DEFAULT_OG_IMAGE = 'https://solomonolatunji.com/og-image.jpg'
 export const BASE_URL = 'https://solomonolatunji.com'
 
-// Page-specific titles
 export const PAGE_TITLES = {
   home: DEFAULT_TITLE,
   about: 'About Me | Solomon Olatunji',
@@ -14,20 +13,6 @@ export const PAGE_TITLES = {
   blog: 'Blog | Solomon Olatunji',
 }
 
-// Admin portal titles
-export const ADMIN_TITLES = {
-  dashboard: 'Dashboard | Admin Portal',
-  createProject: 'Create Project | Admin Portal',
-  editProject: 'Edit Project | Admin Portal',
-  createBlog: 'Create Blog Post | Admin Portal',
-  editBlog: 'Edit Blog Post | Admin Portal',
-  portfolioManagement: 'Portfolio Management | Admin Portal',
-  blogManagement: 'Blog Management | Admin Portal',
-  login: 'Login | Admin Portal',
-  default: 'Admin Portal',
-}
-
-// Page-specific descriptions
 export const PAGE_DESCRIPTIONS = {
   home: DEFAULT_DESCRIPTION,
   about:
