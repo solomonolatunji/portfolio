@@ -2,7 +2,7 @@
   <div class="relative mt-20 mb-8">
     <div class="absolute inset-0 rounded-2xl bg-[#6d28d9]/5"></div>
     <div
-      class="relative z-10 overflow-hidden rounded-2xl border border-[#222] bg-gradient-to-r from-[#141414] via-[#141414] to-[#141414]/90 px-6 py-12 md:px-12"
+      class="relative z-10 overflow-hidden rounded-2xl border border-white/5 bg-[#1e1e1e]/70 px-6 py-12 shadow-lg backdrop-blur-sm transition-all duration-500 hover:border-[#6d28d9]/50 hover:bg-[#2d2d2d] hover:shadow-2xl md:px-12"
     >
       <div
         class="absolute top-0 right-0 h-64 w-64 rounded-full bg-[#6d28d9]/20 blur-3xl filter"
@@ -40,3 +40,23 @@
     },
   }
 </script>
+
+<style scoped>
+  .relative {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.6s ease forwards;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>

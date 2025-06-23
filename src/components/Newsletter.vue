@@ -2,7 +2,7 @@
   <div class="newsletter-container relative my-16 overflow-hidden rounded-2xl shadow-2xl">
     <div class="absolute inset-0 bg-gradient-to-br from-purple-800 to-indigo-900 opacity-90"></div>
     <div
-      class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1zbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wOCI+PHBhdGggZD0iTTI5Ljk5OTcgNjBDNDYuNTY4NSA2MCA2MCA0Ni41Njg1IDYwIDI5Ljk5OTdDNjAgMTMuNDMxNSA0Ni41Njg1IDAgMjkuOTk5NyAwQzEzLjQzMTUgMCAwIDEzLjQzMTUgMCAyOS45OTk3QzAgNDYuNTY4NSAxMy40MzE1IDYwIDI5Ljk1OTcgNjB6IiAvPjwvZz48L2c+PC9zdmc+')] opacity-20"
+      class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wOCI+PHBhdGggZD0iTTI5Ljk5OTcgNjBDNDYuNTY4NSA2MCA2MCA0Ni41Njg1IDYwIDI5Ljk5OTdDNjAgMTMuNDMxNSA0Ni41Njg1IDAgMjkuOTk5NyAwQzEzLjQzMTUgMCAwIDEzLjQzMTUgMCAyOS45OTk3QzAgNDYuNTY4NSAxMy40MzE1IDYwIDI5Ljk1OTcgNjB6IiAvPjwvZz48L2c+PC9zdmc+')] opacity-20"
     ></div>
 
     <div class="relative z-10 mx-auto max-w-4xl p-8 md:p-12">
@@ -25,16 +25,16 @@
               placeholder="Your email address"
               required
               class="w-full rounded-lg border border-white/30 bg-white/10 px-5 py-3 text-white placeholder-white/70 backdrop-blur-sm focus:ring-2 focus:ring-purple-300 focus:outline-none sm:rounded-r-none"
-              :disabled="isLoading"
+              :disabled="subscribeStore.isLoading"
             />
           </div>
           <button
             type="submit"
             class="flex items-center justify-center rounded-lg bg-white px-6 py-3 font-medium text-purple-800 transition-all duration-300 hover:bg-purple-100 hover:text-purple-900 sm:rounded-l-none"
-            :disabled="isLoading"
+            :disabled="subscribeStore.isLoading"
           >
             <svg
-              v-if="isLoading"
+              v-if="subscribeStore.isLoading"
               class="mr-2 -ml-1 h-4 w-4 animate-spin text-purple-800"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -54,7 +54,7 @@
                 d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
               ></path>
             </svg>
-            {{ isLoading ? 'Subscribing...' : 'Subscribe' }}
+            {{ subscribeStore.isLoading ? 'Subscribing...' : 'Subscribe' }}
           </button>
         </form>
 
@@ -74,10 +74,13 @@
       leave-from-class="transform scale-100 opacity-100"
       leave-to-class="transform scale-95 opacity-0"
     >
-      <div v-if="showSuccessModal" class="fixed inset-0 z-50 flex items-center justify-center px-4">
+      <div
+        v-if="subscribeStore.successMessage"
+        class="fixed inset-0 z-50 flex items-center justify-center px-4"
+      >
         <div
           class="fixed inset-0 bg-black/60 backdrop-blur-sm"
-          @click="showSuccessModal = false"
+          @click="subscribeStore.clearMessages"
         ></div>
         <div class="relative w-full max-w-md overflow-hidden rounded-2xl bg-white p-6 shadow-xl">
           <!-- Success icon -->
@@ -105,7 +108,7 @@
           </p>
 
           <button
-            @click="showSuccessModal = false"
+            @click="subscribeStore.clearMessages"
             class="mt-6 w-full rounded-lg bg-purple-600 px-5 py-3 font-medium text-white transition-colors duration-300 hover:bg-purple-700"
           >
             Close
@@ -118,27 +121,23 @@
 
 <script setup lang="ts">
   import { ref } from 'vue'
+  import { useSubscribeStore } from '@/stores/subscribe'
 
   const email = ref('')
-  const isLoading = ref(false)
-  const showSuccessModal = ref(false)
+  const subscribeStore = useSubscribeStore()
 
   const emit = defineEmits<{
     (e: 'subscribed', email: string): void
   }>()
 
   const handleSubscribe = async () => {
-    isLoading.value = true
+    if (!email.value) return
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      await subscribeStore.subscribe(email.value)
       emit('subscribed', email.value)
       email.value = ''
-
-      showSuccessModal.value = true
     } catch (error) {
       console.error('Newsletter subscription error:', error)
-    } finally {
-      isLoading.value = false
     }
   }
 </script>
@@ -147,5 +146,13 @@
   .newsletter-container {
     background-size: cover;
     background-position: center;
+  }
+
+  input:hover {
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+
+  input:focus {
+    border-color: #d8b4fe;
   }
 </style>

@@ -13,7 +13,7 @@
       <a
         href="https://github.com/eminisolomon"
         target="_blank"
-        class="social-btn flex flex-col items-center justify-center rounded-xl border border-transparent bg-[#141414] p-4 transition-all hover:border-[#6d28d9]/20 hover:bg-[#1a1a1a]"
+        class="social-btn flex flex-col items-center justify-center rounded-xl border border-white/5 bg-[#1e1e1e]/70 p-4 shadow-lg backdrop-blur-sm transition-all duration-500 hover:-translate-y-1 hover:border-[#6d28d9]/50 hover:bg-[#2d2d2d] hover:shadow-2xl"
       >
         <div
           class="social-icon-wrapper mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-[#6d28d9]/10"
@@ -35,7 +35,7 @@
       <a
         href="https://twitter.com/eminisolomon"
         target="_blank"
-        class="social-btn flex flex-col items-center justify-center rounded-xl border border-transparent bg-[#141414] p-4 transition-all hover:border-[#6d28d9]/20 hover:bg-[#1a1a1a]"
+        class="social-btn flex flex-col items-center justify-center rounded-xl border border-white/5 bg-[#1e1e1e]/70 p-4 shadow-lg backdrop-blur-sm transition-all duration-500 hover:-translate-y-1 hover:border-[#6d28d9]/50 hover:bg-[#2d2d2d] hover:shadow-2xl"
       >
         <div
           class="social-icon-wrapper mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-[#6d28d9]/10"
@@ -57,7 +57,7 @@
       <a
         href="https://wa.me/2348130690998"
         target="_blank"
-        class="social-btn flex flex-col items-center justify-center rounded-xl border border-transparent bg-[#141414] p-4 transition-all hover:border-[#6d28d9]/20 hover:bg-[#1a1a1a]"
+        class="social-btn flex flex-col items-center justify-center rounded-xl border border-white/5 bg-[#1e1e1e]/70 p-4 shadow-lg backdrop-blur-sm transition-all duration-500 hover:-translate-y-1 hover:border-[#6d28d9]/50 hover:bg-[#2d2d2d] hover:shadow-2xl"
       >
         <div
           class="social-icon-wrapper mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-[#6d28d9]/10"
@@ -79,7 +79,7 @@
       <a
         href="https://t.me/eminisolomon"
         target="_blank"
-        class="social-btn flex flex-col items-center justify-center rounded-xl border border-transparent bg-[#141414] p-4 transition-all hover:border-[#6d28d9]/20 hover:bg-[#1a1a1a]"
+        class="social-btn flex flex-col items-center justify-center rounded-xl border border-white/5 bg-[#1e1e1e]/70 p-4 shadow-lg backdrop-blur-sm transition-all duration-500 hover:-translate-y-1 hover:border-[#6d28d9]/50 hover:bg-[#2d2d2d] hover:shadow-2xl"
       >
         <div
           class="social-icon-wrapper mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-[#6d28d9]/10"
@@ -119,5 +119,39 @@
 
   .social-icon-wrapper {
     transition: transform 0.3s ease;
+  }
+
+  .social-btn {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.6s ease forwards;
+  }
+
+  .social-btn:nth-child(1) {
+    animation-delay: 0.1s;
+  }
+
+  .social-btn:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+
+  .social-btn:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+
+  .social-btn:nth-child(4) {
+    animation-delay: 0.4s;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 </style>

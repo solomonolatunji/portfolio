@@ -13,7 +13,7 @@
       <div class="space-y-5">
         <a
           href="mailto:hello@solomonolatunji.com"
-          class="group flex items-center rounded-xl border border-transparent bg-[#141414] p-4 transition-all hover:border-[#6d28d9]/20 hover:bg-[#1a1a1a]"
+          class="group flex items-center rounded-xl border border-white/5 bg-[#1e1e1e]/70 p-4 shadow-lg backdrop-blur-sm transition-all duration-500 hover:-translate-y-1 hover:border-[#6d28d9]/50 hover:bg-[#2d2d2d] hover:shadow-2xl"
         >
           <div
             class="mr-4 flex h-10 w-10 items-center justify-center rounded-lg bg-[#6d28d9]/10 transition-transform group-hover:scale-110"
@@ -28,7 +28,7 @@
 
         <a
           href="tel:+2349017818024"
-          class="group flex items-center rounded-xl border border-transparent bg-[#141414] p-4 transition-all hover:border-[#6d28d9]/20 hover:bg-[#1a1a1a]"
+          class="group flex items-center rounded-xl border border-white/5 bg-[#1e1e1e]/70 p-4 shadow-lg backdrop-blur-sm transition-all duration-500 hover:-translate-y-1 hover:border-[#6d28d9]/50 hover:bg-[#2d2d2d] hover:shadow-2xl"
         >
           <div
             class="mr-4 flex h-10 w-10 items-center justify-center rounded-lg bg-[#6d28d9]/10 transition-transform group-hover:scale-110"
@@ -42,7 +42,7 @@
         </a>
 
         <div
-          class="group flex items-center rounded-xl border border-transparent bg-[#141414] p-4 transition-all hover:border-[#6d28d9]/20 hover:bg-[#1a1a1a]"
+          class="group flex items-center rounded-xl border border-white/5 bg-[#1e1e1e]/70 p-4 shadow-lg backdrop-blur-sm transition-all duration-500 hover:-translate-y-1 hover:border-[#6d28d9]/50 hover:bg-[#2d2d2d] hover:shadow-2xl"
         >
           <div
             class="mr-4 flex h-10 w-10 items-center justify-center rounded-lg bg-[#6d28d9]/10 transition-transform group-hover:scale-110"
@@ -56,7 +56,7 @@
         </div>
 
         <div
-          class="group flex items-center rounded-xl border border-transparent bg-[#141414] p-4 transition-all hover:border-[#6d28d9]/20 hover:bg-[#1a1a1a]"
+          class="group flex items-center rounded-xl border border-white/5 bg-[#1e1e1e]/70 p-4 shadow-lg backdrop-blur-sm transition-all duration-500 hover:-translate-y-1 hover:border-[#6d28d9]/50 hover:bg-[#2d2d2d] hover:shadow-2xl"
         >
           <div
             class="mr-4 flex h-10 w-10 items-center justify-center rounded-lg bg-[#6d28d9]/10 transition-transform group-hover:scale-110"
@@ -93,3 +93,39 @@
     },
   }
 </script>
+
+<style scoped>
+  .contact-card > div > div > * {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.6s ease forwards;
+  }
+
+  .contact-card > div > div > :nth-child(1) {
+    animation-delay: 0.1s;
+  }
+
+  .contact-card > div > div > :nth-child(2) {
+    animation-delay: 0.2s;
+  }
+
+  .contact-card > div > div > :nth-child(3) {
+    animation-delay: 0.3s;
+  }
+
+  .contact-card > div > div > :nth-child(4) {
+    animation-delay: 0.4s;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
