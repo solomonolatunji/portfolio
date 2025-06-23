@@ -1,6 +1,10 @@
 <template>
-  <div class="newsletter-container relative my-16 overflow-hidden rounded-2xl shadow-2xl">
-    <div class="absolute inset-0 bg-gradient-to-br from-purple-800 to-indigo-900 opacity-90"></div>
+  <div
+    class="newsletter-container relative my-16 overflow-hidden rounded-2xl shadow-2xl"
+  >
+    <div
+      class="absolute inset-0 bg-gradient-to-br from-purple-800 to-indigo-900 opacity-90"
+    ></div>
     <div
       class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wOCI+PHBhdGggZD0iTTI5Ljk5OTcgNjBDNDYuNTY4NSA2MCA2MCA0Ni41Njg1IDYwIDI5Ljk5OTdDNjAgMTMuNDMxNSA0Ni41Njg1IDAgMjkuOTk5NyAwQzEzLjQzMTUgMCAwIDEzLjQzMTUgMCAyOS45OTk3QzAgNDYuNTY4NSAxMy40MzE1IDYwIDI5Ljk1OTcgNjB6IiAvPjwvZz48L2c+PC9zdmc+')] opacity-20"
     ></div>
@@ -8,10 +12,12 @@
     <div class="relative z-10 mx-auto max-w-4xl p-8 md:p-12">
       <!-- Content Container -->
       <div class="text-center">
-        <h2 class="mb-3 text-2xl font-bold text-white md:text-3xl">Stay Updated</h2>
+        <h2 class="mb-3 text-2xl font-bold text-white md:text-3xl">
+          Stay Updated
+        </h2>
         <p class="mx-auto mb-6 max-w-lg text-base text-purple-100">
-          Subscribe to my newsletter for exclusive content, latest articles, and industry insights
-          delivered directly to your inbox.
+          Subscribe to my newsletter for exclusive content, latest articles, and
+          industry insights delivered directly to your inbox.
         </p>
 
         <form
@@ -54,7 +60,7 @@
                 d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
               ></path>
             </svg>
-            {{ subscribeStore.isLoading ? 'Subscribing...' : 'Subscribe' }}
+            {{ subscribeStore.isLoading ? "Subscribing..." : "Subscribe" }}
           </button>
         </form>
 
@@ -82,7 +88,9 @@
           class="fixed inset-0 bg-black/60 backdrop-blur-sm"
           @click="subscribeStore.clearMessages"
         ></div>
-        <div class="relative w-full max-w-md overflow-hidden rounded-2xl bg-white p-6 shadow-xl">
+        <div
+          class="relative w-full max-w-md overflow-hidden rounded-2xl bg-white p-6 shadow-xl"
+        >
           <!-- Success icon -->
           <div
             class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-100"
@@ -101,10 +109,12 @@
             </svg>
           </div>
 
-          <h3 class="text-center text-xl font-bold text-gray-900">Subscription Successful!</h3>
+          <h3 class="text-center text-xl font-bold text-gray-900">
+            Subscription Successful!
+          </h3>
           <p class="mt-2 text-center text-gray-600">
-            Thank you for subscribing to my newsletter. You'll receive updates and insights directly
-            in your inbox.
+            Thank you for subscribing to my newsletter. You'll receive updates
+            and insights directly in your inbox.
           </p>
 
           <button
@@ -120,39 +130,39 @@
 </template>
 
 <script setup lang="ts">
-  import { ref } from 'vue'
-  import { useSubscribeStore } from '@/stores/subscribe'
+import { ref } from "vue";
+import { useSubscribeStore } from "@/stores/subscribe";
 
-  const email = ref('')
-  const subscribeStore = useSubscribeStore()
+const email = ref("");
+const subscribeStore = useSubscribeStore();
 
-  const emit = defineEmits<{
-    (e: 'subscribed', email: string): void
-  }>()
+const emit = defineEmits<{
+  (e: "subscribed", email: string): void;
+}>();
 
-  const handleSubscribe = async () => {
-    if (!email.value) return
-    try {
-      await subscribeStore.subscribe(email.value)
-      emit('subscribed', email.value)
-      email.value = ''
-    } catch (error) {
-      console.error('Newsletter subscription error:', error)
-    }
+const handleSubscribe = async () => {
+  if (!email.value) return;
+  try {
+    await subscribeStore.subscribe(email.value);
+    emit("subscribed", email.value);
+    email.value = "";
+  } catch (error) {
+    console.error("Newsletter subscription error:", error);
   }
+};
 </script>
 
 <style scoped>
-  .newsletter-container {
-    background-size: cover;
-    background-position: center;
-  }
+.newsletter-container {
+  background-size: cover;
+  background-position: center;
+}
 
-  input:hover {
-    border-color: rgba(255, 255, 255, 0.3);
-  }
+input:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+}
 
-  input:focus {
-    border-color: #d8b4fe;
-  }
+input:focus {
+  border-color: #d8b4fe;
+}
 </style>

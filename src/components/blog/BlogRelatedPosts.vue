@@ -1,7 +1,9 @@
 <template>
   <div class="mb-12">
     <h2 class="mb-6 flex items-center text-xl font-bold text-white md:text-2xl">
-      <span class="mr-3 h-1 w-8 rounded bg-gradient-to-r from-purple-500 to-indigo-500"></span>
+      <span
+        class="mr-3 h-1 w-8 rounded bg-gradient-to-r from-purple-500 to-indigo-500"
+      ></span>
       Related Posts
     </h2>
     <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -11,7 +13,11 @@
         class="transform overflow-hidden rounded-xl bg-[#1e1e1e] shadow-lg transition-all duration-300 hover:-translate-y-2 hover:shadow-purple-800/10"
       >
         <div class="relative">
-          <img :src="article.image" :alt="article.title" class="h-40 w-full object-cover" />
+          <img
+            :src="article.image"
+            :alt="article.title"
+            class="h-40 w-full object-cover"
+          />
           <div class="absolute top-3 right-3">
             <span
               class="rounded-md bg-[#2d2d2d]/80 px-2 py-1 text-xs text-gray-300 backdrop-blur-sm"
@@ -45,30 +51,30 @@
 </template>
 
 <script setup lang="ts">
-  import { ArrowSmallRightIcon } from '@heroicons/vue/24/solid'
-  import type { PropType } from 'vue'
+import { ArrowSmallRightIcon } from "@heroicons/vue/24/solid";
+import type { PropType } from "vue";
 
-  interface RelatedArticle {
-    id: string
-    title: string
-    excerpt: string
-    image: string
-    category: string
-  }
+interface RelatedArticle {
+  id: string;
+  title: string;
+  excerpt: string;
+  image: string;
+  category: string;
+}
 
-  defineProps({
-    articles: {
-      type: Array as PropType<RelatedArticle[]>,
-      required: true,
-    },
-  })
+defineProps({
+  articles: {
+    type: Array as PropType<RelatedArticle[]>,
+    required: true,
+  },
+});
 </script>
 
 <style scoped>
-  .line-clamp-2 {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 </style>

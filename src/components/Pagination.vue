@@ -50,50 +50,53 @@
 </template>
 
 <script>
-  import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/24/solid'
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/vue/24/solid";
 
-  export default {
-    name: 'Pagination',
-    components: {
-      ChevronLeftIcon,
-      ChevronRightIcon,
+export default {
+  name: "Pagination",
+  components: {
+    ChevronLeftIcon,
+    ChevronRightIcon,
+  },
+  props: {
+    currentPage: {
+      type: Number,
+      required: true,
     },
-    props: {
-      currentPage: {
-        type: Number,
-        required: true,
-      },
-      totalPages: {
-        type: Number,
-        required: true,
-      },
+    totalPages: {
+      type: Number,
+      required: true,
     },
-    emits: ['prev', 'next', 'goto'],
-    computed: {
-      displayedPages() {
-        const pages = []
-        const totalToShow = 5
+  },
+  emits: ["prev", "next", "goto"],
+  computed: {
+    displayedPages() {
+      const pages = [];
+      const totalToShow = 5;
 
-        if (this.totalPages <= totalToShow) {
-          for (let i = 1; i <= this.totalPages; i++) {
-            pages.push(i)
-          }
-        } else {
-          let startPage = Math.max(1, this.currentPage - Math.floor(totalToShow / 2))
-          let endPage = startPage + totalToShow - 1
+      if (this.totalPages <= totalToShow) {
+        for (let i = 1; i <= this.totalPages; i++) {
+          pages.push(i);
+        }
+      } else {
+        let startPage = Math.max(
+          1,
+          this.currentPage - Math.floor(totalToShow / 2),
+        );
+        let endPage = startPage + totalToShow - 1;
 
-          if (endPage > this.totalPages) {
-            endPage = this.totalPages
-            startPage = Math.max(1, endPage - totalToShow + 1)
-          }
-
-          for (let i = startPage; i <= endPage; i++) {
-            pages.push(i)
-          }
+        if (endPage > this.totalPages) {
+          endPage = this.totalPages;
+          startPage = Math.max(1, endPage - totalToShow + 1);
         }
 
-        return pages
-      },
+        for (let i = startPage; i <= endPage; i++) {
+          pages.push(i);
+        }
+      }
+
+      return pages;
     },
-  }
+  },
+};
 </script>

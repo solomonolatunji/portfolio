@@ -10,8 +10,12 @@
     ></div>
 
     <div class="relative z-10 mb-8">
-      <h2 class="mb-2 text-2xl font-semibold text-white sm:text-3xl">Send a Message</h2>
-      <p class="text-sm text-gray-400">I'll get back to you as soon as possible</p>
+      <h2 class="mb-2 text-2xl font-semibold text-white sm:text-3xl">
+        Send a Message
+      </h2>
+      <p class="text-sm text-gray-400">
+        I'll get back to you as soon as possible
+      </p>
     </div>
 
     <form @submit.prevent="submitForm" class="relative z-10 space-y-6">
@@ -31,7 +35,9 @@
 
       <div class="space-y-6">
         <div class="form-group">
-          <label for="name" class="mb-2 block text-sm font-medium text-white">Name</label>
+          <label for="name" class="mb-2 block text-sm font-medium text-white"
+            >Name</label
+          >
           <div class="relative">
             <input
               type="text"
@@ -48,7 +54,9 @@
         </div>
 
         <div class="form-group">
-          <label for="email" class="mb-2 block text-sm font-medium text-white">Email</label>
+          <label for="email" class="mb-2 block text-sm font-medium text-white"
+            >Email</label
+          >
           <div class="relative">
             <input
               type="email"
@@ -66,7 +74,9 @@
       </div>
 
       <div class="form-group">
-        <label for="subject" class="mb-2 block text-sm font-medium text-white">Subject</label>
+        <label for="subject" class="mb-2 block text-sm font-medium text-white"
+          >Subject</label
+        >
         <div class="relative">
           <input
             type="text"
@@ -83,7 +93,9 @@
       </div>
 
       <div class="form-group">
-        <label for="message" class="mb-2 block text-sm font-medium text-white">Message</label>
+        <label for="message" class="mb-2 block text-sm font-medium text-white"
+          >Message</label
+        >
         <div class="relative">
           <textarea
             id="message"
@@ -139,80 +151,80 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, reactive } from 'vue'
-  import { useEmailStore } from '@/stores/email'
-  import {
+import { defineComponent, reactive } from "vue";
+import { useEmailStore } from "@/stores/email";
+import {
+  UserIcon,
+  EnvelopeIcon,
+  PaperAirplaneIcon,
+  TagIcon,
+  ChatBubbleLeftRightIcon,
+} from "@heroicons/vue/24/solid";
+
+interface FormData {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+}
+
+export default defineComponent({
+  name: "ContactForm",
+  components: {
     UserIcon,
     EnvelopeIcon,
     PaperAirplaneIcon,
     TagIcon,
     ChatBubbleLeftRightIcon,
-  } from '@heroicons/vue/24/solid'
+  },
+  setup() {
+    const emailStore = useEmailStore();
+    const form = reactive<FormData>({
+      name: "",
+      email: "",
+      subject: "",
+      message: "",
+    });
 
-  interface FormData {
-    name: string
-    email: string
-    subject: string
-    message: string
-  }
+    const submitForm = async () => {
+      try {
+        await emailStore.sendEmail({
+          from_name: form.name,
+          from_email: form.email,
+          subject: form.subject,
+          message: form.message,
+        });
 
-  export default defineComponent({
-    name: 'ContactForm',
-    components: {
-      UserIcon,
-      EnvelopeIcon,
-      PaperAirplaneIcon,
-      TagIcon,
-      ChatBubbleLeftRightIcon,
-    },
-    setup() {
-      const emailStore = useEmailStore()
-      const form = reactive<FormData>({
-        name: '',
-        email: '',
-        subject: '',
-        message: '',
-      })
-
-      const submitForm = async () => {
-        try {
-          await emailStore.sendEmail({
-            from_name: form.name,
-            from_email: form.email,
-            subject: form.subject,
-            message: form.message,
-          })
-
-          form.name = ''
-          form.email = ''
-          form.subject = ''
-          form.message = ''
-        } catch (error) {
-          console.error('Form submission error:', error)
-        }
+        form.name = "";
+        form.email = "";
+        form.subject = "";
+        form.message = "";
+      } catch (error) {
+        console.error("Form submission error:", error);
       }
+    };
 
-      return {
-        form,
-        submitForm,
-        emailStore,
-      }
-    },
-  })
+    return {
+      form,
+      submitForm,
+      emailStore,
+    };
+  },
+});
 </script>
 
 <style scoped>
-  .relative:hover {
-    border-color: rgba(109, 40, 217, 0.5);
-  }
+.relative:hover {
+  border-color: rgba(109, 40, 217, 0.5);
+}
 
-  input:hover,
-  textarea:hover {
-    border-color: #333;
-  }
+input:hover,
+textarea:hover {
+  border-color: #333;
+}
 
-  input:focus,
-  textarea:focus {
-    border-color: #6d28d9;
-  }
+input:focus,
+textarea:focus {
+  border-color: #6d28d9;
+}
 </style>

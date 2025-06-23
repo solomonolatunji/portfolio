@@ -2,7 +2,9 @@
   <div class="min-h-screen w-full pb-24 md:pb-12">
     <div class="container mx-auto max-w-6xl px-4 pt-12 sm:px-6 lg:px-8">
       <div class="title-with-bg-shadow" data-text="CONTACT ME">
-        <h1 class="modern-title mb-8 text-center text-2xl sm:text-3xl lg:text-4xl">
+        <h1
+          class="modern-title mb-8 text-center text-2xl sm:text-3xl lg:text-4xl"
+        >
           <span class="accent">—</span>
           CONTACT ME
         </h1>
@@ -32,31 +34,31 @@
 </template>
 
 <script lang="ts">
-  import ContactInfo from '@/components/Contact/ContactInfo.vue'
-  import SocialLinks from '@/components/Contact/SocialLinks.vue'
-  import ContactForm from '@/components/Contact/ContactForm.vue'
-  import PortfolioCTA from '@/components/Contact/PortfolioCTA.vue'
+import ContactInfo from "@/components/Contact/ContactInfo.vue";
+import SocialLinks from "@/components/Contact/SocialLinks.vue";
+import ContactForm from "@/components/Contact/ContactForm.vue";
+import PortfolioCTA from "@/components/Contact/PortfolioCTA.vue";
 
-  export default {
-    name: 'Contact',
-    components: {
-      ContactInfo,
-      SocialLinks,
-      ContactForm,
-      PortfolioCTA,
-    },
-  }
+export default {
+  name: "Contact",
+  components: {
+    ContactInfo,
+    SocialLinks,
+    ContactForm,
+    PortfolioCTA,
+  },
+};
 </script>
 
 <style scoped>
-  .contact-row {
-    display: grid;
-    grid-template-rows: 1fr;
-  }
+.contact-row {
+  display: grid;
+  grid-template-rows: 1fr;
+}
 
-  @media (max-width: 1023px) {
-    .contact-card {
-      height: auto;
-    }
+@media (max-width: 1023px) {
+  .contact-card {
+    height: auto;
   }
+}
 </style>

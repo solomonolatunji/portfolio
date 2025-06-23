@@ -1,10 +1,14 @@
 <template>
   <div class="w-full pt-16 pb-16 md:pt-52 md:pb-20 lg:pt-64">
     <div class="mx-auto w-full max-w-5xl">
-      <div class="flex flex-col items-center justify-between gap-6 md:flex-row md:gap-8">
+      <div
+        class="flex flex-col items-center justify-between gap-6 md:flex-row md:gap-8"
+      >
         <div class="flex w-full items-center justify-center md:w-2/5">
           <div class="floating relative">
-            <div class="profile-gradient animate-spin-slow absolute inset-0 rounded-full"></div>
+            <div
+              class="profile-gradient animate-spin-slow absolute inset-0 rounded-full"
+            ></div>
 
             <div
               class="profile-image-container animate-fadeIn h-52 w-52 overflow-hidden rounded-full border-4 border-[#6d28d9] shadow-xl md:h-64 md:w-64 lg:h-72 lg:w-72"
@@ -32,7 +36,9 @@
           class="flex w-full flex-col items-center text-center md:w-3/5 md:items-start md:text-left"
         >
           <div class="animate-slideDown">
-            <p class="mb-3 flex items-center font-medium tracking-wider text-[#6d28d9]">
+            <p
+              class="mb-3 flex items-center font-medium tracking-wider text-[#6d28d9]"
+            >
               <span class="mr-2 hidden h-0.5 w-5 bg-[#6d28d9] md:block"></span>
               HELLO THERE 👋
             </p>
@@ -55,9 +61,11 @@
           <div
             class="glass-card animate-fadeIn mb-6 rounded-xl border border-white/10 p-5 backdrop-blur-sm delay-300"
           >
-            <p class="max-w-2xl text-base leading-relaxed text-gray-300 md:text-lg">
-              Full Stack Engineer building modern, scalable web & mobile apps with clean code and
-              performance in mind.
+            <p
+              class="max-w-2xl text-base leading-relaxed text-gray-300 md:text-lg"
+            >
+              Full Stack Engineer building modern, scalable web & mobile apps
+              with clean code and performance in mind.
             </p>
           </div>
 
@@ -128,7 +136,9 @@
             </a>
           </div>
 
-          <div class="animate-slideUp flex flex-row gap-4 delay-700 sm:flex-row">
+          <div
+            class="animate-slideUp flex flex-row gap-4 delay-700 sm:flex-row"
+          >
             <router-link
               to="/about"
               class="cta-button inline-flex transform items-center rounded-lg bg-[#6d28d9] px-5 py-2 text-sm font-medium text-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:bg-[#5b21b6] hover:shadow-[#6d28d9]/30 sm:rounded-xl sm:px-8 sm:py-4 sm:text-base sm:shadow-lg md:text-lg"
@@ -156,227 +166,231 @@
 </template>
 
 <script>
-  import { EnvelopeIcon } from '@heroicons/vue/24/solid'
+import { EnvelopeIcon } from "@heroicons/vue/24/solid";
 
-  export default {
-    name: 'Home',
-    components: {
-      EnvelopeIcon,
-    },
-  }
+export default {
+  name: "Home",
+  components: {
+    EnvelopeIcon,
+  },
+};
 </script>
 
 <style scoped>
-  .glass-card {
-    background: rgba(30, 30, 30, 0.4);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+.glass-card {
+  background: rgba(30, 30, 30, 0.4);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+}
+
+.profile-gradient {
+  background: linear-gradient(135deg, #6d28d9, #9333ea, #6d28d9, #4c1d95);
+  opacity: 0.5;
+  transform: scale(1.05);
+  filter: blur(8px);
+}
+
+.profile-image-container {
+  position: relative;
+  z-index: 1;
+}
+
+.shadow-glow {
+  box-shadow: 0 0 15px rgba(109, 40, 217, 0.4);
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
   }
 
-  .profile-gradient {
-    background: linear-gradient(135deg, #6d28d9, #9333ea, #6d28d9, #4c1d95);
-    opacity: 0.5;
-    transform: scale(1.05);
-    filter: blur(8px);
+  50% {
+    transform: translateY(-10px);
   }
 
-  .profile-image-container {
-    position: relative;
-    z-index: 1;
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.floating {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
   }
 
-  .shadow-glow {
-    box-shadow: 0 0 15px rgba(109, 40, 217, 0.4);
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 12s linear infinite;
+}
+
+.text-gradient {
+  background-size: 200% 200%;
+  animation: gradient-shift 8s ease infinite;
+}
+
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
   }
 
-  @keyframes float {
-    0% {
-      transform: translateY(0px);
-    }
-
-    50% {
-      transform: translateY(-10px);
-    }
-
-    100% {
-      transform: translateY(0px);
-    }
+  50% {
+    background-position: 100% 50%;
   }
 
-  .floating {
-    animation: float 6s ease-in-out infinite;
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.cta-button {
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-button::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.2) 0%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.cta-button:hover::after {
+  opacity: 1;
+}
+
+.typewriter {
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: transparent;
+  animation: typing 3.5s steps(30, end);
+}
+
+@keyframes typing {
+  from {
+    width: 0;
   }
 
-  @keyframes spin-slow {
-    from {
-      transform: rotate(0deg);
-    }
-
-    to {
-      transform: rotate(360deg);
-    }
+  to {
+    width: 100%;
   }
+}
 
-  .animate-spin-slow {
-    animation: spin-slow 12s linear infinite;
-  }
+.animate-blink {
+  animation: blink 1s step-end infinite;
+}
 
-  .text-gradient {
-    background-size: 200% 200%;
-    animation: gradient-shift 8s ease infinite;
-  }
+.social-link {
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
 
-  @keyframes gradient-shift {
-    0% {
-      background-position: 0% 50%;
-    }
+.social-link::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(109, 40, 217, 0.15);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition:
+    width 0.4s ease,
+    height 0.4s ease;
+  z-index: -1;
+}
 
-    50% {
-      background-position: 100% 50%;
-    }
+.social-link:hover::after {
+  width: 120%;
+  height: 120%;
+}
 
-    100% {
-      background-position: 0% 50%;
-    }
-  }
+.animate-fadeIn {
+  opacity: 0;
+  animation: fadeIn 1s ease forwards;
+}
 
-  .cta-button {
-    position: relative;
-    overflow: hidden;
-  }
+.animate-slideUp {
+  opacity: 0;
+  animation: slideUp 0.8s ease forwards;
+}
 
-  .cta-button::after {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
+.animate-slideDown {
+  opacity: 0;
+  animation: slideDown 0.8s ease forwards;
+}
 
-  .cta-button:hover::after {
+.delay-300 {
+  animation-delay: 300ms;
+}
+
+.delay-500 {
+  animation-delay: 500ms;
+}
+
+.delay-700 {
+  animation-delay: 700ms;
+}
+
+@keyframes blink {
+  from,
+  to {
     opacity: 1;
   }
 
-  .typewriter {
-    overflow: hidden;
-    white-space: nowrap;
-    border-right: transparent;
-    animation: typing 3.5s steps(30, end);
-  }
-
-  @keyframes typing {
-    from {
-      width: 0;
-    }
-
-    to {
-      width: 100%;
-    }
-  }
-
-  .animate-blink {
-    animation: blink 1s step-end infinite;
-  }
-
-  .social-link {
-    position: relative;
-    overflow: hidden;
-    z-index: 1;
-  }
-
-  .social-link::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    background: rgba(109, 40, 217, 0.15);
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    transition:
-      width 0.4s ease,
-      height 0.4s ease;
-    z-index: -1;
-  }
-
-  .social-link:hover::after {
-    width: 120%;
-    height: 120%;
-  }
-
-  .animate-fadeIn {
+  50% {
     opacity: 0;
-    animation: fadeIn 1s ease forwards;
   }
+}
 
-  .animate-slideUp {
+@keyframes fadeIn {
+  from {
     opacity: 0;
-    animation: slideUp 0.8s ease forwards;
   }
 
-  .animate-slideDown {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
     opacity: 0;
-    animation: slideDown 0.8s ease forwards;
+    transform: translateY(30px);
   }
 
-  .delay-300 {
-    animation-delay: 300ms;
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
   }
 
-  .delay-500 {
-    animation-delay: 500ms;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-
-  .delay-700 {
-    animation-delay: 700ms;
-  }
-
-  @keyframes blink {
-    from,
-    to {
-      opacity: 1;
-    }
-
-    50% {
-      opacity: 0;
-    }
-  }
-
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-
-    to {
-      opacity: 1;
-    }
-  }
-
-  @keyframes slideUp {
-    from {
-      opacity: 0;
-      transform: translateY(30px);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes slideDown {
-    from {
-      opacity: 0;
-      transform: translateY(-30px);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
+}
 </style>

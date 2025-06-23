@@ -1,5 +1,7 @@
 <template>
-  <div class="flex min-h-screen w-full items-center justify-center py-12 pb-24 md:pb-12">
+  <div
+    class="flex min-h-screen w-full items-center justify-center py-12 pb-24 md:pb-12"
+  >
     <div class="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
       <div v-if="project" class="mb-12">
         <!-- Back Button -->
@@ -31,7 +33,11 @@
             <div
               class="relative aspect-video overflow-hidden rounded-xl bg-[#1e1e1e] shadow-xl sm:aspect-auto"
             >
-              <img :src="project.image" :alt="project.title" class="h-full w-full object-cover" />
+              <img
+                :src="project.image"
+                :alt="project.title"
+                class="h-full w-full object-cover"
+              />
               <div
                 class="absolute top-4 right-4 rounded-full bg-[#6d28d9] px-3 py-1 text-sm text-white shadow-md"
               >
@@ -45,7 +51,9 @@
             <div
               class="h-full rounded-xl border border-[#333] bg-[#1e1e1e] p-5 shadow-lg transition-colors duration-300 hover:border-[#6d28d9]/30 sm:p-6"
             >
-              <h1 class="mb-4 text-2xl font-bold text-white md:text-3xl">{{ project.title }}</h1>
+              <h1 class="mb-4 text-2xl font-bold text-white md:text-3xl">
+                {{ project.title }}
+              </h1>
               <div class="mb-6 space-y-4">
                 <div class="flex items-start">
                   <div class="mr-3 rounded-lg bg-[#2d2d2d] p-2">
@@ -62,7 +70,9 @@
                   </div>
                   <div>
                     <h3 class="text-sm text-gray-400">Category</h3>
-                    <p class="text-white">{{ getCategoryName(project.category) }}</p>
+                    <p class="text-white">
+                      {{ getCategoryName(project.category) }}
+                    </p>
                   </div>
                 </div>
                 <div class="flex items-start">
@@ -121,8 +131,12 @@
                 {{ project.detailedDescription }}
               </p>
 
-              <h3 class="mt-6 mb-3 flex items-center text-lg font-bold text-white sm:text-xl">
-                <span class="mr-2.5 inline-block h-6 w-1.5 rounded-full bg-[#6d28d9]"></span>
+              <h3
+                class="mt-6 mb-3 flex items-center text-lg font-bold text-white sm:text-xl"
+              >
+                <span
+                  class="mr-2.5 inline-block h-6 w-1.5 rounded-full bg-[#6d28d9]"
+                ></span>
                 Key Features:
               </h3>
               <ul class="space-y-3 pl-1">
@@ -147,14 +161,24 @@
                 </li>
               </ul>
 
-              <h3 class="mt-8 mb-3 flex items-center text-lg font-bold text-white sm:text-xl">
-                <span class="mr-2.5 inline-block h-6 w-1.5 rounded-full bg-[#6d28d9]"></span>
+              <h3
+                class="mt-8 mb-3 flex items-center text-lg font-bold text-white sm:text-xl"
+              >
+                <span
+                  class="mr-2.5 inline-block h-6 w-1.5 rounded-full bg-[#6d28d9]"
+                ></span>
                 My Role:
               </h3>
-              <p class="text-base leading-relaxed text-gray-300 sm:text-lg">{{ project.role }}</p>
+              <p class="text-base leading-relaxed text-gray-300 sm:text-lg">
+                {{ project.role }}
+              </p>
 
-              <h3 class="mt-8 mb-3 flex items-center text-lg font-bold text-white sm:text-xl">
-                <span class="mr-2.5 inline-block h-6 w-1.5 rounded-full bg-[#6d28d9]"></span>
+              <h3
+                class="mt-8 mb-3 flex items-center text-lg font-bold text-white sm:text-xl"
+              >
+                <span
+                  class="mr-2.5 inline-block h-6 w-1.5 rounded-full bg-[#6d28d9]"
+                ></span>
                 Challenges & Solutions:
               </h3>
               <p class="text-base leading-relaxed text-gray-300 sm:text-lg">
@@ -170,7 +194,9 @@
             <span class="accent">—</span>
             PROJECT GALLERY
           </h2>
-          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
+          <div
+            class="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3"
+          >
             <div
               v-for="(image, index) in project.gallery"
               :key="index"
@@ -217,7 +243,9 @@
               </div>
               <div>
                 <div class="mb-0.5 text-sm text-gray-400">Previous Project</div>
-                <div class="font-medium text-white transition-colors group-hover:text-[#6d28d9]">
+                <div
+                  class="font-medium text-white transition-colors group-hover:text-[#6d28d9]"
+                >
                   {{ prevProject.title }}
                 </div>
               </div>
@@ -232,7 +260,9 @@
             >
               <div class="text-right">
                 <div class="mb-0.5 text-sm text-gray-400">Next Project</div>
-                <div class="font-medium text-white transition-colors group-hover:text-[#6d28d9]">
+                <div
+                  class="font-medium text-white transition-colors group-hover:text-[#6d28d9]"
+                >
                   {{ nextProject.title }}
                 </div>
               </div>
@@ -281,10 +311,12 @@
             />
           </svg>
         </div>
-        <h1 class="mb-3 text-2xl font-bold text-white sm:text-3xl">Project Not Found</h1>
+        <h1 class="mb-3 text-2xl font-bold text-white sm:text-3xl">
+          Project Not Found
+        </h1>
         <p class="mx-auto mb-8 max-w-md text-gray-400">
-          The project you're looking for doesn't exist or has been removed. Check out my other
-          projects instead.
+          The project you're looking for doesn't exist or has been removed.
+          Check out my other projects instead.
         </p>
         <router-link
           to="/portfolio"
@@ -312,183 +344,192 @@
 </template>
 
 <script>
-  import { CalendarIcon, TagIcon, CodeBracketIcon, EyeIcon } from '@heroicons/vue/24/solid'
-  import { useHead } from '@vueuse/head'
-  import { computed } from 'vue'
-  import { useRoute } from 'vue-router'
-  import { projects } from '../constants/projects'
+import {
+  CalendarIcon,
+  TagIcon,
+  CodeBracketIcon,
+  EyeIcon,
+} from "@heroicons/vue/24/solid";
+import { useHead } from "@vueuse/head";
+import { computed } from "vue";
+import { useRoute } from "vue-router";
+import { projects } from "../constants/projects";
 
-  export default {
-    name: 'PortfolioDetail',
-    components: {
-      CalendarIcon,
-      TagIcon,
-      CodeBracketIcon,
-      EyeIcon,
-    },
-    setup() {
-      const route = useRoute()
+export default {
+  name: "PortfolioDetail",
+  components: {
+    CalendarIcon,
+    TagIcon,
+    CodeBracketIcon,
+    EyeIcon,
+  },
+  setup() {
+    const route = useRoute();
 
-      const project = computed(() => {
-        const projectId = route.params.id
-        return projects.find(p => p.id === projectId)
-      })
+    const project = computed(() => {
+      const projectId = route.params.id;
+      return projects.find((p) => p.id === projectId);
+    });
 
-      const nextProject = computed(() => {
-        if (!project.value) return null
-        const currentIndex = projects.findIndex(p => p.id === project.value.id)
-        return currentIndex < projects.length - 1 ? projects[currentIndex + 1] : null
-      })
+    const nextProject = computed(() => {
+      if (!project.value) return null;
+      const currentIndex = projects.findIndex((p) => p.id === project.value.id);
+      return currentIndex < projects.length - 1
+        ? projects[currentIndex + 1]
+        : null;
+    });
 
-      const prevProject = computed(() => {
-        if (!project.value) return null
-        const currentIndex = projects.findIndex(p => p.id === project.value.id)
-        return currentIndex > 0 ? projects[currentIndex - 1] : null
-      })
+    const prevProject = computed(() => {
+      if (!project.value) return null;
+      const currentIndex = projects.findIndex((p) => p.id === project.value.id);
+      return currentIndex > 0 ? projects[currentIndex - 1] : null;
+    });
 
-      // SEO meta tags setup
-      const pageTitle = computed(() =>
-        project.value
-          ? `${project.value.title} | Solomon Olatunji's Portfolio`
-          : 'Project Not Found'
-      )
-      const pageDescription = computed(() =>
-        project.value
-          ? project.value.description
-          : 'Explore my portfolio of web applications, mobile apps, and UI/UX design projects.'
-      )
-      const ogImage = computed(() =>
-        project.value ? project.value.image : 'https://solomonolatunji.com/og-image.jpg'
-      )
-      const canonicalUrl = computed(
-        () => `https://solomonolatunji.com/portfolio/${route.params.id}`
-      )
+    // SEO meta tags setup
+    const pageTitle = computed(() =>
+      project.value
+        ? `${project.value.title} | Solomon Olatunji's Portfolio`
+        : "Project Not Found",
+    );
+    const pageDescription = computed(() =>
+      project.value
+        ? project.value.description
+        : "Explore my portfolio of web applications, mobile apps, and UI/UX design projects.",
+    );
+    const ogImage = computed(() =>
+      project.value
+        ? project.value.image
+        : "https://solomonolatunji.com/og-image.jpg",
+    );
+    const canonicalUrl = computed(
+      () => `https://solomonolatunji.com/portfolio/${route.params.id}`,
+    );
 
-      // Schema.org structured data for portfolio project
-      const projectSchema = computed(() => {
-        if (!project.value) return null
-
-        return {
-          '@context': 'https://schema.org',
-          '@type': 'CreativeWork',
-          name: project.value.title,
-          description: project.value.description,
-          image: project.value.image,
-          dateCreated: `${project.value.year}-01-01`,
-          creator: {
-            '@type': 'Person',
-            name: 'Solomon Olatunji',
-            url: 'https://solomonolatunji.com/about',
-          },
-          keywords: project.value.technologies.join(', '),
-          url: canonicalUrl.value,
-          thumbnailUrl: project.value.image,
-          mainEntityOfPage: {
-            '@type': 'WebPage',
-            '@id': canonicalUrl.value,
-          },
-          publisher: {
-            '@type': 'Person',
-            name: 'Solomon Olatunji',
-            url: 'https://solomonolatunji.com',
-          },
-        }
-      })
-
-      // Set meta tags for SEO
-      useHead({
-        title: pageTitle,
-        meta: [
-          {
-            name: 'description',
-            content: pageDescription,
-          },
-          // OpenGraph tags
-          {
-            property: 'og:title',
-            content: pageTitle,
-          },
-          {
-            property: 'og:description',
-            content: pageDescription,
-          },
-          {
-            property: 'og:type',
-            content: 'website',
-          },
-          {
-            property: 'og:image',
-            content: ogImage,
-          },
-          {
-            property: 'og:url',
-            content: canonicalUrl,
-          },
-          // Twitter tags
-          {
-            name: 'twitter:card',
-            content: 'summary_large_image',
-          },
-          {
-            name: 'twitter:title',
-            content: pageTitle,
-          },
-          {
-            name: 'twitter:description',
-            content: pageDescription,
-          },
-          {
-            name: 'twitter:image',
-            content: ogImage,
-          },
-          // Project specific tags
-          ...(project.value?.technologies.map(tech => ({
-            property: 'article:tag',
-            content: tech,
-          })) || []),
-        ],
-        link: [
-          {
-            rel: 'canonical',
-            href: canonicalUrl,
-          },
-        ],
-        script: [
-          {
-            type: 'application/ld+json',
-            children: computed(() => JSON.stringify(projectSchema.value)),
-          },
-        ],
-      })
-
-      function getCategoryName(category) {
-        const categories = {
-          web: 'Web Application',
-          mobile: 'Mobile Application',
-          ui: 'UI/UX Design',
-        }
-        return categories[category] || category
-      }
+    // Schema.org structured data for portfolio project
+    const projectSchema = computed(() => {
+      if (!project.value) return null;
 
       return {
-        project,
-        nextProject,
-        prevProject,
-        getCategoryName,
-      }
-    },
-  }
+        "@context": "https://schema.org",
+        "@type": "CreativeWork",
+        name: project.value.title,
+        description: project.value.description,
+        image: project.value.image,
+        dateCreated: `${project.value.year}-01-01`,
+        creator: {
+          "@type": "Person",
+          name: "Solomon Olatunji",
+          url: "https://solomonolatunji.com/about",
+        },
+        keywords: project.value.technologies.join(", "),
+        url: canonicalUrl.value,
+        thumbnailUrl: project.value.image,
+        mainEntityOfPage: {
+          "@type": "WebPage",
+          "@id": canonicalUrl.value,
+        },
+        publisher: {
+          "@type": "Person",
+          name: "Solomon Olatunji",
+          url: "https://solomonolatunji.com",
+        },
+      };
+    });
+
+    // Set meta tags for SEO
+    useHead({
+      title: pageTitle,
+      meta: [
+        {
+          name: "description",
+          content: pageDescription,
+        },
+        // OpenGraph tags
+        {
+          property: "og:title",
+          content: pageTitle,
+        },
+        {
+          property: "og:description",
+          content: pageDescription,
+        },
+        {
+          property: "og:type",
+          content: "website",
+        },
+        {
+          property: "og:image",
+          content: ogImage,
+        },
+        {
+          property: "og:url",
+          content: canonicalUrl,
+        },
+        // Twitter tags
+        {
+          name: "twitter:card",
+          content: "summary_large_image",
+        },
+        {
+          name: "twitter:title",
+          content: pageTitle,
+        },
+        {
+          name: "twitter:description",
+          content: pageDescription,
+        },
+        {
+          name: "twitter:image",
+          content: ogImage,
+        },
+        // Project specific tags
+        ...(project.value?.technologies.map((tech) => ({
+          property: "article:tag",
+          content: tech,
+        })) || []),
+      ],
+      link: [
+        {
+          rel: "canonical",
+          href: canonicalUrl,
+        },
+      ],
+      script: [
+        {
+          type: "application/ld+json",
+          children: computed(() => JSON.stringify(projectSchema.value)),
+        },
+      ],
+    });
+
+    function getCategoryName(category) {
+      const categories = {
+        web: "Web Application",
+        mobile: "Mobile Application",
+        ui: "UI/UX Design",
+      };
+      return categories[category] || category;
+    }
+
+    return {
+      project,
+      nextProject,
+      prevProject,
+      getCategoryName,
+    };
+  },
+};
 </script>
 
 <style scoped>
-  .prose h3 {
-    margin-top: 1.5rem;
-    margin-bottom: 0.5rem;
-    font-weight: 600;
-  }
+.prose h3 {
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
 
-  .prose ul {
-    list-style-type: none;
-    padding-left: 0;
-  }
+.prose ul {
+  list-style-type: none;
+  padding-left: 0;
+}
 </style>

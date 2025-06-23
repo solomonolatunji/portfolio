@@ -74,58 +74,58 @@
 </template>
 
 <script lang="ts">
-  import {
+import {
+  MapPinIcon,
+  PhoneIcon,
+  EnvelopeIcon,
+  BriefcaseIcon,
+  UserIcon,
+} from "@heroicons/vue/24/solid";
+
+export default {
+  name: "ContactInfo",
+  components: {
     MapPinIcon,
     PhoneIcon,
     EnvelopeIcon,
     BriefcaseIcon,
     UserIcon,
-  } from '@heroicons/vue/24/solid'
-
-  export default {
-    name: 'ContactInfo',
-    components: {
-      MapPinIcon,
-      PhoneIcon,
-      EnvelopeIcon,
-      BriefcaseIcon,
-      UserIcon,
-    },
-  }
+  },
+};
 </script>
 
 <style scoped>
-  .contact-card > div > div > * {
+.contact-card > div > div > * {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+.contact-card > div > div > :nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.contact-card > div > div > :nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.contact-card > div > div > :nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.contact-card > div > div > :nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+@keyframes fadeInUp {
+  from {
     opacity: 0;
     transform: translateY(20px);
-    animation: fadeInUp 0.6s ease forwards;
   }
 
-  .contact-card > div > div > :nth-child(1) {
-    animation-delay: 0.1s;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-
-  .contact-card > div > div > :nth-child(2) {
-    animation-delay: 0.2s;
-  }
-
-  .contact-card > div > div > :nth-child(3) {
-    animation-delay: 0.3s;
-  }
-
-  .contact-card > div > div > :nth-child(4) {
-    animation-delay: 0.4s;
-  }
-
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
+}
 </style>

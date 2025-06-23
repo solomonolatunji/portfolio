@@ -1,14 +1,20 @@
 <template>
-  <div class="flex min-h-screen w-full items-center justify-center py-12 pb-24 md:pb-12">
+  <div
+    class="flex min-h-screen w-full items-center justify-center py-12 pb-24 md:pb-12"
+  >
     <div class="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
       <div class="title-with-bg-shadow" data-text="MY PORTFOLIO">
-        <h1 class="modern-title mb-8 text-center text-2xl sm:text-3xl lg:text-4xl">
+        <h1
+          class="modern-title mb-8 text-center text-2xl sm:text-3xl lg:text-4xl"
+        >
           <span class="accent">—</span>
           MY PORTFOLIO
         </h1>
       </div>
 
-      <div class="mb-12 flex flex-nowrap justify-start gap-1 pb-2 sm:gap-3 md:justify-center">
+      <div
+        class="mb-12 flex flex-nowrap justify-start gap-1 pb-2 sm:gap-3 md:justify-center"
+      >
         <button
           @click="setActiveFilter('all')"
           :class="[
@@ -55,7 +61,10 @@
         </button>
       </div>
 
-      <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3" ref="projectsGrid">
+      <div
+        class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3"
+        ref="projectsGrid"
+      >
         <div
           v-for="(project, index) in filteredProjects"
           :key="index"
@@ -119,7 +128,9 @@
                 {{ project.title }}
               </h3>
             </router-link>
-            <p class="mb-4 line-clamp-2 text-sm text-gray-300">{{ project.description }}</p>
+            <p class="mb-4 line-clamp-2 text-sm text-gray-300">
+              {{ project.description }}
+            </p>
             <div class="flex flex-wrap gap-2">
               <span
                 v-for="(tech, i) in project.technologies"
@@ -163,187 +174,194 @@
 </template>
 
 <script>
-  import { EyeIcon, CodeBracketIcon } from '@heroicons/vue/24/solid'
-  import { projects } from '../constants/projects'
+import { EyeIcon, CodeBracketIcon } from "@heroicons/vue/24/solid";
+import { projects } from "../constants/projects";
 
-  export default {
-    name: 'Portfolio',
-    components: {
-      EyeIcon,
-      CodeBracketIcon,
+export default {
+  name: "Portfolio",
+  components: {
+    EyeIcon,
+    CodeBracketIcon,
+  },
+  data() {
+    return {
+      activeFilter: "all",
+      projects,
+      isMobile: false,
+      activeProjectIndex: null,
+      ticking: false,
+    };
+  },
+  computed: {
+    filteredProjects() {
+      if (this.activeFilter === "all") {
+        return this.projects;
+      }
+      return this.projects.filter(
+        (project) => project.category === this.activeFilter,
+      );
     },
-    data() {
-      return {
-        activeFilter: 'all',
-        projects,
-        isMobile: false,
-        activeProjectIndex: null,
-        ticking: false,
+  },
+  mounted() {
+    this.checkIfMobile();
+    this.animateProjectCards();
+    window.addEventListener("scroll", this.handleScroll);
+    window.addEventListener("resize", this.checkIfMobile);
+  },
+  beforeUnmount() {
+    window.removeEventListener("scroll", this.handleScroll);
+    window.removeEventListener("resize", this.checkIfMobile);
+  },
+  methods: {
+    checkIfMobile() {
+      this.isMobile = window.innerWidth < 768;
+      if (!this.isMobile) {
+        this.activeProjectIndex = null;
       }
     },
-    computed: {
-      filteredProjects() {
-        if (this.activeFilter === 'all') {
-          return this.projects
-        }
-        return this.projects.filter(project => project.category === this.activeFilter)
-      },
+    toggleProjectActive(index) {
+      if (!this.isMobile) return;
+      if (this.activeProjectIndex === index) {
+        this.activeProjectIndex = null;
+      } else {
+        this.activeProjectIndex = index;
+      }
     },
-    mounted() {
-      this.checkIfMobile()
-      this.animateProjectCards()
-      window.addEventListener('scroll', this.handleScroll)
-      window.addEventListener('resize', this.checkIfMobile)
+    handleScroll() {
+      if (!this.ticking) {
+        window.requestAnimationFrame(() => {
+          this.animateProjectCards();
+          this.ticking = false;
+        });
+        this.ticking = true;
+      }
     },
-    beforeUnmount() {
-      window.removeEventListener('scroll', this.handleScroll)
-      window.removeEventListener('resize', this.checkIfMobile)
-    },
-    methods: {
-      checkIfMobile() {
-        this.isMobile = window.innerWidth < 768
-        if (!this.isMobile) {
-          this.activeProjectIndex = null
-        }
-      },
-      toggleProjectActive(index) {
-        if (!this.isMobile) return
-        if (this.activeProjectIndex === index) {
-          this.activeProjectIndex = null
-        } else {
-          this.activeProjectIndex = index
-        }
-      },
-      handleScroll() {
-        if (!this.ticking) {
-          window.requestAnimationFrame(() => {
-            this.animateProjectCards()
-            this.ticking = false
-          })
-          this.ticking = true
-        }
-      },
-      animateProjectCards() {
-        const projectCards = document.querySelectorAll('.project-card')
-        projectCards.forEach((card, index) => {
-          if (this.isInViewport(card)) {
-            setTimeout(() => {
-              card.classList.add('fadeInUp')
-            }, index * 100)
-          }
-        })
-      },
-      isInViewport(element) {
-        const rect = element.getBoundingClientRect()
-        return (
-          rect.top <= (window.innerHeight || document.documentElement.clientHeight) * 0.9 &&
-          rect.bottom >= 0
-        )
-      },
-      setActiveFilter(filter) {
-        this.activeFilter = filter
-        this.activeProjectIndex = null
-
-        this.$nextTick(() => {
-          const projectCards = document.querySelectorAll('.project-card')
-          projectCards.forEach(card => {
-            card.classList.remove('fadeInUp')
-            void card.offsetWidth
-          })
+    animateProjectCards() {
+      const projectCards = document.querySelectorAll(".project-card");
+      projectCards.forEach((card, index) => {
+        if (this.isInViewport(card)) {
           setTimeout(() => {
-            this.animateProjectCards()
-          }, 50)
-        })
-      },
+            card.classList.add("fadeInUp");
+          }, index * 100);
+        }
+      });
     },
-  }
+    isInViewport(element) {
+      const rect = element.getBoundingClientRect();
+      return (
+        rect.top <=
+          (window.innerHeight || document.documentElement.clientHeight) * 0.9 &&
+        rect.bottom >= 0
+      );
+    },
+    setActiveFilter(filter) {
+      this.activeFilter = filter;
+      this.activeProjectIndex = null;
+
+      this.$nextTick(() => {
+        const projectCards = document.querySelectorAll(".project-card");
+        projectCards.forEach((card) => {
+          card.classList.remove("fadeInUp");
+          void card.offsetWidth;
+        });
+        setTimeout(() => {
+          this.animateProjectCards();
+        }, 50);
+      });
+    },
+  },
+};
 </script>
 
 <style scoped>
-  .filter-button {
-    position: relative;
-    overflow: hidden;
-  }
+.filter-button {
+  position: relative;
+  overflow: hidden;
+}
 
-  .filter-button::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 0;
-    height: 100%;
-    background-color: rgba(109, 40, 217, 0.1);
-    transition: width 0.3s ease;
-    z-index: -1;
-  }
+.filter-button::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background-color: rgba(109, 40, 217, 0.1);
+  transition: width 0.3s ease;
+  z-index: -1;
+}
 
-  .filter-button:hover::after {
-    width: 100%;
-  }
+.filter-button:hover::after {
+  width: 100%;
+}
 
-  .filter-active {
-    position: relative;
-  }
+.filter-active {
+  position: relative;
+}
 
-  .filter-active::before {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 20px;
-    height: 2px;
-    background-color: white;
-    border-radius: 2px;
-  }
+.filter-active::before {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 2px;
+  background-color: white;
+  border-radius: 2px;
+}
 
-  .project-card {
+.project-card {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.project-card.fadeInUp {
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+@keyframes fadeInUp {
+  from {
     opacity: 0;
     transform: translateY(20px);
   }
 
-  .project-card.fadeInUp {
-    animation: fadeInUp 0.6s ease forwards;
-  }
-
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .shadow-glow {
-    box-shadow: 0 0 15px rgba(109, 40, 217, 0.4);
-  }
-
-  .project-image-container {
-    position: relative;
-  }
-
-  .cta-button {
-    position: relative;
-    overflow: hidden;
-  }
-
-  .cta-button::after {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(109, 40, 217, 0.2) 0%, transparent 70%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-
-  .cta-button:hover::after {
+  to {
     opacity: 1;
+    transform: translateY(0);
   }
+}
+
+.shadow-glow {
+  box-shadow: 0 0 15px rgba(109, 40, 217, 0.4);
+}
+
+.project-image-container {
+  position: relative;
+}
+
+.cta-button {
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-button::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle,
+    rgba(109, 40, 217, 0.2) 0%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.cta-button:hover::after {
+  opacity: 1;
+}
 </style>

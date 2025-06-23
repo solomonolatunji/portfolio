@@ -1,13 +1,13 @@
-import { defineStore } from 'pinia'
-import { useToast } from 'vue-toastification'
+import { defineStore } from "pinia";
+import { useToast } from "vue-toastification";
 
 interface SubscribeState {
-  isLoading: boolean
-  error: string | null
-  successMessage: string | null
+  isLoading: boolean;
+  error: string | null;
+  successMessage: string | null;
 }
 
-export const useSubscribeStore = defineStore('subscribe', {
+export const useSubscribeStore = defineStore("subscribe", {
   state: (): SubscribeState => ({
     isLoading: false,
     error: null,
@@ -20,33 +20,36 @@ export const useSubscribeStore = defineStore('subscribe', {
      * @param email - Subscriber's email address
      */
     async subscribe(email: string): Promise<void> {
-      this.isLoading = true
-      this.error = null
-      this.successMessage = null
+      this.isLoading = true;
+      this.error = null;
+      this.successMessage = null;
 
-      const toast = useToast()
+      const toast = useToast();
 
       try {
         await new Promise<void>((resolve, reject) => {
           setTimeout(() => {
-            if (!email.includes('@')) {
-              reject(new Error('Invalid email address'))
+            if (!email.includes("@")) {
+              reject(new Error("Invalid email address"));
             } else {
-              resolve()
+              resolve();
             }
-          }, 1000)
-        })
+          }, 1000);
+        });
 
-        this.successMessage = 'Subscribed successfully! Welcome to the newsletter.'
-        toast.success(this.successMessage)
+        this.successMessage =
+          "Subscribed successfully! Welcome to the newsletter.";
+        toast.success(this.successMessage);
       } catch (error) {
-        console.error('Failed to subscribe:', error)
+        console.error("Failed to subscribe:", error);
         this.error =
-          error instanceof Error ? error.message : 'Failed to subscribe. Please try again later.'
-        toast.error(this.error)
-        throw error
+          error instanceof Error
+            ? error.message
+            : "Failed to subscribe. Please try again later.";
+        toast.error(this.error);
+        throw error;
       } finally {
-        this.isLoading = false
+        this.isLoading = false;
       }
     },
 
@@ -54,8 +57,8 @@ export const useSubscribeStore = defineStore('subscribe', {
      * Clear error and success messages
      */
     clearMessages(): void {
-      this.error = null
-      this.successMessage = null
+      this.error = null;
+      this.successMessage = null;
     },
   },
-})
+});

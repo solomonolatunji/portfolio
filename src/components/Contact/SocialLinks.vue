@@ -102,56 +102,56 @@
 </template>
 
 <script lang="ts">
-  import { GlobeAltIcon } from '@heroicons/vue/24/solid'
+import { GlobeAltIcon } from "@heroicons/vue/24/solid";
 
-  export default {
-    name: 'SocialLinks',
-    components: {
-      GlobeAltIcon,
-    },
-  }
+export default {
+  name: "SocialLinks",
+  components: {
+    GlobeAltIcon,
+  },
+};
 </script>
 
 <style scoped>
-  .social-btn:hover .social-icon-wrapper {
-    transform: translateY(-5px);
-  }
+.social-btn:hover .social-icon-wrapper {
+  transform: translateY(-5px);
+}
 
-  .social-icon-wrapper {
-    transition: transform 0.3s ease;
-  }
+.social-icon-wrapper {
+  transition: transform 0.3s ease;
+}
 
-  .social-btn {
+.social-btn {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+.social-btn:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.social-btn:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.social-btn:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.social-btn:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+@keyframes fadeInUp {
+  from {
     opacity: 0;
     transform: translateY(20px);
-    animation: fadeInUp 0.6s ease forwards;
   }
 
-  .social-btn:nth-child(1) {
-    animation-delay: 0.1s;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-
-  .social-btn:nth-child(2) {
-    animation-delay: 0.2s;
-  }
-
-  .social-btn:nth-child(3) {
-    animation-delay: 0.3s;
-  }
-
-  .social-btn:nth-child(4) {
-    animation-delay: 0.4s;
-  }
-
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
+}
 </style>

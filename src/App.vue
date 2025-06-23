@@ -1,8 +1,8 @@
 <script setup lang="ts">
-  import MainLayout from '@/components/MainLayout.vue'
-  import { usePageTitle } from '@/hooks/usePageTitle'
+import MainLayout from "@/components/MainLayout.vue";
+import { usePageTitle } from "@/hooks/usePageTitle";
 
-  usePageTitle()
+usePageTitle();
 </script>
 
 <template>

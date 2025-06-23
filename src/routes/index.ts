@@ -1,60 +1,60 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import Home from '@/pages/Home.vue'
-import About from '@/pages/About.vue'
-import Contact from '@/pages/Contact.vue'
-import Portfolio from '@/pages/Portfolio.vue'
-import PortfolioDetail from '@/pages/PortfolioDetail.vue'
-import Blog from '@/pages/Blog.vue'
-import BlogPost from '@/pages/BlogPost.vue'
-import NotFound from '@/pages/NotFound.vue'
-import Shop from '@/pages/Shop.vue'
+import { createRouter, createWebHistory } from "vue-router";
+import Home from "@/pages/Home.vue";
+import About from "@/pages/About.vue";
+import Contact from "@/pages/Contact.vue";
+import Portfolio from "@/pages/Portfolio.vue";
+import PortfolioDetail from "@/pages/PortfolioDetail.vue";
+import Blog from "@/pages/Blog.vue";
+import BlogPost from "@/pages/BlogPost.vue";
+import NotFound from "@/pages/NotFound.vue";
+import Shop from "@/pages/Shop.vue";
 
 const routes = [
   {
-    path: '/',
+    path: "/",
     component: Home,
   },
   {
-    path: '/about',
+    path: "/about",
     component: About,
   },
   {
-    path: '/contact',
+    path: "/contact",
     component: Contact,
   },
   {
-    path: '/portfolio',
+    path: "/portfolio",
     component: Portfolio,
   },
   {
-    path: '/shop',
+    path: "/shop",
     component: Shop,
   },
   {
-    path: '/portfolio/:id',
+    path: "/portfolio/:id",
     component: PortfolioDetail,
   },
   {
-    path: '/blog',
+    path: "/blog",
     component: Blog,
   },
   {
-    path: '/blog/:id',
+    path: "/blog/:id",
     component: BlogPost,
   },
   {
-    path: '/:pathMatch(.*)*',
-    name: 'NotFound',
+    path: "/:pathMatch(.*)*",
+    name: "NotFound",
     component: NotFound,
   },
-]
+];
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
   scrollBehavior(_to, _from, _savedPosition) {
-    return { top: 0 }
+    return { top: 0 };
   },
-})
+});
 
-export default router
+export default router;

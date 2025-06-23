@@ -19,12 +19,20 @@
             <AcademicCapIcon class="h-7 w-7 text-[#6d28d9]" />
           </div>
           <div>
-            <span class="rounded-full bg-[#2d2d2d] px-3 py-1 text-xs font-bold text-[#6d28d9]">
+            <span
+              class="rounded-full bg-[#2d2d2d] px-3 py-1 text-xs font-bold text-[#6d28d9]"
+            >
               {{ edu.period }}
             </span>
-            <h3 class="mt-2 mb-1 text-xl font-bold text-white">{{ edu.degree }}</h3>
-            <h4 class="mb-3 font-medium text-[#6d28d9]/80">{{ edu.institution }}</h4>
-            <p class="text-sm leading-relaxed text-gray-300">{{ edu.description }}</p>
+            <h3 class="mt-2 mb-1 text-xl font-bold text-white">
+              {{ edu.degree }}
+            </h3>
+            <h4 class="mb-3 font-medium text-[#6d28d9]/80">
+              {{ edu.institution }}
+            </h4>
+            <p class="text-sm leading-relaxed text-gray-300">
+              {{ edu.description }}
+            </p>
           </div>
         </div>
       </div>
@@ -33,58 +41,58 @@
 </template>
 
 <script>
-  import { AcademicCapIcon } from '@heroicons/vue/24/solid'
+import { AcademicCapIcon } from "@heroicons/vue/24/solid";
 
-  export default {
-    name: 'EducationSection',
-    components: {
-      AcademicCapIcon,
+export default {
+  name: "EducationSection",
+  components: {
+    AcademicCapIcon,
+  },
+  props: {
+    education: {
+      type: Array,
+      required: true,
     },
-    props: {
-      education: {
-        type: Array,
-        required: true,
-      },
-    },
-  }
+  },
+};
 </script>
 
 <style scoped>
-  /* Glass morphism effect */
-  .glass-card {
-    background: rgba(30, 30, 30, 0.5);
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
-    backdrop-filter: blur(8px);
-  }
+/* Glass morphism effect */
+.glass-card {
+  background: rgba(30, 30, 30, 0.5);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+  backdrop-filter: blur(8px);
+}
 
-  /* Education card animations */
-  .edu-card {
+/* Education card animations */
+.edu-card {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s ease;
+}
+
+.edu-card-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Section fade in animations */
+@keyframes fadeIn {
+  from {
     opacity: 0;
     transform: translateY(20px);
-    transition:
-      opacity 0.6s ease,
-      transform 0.6s ease;
   }
 
-  .edu-card-visible {
+  to {
     opacity: 1;
     transform: translateY(0);
   }
+}
 
-  /* Section fade in animations */
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .fade-in-section {
-    animation: fadeIn 1s ease forwards;
-  }
+.fade-in-section {
+  animation: fadeIn 1s ease forwards;
+}
 </style>

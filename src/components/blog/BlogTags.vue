@@ -18,13 +18,13 @@
 </template>
 
 <script setup lang="ts">
-  import { HashtagIcon } from '@heroicons/vue/24/solid'
-  import type { PropType } from 'vue'
+import { HashtagIcon } from "@heroicons/vue/24/solid";
+import type { PropType } from "vue";
 
-  defineProps({
-    tags: {
-      type: Array as PropType<string[]>,
-      required: true,
-    },
-  })
+defineProps({
+  tags: {
+    type: Array as PropType<string[]>,
+    required: true,
+  },
+});
 </script>

@@ -86,74 +86,82 @@
 </template>
 
 <script>
-  import {
+import {
+  HomeIcon,
+  UserIcon,
+  BriefcaseIcon,
+  EnvelopeIcon,
+  ChatBubbleLeftRightIcon,
+} from "@heroicons/vue/24/solid";
+
+export default {
+  name: "MainLayout",
+  components: {
     HomeIcon,
     UserIcon,
     BriefcaseIcon,
     EnvelopeIcon,
     ChatBubbleLeftRightIcon,
-  } from '@heroicons/vue/24/solid'
-
-  export default {
-    name: 'MainLayout',
-    components: {
-      HomeIcon,
-      UserIcon,
-      BriefcaseIcon,
-      EnvelopeIcon,
-      ChatBubbleLeftRightIcon,
-    },
-  }
+  },
+};
 </script>
 
 <style>
-  body {
-    margin: 0;
-    padding: 0;
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.main-background {
+  background: linear-gradient(135deg, #121212 0%, #1e1e1e 50%, #262626 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.main-background::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    circle at 15% 50%,
+    rgba(109, 40, 217, 0.08) 0%,
+    transparent 40%
+  );
+  z-index: 1;
+  pointer-events: none;
+}
+
+.main-background::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    circle at 85% 30%,
+    rgba(109, 40, 217, 0.05) 0%,
+    transparent 45%
+  );
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Add some subtle animated noise texture */
+@keyframes subtle-shift {
+  0% {
+    transform: translate(0, 0);
   }
 
-  .main-background {
-    background: linear-gradient(135deg, #121212 0%, #1e1e1e 50%, #262626 100%);
-    position: relative;
-    overflow: hidden;
+  50% {
+    transform: translate(3px, 3px);
   }
 
-  .main-background::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: radial-gradient(circle at 15% 50%, rgba(109, 40, 217, 0.08) 0%, transparent 40%);
-    z-index: 1;
-    pointer-events: none;
+  100% {
+    transform: translate(0, 0);
   }
-
-  .main-background::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: radial-gradient(circle at 85% 30%, rgba(109, 40, 217, 0.05) 0%, transparent 45%);
-    z-index: 2;
-    pointer-events: none;
-  }
-
-  /* Add some subtle animated noise texture */
-  @keyframes subtle-shift {
-    0% {
-      transform: translate(0, 0);
-    }
-
-    50% {
-      transform: translate(3px, 3px);
-    }
-
-    100% {
-      transform: translate(0, 0);
-    }
-  }
+}
 </style>
