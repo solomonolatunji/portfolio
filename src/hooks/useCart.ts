@@ -63,7 +63,7 @@ export function useCart() {
   }
 
   return {
-    cart: cartState.cart,
+    cart: computed(() => [...cartState.cart]),
     showCart: computed(() => cartState.showCart),
     cartItemsCount,
     cartTotal,

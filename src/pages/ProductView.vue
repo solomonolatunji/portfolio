@@ -290,7 +290,7 @@ export default {
                         p.id !== this.product.id &&
                         p.category === this.product.category
                 )
-                .slice(0, 3); // Limit to 3 related products
+                .slice(0, 3);
         }
     },
     mounted() {

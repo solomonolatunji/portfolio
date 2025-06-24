@@ -21,7 +21,7 @@
                             <div>
                                 <h4 class="text-xl font-bold text-white">Shopping Cart</h4>
                                 <p class="text-xs text-gray-400">
-                                    {{ items.length }} {{ items.length === 1 ? 'item' : 'items' }}
+                                    {{ cartItems.length }} {{ cartItems.length === 1 ? 'item' : 'items' }}
                                 </p>
                             </div>
                         </div>
@@ -35,7 +35,7 @@
                     <div class="flex-1 overflow-hidden">
                         <div class="h-full overflow-y-auto">
                             <!-- Empty State -->
-                            <div v-if="items.length === 0"
+                            <div v-if="cartItems.length === 0"
                                 class="flex h-full flex-col items-center justify-center p-8 text-center">
                                 <div
                                     class="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-gray-800/50">
@@ -51,8 +51,8 @@
 
                             <!-- Cart Items List -->
                             <div v-else class="space-y-1 p-4">
-                                <transition-group name="cart-item" tag="div" class="space-y-3">
-                                    <div v-for="item in items" :key="item.id"
+                                <transition-group name="cart-item" tag="div" class="space-y-3" :key="cartItems.length">
+                                    <div v-for="item in cartItems" :key="`${item.id}-${item.quantity}`"
                                         class="group relative overflow-hidden rounded-xl bg-[#2d2d2d]/60 p-4 border border-white/10">
                                         <!-- Item Content -->
                                         <div class="flex space-x-4">
@@ -122,7 +122,8 @@
                     </div>
 
                     <!-- Footer with Totals and Checkout -->
-                    <div v-if="items.length > 0" class="border-t border-white/20 bg-[#1e1e1e]/90 backdrop-blur-md p-6">
+                    <div v-if="cartItems.length > 0"
+                        class="border-t border-white/20 bg-[#1e1e1e]/90 backdrop-blur-md p-6">
                         <!-- Order Summary -->
                         <div class="mb-6 space-y-2">
                             <div class="flex items-center justify-between text-sm text-gray-300">
@@ -175,7 +176,7 @@ import {
     CreditCardIcon,
     ArrowPathIcon,
 } from '@heroicons/vue/24/solid';
-import { onUnmounted } from 'vue';
+import { onUnmounted, watch, computed } from 'vue';
 
 export default {
     name: 'ShoppingCartSidebar',
@@ -203,6 +204,13 @@ export default {
         },
     },
     emits: ['close', 'update-quantity', 'remove', 'checkout'],
+    setup(props) {
+        const cartItems = computed(() => [...props.items]);
+
+        return {
+            cartItems
+        };
+    },
     data() {
         return {
             isProcessing: false,
@@ -210,16 +218,16 @@ export default {
     },
     computed: {
         totalItems() {
-            return this.items.reduce((sum, item) => sum + item.quantity, 0);
+            return this.cartItems.reduce((sum, item) => sum + item.quantity, 0);
         },
         subtotal() {
-            return this.items.reduce((sum, item) => {
-                const price = item.price; // Use discounted price for subtotal
+            return this.cartItems.reduce((sum, item) => {
+                const price = item.price;
                 return sum + price * item.quantity;
             }, 0);
         },
         savings() {
-            return this.items.reduce((sum, item) => {
+            return this.cartItems.reduce((sum, item) => {
                 if (item.originalPrice && item.originalPrice > item.price) {
                     return sum + (item.originalPrice - item.price) * item.quantity;
                 }
@@ -245,6 +253,7 @@ export default {
         },
         removeItem(item) {
             this.$emit('remove', item.id);
+            this.$forceUpdate();
         },
         async handleCheckout() {
             if (this.isProcessing) return;
@@ -293,12 +302,18 @@ export default {
 
             sidebar.addEventListener('keydown', handleTabKey);
 
-            // Clean up on close event or component unmount
             const cleanup = () => {
                 sidebar.removeEventListener('keydown', handleTabKey);
             };
-            this.$on('close', cleanup); // Use $on for Vue 3 compatibility
-            onUnmounted(() => cleanup()); // Clean up on component unmount
+
+            onUnmounted(cleanup);
+
+            const unwatch = this.$watch('show', (newVal) => {
+                if (!newVal) {
+                    cleanup();
+                    unwatch();
+                }
+            });
 
             firstElement.focus();
         },
@@ -344,6 +359,11 @@ export default {
 
 .cart-item-move {
     transition: transform 0.3s ease;
+}
+
+.cart-item-leave-active {
+    position: absolute;
+    width: calc(100% - 32px);
 }
 
 .overflow-y-auto {
