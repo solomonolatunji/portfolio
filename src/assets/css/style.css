@@ -1,6 +1,64 @@
 @import "tailwindcss";
 
-/* Modern title styles */
+:root {
+  --bg-primary: #000000;
+  --bg-secondary: #111111;
+  --text-primary: #ffffff;
+  --text-secondary: #cccccc;
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--bg-primary);
+}
+
+body {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  background-color: var(--bg-primary);
+  margin: 0;
+  padding: 0;
+  overscroll-behavior: none;
+  -webkit-text-size-adjust: 100%;
+}
+
+#app {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background-color: transparent;
+  color: var(--text-primary);
+}
+
+html,
+body {
+  -webkit-overflow-scrolling: touch;
+}
+
+.scroll-container {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  will-change: scroll-position;
+}
+
+.router-view {
+  background-color: transparent;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+@media (max-width: 768px) {
+  body {
+    -webkit-text-size-adjust: 100%;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+
+  #app {
+    min-height: 100dvh;
+    position: relative;
+  }
+}
+
 .modern-title {
   font-weight: 700;
   letter-spacing: 0.05em;

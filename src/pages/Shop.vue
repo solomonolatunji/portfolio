@@ -8,6 +8,8 @@
                 </h1>
             </div>
 
+            <CartHeader />
+
             <!-- Category Filters -->
             <div class="mb-12 overflow-x-auto pb-2">
                 <div class="flex w-max flex-nowrap gap-1 sm:mx-auto sm:gap-3">
@@ -15,7 +17,7 @@
                         'filter-button rounded-xl px-2 py-2 text-xs font-medium whitespace-nowrap transition-all duration-300 sm:px-5 sm:text-sm',
                         activeFilter === 'all'
                             ? 'filter-active shadow-glow bg-[#6d28d9] text-white'
-                            : 'border border-white/10 bg-[#1e1e1e]/70 text-gray-300 backdrop-blur-sm hover:bg-[#2d2d2d]',
+                            : 'border border-white/10 bg-[#1e1e1e]/70 text-gray-300 backdrop-blur-sm hover:bg-[#2d2d2d]'
                     ]">
                         All Products
                     </button>
@@ -23,7 +25,7 @@
                         'filter-button rounded-xl px-2 py-2 text-xs font-medium whitespace-nowrap transition-all duration-300 sm:px-5 sm:text-sm',
                         activeFilter === 'digital'
                             ? 'filter-active shadow-glow bg-[#6d28d9] text-white'
-                            : 'border border-white/10 bg-[#1e1e1e]/70 text-gray-300 backdrop-blur-sm hover:bg-[#2d2d2d]',
+                            : 'border border-white/10 bg-[#1e1e1e]/70 text-gray-300 backdrop-blur-sm hover:bg-[#2d2d2d]'
                     ]">
                         Digital Products
                     </button>
@@ -31,7 +33,7 @@
                         'filter-button rounded-xl px-2 py-2 text-xs font-medium whitespace-nowrap transition-all duration-300 sm:px-5 sm:text-sm',
                         activeFilter === 'courses'
                             ? 'filter-active shadow-glow bg-[#6d28d9] text-white'
-                            : 'border border-white/10 bg-[#1e1e1e]/70 text-gray-300 backdrop-blur-sm hover:bg-[#2d2d2d]',
+                            : 'border border-white/10 bg-[#1e1e1e]/70 text-gray-300 backdrop-blur-sm hover:bg-[#2d2d2d]'
                     ]">
                         Courses
                     </button>
@@ -39,27 +41,17 @@
                         'filter-button rounded-xl px-2 py-2 text-xs font-medium whitespace-nowrap transition-all duration-300 sm:px-5 sm:text-sm',
                         activeFilter === 'physical'
                             ? 'filter-active shadow-glow bg-[#6d28d9] text-white'
-                            : 'border border-white/10 bg-[#1e1e1e]/70 text-gray-300 backdrop-blur-sm hover:bg-[#2d2d2d]',
+                            : 'border border-white/10 bg-[#1e1e1e]/70 text-gray-300 backdrop-blur-sm hover:bg-[#2d2d2d]'
                     ]">
                         Merchandise
                     </button>
                 </div>
             </div>
 
-            <!-- Shopping Cart Summary -->
-            <div class="mb-8 flex justify-end px-2 sm:px-0">
-                <button @click="toggleCart"
-                    class="inline-flex items-center rounded-xl border border-white/10 bg-[#1e1e1e]/70 px-4 py-2 text-sm font-medium text-white backdrop-blur-sm transition-all duration-300 hover:bg-[#2d2d2d]">
-                    <ShoppingCartIcon class="mr-2 h-5 w-5" />
-                    Cart ({{ cartItemsCount }})
-                    <span v-if="cartTotal > 0" class="ml-2 text-[#6d28d9]">${{ cartTotal.toFixed(2) }}</span>
-                </button>
-            </div>
-
             <!-- Products Grid Component -->
             <Loading v-if="loading" text="Loading products..." size="md" />
             <ProductsGrid v-else :products="paginatedProducts" :is-mobile="isMobile"
-                :active-product-index="activeProductIndex" @view-product="openProductModal" @add-to-cart="addToCart" />
+                :active-product-index="activeProductIndex" @view-product="viewProduct" @add-to-cart="addToCart" />
 
             <!-- Pagination Component -->
             <Pagination v-if="!loading && filteredProducts.length > itemsPerPage" :current-page="currentPage"
@@ -69,10 +61,6 @@
             <ShoppingCartSidebar :show="showCart" :items="cart" :total="cartTotal" @close="toggleCart"
                 @update-quantity="updateQuantity" @remove="removeFromCart" @checkout="checkout" />
 
-            <!-- Product Modal Component -->
-            <ProductModal :show="showProductModal" :product="selectedProduct" @close="closeProductModal"
-                @add-to-cart="addToCart" />
-
             <!-- Newsletter Component -->
             <Newsletter />
         </div>
@@ -80,34 +68,36 @@
 </template>
 
 <script>
-import { ShoppingCartIcon } from "@heroicons/vue/24/solid";
-import { PRODUCTS } from "@/constants/products";
-import ShoppingCartSidebar from "@/components/Shop/ShoppingCartSidebar.vue";
-import ProductsGrid from "@/components/Shop/ProductsGrid.vue";
-import ProductModal from "@/components/Shop/ProductModal.vue";
-import Loading from "@/components/Loading.vue";
-import Newsletter from "@/components/Newsletter.vue";
-import Pagination from "@/components/Pagination.vue";
+import { ShoppingCartIcon } from '@heroicons/vue/24/solid';
+import { PRODUCTS } from '@/constants/products';
+import ShoppingCartSidebar from '@/components/Shop/ShoppingCartSidebar.vue';
+import ProductsGrid from '@/components/Shop/ProductsGrid.vue';
+import Loading from '@/components/Loading.vue';
+import Newsletter from '@/components/Newsletter.vue';
+import Pagination from '@/components/Pagination.vue';
+import CartHeader from '@/components/Shop/CartHeader.vue';
+import { useRouter } from 'vue-router';
+import { useCart } from '@/hooks/useCart';
 
 export default {
-    name: "Shop",
+    name: 'Shop',
     components: {
         ShoppingCartIcon,
         ShoppingCartSidebar,
         ProductsGrid,
-        ProductModal,
         Loading,
         Newsletter,
-        Pagination
+        Pagination,
+        CartHeader
+    },
+    setup() {
+        const router = useRouter();
+        const { cart, showCart, cartItemsCount, cartTotal, addToCart, removeFromCart, updateQuantity, toggleCart, checkout } = useCart();
+        return { router, cart, showCart, cartItemsCount, cartTotal, addToCart, removeFromCart, updateQuantity, toggleCart, checkout };
     },
     data() {
         return {
-            activeFilter: "all",
-            showCart: false,
-            showProductModal: false,
-            selectedProduct: null,
-            cart: [],
-            email: "",
+            activeFilter: 'all',
             isMobile: false,
             activeProductIndex: null,
             products: [],
@@ -119,12 +109,10 @@ export default {
     },
     computed: {
         filteredProducts() {
-            if (this.activeFilter === "all") {
+            if (this.activeFilter === 'all') {
                 return this.products;
             }
-            return this.products.filter(
-                (product) => product.category === this.activeFilter
-            );
+            return this.products.filter(product => product.category === this.activeFilter);
         },
         totalPages() {
             return Math.ceil(this.filteredProducts.length / this.itemsPerPage);
@@ -133,21 +121,12 @@ export default {
             const start = (this.currentPage - 1) * this.itemsPerPage;
             const end = start + this.itemsPerPage;
             return this.filteredProducts.slice(start, end);
-        },
-        cartItemsCount() {
-            return this.cart.reduce((total, item) => total + item.quantity, 0);
-        },
-        cartTotal() {
-            return this.cart.reduce(
-                (total, item) => total + item.price * item.quantity,
-                0
-            );
         }
     },
     mounted() {
         this.checkIfMobile();
-        window.addEventListener("resize", this.checkIfMobile);
-        window.addEventListener("scroll", this.handleScroll);
+        window.addEventListener('resize', this.checkIfMobile);
+        window.addEventListener('scroll', this.handleScroll);
         setTimeout(() => {
             this.products = PRODUCTS;
             this.loading = false;
@@ -155,8 +134,8 @@ export default {
         }, 2000);
     },
     beforeUnmount() {
-        window.removeEventListener("resize", this.checkIfMobile);
-        window.removeEventListener("scroll", this.handleScroll);
+        window.removeEventListener('resize', this.checkIfMobile);
+        window.removeEventListener('scroll', this.handleScroll);
     },
     methods: {
         checkIfMobile() {
@@ -171,9 +150,9 @@ export default {
             this.activeProductIndex = null;
 
             this.$nextTick(() => {
-                const productCards = document.querySelectorAll(".product-card");
-                productCards.forEach((card) => {
-                    card.classList.remove("fadeInUp");
+                const productCards = document.querySelectorAll('.product-card');
+                productCards.forEach(card => {
+                    card.classList.remove('fadeInUp');
                     void card.offsetWidth;
                 });
                 setTimeout(() => {
@@ -181,39 +160,11 @@ export default {
                 }, 50);
             });
         },
-        toggleCart() {
-            this.showCart = !this.showCart;
+        viewProduct(product) {
+            this.router.push(`/shop/${product.id}`);
         },
         addToCart(product) {
-            const existingItem = this.cart.find((item) => item.id === product.id);
-            if (existingItem) {
-                existingItem.quantity += 1;
-            } else {
-                this.cart.push({ ...product, quantity: 1 });
-            }
-        },
-        removeFromCart(productId) {
-            this.cart = this.cart.filter((item) => item.id !== productId);
-        },
-        updateQuantity({ id, quantity }) {
-            if (quantity <= 0) {
-                this.removeFromCart(id);
-                return;
-            }
-            const item = this.cart.find((item) => item.id === id);
-            if (item) {
-                item.quantity = quantity;
-            }
-        },
-        openProductModal(product) {
-            this.selectedProduct = product;
-            this.showProductModal = true;
-        },
-        closeProductModal() {
-            this.showProductModal = false;
-        },
-        checkout() {
-            alert(`Proceeding to checkout with total: $${this.cartTotal.toFixed(2)}`);
+            this.addToCart(product, 1); // Add one item to cart
         },
         handleScroll() {
             if (!this.ticking) {
@@ -225,11 +176,11 @@ export default {
             }
         },
         animateProductCards() {
-            const productCards = document.querySelectorAll(".product-card");
+            const productCards = document.querySelectorAll('.product-card');
             productCards.forEach((card, index) => {
                 if (this.isInViewport(card)) {
                     setTimeout(() => {
-                        card.classList.add("fadeInUp");
+                        card.classList.add('fadeInUp');
                     }, index * 100);
                 }
             });
@@ -237,8 +188,7 @@ export default {
         isInViewport(element) {
             const rect = element.getBoundingClientRect();
             return (
-                rect.top <=
-                (window.innerHeight || document.documentElement.clientHeight) * 0.9 &&
+                rect.top <= (window.innerHeight || document.documentElement.clientHeight) * 0.9 &&
                 rect.bottom >= 0
             );
         },
@@ -269,7 +219,7 @@ export default {
 }
 
 .filter-button::after {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     left: 0;
@@ -289,7 +239,7 @@ export default {
 }
 
 .filter-active::before {
-    content: "";
+    content: '';
     position: absolute;
     bottom: -2px;
     left: 50%;

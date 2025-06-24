@@ -10,7 +10,8 @@
             @click="handleProductClick(index)">
             <div class="product-image-container relative overflow-hidden">
                 <img :src="product.image" :alt="product.title"
-                    class="h-56 w-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                    class="h-56 w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    @error="handleImageError" />
 
                 <div class="absolute inset-0 bg-gradient-to-t from-[#121212] via-transparent to-transparent opacity-60">
                 </div>
@@ -32,16 +33,16 @@
                 <!-- Price Badge -->
                 <div class="absolute top-4 right-4">
                     <span class="rounded-full bg-[#6d28d9]/80 px-3 py-1 text-xs font-bold text-white backdrop-blur-sm">
-                        ${{ product.price }}
+                        ${{ product.price.toFixed(2) }}
                     </span>
                 </div>
 
                 <!-- Hover/Tap Actions -->
                 <div :class="[
                     'absolute inset-0 flex items-center justify-center gap-4 bg-gradient-to-b from-[#6d28d9]/80 to-[#4c1d95]/80 transition-all duration-500',
-                    (isMobile && activeIndex === index) ||
+                    (isMobile && activeProductIndex === index) ||
                     (!isMobile && 'md:opacity-0 md:group-hover:opacity-100'),
-                    isMobile && activeIndex !== index ? 'opacity-0' : '',
+                    isMobile && activeProductIndex !== index ? 'opacity-0' : '',
                 ]">
                     <button @click.stop="$emit('view-product', product)"
                         class="hover:shadow-glow transform rounded-full bg-white p-3 text-[#6d28d9] transition-all duration-300 hover:scale-110 hover:bg-gray-100">
@@ -78,9 +79,9 @@
 
                 <div class="flex items-center justify-between">
                     <div class="flex items-center space-x-2">
-                        <span class="text-2xl font-bold text-[#6d28d9]">${{ product.price }}</span>
+                        <span class="text-2xl font-bold text-[#6d28d9]">${{ product.price.toFixed(2) }}</span>
                         <span v-if="product.originalPrice" class="text-sm text-gray-400 line-through">
-                            ${{ product.originalPrice }}
+                            ${{ product.originalPrice.toFixed(2) }}
                         </span>
                     </div>
                     <button @click.stop="$emit('add-to-cart', product)"
@@ -94,10 +95,10 @@
 </template>
 
 <script>
-import { EyeIcon, ShoppingCartIcon, StarIcon } from "@heroicons/vue/24/solid";
+import { EyeIcon, ShoppingCartIcon, StarIcon } from '@heroicons/vue/24/solid';
 
 export default {
-    name: "ProductsGrid",
+    name: 'ProductsGrid',
     components: {
         EyeIcon,
         ShoppingCartIcon,
@@ -112,6 +113,10 @@ export default {
             type: Boolean,
             default: false,
         },
+        activeProductIndex: {
+            type: Number,
+            default: null,
+        },
     },
     data() {
         return {
@@ -119,12 +124,15 @@ export default {
             ticking: false,
         };
     },
-    emits: ["view-product", "add-to-cart"],
+    emits: ['view-product', 'add-to-cart'],
     methods: {
         handleProductClick(index) {
             if (this.isMobile) {
                 this.activeIndex = this.activeIndex === index ? null : index;
             }
+        },
+        handleImageError(event) {
+            event.target.src = 'https://via.placeholder.com/400x300/2d2d2d/666666?text=Image+Not+Available';
         },
         handleScroll() {
             if (!this.ticking) {
@@ -136,11 +144,11 @@ export default {
             }
         },
         animateProductCards() {
-            const productCards = this.$refs.productsGrid.querySelectorAll(".product-card");
+            const productCards = this.$refs.productsGrid.querySelectorAll('.product-card');
             productCards.forEach((card, index) => {
                 if (this.isInViewport(card)) {
                     setTimeout(() => {
-                        card.classList.add("fadeInUp");
+                        card.classList.add('fadeInUp');
                     }, index * 100);
                 }
             });
@@ -148,17 +156,17 @@ export default {
         isInViewport(element) {
             const rect = element.getBoundingClientRect();
             return (
-                rect.top <= (window.innerHeight || document.documentElement.clientHeight) * 0.9 &&
+                rect.top <= (window.innerHeight || document.documentElement.clientHeight) * 0.8 &&
                 rect.bottom >= 0
             );
         },
     },
     mounted() {
         this.animateProductCards();
-        window.addEventListener("scroll", this.handleScroll);
+        window.addEventListener('scroll', this.handleScroll);
     },
     beforeUnmount() {
-        window.removeEventListener("scroll", this.handleScroll);
+        window.removeEventListener('scroll', this.handleScroll);
     },
 };
 </script>
@@ -186,7 +194,7 @@ export default {
 }
 
 .shadow-glow {
-    box-shadow: 0 0 15px rgba(109, 40, 217, 0.4);
+    box-shadow: 0 0 15px rgba(109, 40, 217, 0.5);
 }
 
 .product-image-container {

@@ -8,6 +8,7 @@ import Blog from "@/pages/Blog.vue";
 import BlogPost from "@/pages/BlogPost.vue";
 import NotFound from "@/pages/NotFound.vue";
 import Shop from "@/pages/Shop.vue";
+import ProductView from "@/pages/ProductView.vue";
 
 const routes = [
   {
@@ -29,6 +30,10 @@ const routes = [
   {
     path: "/shop",
     component: Shop,
+  },
+  {
+    path: "/shop/:id",
+    component: ProductView,
   },
   {
     path: "/portfolio/:id",
