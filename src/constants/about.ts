@@ -1,3 +1,5 @@
+import avatarImg from '@/assets/avatar.jpg';
+
 export const aboutData = {
   greeting: "HELLO THERE 👋",
   name: "SOLOMON OLATUNJI",
@@ -10,7 +12,7 @@ export const aboutData = {
   description:
     "Full Stack Engineer building modern, scalable web & mobile apps with clean code and performance in mind.",
   profileImage: {
-    src: "https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+    src: avatarImg,
     alt: "Solomon Olatunji",
   },
   socialLinks: [

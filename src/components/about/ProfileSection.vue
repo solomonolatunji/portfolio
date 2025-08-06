@@ -1,20 +1,12 @@
 <template>
-  <div
-    class="flex flex-col items-center justify-center gap-8 md:flex-row lg:gap-12"
-  >
+  <div class="flex flex-col items-center justify-center gap-8 md:flex-row lg:gap-12">
     <div class="mb-8 flex w-full items-center justify-center md:mb-0 md:w-1/3">
       <div class="floating relative">
+        <div class="profile-gradient animate-spin-slow absolute inset-0 rounded-full"></div>
         <div
-          class="profile-gradient animate-spin-slow absolute inset-0 rounded-full"
-        ></div>
-        <div
-          class="profile-image-container h-48 w-48 overflow-hidden rounded-full border-4 border-[#6d28d9] shadow-2xl sm:h-56 sm:w-56 md:h-64 md:w-64 lg:h-72 lg:w-72"
-        >
-          <img
-            src="https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
-            alt="Solomon Olatunji"
-            class="h-full w-full object-cover transition-transform duration-700 hover:scale-110"
-          />
+          class="profile-image-container h-48 w-48 overflow-hidden rounded-full border-4 border-[#6d28d9] shadow-2xl sm:h-56 sm:w-56 md:h-64 md:w-64 lg:h-72 lg:w-72">
+          <img :src="avatarImg" alt="Solomon Olatunji"
+            class="h-full w-full object-cover transition-transform duration-700 hover:scale-110" />
         </div>
       </div>
     </div>
@@ -67,9 +59,7 @@
             +2349017818024
           </p>
         </div>
-        <div
-          class="info-item col-span-2 transition-transform hover:-translate-y-1"
-        >
+        <div class="info-item col-span-2 transition-transform hover:-translate-y-1">
           <p class="flex items-center text-xs text-gray-400 sm:text-sm">
             <EnvelopeIcon class="mr-1.5 h-4 w-4 text-[#6d28d9]" />
             Email:
@@ -84,6 +74,7 @@
 </template>
 
 <script>
+import avatarImg from '@/assets/avatar.jpg';
 import {
   UserIcon,
   GlobeAltIcon,
@@ -102,6 +93,11 @@ export default {
     MapPinIcon,
     PhoneIcon,
     EnvelopeIcon,
+  },
+  data() {
+    return {
+      avatarImg,
+    };
   },
 };
 </script>
