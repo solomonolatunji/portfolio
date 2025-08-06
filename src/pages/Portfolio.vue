@@ -33,14 +33,6 @@
         ]">
           Mobile Apps
         </button>
-        <button @click="setActiveFilter('ui')" :class="[
-          'filter-button rounded-xl px-2 py-2 text-xs font-medium whitespace-nowrap transition-all duration-300 sm:px-5 sm:text-sm',
-          activeFilter === 'ui'
-            ? 'filter-active shadow-glow bg-[#6d28d9] text-white'
-            : 'border border-white/10 bg-[#1e1e1e]/70 text-gray-300 backdrop-blur-sm hover:bg-[#2d2d2d]',
-        ]">
-          UI/UX Design
-        </button>
       </div>
 
       <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3" ref="projectsGrid">

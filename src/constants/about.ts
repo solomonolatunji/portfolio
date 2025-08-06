@@ -5,7 +5,6 @@ export const aboutData = {
     "SOFTWARE ENGINEER",
     "FULL STACK DEVELOPER",
     "MOBILE APP DEVELOPER",
-    "UI/UX DESIGNER",
     "TECHNICAL WRITER",
   ],
   description:

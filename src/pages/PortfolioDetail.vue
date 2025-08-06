@@ -281,7 +281,7 @@ export default {
     const pageDescription = computed(() =>
       project.value
         ? project.value.description
-        : "Explore my portfolio of web applications, mobile apps, and UI/UX design projects.",
+        : "Explore my portfolio of web applications, mobile apps projects.",
     );
     const ogImage = computed(() =>
       project.value
@@ -393,7 +393,6 @@ export default {
       const categories = {
         web: "Web Application",
         mobile: "Mobile Application",
-        ui: "UI/UX Design",
       };
       return categories[category] || category;
     }
