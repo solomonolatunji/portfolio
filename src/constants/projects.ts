@@ -17,7 +17,7 @@ export const projects: Project[] = [
     year: "2024",
     category: "mobile",
     technologies: ["React", "React Native", "NestJS", "TypeScript", "Tailwind CSS", "PostgreSQL"],
-    demoUrl: "https://takentrade.com/",
+    demoUrl: "https://play.google.com/store/apps/details?id=com.takentrade.app",
     codeUrl: "https://github.com/eminisolomon",
     features: [
       "Airtime, data, and electricity bill payments",
