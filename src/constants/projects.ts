@@ -1,4 +1,9 @@
 import type { Project } from "@/interfaces/portfolio";
+import takentradeImg from '@/assets/images/takentrade.png';
+import estudylabImg from '@/assets/images/estudylab.png';
+import tickvoImg from '@/assets/images/tickvo.png';
+import tercescrowImg from '@/assets/images/tercescrow.jpg';
+import kulipalImg from '@/assets/images/kulipal.png';
 
 export const projects: Project[] = [
   {
@@ -8,7 +13,7 @@ export const projects: Project[] = [
       "A robust fintech platform for utilities and bills payment, airtime, data, electricity, loans, money transfers, Ajo (thrift), and investments. TakeNTrade simplifies financial transactions and daily payments for users.",
     detailedDescription:
       "TakeNTrade is a comprehensive fintech solution that enables users to pay for utilities (airtime, data, electricity), manage bills, access loans, perform money transfers, participate in Ajo (thrift savings), and invest in various opportunities. The platform is designed for ease of use, security, and reliability, making everyday financial tasks seamless for individuals and businesses.",
-    image: "/src/assets/images/takentrade.png",
+    image: takentradeImg,
     year: "2024",
     category: "mobile",
     technologies: ["React", "React Native", "NestJS", "TypeScript", "Tailwind CSS", "PostgreSQL"],
@@ -37,7 +42,7 @@ export const projects: Project[] = [
       "An educational technology platform with mobile app and web interface for students and educators. Features interactive learning modules and progress tracking.",
     detailedDescription:
       "Estudylab is an innovative educational technology platform designed to enhance the learning experience for students and educators. The platform combines web and mobile interfaces to provide seamless access to educational content, interactive learning modules, and comprehensive progress tracking. Built with React and React Native for cross-platform compatibility, with a robust NestJS backend.",
-    image: "/src/assets/images/estudylab.png",
+    image: estudylabImg,
     year: "2023",
     category: "mobile",
     technologies: ["React", "React Native", "NestJS"],
@@ -152,7 +157,7 @@ export const projects: Project[] = [
       "A comprehensive event management platform for Contests, Awards, Causes, and general event planning. Tickvo streamlines event organization, ticketing, and attendee engagement for a variety of purposes.",
     detailedDescription:
       "Tickvo is a versatile event management platform designed for organizing Contests, Awards, Causes, and other events. It features advanced ticketing systems, attendee management, event analytics, and seamless integration with payment gateways and marketing tools. The platform empowers organizers to manage voting, nominations, fundraising, and community engagement for diverse event types.",
-    image: "/src/assets/images/tickvo.png",
+    image: tickvoImg,
     year: "2025",
     category: "web",
     technologies: ["Laravel", "React", "Tailwind CSS", "PostgreSQL"],
@@ -211,7 +216,7 @@ export const projects: Project[] = [
       "A secure mobile platform for trading and buying gift cards and cryptocurrencies. Tercescrow ensures fast processing, a wide selection of cards, and a user-friendly experience.",
     detailedDescription:
       "Tercescrow is the ultimate mobile app for securely buying and selling gift cards and cryptocurrencies. Users can convert unused gift cards into cash, purchase discounted cards from trusted sellers, and trade crypto assets with confidence. The app features instant payouts, a wide selection of brands, and an intuitive interface for effortless trading.",
-    image: "/src/assets/images/tercescrow.jpg",
+    image: tercescrowImg,
     year: "2025",
     category: "mobile",
     technologies: ["React Native", "TypeScript", "Node.js", "Express", "MongoDB"],
@@ -238,7 +243,7 @@ export const projects: Project[] = [
       "A mobile app for food shopping and delivery, house bookings and rent, and event exploration. Kulipal makes it easy to order food, reserve spaces, and discover events in your area.",
     detailedDescription:
       "Kulipal is a lifestyle mobile app that provides a platform to buy food, reserve spaces in restaurants, rent or book apartments and hotel rooms, explore local events, and purchase event tickets. The app offers a seamless experience for users to manage their daily needs, from food delivery to accommodation and entertainment, all in one place.",
-    image: "/src/assets/images/kulipal.png",
+    image: kulipalImg,
     year: "2025",
     category: "mobile",
     technologies: ["React Native", "TypeScript", "Node.js", "Express", "MongoDB"],

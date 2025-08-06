@@ -20,7 +20,7 @@
           <!-- Project Image -->
           <div class="w-full lg:w-3/5">
             <div class="relative aspect-video overflow-hidden rounded-xl bg-[#1e1e1e] shadow-xl sm:aspect-auto">
-              <img :src="project.image" :alt="project.title" class="h-full w-full object-cover" />
+              <img :src="getImageUrl(project.image)" :alt="project.title" class="h-full w-full object-cover" />
               <div class="absolute top-4 right-4 rounded-full bg-[#6d28d9] px-3 py-1 text-sm text-white shadow-md">
                 {{ project.year }}
               </div>
@@ -397,11 +397,16 @@ export default {
       return categories[category] || category;
     }
 
+    function getImageUrl(path) {
+      return new URL(path, import.meta.url).href;
+    }
+
     return {
       project,
       nextProject,
       prevProject,
       getCategoryName,
+      getImageUrl,
     };
   },
 };
