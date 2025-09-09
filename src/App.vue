@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import MainLayout from "@/components/Nav/MainLayout.vue";
+import MainLayout from "@/components/nav/MainLayout.vue";
 import { usePageTitle } from "@/hooks/usePageTitle";
 
 usePageTitle();

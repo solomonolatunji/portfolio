@@ -242,9 +242,9 @@ import {
 import { useRoute, useRouter } from 'vue-router';
 import { PRODUCTS } from '@/constants/products';
 import Loading from '@/components/Loading.vue';
-import ShoppingCartSidebar from '@/components/Shop/ShoppingCartSidebar.vue';
-import CartHeader from '@/components/Shop/CartHeader.vue';
-import RelatedProducts from '@/components/Shop/RelatedProducts.vue';
+import ShoppingCartSidebar from '@/components/shop/ShoppingCartSidebar.vue';
+import CartHeader from '@/components/shop/CartHeader.vue';
+import RelatedProducts from '@/components/shop/RelatedProducts.vue';
 import { useCart } from '@/hooks/useCart';
 import { computed } from 'vue';
 

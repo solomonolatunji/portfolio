@@ -106,7 +106,7 @@ export default {
       this.roleInterval = setInterval(() => {
         this.currentRoleIndex = (this.currentRoleIndex + 1) % this.aboutData.roles.length;
         this.currentRole = this.aboutData.roles[this.currentRoleIndex];
-      }, 3000); // Change role every 3 seconds
+      }, 3000);
     }
   }
 };

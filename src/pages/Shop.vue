@@ -70,12 +70,12 @@
 <script>
 import { ShoppingCartIcon } from '@heroicons/vue/24/solid';
 import { PRODUCTS } from '@/constants/products';
-import ShoppingCartSidebar from '@/components/Shop/ShoppingCartSidebar.vue';
-import ProductsGrid from '@/components/Shop/ProductsGrid.vue';
+import ShoppingCartSidebar from '@/components/shop/ShoppingCartSidebar.vue';
+import ProductsGrid from '@/components/shop/ProductsGrid.vue';
 import Loading from '@/components/Loading.vue';
 import Newsletter from '@/components/Newsletter.vue';
 import Pagination from '@/components/Pagination.vue';
-import CartHeader from '@/components/Shop/CartHeader.vue';
+import CartHeader from '@/components/shop/CartHeader.vue';
 import { useRouter } from 'vue-router';
 import { useCart } from '@/hooks/useCart';
 
