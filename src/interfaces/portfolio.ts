@@ -8,6 +8,8 @@ export interface Project {
   category: "web" | "mobile" | "ui";
   technologies: string[];
   demoUrl: string;
+  googlePlayUrl?: string;
+  appleStoreUrl?: string;
   codeUrl: string;
   features: string[];
   role: string;
