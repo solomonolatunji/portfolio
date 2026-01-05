@@ -4,6 +4,7 @@ import estudylabImg from "@/assets/images/estudylab.png";
 import tickvoImg from "@/assets/images/tickvo.png";
 import tercescrowImg from "@/assets/images/tercescrow.jpg";
 import kulipalImg from "@/assets/images/kulipal.png";
+import xdriveImg from "@/assets/images/xdrive.jpg";
 
 export const projects: Project[] = [
   {
@@ -308,16 +309,17 @@ export const projects: Project[] = [
       "A comprehensive platform for car sales and services, featuring an Android mobile app and a robust backend system.",
     detailedDescription:
       "XDrive is a dual-platform solution that allows users to browse, buy, and sell vehicles with ease. The project consists of a feature-rich Android application built with Expo and a responsive website, both powered by a scalable backend infrastructure. It simplifies the car buying process with advanced search filters and secure communication channels.",
-    image:
-      "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
+    image: xdriveImg,
     year: "2025",
     category: "mobile",
     technologies: [
       "React Native",
       "Expo",
-      "Node.js",
-      "Express",
-      "MongoDB",
+      "TypeScript",
+      "Laravel",
+      "MySQL",
+      "WebSockets",
+      "Paystack",
       "React",
     ],
     demoUrl: "https://www.xdriveautos.com",
@@ -332,7 +334,7 @@ export const projects: Project[] = [
       "Real-time updates across platforms",
       "Admin dashboard for inventory control",
     ],
-    role: "Backend and Mobile App Developer. Built the complete backend infrastructure and developed the Android mobile application.",
+    role: "Backend and Mobile App Developer. Built the complete backend infrastructure using Laravel and MySQL with WebSocket integration, and developed the Android mobile application with Expo and React Native.",
     challenges:
       "The main challenge was ensuring seamless data synchronization between the website and the mobile app while maintaining high performance. This was solved by designing a centralized API architecture.",
     gallery: [
