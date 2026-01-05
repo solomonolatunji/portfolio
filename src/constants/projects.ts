@@ -25,7 +25,10 @@ export const projects: Project[] = [
       "PostgreSQL",
     ],
     demoUrl: "https://takentrade.com",
-    googlePlayUrl: "https://play.google.com/store/apps/details?id=com.takentrade.app",
+    googlePlayUrl:
+      "https://play.google.com/store/apps/details?id=com.takentrade.app",
+    appleStoreUrl:
+      "https://apps.apple.com/ng/app/xpress-takentrade/id6748635694",
     codeUrl: "https://github.com/eminisolomon",
     features: [
       "Airtime, data, and electricity bill payments",
@@ -296,6 +299,45 @@ export const projects: Project[] = [
       "Key challenges included integrating multiple service APIs, managing real-time order and booking updates, and providing a unified user experience. Solutions involved modular API integration, real-time notifications, and intuitive UI design.",
     gallery: [
       "https://play-lh.googleusercontent.com/2wQnQwQwQwQwQwQwQwQwQwQwQwQwQwQwQwQwQwQwQwQwQwQwQwQwQwQwQwQwQwQwQwQwQwQw=w240-h480-rw",
+    ],
+  },
+  {
+    id: "10",
+    title: "XDrive",
+    description:
+      "A comprehensive platform for car sales and services, featuring an Android mobile app and a robust backend system.",
+    detailedDescription:
+      "XDrive is a dual-platform solution that allows users to browse, buy, and sell vehicles with ease. The project consists of a feature-rich Android application built with Expo and a responsive website, both powered by a scalable backend infrastructure. It simplifies the car buying process with advanced search filters and secure communication channels.",
+    image:
+      "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
+    year: "2025",
+    category: "mobile",
+    technologies: [
+      "React Native",
+      "Expo",
+      "Node.js",
+      "Express",
+      "MongoDB",
+      "React",
+    ],
+    demoUrl: "https://www.xdriveautos.com",
+    googlePlayUrl:
+      "https://expo.dev/accounts/realsolomon/projects/xdrive/builds/12326bd6-ca28-4299-b67a-8881b2f544b8",
+    codeUrl: "https://github.com/eminisolomon",
+    features: [
+      "Vehicle listing and management",
+      "Advanced search and filtering for cars",
+      "User account management",
+      "Secure backend API for data handling",
+      "Real-time updates across platforms",
+      "Admin dashboard for inventory control",
+    ],
+    role: "Backend and Mobile App Developer. Built the complete backend infrastructure and developed the Android mobile application.",
+    challenges:
+      "The main challenge was ensuring seamless data synchronization between the website and the mobile app while maintaining high performance. This was solved by designing a centralized API architecture.",
+    gallery: [
+      "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
+      "https://images.unsplash.com/photo-1503376763036-066120622c74?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
     ],
   },
 ];
