@@ -35,11 +35,7 @@ export function usePageTitle() {
       "/blog": PAGE_DESCRIPTIONS.blog,
     };
 
-    return (
-      descriptionMap[route.path] ||
-      route.meta?.description?.toString() ||
-      DEFAULT_DESCRIPTION
-    );
+    return descriptionMap[route.path] || route.meta?.description?.toString() || DEFAULT_DESCRIPTION;
   });
 
   const ogImage = computed<string>(() => {

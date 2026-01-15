@@ -46,9 +46,7 @@ export const useEmailStore = defineStore("email", {
      * Send email using configured EmailJS service
      * @param templateParams - Email content parameters
      */
-    async sendEmail(
-      templateParams: TemplateParams,
-    ): Promise<EmailJSResponseStatus> {
+    async sendEmail(templateParams: TemplateParams): Promise<EmailJSResponseStatus> {
       if (!this.isInitialized) {
         this.initialize();
       }
@@ -68,15 +66,9 @@ export const useEmailStore = defineStore("email", {
           throw new Error("EmailJS configuration is incomplete");
         }
 
-        const response = await emailjs.send(
-          serviceId,
-          templateId,
-          templateParams,
-          publicKey,
-        );
+        const response = await emailjs.send(serviceId, templateId, templateParams, publicKey);
 
-        this.successMessage =
-          "Message sent successfully! I will get back to you soon.";
+        this.successMessage = "Message sent successfully! I will get back to you soon.";
 
         toast.success(this.successMessage);
 

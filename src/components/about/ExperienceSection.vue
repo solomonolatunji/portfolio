@@ -26,10 +26,7 @@
             class="timeline-dot absolute left-0 z-10 h-6 w-6 -translate-x-1/2 transform rounded-full border-4 border-[#6d28d9] bg-[#121212] md:left-1/2"
           ></div>
 
-          <div
-            class="ml-8 md:ml-0 md:w-1/2"
-            :class="index % 2 === 0 ? 'md:pr-12' : 'md:pl-12'"
-          >
+          <div class="ml-8 md:ml-0 md:w-1/2" :class="index % 2 === 0 ? 'md:pr-12' : 'md:pl-12'">
             <div
               class="timeline-card rounded-xl border border-[#333] bg-[#1e1e1e]/70 p-6 shadow-xl transition-all duration-300 hover:border-[#6d28d9] hover:shadow-[#6d28d9]/20"
             >

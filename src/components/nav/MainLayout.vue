@@ -6,38 +6,50 @@
         <!-- Logo/Brand could go here -->
       </div>
 
-      <!-- Shop Icon - Top Right -->
-      <router-link :to="shopMenuItem.path"
-        class="group flex h-12 w-12 items-center justify-center rounded-full border border-[#333] bg-[#1e1e1e]/80 backdrop-blur-md shadow-lg transition-all duration-300 hover:scale-110 hover:bg-[#2d2d2d] hover:border-[#6d28d9]/50 hover:shadow-xl hover:shadow-[#6d28d9]/20"
-        :title="shopMenuItem.title">
-        <component :is="shopMenuItem.icon"
-          class="h-6 w-6 text-[#6d28d9] transition-all duration-300 group-hover:text-[#8b5cf6]" />
-      </router-link>
+      <div class="flex items-center">
+        <!-- Logo/Brand could go here -->
+      </div>
     </header>
 
     <div class="relative z-10 flex min-h-screen">
-      <div class="flex flex-1 w-full items-start justify-center text-white">
+      <div class="flex w-full flex-1 items-start justify-center text-white">
         <div class="w-full px-4 py-4 md:py-6">
           <router-view />
         </div>
 
         <!-- Desktop Navigation - Right Side -->
-        <nav class="fixed top-1/2 right-8 z-20 hidden -translate-y-1/2 transform flex-col gap-4 md:flex">
-          <router-link v-for="item in menuItems" :key="item.name" :to="item.path"
-            class="nav-item group flex h-14 w-14 items-center justify-center rounded-full border border-[#333] bg-[#1e1e1e]/80 backdrop-blur-md shadow-lg transition-all duration-300 hover:scale-110 hover:bg-gradient-to-br hover:from-[#2d2d2d] hover:to-[#3d3d3d] hover:border-[#6d28d9]/50 hover:shadow-xl hover:shadow-[#6d28d9]/20"
-            :title="item.title">
-            <component :is="item.icon"
-              class="h-6 w-6 text-[#6d28d9] transition-all duration-300 group-hover:text-[#8b5cf6] group-hover:scale-110" />
+        <nav
+          class="fixed top-1/2 right-8 z-20 hidden -translate-y-1/2 transform flex-col gap-4 md:flex"
+        >
+          <router-link
+            v-for="item in menuItems"
+            :key="item.name"
+            :to="item.path"
+            class="nav-item group flex h-14 w-14 items-center justify-center rounded-full border border-[#333] bg-[#1e1e1e]/80 shadow-lg backdrop-blur-md transition-all duration-300 hover:scale-110 hover:border-[#6d28d9]/50 hover:bg-linear-to-br hover:from-[#2d2d2d] hover:to-[#3d3d3d] hover:shadow-xl hover:shadow-[#6d28d9]/20"
+            :title="item.title"
+          >
+            <component
+              :is="item.icon"
+              class="h-6 w-6 text-[#6d28d9] transition-all duration-300 group-hover:scale-110 group-hover:text-[#8b5cf6]"
+            />
           </router-link>
         </nav>
 
         <!-- Mobile Navigation - Bottom -->
         <nav
-          class="fixed bottom-0 left-0 z-50 flex w-full items-center justify-around border-t border-[#333]/60 bg-[#1e1e1e]/90 backdrop-blur-xl p-2 md:hidden">
-          <router-link v-for="item in menuItems" :key="item.name" :to="item.path"
-            class="nav-item-mobile group flex flex-col items-center px-3 py-2 text-[#6d28d9] transition-all duration-300 hover:text-[#8b5cf6] active:scale-95">
-            <component :is="item.icon" class="h-6 w-6 transition-all duration-300 group-hover:scale-110" />
-            <span class="mt-1 text-xs text-gray-300/80 font-medium">{{ item.label }}</span>
+          class="fixed bottom-0 left-0 z-50 flex w-full items-center justify-around border-t border-[#333]/60 bg-[#1e1e1e]/90 p-2 backdrop-blur-xl md:hidden"
+        >
+          <router-link
+            v-for="item in menuItems"
+            :key="item.name"
+            :to="item.path"
+            class="nav-item-mobile group flex flex-col items-center px-3 py-2 text-[#6d28d9] transition-all duration-300 hover:text-[#8b5cf6] active:scale-95"
+          >
+            <component
+              :is="item.icon"
+              class="h-6 w-6 transition-all duration-300 group-hover:scale-110"
+            />
+            <span class="mt-1 text-xs font-medium text-gray-300/80">{{ item.label }}</span>
           </router-link>
         </nav>
       </div>
@@ -51,14 +63,13 @@
 </template>
 
 <script>
-import { menuItems, shopMenuItem } from '@/constants/menu';
+import { menuItems } from "@/constants/menu";
 
 export default {
   name: "MainLayout",
   data() {
     return {
       menuItems,
-      shopMenuItem
     };
   },
 };
@@ -68,11 +79,24 @@ export default {
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family:
+    "Inter",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
 }
 
 .main-background {
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 25%, #1e1e1e 50%, #262626 75%, #2a2a2a 100%);
+  background: linear-gradient(
+    135deg,
+    #0a0a0a 0%,
+    #1a1a1a 25%,
+    #1e1e1e 50%,
+    #262626 75%,
+    #2a2a2a 100%
+  );
   position: relative;
   overflow: hidden;
 }
@@ -103,7 +127,9 @@ body {
   background:
     linear-gradient(45deg, transparent 49%, rgba(109, 40, 217, 0.02) 50%, transparent 51%),
     linear-gradient(-45deg, transparent 49%, rgba(139, 92, 246, 0.015) 50%, transparent 51%);
-  background-size: 60px 60px, 80px 80px;
+  background-size:
+    60px 60px,
+    80px 80px;
   z-index: 2;
   pointer-events: none;
   opacity: 0.3;
@@ -168,7 +194,6 @@ body {
 }
 
 @keyframes float-1 {
-
   0%,
   100% {
     transform: translate(0, 0) rotate(0deg);
@@ -188,7 +213,6 @@ body {
 }
 
 @keyframes float-2 {
-
   0%,
   100% {
     transform: translate(0, 0) rotate(0deg);
@@ -204,7 +228,6 @@ body {
 }
 
 @keyframes float-3 {
-
   0%,
   100% {
     transform: translate(0, 0) rotate(0deg);
@@ -236,7 +259,6 @@ html {
 }
 
 @supports (backdrop-filter: blur(10px)) {
-
   .nav-item,
   .nav-item-mobile {
     backdrop-filter: blur(10px);

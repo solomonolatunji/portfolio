@@ -2,9 +2,7 @@
   <div class="min-h-screen w-full pb-24 md:pb-12">
     <div class="container mx-auto max-w-6xl px-4 pt-12 sm:px-6 lg:px-8">
       <div class="title-with-bg-shadow" data-text="CONTACT ME">
-        <h1
-          class="modern-title mb-8 text-center text-2xl sm:text-3xl lg:text-4xl"
-        >
+        <h1 class="modern-title mb-8 text-center text-2xl sm:text-3xl lg:text-4xl">
           <span class="accent">—</span>
           CONTACT ME
         </h1>

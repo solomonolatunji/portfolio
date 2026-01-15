@@ -4,9 +4,13 @@
       <div class="floating relative">
         <div class="profile-gradient animate-spin-slow absolute inset-0 rounded-full"></div>
         <div
-          class="profile-image-container h-48 w-48 overflow-hidden rounded-full border-4 border-[#6d28d9] shadow-2xl sm:h-56 sm:w-56 md:h-64 md:w-64 lg:h-72 lg:w-72">
-          <img :src="avatarImg" alt="Solomon Olatunji"
-            class="h-full w-full object-cover transition-transform duration-700 hover:scale-110" />
+          class="profile-image-container h-48 w-48 overflow-hidden rounded-full border-4 border-[#6d28d9] shadow-2xl sm:h-56 sm:w-56 md:h-64 md:w-64 lg:h-72 lg:w-72"
+        >
+          <img
+            :src="avatarImg"
+            alt="Solomon Olatunji"
+            class="h-full w-full object-cover transition-transform duration-700 hover:scale-110"
+          />
         </div>
       </div>
     </div>
@@ -46,18 +50,14 @@
             <MapPinIcon class="mr-1.5 h-4 w-4 text-[#6d28d9]" />
             Address:
           </p>
-          <p class="text-base font-medium text-white sm:text-lg">
-            Ilorin, Nigeria
-          </p>
+          <p class="text-base font-medium text-white sm:text-lg">Ilorin, Nigeria</p>
         </div>
         <div class="info-item transition-transform hover:-translate-y-1">
           <p class="flex items-center text-xs text-gray-400 sm:text-sm">
             <PhoneIcon class="mr-1.5 h-4 w-4 text-[#6d28d9]" />
             Phone:
           </p>
-          <p class="text-base font-medium text-white sm:text-lg">
-            +2349017818024
-          </p>
+          <p class="text-base font-medium text-white sm:text-lg">+2349017818024</p>
         </div>
         <div class="info-item col-span-2 transition-transform hover:-translate-y-1">
           <p class="flex items-center text-xs text-gray-400 sm:text-sm">
@@ -74,7 +74,7 @@
 </template>
 
 <script>
-import avatarImg from '@/assets/avatar.jpg';
+import avatarImg from "@/assets/avatar.jpg";
 import {
   UserIcon,
   GlobeAltIcon,

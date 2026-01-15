@@ -5,7 +5,6 @@ import {
   BriefcaseIcon,
   EnvelopeIcon,
   ChatBubbleLeftRightIcon,
-  ShoppingBagIcon,
 } from "@heroicons/vue/24/solid";
 
 export const menuItems: MenuItem[] = [
@@ -45,11 +44,3 @@ export const menuItems: MenuItem[] = [
     label: "Blog",
   },
 ];
-
-export const shopMenuItem = {
-  name: "shop",
-  path: "/shop",
-  icon: ShoppingBagIcon,
-  title: "Shop",
-  label: "Shop",
-};

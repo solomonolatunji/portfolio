@@ -1,12 +1,8 @@
 <template>
-  <div
-    class="flex min-h-screen w-full items-center justify-center py-12 pb-24 md:pb-12"
-  >
+  <div class="flex min-h-screen w-full items-center justify-center py-12 pb-24 md:pb-12">
     <div class="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
       <div class="title-with-bg-shadow" data-text="ABOUT ME">
-        <h1
-          class="modern-title mb-8 text-center text-2xl sm:text-3xl lg:text-4xl"
-        >
+        <h1 class="modern-title mb-8 text-center text-2xl sm:text-3xl lg:text-4xl">
           <span class="accent">—</span>
           ABOUT ME
         </h1>
@@ -82,11 +78,7 @@ export default {
       }
     },
     animateOnScroll() {
-      const sections = [
-        "skills-section",
-        "experience-section",
-        "education-section",
-      ];
+      const sections = ["skills-section", "experience-section", "education-section"];
       sections.forEach((section) => {
         const el = document.getElementById(section);
         if (el && this.isInViewport(el)) {
@@ -111,8 +103,7 @@ export default {
     isInViewport(element) {
       const rect = element.getBoundingClientRect();
       return (
-        rect.top <=
-          (window.innerHeight || document.documentElement.clientHeight) * 0.8 &&
+        rect.top <= (window.innerHeight || document.documentElement.clientHeight) * 0.8 &&
         rect.bottom >= 0
       );
     },
@@ -133,11 +124,7 @@ export default {
   left: -50%;
   width: 200%;
   height: 200%;
-  background: radial-gradient(
-    circle,
-    rgba(255, 255, 255, 0.2) 0%,
-    transparent 70%
-  );
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
   opacity: 0;
   transition: opacity 0.3s ease;
 }

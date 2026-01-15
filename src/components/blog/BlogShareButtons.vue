@@ -10,12 +10,7 @@
         class="rounded-full bg-[#1e1e1e] p-2 text-white transition-colors hover:bg-blue-600"
         aria-label="Share on Twitter"
       >
-        <svg
-          class="h-5 w-5"
-          fill="currentColor"
-          viewBox="0 0 24 24"
-          aria-hidden="true"
-        >
+        <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
           <path
             d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"
           ></path>
@@ -26,12 +21,7 @@
         class="rounded-full bg-[#1e1e1e] p-2 text-white transition-colors hover:bg-blue-900"
         aria-label="Share on LinkedIn"
       >
-        <svg
-          class="h-5 w-5"
-          fill="currentColor"
-          viewBox="0 0 24 24"
-          aria-hidden="true"
-        >
+        <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
           <path
             d="M22.258 1.87H1.742a1.742 1.742 0 00-1.742 1.742v16.776a1.742 1.742 0 001.742 1.742h20.516a1.742 1.742 0 001.742-1.742V3.612a1.742 1.742 0 00-1.742-1.742zM7.74 19.355h-3.87v-11.61h3.87v11.61zM5.823 6.216a2.129 2.129 0 11.004-4.258 2.129 2.129 0 01-.004 4.258zm13.53 13.139h-3.87V13.32c0-1.448-.024-3.313-2.023-3.313-2.022 0-2.335 1.575-2.335 3.206v6.142h-3.87v-11.61h3.717v1.706h.052a4.08 4.08 0 013.677-2.022c3.927 0 4.652 2.584 4.652 5.95v5.976z"
           ></path>

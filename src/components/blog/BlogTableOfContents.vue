@@ -1,9 +1,7 @@
 <template>
   <div>
     <!-- Mobile Table of Contents (collapsible) -->
-    <div
-      class="mb-8 overflow-hidden rounded-xl border border-[#333] bg-[#1e1e1e] lg:hidden"
-    >
+    <div class="mb-8 overflow-hidden rounded-xl border border-[#333] bg-[#1e1e1e] lg:hidden">
       <button
         @click="toggleTOC"
         class="flex w-full items-center justify-between px-5 py-4 text-left font-medium text-white"
@@ -12,9 +10,7 @@
           <ListBulletIcon class="mr-2 h-4 w-4 text-purple-400" />
           Table of Contents
         </span>
-        <ChevronDownIcon
-          :class="['h-5 w-5 transition-transform', showTOC ? 'rotate-180' : '']"
-        />
+        <ChevronDownIcon :class="['h-5 w-5 transition-transform', showTOC ? 'rotate-180' : '']" />
       </button>
       <div v-show="showTOC" class="border-t border-[#333] px-5 pb-5">
         <ul class="space-y-2 pt-3 text-sm">
@@ -24,9 +20,7 @@
               @click="showTOC = false"
               class="flex items-start text-gray-300 transition-colors hover:text-purple-400"
             >
-              <span class="mr-2 inline-block w-4 text-right text-purple-500"
-                >{{ index + 1 }}.</span
-              >
+              <span class="mr-2 inline-block w-4 text-right text-purple-500">{{ index + 1 }}.</span>
               {{ heading }}
             </a>
           </li>
@@ -48,9 +42,7 @@
             :href="`#heading-${index}`"
             class="flex items-start text-gray-300 transition-colors hover:text-purple-400"
           >
-            <span class="mr-2 inline-block w-4 text-right text-purple-500"
-              >{{ index + 1 }}.</span
-            >
+            <span class="mr-2 inline-block w-4 text-right text-purple-500">{{ index + 1 }}.</span>
             {{ heading }}
           </a>
         </li>

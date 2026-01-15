@@ -4,12 +4,21 @@
       <div v-if="project" class="mb-12">
         <!-- Back Button -->
         <div class="mb-8">
-          <router-link to="/portfolio"
-            class="inline-flex items-center text-gray-400 transition-colors hover:text-white">
-            <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd"
+          <router-link
+            to="/portfolio"
+            class="inline-flex items-center text-gray-400 transition-colors hover:text-white"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="mr-2 h-5 w-5"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fill-rule="evenodd"
                 d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                clip-rule="evenodd" />
+                clip-rule="evenodd"
+              />
             </svg>
             Back to Projects
           </router-link>
@@ -19,9 +28,17 @@
         <div class="mb-8 flex flex-col gap-6 sm:mb-10 sm:gap-8 lg:flex-row">
           <!-- Project Image -->
           <div class="w-full lg:w-3/5">
-            <div class="relative aspect-4/3 overflow-hidden rounded-xl bg-[#1e1e1e] shadow-xl sm:aspect-auto">
-              <img :src="getImageUrl(project.image)" :alt="project.title" class="h-full w-full object-cover" />
-              <div class="absolute top-4 right-4 rounded-full bg-[#6d28d9] px-3 py-1 text-sm text-white shadow-md">
+            <div
+              class="relative aspect-4/3 overflow-hidden rounded-xl bg-[#1e1e1e] shadow-xl sm:aspect-auto"
+            >
+              <img
+                :src="getImageUrl(project.image)"
+                :alt="project.title"
+                class="h-full w-full object-cover"
+              />
+              <div
+                class="absolute top-4 right-4 rounded-full bg-[#6d28d9] px-3 py-1 text-sm text-white shadow-md"
+              >
                 {{ project.year }}
               </div>
             </div>
@@ -30,7 +47,8 @@
           <!-- Project Info -->
           <div class="w-full lg:w-2/5">
             <div
-              class="h-full rounded-xl border border-[#333] bg-[#1e1e1e] p-5 shadow-lg transition-colors duration-300 hover:border-[#6d28d9]/30 sm:p-6">
+              class="h-full rounded-xl border border-[#333] bg-[#1e1e1e] p-5 shadow-lg transition-colors duration-300 hover:border-[#6d28d9]/30 sm:p-6"
+            >
               <h1 class="mb-4 text-2xl font-bold text-white md:text-3xl">
                 {{ project.title }}
               </h1>
@@ -62,8 +80,11 @@
                   <div>
                     <h3 class="text-sm text-gray-400">Technologies</h3>
                     <div class="mt-1 flex flex-wrap gap-2">
-                      <span v-for="(tech, i) in project.technologies" :key="i"
-                        class="inline-block rounded-full bg-[#2d2d2d] px-2 py-1 text-xs text-gray-300 transition-colors hover:bg-[#333]">
+                      <span
+                        v-for="(tech, i) in project.technologies"
+                        :key="i"
+                        class="inline-block rounded-full bg-[#2d2d2d] px-2 py-1 text-xs text-gray-300 transition-colors hover:bg-[#333]"
+                      >
                         {{ tech }}
                       </span>
                     </div>
@@ -73,8 +94,11 @@
               <div class="flex flex-wrap gap-3">
                 <!-- Web Projects -->
                 <template v-if="project.category === 'web' && project.demoUrl">
-                  <a :href="project.demoUrl" target="_blank"
-                    class="inline-flex min-w-[140px] transform items-center justify-center rounded-full bg-[#6d28d9] px-5 py-2.5 text-sm font-medium text-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:bg-[#5b21b6] hover:shadow-lg">
+                  <a
+                    :href="project.demoUrl"
+                    target="_blank"
+                    class="inline-flex min-w-[140px] transform items-center justify-center rounded-full bg-[#6d28d9] px-5 py-2.5 text-sm font-medium text-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:bg-[#5b21b6] hover:shadow-lg"
+                  >
                     <EyeIcon class="mr-2 h-4 w-4 shrink-0" />
                     <span class="whitespace-nowrap">Live Demo</span>
                   </a>
@@ -82,37 +106,62 @@
 
                 <!-- Mobile Apps -->
                 <template v-else-if="project.category === 'mobile'">
-                  <a v-if="project.googlePlayUrl" :href="project.googlePlayUrl" target="_blank"
-                    class="inline-flex min-w-[140px] transform items-center justify-center rounded-full bg-[#6d28d9] px-5 py-2.5 text-sm font-medium text-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:bg-[#5b21b6] hover:shadow-lg">
+                  <a
+                    v-if="project.googlePlayUrl"
+                    :href="project.googlePlayUrl"
+                    target="_blank"
+                    class="inline-flex min-w-[140px] transform items-center justify-center rounded-full bg-[#6d28d9] px-5 py-2.5 text-sm font-medium text-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:bg-[#5b21b6] hover:shadow-lg"
+                  >
                     <svg class="mr-2 h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="currentColor">
                       <path
-                        d="M3.609 1.814L13.792 12 3.61 22.186a.996.996 0 01-.61-.92V2.734a1 1 0 01.609-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.198l2.807 1.626a1 1 0 010 1.73l-2.808 1.626L15.206 12l2.492-2.491zM5.864 2.658L16.802 8.99l-2.303 2.303-8.635-8.635z" />
+                        d="M3.609 1.814L13.792 12 3.61 22.186a.996.996 0 01-.61-.92V2.734a1 1 0 01.609-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.198l2.807 1.626a1 1 0 010 1.73l-2.808 1.626L15.206 12l2.492-2.491zM5.864 2.658L16.802 8.99l-2.303 2.303-8.635-8.635z"
+                      />
                     </svg>
                     <span class="whitespace-nowrap">Google Play</span>
                   </a>
-                  <a v-if="project.demoUrl" :href="project.demoUrl" target="_blank"
-                    class="inline-flex min-w-[140px] transform items-center justify-center rounded-full border border-[#333] bg-[#1e1e1e] px-5 py-2.5 text-sm font-medium text-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:bg-[#2d2d2d] hover:shadow-lg">
-                    <svg class="mr-2 h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                      stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <a
+                    v-if="project.demoUrl"
+                    :href="project.demoUrl"
+                    target="_blank"
+                    class="inline-flex min-w-[140px] transform items-center justify-center rounded-full border border-[#333] bg-[#1e1e1e] px-5 py-2.5 text-sm font-medium text-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:bg-[#2d2d2d] hover:shadow-lg"
+                  >
+                    <svg
+                      class="mr-2 h-4 w-4 shrink-0"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
                       <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
                       <polyline points="15 3 21 3 21 9"></polyline>
                       <line x1="10" y1="14" x2="21" y2="3"></line>
                     </svg>
                     <span class="whitespace-nowrap">Web Version</span>
                   </a>
-                  <a v-if="project.appleStoreUrl" :href="project.appleStoreUrl" target="_blank"
-                    class="inline-flex min-w-[140px] transform items-center justify-center rounded-full bg-black px-5 py-2.5 text-sm font-medium text-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:bg-gray-800 hover:shadow-lg">
+                  <a
+                    v-if="project.appleStoreUrl"
+                    :href="project.appleStoreUrl"
+                    target="_blank"
+                    class="inline-flex min-w-[140px] transform items-center justify-center rounded-full bg-black px-5 py-2.5 text-sm font-medium text-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:bg-gray-800 hover:shadow-lg"
+                  >
                     <svg class="mr-2 h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="currentColor">
                       <path
-                        d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
+                        d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"
+                      />
                     </svg>
                     <span class="whitespace-nowrap">App Store</span>
                   </a>
                 </template>
 
                 <!-- Source Code (shown for all project types) -->
-                <a v-if="project.codeUrl" :href="project.codeUrl" target="_blank"
-                  class="inline-flex min-w-[140px] transform items-center justify-center rounded-full border border-[#333] bg-[#1e1e1e] px-5 py-2.5 text-sm font-medium text-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:bg-[#2d2d2d] hover:shadow-lg">
+                <a
+                  v-if="project.codeUrl"
+                  :href="project.codeUrl"
+                  target="_blank"
+                  class="inline-flex min-w-[140px] transform items-center justify-center rounded-full border border-[#333] bg-[#1e1e1e] px-5 py-2.5 text-sm font-medium text-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:bg-[#2d2d2d] hover:shadow-lg"
+                >
                   <CodeBracketIcon class="mr-2 h-4 w-4 shrink-0" />
                   <span class="whitespace-nowrap">Source Code</span>
                 </a>
@@ -128,7 +177,8 @@
             PROJECT DETAILS
           </h2>
           <div
-            class="rounded-xl border border-[#333] bg-[#1e1e1e] p-5 shadow-lg transition-colors duration-300 hover:border-[#6d28d9]/30 sm:p-6">
+            class="rounded-xl border border-[#333] bg-[#1e1e1e] p-5 shadow-lg transition-colors duration-300 hover:border-[#6d28d9]/30 sm:p-6"
+          >
             <div class="prose prose-invert max-w-none">
               <p class="text-base leading-relaxed text-gray-300 sm:text-lg">
                 {{ project.detailedDescription }}
@@ -139,13 +189,22 @@
                 Key Features:
               </h3>
               <ul class="space-y-3 pl-1">
-                <li v-for="(feature, index) in project.features" :key="index"
-                  class="flex items-start text-base text-gray-300 transition-colors duration-300 hover:text-white">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="mt-0.5 mr-3 h-5 w-5 shrink-0 text-[#6d28d9]"
-                    viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd"
+                <li
+                  v-for="(feature, index) in project.features"
+                  :key="index"
+                  class="flex items-start text-base text-gray-300 transition-colors duration-300 hover:text-white"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="mt-0.5 mr-3 h-5 w-5 shrink-0 text-[#6d28d9]"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fill-rule="evenodd"
                       d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                      clip-rule="evenodd" />
+                      clip-rule="evenodd"
+                    />
                   </svg>
                   <span>{{ feature }}</span>
                 </li>
@@ -177,14 +236,20 @@
             PROJECT GALLERY
           </h2>
           <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
-            <div v-for="(image, index) in project.gallery" :key="index"
-              class="group overflow-hidden rounded-xl border border-[#333] bg-[#1e1e1e] shadow-lg transition-all duration-300 hover:-translate-y-2 hover:border-[#6d28d9]/30 hover:shadow-xl">
+            <div
+              v-for="(image, index) in project.gallery"
+              :key="index"
+              class="group overflow-hidden rounded-xl border border-[#333] bg-[#1e1e1e] shadow-lg transition-all duration-300 hover:-translate-y-2 hover:border-[#6d28d9]/30 hover:shadow-xl"
+            >
               <div class="relative aspect-4/3 overflow-hidden">
-                <img :src="image" :alt="`${project.title} screenshot ${index + 1}`"
-                  class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                <img
+                  :src="image"
+                  :alt="`${project.title} screenshot ${index + 1}`"
+                  class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
                 <div
-                  class="absolute inset-0 bg-linear-to-t from-[#121212]/50 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                </div>
+                  class="absolute inset-0 bg-linear-to-t from-[#121212]/50 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                ></div>
               </div>
             </div>
           </div>
@@ -193,14 +258,26 @@
         <!-- Next/Previous Project Navigation -->
         <div class="mt-12 grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
           <div v-if="prevProject" class="flex-1">
-            <router-link :to="'/portfolio/' + prevProject.id"
-              class="group flex w-full items-center rounded-xl border border-[#333] bg-[#1e1e1e] p-4 shadow-lg transition-all duration-300 hover:-translate-y-1.5 hover:border-[#6d28d9]/30 hover:bg-[#2d2d2d] hover:shadow-xl sm:p-5">
+            <router-link
+              :to="'/portfolio/' + prevProject.id"
+              class="group flex w-full items-center rounded-xl border border-[#333] bg-[#1e1e1e] p-4 shadow-lg transition-all duration-300 hover:-translate-y-1.5 hover:border-[#6d28d9]/30 hover:bg-[#2d2d2d] hover:shadow-xl sm:p-5"
+            >
               <div
-                class="mr-4 rounded-full bg-[#2d2d2d] p-2.5 text-[#6d28d9] transition-colors duration-300 group-hover:bg-[#6d28d9]/20">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                  stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M11 17l-5-5m0 0l5-5m-5 5h12" />
+                class="mr-4 rounded-full bg-[#2d2d2d] p-2.5 text-[#6d28d9] transition-colors duration-300 group-hover:bg-[#6d28d9]/20"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M11 17l-5-5m0 0l5-5m-5 5h12"
+                  />
                 </svg>
               </div>
               <div>
@@ -214,8 +291,10 @@
           <div v-else class="hidden flex-1 md:block"></div>
 
           <div v-if="nextProject" class="flex-1">
-            <router-link :to="'/portfolio/' + nextProject.id"
-              class="group flex w-full items-center justify-end rounded-xl border border-[#333] bg-[#1e1e1e] p-4 shadow-lg transition-all duration-300 hover:-translate-y-1.5 hover:border-[#6d28d9]/30 hover:bg-[#2d2d2d] hover:shadow-xl sm:p-5">
+            <router-link
+              :to="'/portfolio/' + nextProject.id"
+              class="group flex w-full items-center justify-end rounded-xl border border-[#333] bg-[#1e1e1e] p-4 shadow-lg transition-all duration-300 hover:-translate-y-1.5 hover:border-[#6d28d9]/30 hover:bg-[#2d2d2d] hover:shadow-xl sm:p-5"
+            >
               <div class="text-right">
                 <div class="mb-0.5 text-sm text-gray-400">Next Project</div>
                 <div class="font-medium text-white transition-colors group-hover:text-[#6d28d9]">
@@ -223,10 +302,21 @@
                 </div>
               </div>
               <div
-                class="ml-4 rounded-full bg-[#2d2d2d] p-2.5 text-[#6d28d9] transition-colors duration-300 group-hover:bg-[#6d28d9]/20">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                  stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                class="ml-4 rounded-full bg-[#2d2d2d] p-2.5 text-[#6d28d9] transition-colors duration-300 group-hover:bg-[#6d28d9]/20"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M13 7l5 5m0 0l-5 5m5-5H6"
+                  />
                 </svg>
               </div>
             </router-link>
@@ -236,27 +326,48 @@
       </div>
 
       <!-- Not Found State -->
-      <div v-else
-        class="animate-fadeIn flex flex-col items-center justify-center rounded-xl border border-[#333] bg-[#1e1e1e]/70 p-6 py-16 text-center shadow-lg backdrop-blur-sm sm:p-10 sm:py-20">
+      <div
+        v-else
+        class="animate-fadeIn flex flex-col items-center justify-center rounded-xl border border-[#333] bg-[#1e1e1e]/70 p-6 py-16 text-center shadow-lg backdrop-blur-sm sm:p-10 sm:py-20"
+      >
         <div class="mb-6 rounded-full bg-[#2d2d2d] p-5 shadow-lg">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-[#6d28d9]" fill="none" viewBox="0 0 24 24"
-            stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-              d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-16 w-16 text-[#6d28d9]"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
           </svg>
         </div>
-        <h1 class="mb-3 text-2xl font-bold text-white sm:text-3xl">
-          Project Not Found
-        </h1>
+        <h1 class="mb-3 text-2xl font-bold text-white sm:text-3xl">Project Not Found</h1>
         <p class="mx-auto mb-8 max-w-md text-gray-400">
-          The project you're looking for doesn't exist or has been removed.
-          Check out my other projects instead.
+          The project you're looking for doesn't exist or has been removed. Check out my other
+          projects instead.
         </p>
-        <router-link to="/portfolio"
-          class="inline-flex transform items-center rounded-full bg-[#6d28d9] px-6 py-3 font-medium text-white shadow-lg transition-all duration-300 hover:-translate-y-1 hover:bg-[#5b21b6] hover:shadow-xl">
-          <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 h-5 w-5" fill="none" viewBox="0 0 24 24"
-            stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18" />
+        <router-link
+          to="/portfolio"
+          class="inline-flex transform items-center rounded-full bg-[#6d28d9] px-6 py-3 font-medium text-white shadow-lg transition-all duration-300 hover:-translate-y-1 hover:bg-[#5b21b6] hover:shadow-xl"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="mr-2 h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M7 16l-4-4m0 0l4-4m-4 4h18"
+            />
           </svg>
           Back to Portfolio
         </router-link>
@@ -266,12 +377,7 @@
 </template>
 
 <script>
-import {
-  CalendarIcon,
-  TagIcon,
-  CodeBracketIcon,
-  EyeIcon,
-} from "@heroicons/vue/24/solid";
+import { CalendarIcon, TagIcon, CodeBracketIcon, EyeIcon } from "@heroicons/vue/24/solid";
 import { useHead } from "@vueuse/head";
 import { computed } from "vue";
 import { useRoute } from "vue-router";
@@ -296,9 +402,7 @@ export default {
     const nextProject = computed(() => {
       if (!project.value) return null;
       const currentIndex = projects.findIndex((p) => p.id === project.value.id);
-      return currentIndex < projects.length - 1
-        ? projects[currentIndex + 1]
-        : null;
+      return currentIndex < projects.length - 1 ? projects[currentIndex + 1] : null;
     });
 
     const prevProject = computed(() => {
@@ -309,23 +413,17 @@ export default {
 
     // SEO meta tags setup
     const pageTitle = computed(() =>
-      project.value
-        ? `${project.value.title} | Solomon Olatunji's Portfolio`
-        : "Project Not Found",
+      project.value ? `${project.value.title} | Solomon Olatunji's Portfolio` : "Project Not Found"
     );
     const pageDescription = computed(() =>
       project.value
         ? project.value.description
-        : "Explore my portfolio of web applications, mobile apps projects.",
+        : "Explore my portfolio of web applications, mobile apps projects."
     );
     const ogImage = computed(() =>
-      project.value
-        ? project.value.image
-        : "https://solomonolatunji.com/og-image.jpg",
+      project.value ? project.value.image : "https://solomonolatunji.com/og-image.jpg"
     );
-    const canonicalUrl = computed(
-      () => `https://solomonolatunji.com/portfolio/${route.params.id}`,
-    );
+    const canonicalUrl = computed(() => `https://solomonolatunji.com/portfolio/${route.params.id}`);
 
     // Schema.org structured data for portfolio project
     const projectSchema = computed(() => {

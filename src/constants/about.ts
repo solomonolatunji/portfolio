@@ -1,14 +1,9 @@
-import avatarImg from '@/assets/avatar.jpg';
+import avatarImg from "@/assets/avatar.jpg";
 
 export const aboutData = {
   greeting: "HELLO THERE 👋",
   name: "SOLOMON OLATUNJI",
-  roles: [
-    "SOFTWARE ENGINEER",
-    "FULL STACK DEVELOPER",
-    "MOBILE APP DEVELOPER",
-    "TECHNICAL WRITER",
-  ],
+  roles: ["SOFTWARE ENGINEER", "FULL STACK DEVELOPER", "MOBILE APP DEVELOPER", "TECHNICAL WRITER"],
   description:
     "Full Stack Engineer building modern, scalable web & mobile apps with clean code and performance in mind.",
   profileImage: {

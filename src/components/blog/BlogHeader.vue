@@ -1,9 +1,7 @@
 <template>
   <div v-if="post" class="mb-8 sm:mb-10">
     <div class="mb-4 flex flex-wrap items-center gap-2">
-      <span
-        class="rounded-full bg-purple-600 px-3 py-1 text-xs font-medium text-white"
-      >
+      <span class="rounded-full bg-purple-600 px-3 py-1 text-xs font-medium text-white">
         {{ post.category }}
       </span>
       <span class="flex items-center text-xs text-gray-400">
@@ -30,9 +28,7 @@
         <div class="text-sm font-medium text-white sm:text-base">
           {{ post.author.name }}
         </div>
-        <div class="text-xs text-gray-400 sm:text-sm">
-          Published on {{ post.date }}
-        </div>
+        <div class="text-xs text-gray-400 sm:text-sm">Published on {{ post.date }}</div>
       </div>
     </div>
   </div>

@@ -17,19 +17,10 @@ export const projects: Project[] = [
     image: takentradeImg,
     year: "2024",
     category: "mobile",
-    technologies: [
-      "React",
-      "React Native",
-      "NestJS",
-      "TypeScript",
-      "Tailwind CSS",
-      "PostgreSQL",
-    ],
+    technologies: ["React", "React Native", "NestJS", "TypeScript", "Tailwind CSS", "PostgreSQL"],
     demoUrl: "https://takentrade.com",
-    googlePlayUrl:
-      "https://play.google.com/store/apps/details?id=com.takentrade.app",
-    appleStoreUrl:
-      "https://apps.apple.com/ng/app/xpress-takentrade/id6748635694",
+    googlePlayUrl: "https://play.google.com/store/apps/details?id=com.takentrade.app",
+    appleStoreUrl: "https://apps.apple.com/ng/app/xpress-takentrade/id6748635694",
     codeUrl: "https://github.com/eminisolomon",
     features: [
       "Airtime, data, and electricity bill payments",
@@ -238,16 +229,9 @@ export const projects: Project[] = [
     image: tercescrowImg,
     year: "2025",
     category: "mobile",
-    technologies: [
-      "React Native",
-      "TypeScript",
-      "Node.js",
-      "Express",
-      "MongoDB",
-    ],
+    technologies: ["React Native", "TypeScript", "Node.js", "Express", "MongoDB"],
     demoUrl: "https://tercescrow.com",
-    googlePlayUrl:
-      "https://play.google.com/store/apps/details?id=com.tercescrow.app",
+    googlePlayUrl: "https://play.google.com/store/apps/details?id=com.tercescrow.app",
     appleStoreUrl: "https://apps.apple.com/ng/app/tercescrow/id6743555204",
     codeUrl: "https://github.com/eminisolomon",
     features: [
@@ -275,16 +259,9 @@ export const projects: Project[] = [
     image: kulipalImg,
     year: "2025",
     category: "mobile",
-    technologies: [
-      "React Native",
-      "TypeScript",
-      "Node.js",
-      "Express",
-      "MongoDB",
-    ],
+    technologies: ["React Native", "TypeScript", "Node.js", "Express", "MongoDB"],
     demoUrl: "https://kulipal.com",
-    googlePlayUrl:
-      "https://play.google.com/store/apps/details?id=com.kulipamegaglobal.kulipal",
+    googlePlayUrl: "https://play.google.com/store/apps/details?id=com.kulipamegaglobal.kulipal",
     appleStoreUrl: "https://apps.apple.com/ng/app/kulipal/id6456947840",
     codeUrl: "https://github.com/eminisolomon",
     features: [

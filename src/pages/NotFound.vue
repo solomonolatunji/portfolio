@@ -3,9 +3,7 @@
     <h1 class="text-gradient mb-4 animate-bounce text-6xl font-bold">404</h1>
     <div class="mb-8">
       <h2 class="mb-4 text-2xl font-semibold">Page Not Found</h2>
-      <p class="mb-8 text-lg">
-        The page you are looking for doesn't exist or has been moved.
-      </p>
+      <p class="mb-8 text-lg">The page you are looking for doesn't exist or has been moved.</p>
     </div>
     <div class="mb-12 flex justify-center">
       <router-link

@@ -37,15 +37,12 @@ export const useSubscribeStore = defineStore("subscribe", {
           }, 1000);
         });
 
-        this.successMessage =
-          "Subscribed successfully! Welcome to the newsletter.";
+        this.successMessage = "Subscribed successfully! Welcome to the newsletter.";
         toast.success(this.successMessage);
       } catch (error) {
         console.error("Failed to subscribe:", error);
         this.error =
-          error instanceof Error
-            ? error.message
-            : "Failed to subscribe. Please try again later.";
+          error instanceof Error ? error.message : "Failed to subscribe. Please try again later.";
         toast.error(this.error);
         throw error;
       } finally {

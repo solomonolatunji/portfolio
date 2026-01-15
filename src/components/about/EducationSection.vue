@@ -19,9 +19,7 @@
             <AcademicCapIcon class="h-7 w-7 text-[#6d28d9]" />
           </div>
           <div>
-            <span
-              class="rounded-full bg-[#2d2d2d] px-3 py-1 text-xs font-bold text-[#6d28d9]"
-            >
+            <span class="rounded-full bg-[#2d2d2d] px-3 py-1 text-xs font-bold text-[#6d28d9]">
               {{ edu.period }}
             </span>
             <h3 class="mt-2 mb-1 text-xl font-bold text-white">

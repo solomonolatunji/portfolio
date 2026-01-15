@@ -1,9 +1,13 @@
 <template>
   <div class="min-h-screen w-full py-6 pb-12 md:py-12 md:pb-24">
     <div class="container mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-      <router-link to="/blog"
-        class="group mb-4 inline-flex items-center text-purple-400 transition-colors hover:text-purple-300 sm:mb-8">
-        <ArrowLeftIcon class="mr-2 h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1" />
+      <router-link
+        to="/blog"
+        class="group mb-4 inline-flex items-center text-purple-400 transition-colors hover:text-purple-300 sm:mb-8"
+      >
+        <ArrowLeftIcon
+          class="mr-2 h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1"
+        />
         <span class="text-sm font-medium sm:text-base">Back to all posts</span>
       </router-link>
 
@@ -12,36 +16,41 @@
 
         <div
           class="fixed top-0 left-0 z-50 h-1 bg-gradient-to-r from-purple-600 to-indigo-600 transition-all duration-200"
-          :style="{ width: `${readingProgress}%` }"></div>
+          :style="{ width: `${readingProgress}%` }"
+        ></div>
 
         <BlogTableOfContents :headings="tableOfContents" />
 
         <div class="mb-8 sm:mb-10">
           <div class="relative max-w-full overflow-hidden rounded-2xl shadow-xl">
-            <img :src="post.image" :alt="post.title" class="h-auto max-h-[500px] w-full object-cover" />
+            <img
+              :src="post.image"
+              :alt="post.title"
+              class="h-auto max-h-[500px] w-full object-cover"
+            />
             <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
           </div>
         </div>
 
-        <div class="prose prose-sm sm:prose lg:prose-lg prose-invert prose-purple clear-both max-w-none">
+        <div
+          class="prose prose-sm sm:prose lg:prose-lg prose-invert prose-purple clear-both max-w-none"
+        >
           <div v-if="post.content" v-html="post.content"></div>
 
           <div v-else>
             <p class="lead">{{ post.excerpt }}</p>
 
             <p>
-              In today's rapidly evolving tech landscape, staying ahead of
-              emerging trends and best practices is essential for developers who
-              want to build successful, future-proof applications. This article
-              explores key concepts and techniques that can help elevate your
-              development skills.
+              In today's rapidly evolving tech landscape, staying ahead of emerging trends and best
+              practices is essential for developers who want to build successful, future-proof
+              applications. This article explores key concepts and techniques that can help elevate
+              your development skills.
             </p>
 
             <h2 id="heading-0">Understanding Core Principles</h2>
             <p>
-              Whether you're building web applications, mobile apps, or desktop
-              software, certain fundamental principles remain consistent across
-              platforms. These include:
+              Whether you're building web applications, mobile apps, or desktop software, certain
+              fundamental principles remain consistent across platforms. These include:
             </p>
             <ul>
               <li>Writing clean, maintainable code with clear organization</li>
@@ -52,16 +61,15 @@
 
             <h2 id="heading-1">Best Practices for Modern Development</h2>
             <p>
-              As frameworks and tools evolve, so do the best practices for using
-              them effectively. Some current approaches worth adopting include:
+              As frameworks and tools evolve, so do the best practices for using them effectively.
+              Some current approaches worth adopting include:
             </p>
 
             <div class="my-6 rounded-lg bg-[#2d2d2d] p-4">
               <h3 class="text-lg font-bold text-white">Pro Tip</h3>
               <p class="mb-0">
-                When working with modern frameworks, consider using a
-                component-based architecture that promotes reusability and
-                maintainability.
+                When working with modern frameworks, consider using a component-based architecture
+                that promotes reusability and maintainability.
               </p>
             </div>
 
@@ -79,41 +87,33 @@
 
             <h2 id="heading-2">Implementation Strategies</h2>
             <p>
-              When implementing these concepts in real-world applications,
-              consider these approaches:
+              When implementing these concepts in real-world applications, consider these
+              approaches:
             </p>
             <ol>
-              <li>
-                Start with a clear architecture pattern appropriate for your use
-                case
-              </li>
-              <li>
-                Break functionality into small, testable components or modules
-              </li>
+              <li>Start with a clear architecture pattern appropriate for your use case</li>
+              <li>Break functionality into small, testable components or modules</li>
               <li>Implement comprehensive testing for critical paths</li>
-              <li>
-                Document code thoroughly, especially public APIs and interfaces
-              </li>
+              <li>Document code thoroughly, especially public APIs and interfaces</li>
             </ol>
 
             <h2 id="heading-3">Looking Forward</h2>
             <p>
-              As we look to the future of development, several trends are likely
-              to shape how we build applications:
+              As we look to the future of development, several trends are likely to shape how we
+              build applications:
             </p>
             <blockquote>
               <p>
-                "The most successful developers will be those who continually
-                adapt to emerging technologies while maintaining strong
-                fundamentals and focusing on user needs."
+                "The most successful developers will be those who continually adapt to emerging
+                technologies while maintaining strong fundamentals and focusing on user needs."
               </p>
             </blockquote>
 
             <h2 id="heading-4">Conclusion</h2>
             <p>
-              By applying these principles and staying informed about industry
-              trends, you'll be well-positioned to build robust, maintainable
-              applications that provide real value to users.
+              By applying these principles and staying informed about industry trends, you'll be
+              well-positioned to build robust, maintainable applications that provide real value to
+              users.
             </p>
           </div>
         </div>
@@ -165,18 +165,12 @@ const post = computed(() => {
 const relatedArticles = computed(() => {
   if (!post.value) return [];
   return articles
-    .filter(
-      (article) =>
-        article.id !== post.value?.id &&
-        article.category === post.value?.category,
-    )
+    .filter((article) => article.id !== post.value?.id && article.category === post.value?.category)
     .slice(0, 3);
 });
 
 const postTags = computed(() => {
-  return (
-    post.value?.tags || ["Development", "Web", "Technology", "Programming"]
-  );
+  return post.value?.tags || ["Development", "Web", "Technology", "Programming"];
 });
 
 const updateReadingProgress = () => {
@@ -337,8 +331,8 @@ onUnmounted(() => {
   border-radius: 0.25rem;
   font-size: 0.875em;
   font-family:
-    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
-    "Courier New", monospace;
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
+    monospace;
   word-break: break-word;
 }
 

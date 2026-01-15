@@ -10,12 +10,8 @@
     ></div>
 
     <div class="relative z-10 mb-8">
-      <h2 class="mb-2 text-2xl font-semibold text-white sm:text-3xl">
-        Send a Message
-      </h2>
-      <p class="text-sm text-gray-400">
-        I'll get back to you as soon as possible
-      </p>
+      <h2 class="mb-2 text-2xl font-semibold text-white sm:text-3xl">Send a Message</h2>
+      <p class="text-sm text-gray-400">I'll get back to you as soon as possible</p>
     </div>
 
     <form @submit.prevent="submitForm" class="relative z-10 space-y-6">
@@ -35,9 +31,7 @@
 
       <div class="space-y-6">
         <div class="form-group">
-          <label for="name" class="mb-2 block text-sm font-medium text-white"
-            >Name</label
-          >
+          <label for="name" class="mb-2 block text-sm font-medium text-white">Name</label>
           <div class="relative">
             <input
               type="text"
@@ -54,9 +48,7 @@
         </div>
 
         <div class="form-group">
-          <label for="email" class="mb-2 block text-sm font-medium text-white"
-            >Email</label
-          >
+          <label for="email" class="mb-2 block text-sm font-medium text-white">Email</label>
           <div class="relative">
             <input
               type="email"
@@ -74,9 +66,7 @@
       </div>
 
       <div class="form-group">
-        <label for="subject" class="mb-2 block text-sm font-medium text-white"
-          >Subject</label
-        >
+        <label for="subject" class="mb-2 block text-sm font-medium text-white">Subject</label>
         <div class="relative">
           <input
             type="text"
@@ -93,9 +83,7 @@
       </div>
 
       <div class="form-group">
-        <label for="message" class="mb-2 block text-sm font-medium text-white"
-          >Message</label
-        >
+        <label for="message" class="mb-2 block text-sm font-medium text-white">Message</label>
         <div class="relative">
           <textarea
             id="message"

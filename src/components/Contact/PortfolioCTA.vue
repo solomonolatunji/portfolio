@@ -11,16 +11,10 @@
         class="absolute bottom-0 left-0 h-64 w-64 rounded-full bg-[#8b5cf6]/10 blur-3xl filter"
       ></div>
 
-      <div
-        class="relative z-10 flex flex-col items-center justify-between gap-8 md:flex-row"
-      >
+      <div class="relative z-10 flex flex-col items-center justify-between gap-8 md:flex-row">
         <div>
-          <h2 class="mb-2 text-2xl font-bold text-white sm:text-3xl">
-            Want to see my work?
-          </h2>
-          <p class="text-lg text-gray-400">
-            Check out my latest projects and case studies
-          </p>
+          <h2 class="mb-2 text-2xl font-bold text-white sm:text-3xl">Want to see my work?</h2>
+          <p class="text-lg text-gray-400">Check out my latest projects and case studies</p>
         </div>
         <router-link
           to="/portfolio"

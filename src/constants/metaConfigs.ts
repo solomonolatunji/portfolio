@@ -9,7 +9,7 @@ export const createMetaTags = (
   pageTitle: ComputedRef<string>,
   pageDescription: ComputedRef<string>,
   ogImage: ComputedRef<string>,
-  currentPath: ComputedRef<string>,
+  currentPath: ComputedRef<string>
 ) => {
   return [
     {
