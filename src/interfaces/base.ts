@@ -22,6 +22,7 @@ export interface ApiError {
 export interface PaginationMeta {
   total: number;
   pages: number;
+  currentPage: number;
   hasNext: boolean;
   hasPrev: boolean;
   nextPage?: number;
