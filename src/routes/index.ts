@@ -6,6 +6,7 @@ import Portfolio from "@/pages/Portfolio.vue";
 import PortfolioDetail from "@/pages/PortfolioDetail.vue";
 import Blog from "@/pages/Blog.vue";
 import BlogPost from "@/pages/BlogPost.vue";
+import Admin from "@/pages/Admin.vue";
 import NotFound from "@/pages/NotFound.vue";
 
 const routes = [
@@ -37,6 +38,11 @@ const routes = [
   {
     path: "/blog/:id",
     component: BlogPost,
+  },
+  {
+    path: "/admin",
+    name: "Admin",
+    component: Admin,
   },
   {
     path: "/:pathMatch(.*)*",
