@@ -16,10 +16,27 @@ export interface User {
 }
 
 /**
- * Login credentials
+ * Admin login credentials
  */
 export interface LoginCredentials {
   username: string;
+  password: string;
+}
+
+/**
+ * User signin credentials (normal user)
+ */
+export interface SigninCredentials {
+  username: string;
+  password: string;
+}
+
+/**
+ * User signup data (normal user)
+ */
+export interface SignupCredentials {
+  username: string;
+  email: string;
   password: string;
 }
 

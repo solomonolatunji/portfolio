@@ -1,5 +1,10 @@
 import api from "@/utilities/api";
-import type { LoginCredentials, AuthData } from "@/interfaces/auth";
+import type {
+  LoginCredentials,
+  SigninCredentials,
+  SignupCredentials,
+  AuthData,
+} from "@/interfaces/auth";
 import type { ApiResponse } from "@/interfaces/base";
 
 /**
@@ -9,11 +14,31 @@ import type { ApiResponse } from "@/interfaces/base";
 class AuthService {
   /**
    * Admin login
-   * @param credentials - Login credentials
+   * @param credentials - Admin login credentials
    * @returns Promise with auth data
    */
-  async login(credentials: LoginCredentials): Promise<AuthData> {
+  async loginAdmin(credentials: LoginCredentials): Promise<AuthData> {
     const response = await api.post<ApiResponse<AuthData>>("/auth/admin/signing", credentials);
+    return response.data.data;
+  }
+
+  /**
+   * User signup
+   * @param credentials - Signup credentials
+   * @returns Promise with auth data
+   */
+  async signup(credentials: SignupCredentials): Promise<AuthData> {
+    const response = await api.post<ApiResponse<AuthData>>("/auth/signup", credentials);
+    return response.data.data;
+  }
+
+  /**
+   * User signin
+   * @param credentials - Signin credentials
+   * @returns Promise with auth data
+   */
+  async signin(credentials: SigninCredentials): Promise<AuthData> {
+    const response = await api.post<ApiResponse<AuthData>>("/auth/signing", credentials);
     return response.data.data;
   }
 
@@ -21,7 +46,6 @@ class AuthService {
    * Logout (client-side only)
    */
   async logout(): Promise<void> {
-    // Client-side logout only - no API call needed
     return Promise.resolve();
   }
 

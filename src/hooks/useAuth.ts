@@ -3,7 +3,7 @@ import { useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
 import { useAuthStore } from "@/stores/authStore";
 import { authService } from "@/services/authService";
-import type { LoginCredentials } from "@/interfaces/auth";
+import type { LoginCredentials, SigninCredentials, SignupCredentials } from "@/interfaces/auth";
 
 /**
  * Authentication Hook
@@ -21,14 +21,14 @@ export function useAuth() {
   const isLoggedIn = computed(() => authStore.isLoggedIn);
 
   /**
-   * Login
+   * Login Admin
    */
-  const login = async (credentials: LoginCredentials): Promise<void> => {
+  const loginAdmin = async (credentials: LoginCredentials): Promise<void> => {
     authStore.setLoading(true);
     authStore.clearError();
 
     try {
-      const authData = await authService.login(credentials);
+      const authData = await authService.loginAdmin(credentials);
 
       // Update store with auth data including refreshToken
       authStore.setAuth(authData.accessToken, authData.refreshToken, authData.user);
@@ -38,7 +38,63 @@ export function useAuth() {
       const errorMessage =
         err.response?.data?.message ||
         err.message ||
-        "Login failed. Please check your credentials.";
+        "Admin login failed. Please check your credentials.";
+
+      authStore.setError(errorMessage);
+      toast.error(errorMessage);
+
+      throw err;
+    } finally {
+      authStore.setLoading(false);
+    }
+  };
+
+  /**
+   * User signup
+   */
+  const signup = async (credentials: SignupCredentials): Promise<void> => {
+    authStore.setLoading(true);
+    authStore.clearError();
+
+    try {
+      const authData = await authService.signup(credentials);
+
+      // Update store with auth data
+      authStore.setAuth(authData.accessToken, authData.refreshToken, authData.user);
+
+      toast.success(`Welcome, ${authData.user.username}! Your account has been created.`);
+    } catch (err: any) {
+      const errorMessage =
+        err.response?.data?.message || err.message || "Signup failed. Please try again.";
+
+      authStore.setError(errorMessage);
+      toast.error(errorMessage);
+
+      throw err;
+    } finally {
+      authStore.setLoading(false);
+    }
+  };
+
+  /**
+   * User signin
+   */
+  const signin = async (credentials: SigninCredentials): Promise<void> => {
+    authStore.setLoading(true);
+    authStore.clearError();
+
+    try {
+      const authData = await authService.signin(credentials);
+
+      // Update store with auth data
+      authStore.setAuth(authData.accessToken, authData.refreshToken, authData.user);
+
+      toast.success(`Welcome back, ${authData.user.username}!`);
+    } catch (err: any) {
+      const errorMessage =
+        err.response?.data?.message ||
+        err.message ||
+        "Signin failed. Please check your credentials.";
 
       authStore.setError(errorMessage);
       toast.error(errorMessage);
@@ -79,7 +135,9 @@ export function useAuth() {
     isLoggedIn,
 
     // Actions
-    login,
+    loginAdmin,
+    signup,
+    signin,
     logout,
     initializeAuth,
 

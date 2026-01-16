@@ -1,5 +1,7 @@
 <template>
-  <div class="admin-login admin-background flex min-h-screen w-full items-center justify-center px-4 py-8">
+  <div
+    class="admin-login admin-background flex min-h-screen w-full items-center justify-center px-4 py-8"
+  >
     <!-- Login Card -->
     <div class="animate-slideUp relative z-10 w-full max-w-md">
       <!-- Logo/Header Section -->
@@ -7,17 +9,22 @@
         <div class="mb-4 flex justify-center">
           <div class="relative">
             <div
-              class="shadow-glow animate-pulse-glow h-16 w-16 rounded-2xl bg-gradient-to-br from-[#6d28d9] to-[#8b5cf6] p-0.5">
+              class="shadow-glow animate-pulse-glow h-16 w-16 rounded-2xl bg-linear-to-br from-[#6d28d9] to-[#8b5cf6] p-0.5"
+            >
               <div class="flex h-full w-full items-center justify-center rounded-2xl bg-[#0a0a0a]">
                 <IconShieldLock class="h-8 w-8 text-[#6d28d9]" />
               </div>
             </div>
-            <div class="absolute -top-1 -right-1 h-4 w-4 animate-ping rounded-full bg-[#6d28d9]"></div>
+            <div
+              class="absolute -top-1 -right-1 h-4 w-4 animate-ping rounded-full bg-[#6d28d9]"
+            ></div>
           </div>
         </div>
         <h1 class="mb-2 text-3xl font-bold text-white">
           Admin
-          <span class="text-gradient bg-gradient-to-r from-[#6d28d9] to-[#9f7aea] bg-clip-text text-transparent">
+          <span
+            class="text-gradient bg-linear-to-r from-[#6d28d9] to-[#9f7aea] bg-clip-text text-transparent"
+          >
             Portal
           </span>
         </h1>
@@ -25,36 +32,63 @@
       </div>
 
       <!-- Login Form Card -->
-      <div class="login-card animate-fadeIn rounded-2xl border border-white/10 bg-[#1e1e1e] p-8 delay-200">
+      <div
+        class="login-card animate-fadeIn rounded-2xl border border-white/10 bg-[#1e1e1e] p-8 delay-200"
+      >
         <form @submit.prevent="handleLogin" class="space-y-6">
           <!-- Email/Username Field -->
-          <Input id="username" v-model="formData.username" type="text" label="Email / Username"
-            placeholder="Enter your email or username" autocomplete="username" :disabled="isLoading" :required="true">
+          <Input
+            id="username"
+            v-model="formData.username"
+            type="text"
+            label="Email / Username"
+            placeholder="Enter your email or username"
+            autocomplete="username"
+            :disabled="isLoading"
+            :required="true"
+          >
             <template #iconLeft>
               <IconMail />
             </template>
           </Input>
 
           <!-- Password Field -->
-          <Input id="password" v-model="formData.password" type="password" label="Password"
-            placeholder="Enter your password" autocomplete="current-password" :disabled="isLoading" :required="true">
+          <Input
+            id="password"
+            v-model="formData.password"
+            type="password"
+            label="Password"
+            placeholder="Enter your password"
+            autocomplete="current-password"
+            :disabled="isLoading"
+            :required="true"
+          >
             <template #iconLeft>
               <IconLock />
             </template>
           </Input>
 
           <!-- Error Message -->
-          <div v-if="error"
-            class="error-message animate-shake rounded-lg border border-red-500/20 bg-red-500/10 p-3 text-sm text-red-400">
+          <div
+            v-if="error"
+            class="error-message animate-shake rounded-lg border border-red-500/20 bg-red-500/10 p-3 text-sm text-red-400"
+          >
             <div class="flex items-center gap-2">
-              <IconAlertCircle class="h-5 w-5 flex-shrink-0" />
+              <IconAlertCircle class="h-5 w-5 shrink-0" />
               <span>{{ error }}</span>
             </div>
           </div>
 
           <!-- Submit Button -->
-          <Button type="submit" variant="primary" size="md" :full-width="true" :loading="isLoading"
-            :disabled="!formData.username || !formData.password" loading-text="Signing in...">
+          <Button
+            type="submit"
+            variant="primary"
+            size="md"
+            :full-width="true"
+            :loading="isLoading"
+            :disabled="!formData.username || !formData.password"
+            loading-text="Signing in..."
+          >
             <template #iconLeft>
               <IconLogin2 />
             </template>
@@ -80,7 +114,7 @@ import Button from "@/components/Button.vue";
 import { IconShieldLock, IconMail, IconLock, IconLogin2, IconAlertCircle } from "@tabler/icons-vue";
 
 const router = useRouter();
-const { login, isLoading, error } = useAuth();
+const { loginAdmin, isLoading, error } = useAuth();
 
 const formData = ref({
   username: "",
@@ -89,7 +123,7 @@ const formData = ref({
 
 const handleLogin = async () => {
   try {
-    await login(formData.value);
+    await loginAdmin(formData.value);
     router.push("/");
   } catch (err) {
     console.error("Login error:", err);
@@ -99,12 +133,14 @@ const handleLogin = async () => {
 
 <style scoped>
 .admin-background {
-  background: linear-gradient(135deg,
-      #0a0a0a 0%,
-      #1a1a1a 25%,
-      #1e1e1e 50%,
-      #262626 75%,
-      #2a2a2a 100%);
+  background: linear-gradient(
+    135deg,
+    #0a0a0a 0%,
+    #1a1a1a 25%,
+    #1e1e1e 50%,
+    #262626 75%,
+    #2a2a2a 100%
+  );
   position: relative;
   overflow: hidden;
 }
@@ -170,7 +206,6 @@ const handleLogin = async () => {
 }
 
 @keyframes gradient-shift {
-
   0%,
   100% {
     background-position: 0% 50%;
@@ -204,7 +239,6 @@ const handleLogin = async () => {
 }
 
 @keyframes shake {
-
   0%,
   100% {
     transform: translateX(0);
@@ -220,7 +254,6 @@ const handleLogin = async () => {
 }
 
 @keyframes pulse-glow {
-
   0%,
   100% {
     box-shadow:
