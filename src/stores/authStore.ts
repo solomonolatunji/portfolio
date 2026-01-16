@@ -1,16 +1,19 @@
 import { defineStore } from "pinia";
-import { useToast } from "vue-toastification";
-import api from "@/utilities/api";
-import type { AuthState, LoginCredentials, AuthData, User } from "@/interfaces/auth";
-import type { ApiResponse } from "@/interfaces/base";
+import type { AuthState, User } from "@/interfaces/auth";
 
 const AUTH_TOKEN_KEY = "auth_token";
+const AUTH_REFRESH_TOKEN_KEY = "auth_refresh_token";
 const AUTH_USER_KEY = "auth_user";
 
+/**
+ * Authentication Store
+ * State management only - no API calls
+ */
 export const useAuthStore = defineStore("auth", {
   state: (): AuthState => ({
     user: null,
     token: null,
+    refreshToken: null,
     isAuthenticated: false,
     isLoading: false,
     error: null,
@@ -41,83 +44,82 @@ export const useAuthStore = defineStore("auth", {
 
   actions: {
     /**
-     * Initialize authentication from localStorage
+     * Set authentication data
      */
-    initializeAuth(): void {
-      const token = localStorage.getItem(AUTH_TOKEN_KEY);
-      const userStr = localStorage.getItem(AUTH_USER_KEY);
+    setAuth(token: string, refreshToken: string, user: User): void {
+      this.token = token;
+      this.refreshToken = refreshToken;
+      this.user = user;
+      this.isAuthenticated = true;
 
-      if (token && userStr) {
-        try {
-          const user = JSON.parse(userStr) as User;
-          this.token = token;
-          this.user = user;
-          this.isAuthenticated = true;
-        } catch (error) {
-          console.error("Failed to parse stored user data:", error);
-          this.logout();
-        }
-      }
+      // Persist to localStorage
+      localStorage.setItem(AUTH_TOKEN_KEY, token);
+      localStorage.setItem(AUTH_REFRESH_TOKEN_KEY, refreshToken);
+      localStorage.setItem(AUTH_USER_KEY, JSON.stringify(user));
     },
 
     /**
-     * Login with credentials
+     * Update tokens (for refresh)
      */
-    async login(credentials: LoginCredentials): Promise<void> {
-      this.isLoading = true;
-      this.error = null;
+    updateTokens(token: string, refreshToken: string): void {
+      this.token = token;
+      this.refreshToken = refreshToken;
 
-      const toast = useToast();
-
-      try {
-        const response = await api.post<ApiResponse<AuthData>>("/auth/admin/signing", credentials);
-
-        const { accessToken, user } = response.data.data;
-
-        // Store authentication data
-        this.token = accessToken;
-        this.user = user;
-        this.isAuthenticated = true;
-
-        // Persist to localStorage
-        localStorage.setItem(AUTH_TOKEN_KEY, accessToken);
-        localStorage.setItem(AUTH_USER_KEY, JSON.stringify(user));
-
-        toast.success(`Welcome back, ${user.username}!`);
-      } catch (error: any) {
-        console.error("Login failed:", error);
-
-        const errorMessage =
-          error.response?.data?.message ||
-          error.message ||
-          "Login failed. Please check your credentials.";
-
-        this.error = errorMessage;
-        toast.error(errorMessage);
-
-        throw error;
-      } finally {
-        this.isLoading = false;
-      }
+      // Update localStorage
+      localStorage.setItem(AUTH_TOKEN_KEY, token);
+      localStorage.setItem(AUTH_REFRESH_TOKEN_KEY, refreshToken);
     },
 
     /**
-     * Logout user
+     * Clear authentication data
      */
-    logout(): void {
-      const toast = useToast();
-
-      // Clear state
+    clearAuth(): void {
       this.user = null;
       this.token = null;
+      this.refreshToken = null;
       this.isAuthenticated = false;
       this.error = null;
 
       // Clear localStorage
       localStorage.removeItem(AUTH_TOKEN_KEY);
+      localStorage.removeItem(AUTH_REFRESH_TOKEN_KEY);
       localStorage.removeItem(AUTH_USER_KEY);
+    },
 
-      toast.info("You have been logged out");
+    /**
+     * Initialize authentication from localStorage
+     */
+    initializeAuth(): void {
+      const token = localStorage.getItem(AUTH_TOKEN_KEY);
+      const refreshToken = localStorage.getItem(AUTH_REFRESH_TOKEN_KEY);
+      const userStr = localStorage.getItem(AUTH_USER_KEY);
+
+      if (token && refreshToken && userStr) {
+        try {
+          const user = JSON.parse(userStr) as User;
+          this.token = token;
+          this.refreshToken = refreshToken;
+          this.user = user;
+          this.isAuthenticated = true;
+        } catch (error) {
+          console.error("Failed to parse stored user data:", error);
+          this.clearAuth();
+        }
+      }
+    },
+
+    /**
+     * Set loading state
+     */
+    setLoading(loading: boolean): void {
+      this.isLoading = loading;
+    },
+
+    /**
+     * Set error
+     */
+    setError(error: string | null): void {
+      this.error = error;
     },
 
     /**

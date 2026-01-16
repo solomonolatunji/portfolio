@@ -28,7 +28,15 @@ export interface LoginCredentials {
  */
 export interface AuthData {
   accessToken: string;
+  refreshToken: string;
   user: User;
+}
+
+/**
+ * Refresh token request
+ */
+export interface RefreshTokenRequest {
+  refreshToken: string;
 }
 
 /**
@@ -37,6 +45,7 @@ export interface AuthData {
 export interface AuthState {
   user: User | null;
   token: string | null;
+  refreshToken: string | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   error: string | null;

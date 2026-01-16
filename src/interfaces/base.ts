@@ -20,17 +20,30 @@ export interface ApiError {
  * Pagination metadata
  */
 export interface PaginationMeta {
-  page: number;
-  limit: number;
   total: number;
-  totalPages: number;
+  pages: number;
+  hasNext: boolean;
+  hasPrev: boolean;
+  nextPage?: number;
 }
 
 /**
- * Paginated response
+ * Paginated response data wrapper
+ */
+export interface PaginatedData<T> {
+  [key: string]: T[] | number | boolean | number | undefined;
+  total: number;
+  pages: number;
+  hasNext: boolean;
+  hasPrev: boolean;
+  nextPage?: number;
+}
+
+/**
+ * Paginated API response
+ * Example: { statusCode: 200, data: { posts: [...], total: 45, pages: 5, ... } }
  */
 export interface PaginatedResponse<T> {
   statusCode: number;
-  data: T[];
-  meta: PaginationMeta;
+  data: PaginatedData<T>;
 }
