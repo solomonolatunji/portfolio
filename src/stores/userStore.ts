@@ -68,8 +68,8 @@ export const useUserStore = defineStore("user", {
     setUsers(data: UsersListResponse): void {
       this.users = data.users;
       this.total = data.total;
-      this.pages = data.pages;
-      this.currentPage = data.currentPage;
+      this.pages = data.totalPages;
+      this.currentPage = data.page;
       this.hasNext = data.hasNext;
       this.hasPrev = data.hasPrev;
     },

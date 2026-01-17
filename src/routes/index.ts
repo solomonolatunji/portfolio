@@ -15,6 +15,7 @@ import AdminProjects from "@/pages/Admin/Projects.vue";
 import AdminActivity from "@/pages/Admin/Activity.vue";
 import AdminSettings from "@/pages/Admin/Settings.vue";
 import AdminPosts from "@/pages/Admin/Posts.vue";
+import AdminCategories from "@/pages/Admin/Categories.vue";
 import { useAuthStore } from "@/stores/authStore";
 
 const routes = [
@@ -80,6 +81,11 @@ const routes = [
         path: "posts",
         name: "AdminPosts",
         component: AdminPosts,
+      },
+      {
+        path: "categories",
+        name: "AdminCategories",
+        component: AdminCategories,
       },
       {
         path: "activity",

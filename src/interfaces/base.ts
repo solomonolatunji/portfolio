@@ -21,11 +21,13 @@ export interface ApiError {
  */
 export interface PaginationMeta {
   total: number;
-  pages: number;
-  currentPage: number;
+  page: number;
+  limit: number;
+  totalPages: number;
   hasNext: boolean;
   hasPrev: boolean;
-  nextPage?: number;
+  nextPage?: number | null;
+  prevPage?: number | null;
 }
 
 /**

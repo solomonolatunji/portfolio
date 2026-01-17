@@ -47,6 +47,7 @@ import {
   IconActivity,
   IconSettings,
   IconFileText,
+  IconTag,
 } from "@tabler/icons-vue";
 
 const props = defineProps({
@@ -63,6 +64,7 @@ const route = useRoute();
 const navItems = [
   { name: "Dashboard", path: "/admin/dashboard", icon: IconLayoutDashboard },
   { name: "Users", path: "/admin/users", icon: IconUsers },
+  { name: "Categories", path: "/admin/categories", icon: IconTag },
   { name: "Posts", path: "/admin/posts", icon: IconFileText },
   { name: "Projects", path: "/admin/projects", icon: IconBriefcase },
   { name: "Activity", path: "/admin/activity", icon: IconActivity },

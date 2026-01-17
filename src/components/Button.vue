@@ -61,7 +61,7 @@
 <script setup lang="ts">
 interface ButtonProps {
   type?: "button" | "submit" | "reset";
-  variant?: "primary" | "secondary" | "outline" | "ghost";
+  variant?: "primary" | "secondary" | "outline" | "ghost" | "danger";
   size?: "sm" | "md" | "lg";
   disabled?: boolean;
   loading?: boolean;
@@ -183,6 +183,23 @@ withDefaults(defineProps<ButtonProps>(), {
 .button-ghost:hover:not(:disabled) {
   background-color: rgba(109, 40, 217, 0.1);
   color: #8b5cf6;
+}
+
+/* Danger Variant */
+.button-danger {
+  color: white;
+  background-color: #ef4444;
+  box-shadow: 0 4px 14px 0 rgba(239, 68, 68, 0.3);
+}
+
+.button-danger:hover:not(:disabled) {
+  background-color: #dc2626;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px 0 rgba(239, 68, 68, 0.4);
+}
+
+.button-danger:active:not(:disabled) {
+  transform: translateY(0);
 }
 
 /* Button Content */
