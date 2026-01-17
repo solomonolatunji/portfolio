@@ -29,7 +29,6 @@
               {{ article.title }}
             </h3>
           </router-link>
-          <!-- Semantic HTML for content preview not strictly excerpts -->
           <div
             v-if="article.content"
             class="mb-4 line-clamp-2 text-sm text-gray-400"
@@ -40,7 +39,7 @@
             class="mt-2 flex items-center gap-1 text-sm text-purple-400 hover:text-purple-300"
           >
             Read Article
-            <ArrowSmallRightIcon class="h-3.5 w-3.5" />
+            <ArrowRightIcon class="h-3.5 w-3.5" />
           </router-link>
         </div>
       </div>
@@ -49,7 +48,7 @@
 </template>
 
 <script setup lang="ts">
-import { ArrowSmallRightIcon } from "@heroicons/vue/24/solid";
+import { ArrowRightIcon } from "@heroicons/vue/24/solid";
 import type { PropType } from "vue";
 import type { Post } from "@/interfaces/post";
 

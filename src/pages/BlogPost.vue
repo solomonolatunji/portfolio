@@ -25,8 +25,7 @@
       </div>
 
       <div v-else-if="currentPost" class="animate-fadeIn mb-12 sm:mb-16">
-        <!-- Header -->
-        <div class="container mx-auto mb-8">
+        <div>
           <BlogHeader :post="currentPost" />
         </div>
 
@@ -35,7 +34,6 @@
           :style="{ width: `${readingProgress}%` }"
         ></div>
 
-        <!-- TOC -->
         <BlogTableOfContents v-if="tableOfContents.length" :headings="tableOfContents" />
 
         <div class="mb-8 sm:mb-10">
@@ -106,21 +104,18 @@ const authorForBio = computed(() => {
   if (!currentPost.value?.author) return null;
   return {
     name: currentPost.value.author.username,
-    bio: "Content creator and software engineer.", // Fallback/Placeholder
-    // Generate avatar using username initials if needed
+    bio: "Content creator and software engineer.",
     avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(currentPost.value.author.username)}&background=random`,
   };
 });
 
 const tableOfContents = computed(() => {
   if (!currentPost.value?.content) return [];
-  // Extract h2/h3 headings
   const regex = /<h[23][^>]*>(.*?)<\/h[23]>/g;
   const headings: string[] = [];
   let match: RegExpExecArray | null;
   while ((match = regex.exec(currentPost.value.content)) !== null) {
     if (match[1]) {
-      // Strip HTML tags from heading text
       const text = match[1].replace(/<[^>]*>/g, "");
       headings.push(text);
     }
@@ -131,7 +126,6 @@ const tableOfContents = computed(() => {
 const loadPost = async () => {
   const postId = route.params.id as string;
   if (postId) {
-    // Reset current post to avoid showing old data while loading
     if (currentPost.value?.id !== postId) {
       clearCurrentPost();
     }
@@ -160,11 +154,10 @@ const updateReadingProgress = () => {
 
 onMountedAsync(async () => {
   window.addEventListener("scroll", updateReadingProgress);
-  currentUrl.value = window.location.href; // Ensure browser URL is used
+  currentUrl.value = window.location.href;
   await loadPost();
 });
 
-// Helper for async mounted
 async function onMountedAsync(fn: () => Promise<void>) {
   onMounted(() => {
     fn();
@@ -178,14 +171,13 @@ onUnmounted(() => {
 watch(
   () => route.params.id,
   () => {
-    loadPost(); // Params changed, load new post
+    loadPost();
     window.scrollTo(0, 0);
   }
 );
 </script>
 
 <style>
-/* ... keep existing styles ... */
 .clear-both {
   clear: both;
 }

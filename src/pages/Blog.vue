@@ -27,7 +27,7 @@
             :class="[
               'rounded-full px-3 py-1 text-xs font-medium transition-all duration-300',
               activeCategory === category.id
-                ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-md'
+                ? 'bg-linear-to-r from-purple-600 to-indigo-600 text-white shadow-md'
                 : 'bg-[#1e1e1e] text-gray-300 hover:bg-[#2d2d2d]',
             ]"
           >
@@ -38,11 +38,9 @@
 
       <div class="mb-8 md:mb-12">
         <!-- Featured Article -->
-        <div v-if="featuredArticle" class="mb-10 md:mb-16">
+        <div v-if="featuredPost" class="mb-10 md:mb-16">
           <h2 class="mb-6 flex items-center text-xl font-bold text-white md:text-2xl">
-            <span
-              class="mr-3 h-1 w-8 rounded bg-gradient-to-r from-purple-500 to-indigo-500"
-            ></span>
+            <span class="mr-3 h-1 w-8 rounded bg-linear-to-r from-purple-500 to-indigo-500"></span>
             Featured Post
           </h2>
 
@@ -52,12 +50,12 @@
             <div class="flex flex-col md:flex-row">
               <div class="relative w-full md:w-1/2">
                 <img
-                  :src="featuredArticle.image"
-                  :alt="featuredArticle.title"
+                  :src="featuredPost.cover"
+                  :alt="featuredPost.title"
                   class="h-64 w-full object-cover md:h-full"
                 />
                 <div
-                  class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent md:bg-gradient-to-r"
+                  class="absolute inset-0 bg-linear-to-t from-black/70 to-transparent md:bg-linear-to-r"
                 ></div>
                 <div class="absolute bottom-4 left-4 md:hidden">
                   <span class="rounded-full bg-purple-600 px-3 py-1 text-xs font-medium text-white">
@@ -76,37 +74,40 @@
                     <span
                       class="rounded-full bg-[#2d2d2d] px-3 py-1 text-xs font-medium text-gray-300"
                     >
-                      {{ featuredArticle.category }}
+                      {{ featuredPost.categories?.[0]?.category.name || "Uncategorized" }}
                     </span>
-                    <span class="text-xs text-gray-400">{{ featuredArticle.date }}</span>
+                    <span class="text-xs text-gray-400">{{
+                      formatDate(featuredPost.createdAt)
+                    }}</span>
                   </div>
                   <h2
                     class="mb-4 text-xl font-bold text-white transition-colors hover:text-purple-300 sm:text-2xl md:text-3xl"
                   >
-                    <router-link :to="'/blog/' + featuredArticle.id">
-                      {{ featuredArticle.title }}
+                    <router-link :to="'/blog/' + featuredPost.id">
+                      {{ featuredPost.title }}
                     </router-link>
                   </h2>
                   <p class="mb-6 line-clamp-3 text-sm text-gray-300 md:text-base">
-                    {{ featuredArticle.excerpt }}
+                    <!-- Content strip tags for excerpt -->
+                    {{ stripHtml(featuredPost.content).substring(0, 150) }}...
                   </p>
                 </div>
                 <div class="flex items-center justify-between">
                   <div class="flex items-center">
                     <img
-                      :src="featuredArticle.author.avatar"
-                      :alt="featuredArticle.author.name"
+                      :src="getAuthorAvatar(featuredPost.author.username)"
+                      :alt="featuredPost.author.username"
                       class="mr-3 h-10 w-10 rounded-full border-2 border-purple-600"
                     />
                     <div>
                       <span class="block text-sm font-medium text-white">
-                        {{ featuredArticle.author.name }}
+                        {{ featuredPost.author.username }}
                       </span>
                       <span class="text-xs text-gray-400">Author</span>
                     </div>
                   </div>
                   <router-link
-                    :to="'/blog/' + featuredArticle.id"
+                    :to="'/blog/' + featuredPost.id"
                     class="inline-flex items-center gap-1 font-medium text-purple-400 transition-colors hover:text-purple-300"
                   >
                     Read Article
@@ -123,7 +124,7 @@
           <div class="mb-6 flex items-center justify-between">
             <h2 class="flex items-center text-xl font-bold text-white md:text-2xl">
               <span
-                class="mr-3 h-1 w-8 rounded bg-gradient-to-r from-purple-500 to-indigo-500"
+                class="mr-3 h-1 w-8 rounded bg-linear-to-r from-purple-500 to-indigo-500"
               ></span>
               Latest Articles
             </h2>
@@ -145,52 +146,58 @@
             </div>
           </div>
 
-          <div>
+          <div v-if="isLoading && posts.length === 0" class="flex justify-center py-20">
+            <div
+              class="h-10 w-10 animate-spin rounded-full border-4 border-solid border-purple-500 border-r-transparent"
+            ></div>
+          </div>
+
+          <div v-else>
             <!-- Grid View -->
             <div
-              v-if="viewMode === 'grid' && paginatedArticles.length > 0"
+              v-if="viewMode === 'grid' && displayedPosts.length > 0"
               class="mb-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
             >
               <div
-                v-for="article in paginatedArticles"
-                :key="article.id"
+                v-for="post in displayedPosts"
+                :key="post.id"
                 class="transform overflow-hidden rounded-xl bg-[#1e1e1e] shadow-lg transition-all duration-300 hover:-translate-y-2 hover:shadow-purple-800/10"
               >
                 <div class="relative">
-                  <img :src="article.image" :alt="article.title" class="h-48 w-full object-cover" />
+                  <img :src="post.cover" :alt="post.title" class="h-48 w-full object-cover" />
                   <div class="absolute top-3 right-3">
                     <span
                       class="rounded-md bg-[#2d2d2d]/80 px-2 py-1 text-xs text-gray-300 backdrop-blur-sm"
                     >
-                      {{ article.category }}
+                      {{ post.categories?.[0]?.category.name || "Uncategorized" }}
                     </span>
                   </div>
                 </div>
                 <div class="p-5">
                   <div class="mb-2 text-xs text-gray-400">
-                    {{ article.date }}
+                    {{ formatDate(post.createdAt) }}
                   </div>
-                  <router-link :to="'/blog/' + article.id">
+                  <router-link :to="'/blog/' + post.id">
                     <h3
                       class="mb-2 text-lg font-bold text-white transition-colors hover:text-purple-400"
                     >
-                      {{ article.title }}
+                      {{ post.title }}
                     </h3>
                   </router-link>
                   <p class="mb-4 line-clamp-2 text-sm text-gray-400">
-                    {{ article.excerpt }}
+                    {{ stripHtml(post.content).substring(0, 100) }}...
                   </p>
                   <div class="mt-4 flex items-center justify-between border-t border-gray-800 pt-4">
                     <div class="flex items-center">
                       <img
-                        :src="article.author.avatar"
-                        :alt="article.author.name"
+                        :src="getAuthorAvatar(post.author.username)"
+                        :alt="post.author.username"
                         class="mr-2 h-8 w-8 rounded-full border border-purple-600"
                       />
-                      <span class="text-xs text-gray-300">{{ article.author.name }}</span>
+                      <span class="text-xs text-gray-300">{{ post.author.username }}</span>
                     </div>
                     <router-link
-                      :to="'/blog/' + article.id"
+                      :to="'/blog/' + post.id"
                       class="flex items-center gap-1 text-sm text-purple-400 hover:text-purple-300"
                     >
                       Read
@@ -203,49 +210,49 @@
 
             <!-- List View -->
             <div
-              v-else-if="viewMode === 'list' && paginatedArticles.length > 0"
+              v-else-if="viewMode === 'list' && displayedPosts.length > 0"
               class="mb-10 space-y-5"
             >
               <div
-                v-for="article in paginatedArticles"
-                :key="article.id"
+                v-for="post in displayedPosts"
+                :key="post.id"
                 class="flex transform flex-col overflow-hidden rounded-xl bg-[#1e1e1e] shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-purple-800/10 sm:flex-row"
               >
                 <img
-                  :src="article.image"
-                  :alt="article.title"
+                  :src="post.cover"
+                  :alt="post.title"
                   class="h-48 w-full object-cover sm:h-32 sm:w-48 md:h-36"
                 />
                 <div class="flex flex-1 flex-col justify-between p-5">
                   <div>
                     <div class="mb-2 flex items-center justify-between">
                       <span class="rounded-md bg-[#2d2d2d] px-2 py-1 text-xs text-gray-300">
-                        {{ article.category }}
+                        {{ post.categories?.[0]?.category.name || "Uncategorized" }}
                       </span>
-                      <span class="text-xs text-gray-400">{{ article.date }}</span>
+                      <span class="text-xs text-gray-400">{{ formatDate(post.createdAt) }}</span>
                     </div>
-                    <router-link :to="'/blog/' + article.id">
+                    <router-link :to="'/blog/' + post.id">
                       <h3
                         class="mb-2 text-lg font-bold text-white transition-colors hover:text-purple-400"
                       >
-                        {{ article.title }}
+                        {{ post.title }}
                       </h3>
                     </router-link>
                     <p class="line-clamp-2 text-sm text-gray-400">
-                      {{ article.excerpt }}
+                      {{ stripHtml(post.content).substring(0, 150) }}...
                     </p>
                   </div>
                   <div class="mt-4 flex items-center justify-between gap-4">
                     <div class="flex items-center">
                       <img
-                        :src="article.author.avatar"
-                        :alt="article.author.name"
+                        :src="getAuthorAvatar(post.author.username)"
+                        :alt="post.author.username"
                         class="mr-2 h-6 w-6 rounded-full"
                       />
-                      <span class="text-xs text-gray-300">{{ article.author.name }}</span>
+                      <span class="text-xs text-gray-300">{{ post.author.username }}</span>
                     </div>
                     <router-link
-                      :to="'/blog/' + article.id"
+                      :to="'/blog/' + post.id"
                       class="flex items-center gap-1 text-sm text-purple-400 hover:text-purple-300"
                     >
                       Read Article
@@ -279,7 +286,7 @@
         <!-- Pagination -->
         <Pagination
           v-if="totalPages > 1"
-          :current-page="currentPage"
+          :current-page="localPage"
           :total-pages="totalPages"
           @prev="prevPage"
           @next="nextPage"
@@ -295,7 +302,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch, onMounted } from "vue";
 import {
   MagnifyingGlassIcon,
   DocumentIcon,
@@ -306,16 +313,19 @@ import {
 } from "@heroicons/vue/24/solid";
 import Newsletter from "@/components/Newsletter.vue";
 import Pagination from "@/components/Pagination.vue";
-import { articles } from "@/constants/blogArticles";
+import { usePost } from "@/hooks/usePost";
+import { format } from "date-fns";
 
 // State
 const searchQuery = ref("");
 const activeCategory = ref("all");
-const currentPage = ref(1);
 const viewMode = ref("grid");
 const postsPerPage = 6;
+const localPage = ref(1);
 
-// Categories
+const { posts, isLoading, fetchPosts, fetchFeaturedPosts, featuredPosts } = usePost();
+
+// Categories - In robust app, fetch from API
 const categories = [
   { id: "all", name: "All Posts" },
   { id: "web-dev", name: "Web Development" },
@@ -324,9 +334,17 @@ const categories = [
   { id: "tutorials", name: "Tutorials" },
 ];
 
+const loadPosts = async () => {
+  await Promise.all([fetchPosts({ limit: 100 }), fetchFeaturedPosts()]);
+};
+
+onMounted(() => {
+  loadPosts();
+});
+
 const setCategory = (category: string) => {
   activeCategory.value = category;
-  currentPage.value = 1;
+  localPage.value = 1;
 };
 
 const setViewMode = (mode: "grid" | "list") => {
@@ -336,58 +354,85 @@ const setViewMode = (mode: "grid" | "list") => {
 const resetFilters = () => {
   searchQuery.value = "";
   activeCategory.value = "all";
-  currentPage.value = 1;
+  localPage.value = 1;
 };
 
 const prevPage = () => {
-  if (currentPage.value > 1) {
-    currentPage.value--;
+  if (localPage.value > 1) {
+    localPage.value--;
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 };
 
 const nextPage = () => {
-  if (currentPage.value < totalPages.value) {
-    currentPage.value++;
+  if (localPage.value < totalPages.value) {
+    localPage.value++;
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 };
 
 const goToPage = (page: number) => {
-  currentPage.value = page;
+  localPage.value = page;
   window.scrollTo({ top: 0, behavior: "smooth" });
 };
 
-const featuredArticle = computed(() => articles.find((article) => article.featured));
+// -- Computed --
 
-const filteredArticles = computed(() => {
-  let filtered = articles;
+const featuredPost = computed(() => {
+  return featuredPosts.value.length > 0 ? featuredPosts.value[0] : null;
+});
+
+const filteredPosts = computed(() => {
+  let filtered = posts.value;
 
   if (activeCategory.value !== "all") {
-    filtered = filtered.filter((article) => article.category === activeCategory.value);
+    filtered = filtered.filter((post) =>
+      post.categories?.some(
+        (c) => c.category.slug === activeCategory.value || c.category.id === activeCategory.value
+      )
+    );
   }
 
   if (searchQuery.value.trim() !== "") {
     const query = searchQuery.value.toLowerCase().trim();
     filtered = filtered.filter(
-      (article) =>
-        article.title.toLowerCase().includes(query) || article.excerpt.toLowerCase().includes(query)
+      (post) =>
+        post.title.toLowerCase().includes(query) || post.content.toLowerCase().includes(query)
     );
   }
 
-  return filtered.filter((article) => !article.featured);
+  // exclude featured
+  if (featuredPost.value) {
+    filtered = filtered.filter((p) => p.id !== featuredPost.value?.id);
+  }
+
+  return filtered;
 });
 
-const paginatedArticles = computed(() => {
-  const startIndex = (currentPage.value - 1) * postsPerPage;
-  const endIndex = startIndex + postsPerPage;
-  return filteredArticles.value.slice(startIndex, endIndex);
+const totalPages = computed(() => Math.ceil(filteredPosts.value.length / postsPerPage));
+
+const displayedPosts = computed(() => {
+  const startIndex = (localPage.value - 1) * postsPerPage;
+  return filteredPosts.value.slice(startIndex, startIndex + postsPerPage);
 });
 
-const totalPages = computed(() => Math.ceil(filteredArticles.value.length / postsPerPage));
+// Helpers
+const formatDate = (dateString: string) => {
+  return format(new Date(dateString), "MMMM dd, yyyy");
+};
+
+const getAuthorAvatar = (name: string) => {
+  return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=random`;
+};
+
+const stripHtml = (html: string) => {
+  const tmp = document.createElement("DIV");
+  tmp.innerHTML = html;
+  return tmp.textContent || tmp.innerText || "";
+};
 
 watch(searchQuery, () => {
-  currentPage.value = 1;
+  localPage.value = 1;
 });
 </script>
 
