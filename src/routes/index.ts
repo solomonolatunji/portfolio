@@ -6,8 +6,15 @@ import Portfolio from "@/pages/Portfolio.vue";
 import PortfolioDetail from "@/pages/PortfolioDetail.vue";
 import Blog from "@/pages/Blog.vue";
 import BlogPost from "@/pages/BlogPost.vue";
-import Admin from "@/pages/Admin.vue";
 import NotFound from "@/pages/NotFound.vue";
+import AdminLayout from "@/components/Admin/Layout/AdminLayout.vue";
+import AdminLogin from "@/pages/Admin/Login.vue";
+import AdminDashboard from "@/pages/Admin/Dashboard.vue";
+import AdminUsers from "@/pages/Admin/Users.vue";
+import AdminProjects from "@/pages/Admin/Projects.vue";
+import AdminActivity from "@/pages/Admin/Activity.vue";
+import AdminSettings from "@/pages/Admin/Settings.vue";
+import AdminPosts from "@/pages/Admin/Posts.vue";
 
 const routes = [
   {
@@ -26,7 +33,6 @@ const routes = [
     path: "/portfolio",
     component: Portfolio,
   },
-
   {
     path: "/portfolio/:id",
     component: PortfolioDetail,
@@ -41,8 +47,50 @@ const routes = [
   },
   {
     path: "/admin",
-    name: "Admin",
-    component: Admin,
+    component: AdminLayout,
+    meta: { requiresAuth: true, requiresAdmin: true },
+    children: [
+      {
+        path: "login",
+        name: "AdminLogin",
+        component: AdminLogin,
+        meta: { layout: "default" },
+      },
+      {
+        path: "",
+        redirect: "/admin/dashboard",
+      },
+      {
+        path: "dashboard",
+        name: "AdminDashboard",
+        component: AdminDashboard,
+      },
+      {
+        path: "users",
+        name: "AdminUsers",
+        component: AdminUsers,
+      },
+      {
+        path: "projects",
+        name: "AdminProjects",
+        component: AdminProjects,
+      },
+      {
+        path: "posts",
+        name: "AdminPosts",
+        component: AdminPosts,
+      },
+      {
+        path: "activity",
+        name: "AdminActivity",
+        component: AdminActivity,
+      },
+      {
+        path: "settings",
+        name: "AdminSettings",
+        component: AdminSettings,
+      },
+    ],
   },
   {
     path: "/:pathMatch(.*)*",
