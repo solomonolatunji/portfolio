@@ -15,8 +15,7 @@
     </div>
 
     <div
-      class="flex flex-col justify-between gap-4 rounded-xl border border-white/10 bg-[#1e1e1e] p-4 sm:flex-row sm:items-center"
-    >
+      class="flex flex-col justify-between gap-4 rounded-xl border border-white/10 bg-[#1e1e1e] p-4 sm:flex-row sm:items-center">
       <div class="w-full sm:w-72">
         <Input v-model="search" placeholder="Search users...">
           <template #iconLeft>
@@ -54,8 +53,7 @@
               <td class="px-6 py-4">
                 <div class="flex items-center gap-3">
                   <div
-                    class="flex h-10 w-10 items-center justify-center rounded-full bg-[#6d28d9] font-bold text-white"
-                  >
+                    class="flex h-10 w-10 items-center justify-center rounded-full bg-[#6d28d9] font-bold text-white">
                     {{ user.username.charAt(0).toUpperCase() }}
                   </div>
                   <div>
@@ -65,21 +63,13 @@
                 </div>
               </td>
               <td class="px-6 py-4">
-                <span
-                  class="inline-flex rounded-full bg-green-500/10 px-2.5 py-0.5 text-xs font-medium text-green-400"
-                >
+                <span class="inline-flex rounded-full bg-green-500/10 px-2.5 py-0.5 text-xs font-medium text-green-400">
                   Active
                 </span>
               </td>
               <td class="px-6 py-4">
-                <span
-                  class="inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium"
-                  :class="
-                    user.role === 'ADMIN'
-                      ? 'bg-purple-500/10 text-purple-400'
-                      : 'bg-gray-500/10 text-gray-400'
-                  "
-                >
+                <span class="inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium"
+                  :class="getRoleBadgeClass(user.role)">
                   {{ user.role }}
                 </span>
               </td>
@@ -88,18 +78,11 @@
               </td>
               <td class="px-6 py-4 text-right">
                 <div class="flex justify-end gap-2">
-                  <button
-                    @click="openRoleModal(user)"
-                    class="p-1 text-gray-400 hover:text-white"
-                    title="Change Role"
-                  >
+                  <button @click="openRoleModal(user)" class="p-1 text-gray-400 hover:text-white" title="Change Role">
                     <IconUserCog class="h-4 w-4" />
                   </button>
-                  <button
-                    @click="openDeleteModal(user)"
-                    class="p-1 text-gray-400 hover:text-red-400"
-                    title="Delete User"
-                  >
+                  <button @click="openDeleteModal(user)" class="p-1 text-gray-400 hover:text-red-400"
+                    title="Delete User">
                     <IconTrash class="h-4 w-4" />
                   </button>
                 </div>
@@ -110,13 +93,8 @@
       </div>
 
       <div class="border-t border-white/10 px-6 py-4">
-        <Pagination
-          :current-page="currentPage"
-          :total-pages="Math.ceil(total / 10)"
-          @prev="changePage(currentPage - 1)"
-          @next="changePage(currentPage + 1)"
-          @goto="changePage"
-        />
+        <Pagination :current-page="currentPage" :total-pages="Math.ceil(total / 10)" @prev="changePage(currentPage - 1)"
+          @next="changePage(currentPage + 1)" @goto="changePage" />
         <div class="mt-2 text-center text-xs text-gray-500">
           Showing <span class="text-white">{{ users.length }}</span> of
           <span class="text-white">{{ total }}</span>
@@ -128,24 +106,10 @@
     <Modal :is-open="isFilterModalOpen" title="Filter Users" @close="isFilterModalOpen = false">
       <div class="space-y-4">
         <div>
-          <label class="mb-2 block text-sm font-medium text-gray-300">Role</label>
-          <select
-            class="w-full rounded-lg border border-white/10 bg-white/5 p-2 text-sm text-white focus:border-[#6d28d9] focus:outline-none"
-          >
-            <option value="">All Roles</option>
-            <option value="ADMIN">Admin</option>
-            <option value="USER">User</option>
-          </select>
+          <Select v-model="filterRole" label="Role" :options="filterRoleOptions" placeholder="All Roles" />
         </div>
         <div>
-          <label class="mb-2 block text-sm font-medium text-gray-300">Status</label>
-          <select
-            class="w-full rounded-lg border border-white/10 bg-white/5 p-2 text-sm text-white focus:border-[#6d28d9] focus:outline-none"
-          >
-            <option value="">All Statuses</option>
-            <option value="active">Active</option>
-            <option value="inactive">Inactive</option>
-          </select>
+          <Select v-model="filterStatus" label="Status" :options="statusOptions" placeholder="All Statuses" />
         </div>
       </div>
       <template #footer>
@@ -159,80 +123,38 @@
         Change role for <span class="font-bold text-white">{{ selectedUser?.username }}</span>
       </p>
       <div>
-        <label class="mb-2 block text-sm font-medium text-gray-300">Role</label>
-        <select
-          v-model="newRole"
-          class="w-full rounded-lg border border-white/10 bg-white/5 p-2 text-sm text-white focus:border-[#6d28d9] focus:outline-none"
-        >
-          <option value="USER">User</option>
-          <option value="ADMIN">Admin</option>
-        </select>
+        <Select v-model="newRole" label="Role" :options="roleOptions" />
       </div>
       <template #footer>
         <Button variant="ghost" @click="closeRoleModal" text="Cancel" />
-        <Button
-          variant="primary"
-          :loading="isLoading"
-          @click="confirmRoleChange"
-          text="Update Role"
-        />
+        <Button variant="primary" :loading="isLoading" @click="confirmRoleChange" text="Update Role" />
       </template>
     </Modal>
 
     <Modal :is-open="isCreateModalOpen" title="Create User" @close="closeCreateModal">
       <form @submit.prevent="handleCreateUser" class="space-y-4">
         <Input v-model="createForm.username" label="Username" placeholder="johndoe" required />
-        <Input
-          v-model="createForm.email"
-          label="Email"
-          type="email"
-          placeholder="john@example.com"
-          required
-        />
-        <Input
-          v-model="createForm.password"
-          label="Password"
-          type="password"
-          placeholder="Secure password"
-          required
-        />
+        <Input v-model="createForm.email" label="Email" type="email" placeholder="john@example.com" required />
+        <Input v-model="createForm.password" label="Password" type="password" placeholder="Secure password" required />
         <div>
-          <label class="mb-2 block text-sm font-medium text-gray-300">Role</label>
-          <select
-            v-model="createForm.role"
-            class="w-full rounded-lg border border-white/10 bg-white/5 p-2 text-sm text-white focus:border-[#6d28d9] focus:outline-none"
-          >
-            <option value="USER">User</option>
-            <option value="ADMIN">Admin</option>
-          </select>
+          <Select v-model="createForm.role" label="Role" :options="roleOptions" />
         </div>
       </form>
       <template #footer>
         <Button variant="ghost" @click="closeCreateModal" text="Cancel" />
-        <Button
-          variant="primary"
-          :loading="isLoading"
-          @click="handleCreateUser"
-          text="Create User"
-        />
+        <Button variant="primary" :loading="isLoading" @click="handleCreateUser" text="Create User" />
       </template>
     </Modal>
 
     <Modal :is-open="isDeleteModalOpen" title="Delete User" @close="closeDeleteModal">
       <p class="text-gray-300">
         Are you sure you want to delete user
-        <span class="font-bold text-white">{{ selectedUser?.username }}</span
-        >?
+        <span class="font-bold text-white">{{ selectedUser?.username }}</span>?
       </p>
       <p class="mt-2 text-sm text-gray-400">This action cannot be undone.</p>
       <template #footer>
         <Button variant="ghost" @click="closeDeleteModal" text="Cancel" />
-        <Button
-          variant="danger"
-          :loading="isLoading"
-          @click="confirmDeleteUser"
-          text="Delete User"
-        />
+        <Button variant="danger" :loading="isLoading" @click="confirmDeleteUser" text="Delete User" />
       </template>
     </Modal>
   </div>
@@ -245,6 +167,7 @@ import { useUser } from "@/hooks/useUser";
 import { IconSearch, IconUserCog, IconPlus, IconFilter, IconTrash } from "@tabler/icons-vue";
 import Button from "@/components/Button.vue";
 import Input from "@/components/Input.vue";
+import Select from "@/components/Select.vue";
 import Modal from "@/components/Admin/Shared/Modal.vue";
 import Pagination from "@/components/Pagination.vue";
 
@@ -258,12 +181,45 @@ const isCreateModalOpen = ref(false);
 const isDeleteModalOpen = ref(false);
 const selectedUser = ref<any>(null);
 const newRole = ref("");
+const filterRole = ref("");
+const filterStatus = ref("");
 const createForm = ref({
   username: "",
   email: "",
   password: "",
   role: "USER" as any,
 });
+
+const roleOptions = [
+  { label: "Admin", value: "ADMIN" },
+  { label: "Manage Posts", value: "MANAGE_POSTS" },
+  { label: "Manage Comments", value: "MANAGE_COMMENTS" },
+  { label: "User", value: "USER" },
+];
+
+const filterRoleOptions = [
+  { label: "All Roles", value: "" },
+  ...roleOptions,
+];
+
+const statusOptions = [
+  { label: "All Statuses", value: "" },
+  { label: "Active", value: "active" },
+  { label: "Inactive", value: "inactive" },
+];
+
+const getRoleBadgeClass = (role: string) => {
+  switch (role) {
+    case "ADMIN":
+      return "bg-purple-500/10 text-purple-400";
+    case "MANAGE_POSTS":
+      return "bg-blue-500/10 text-blue-400";
+    case "MANAGE_COMMENTS":
+      return "bg-green-500/10 text-green-400";
+    default:
+      return "bg-gray-500/10 text-gray-400";
+  }
+};
 
 const formatDate = (date: any) => {
   if (!date) return "-";

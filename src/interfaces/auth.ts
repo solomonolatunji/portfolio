@@ -1,7 +1,7 @@
 /**
  * User role types
  */
-export type UserRole = "ADMIN" | "MANAGE_POSTS" | "MANAGE_COMMENTS";
+export type UserRole = "ADMIN" | "MANAGE_POSTS" | "MANAGE_COMMENTS" | "USER";
 
 /**
  * User entity
