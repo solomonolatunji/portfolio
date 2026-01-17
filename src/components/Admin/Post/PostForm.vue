@@ -1,121 +1,237 @@
 <template>
-  <form @submit.prevent="handleSubmit" class="wordpress-editor">
-    <div class="editor-grid">
-      <div class="main-content">
-        <div class="title-section">
-          <input
-            v-model="form.title"
-            type="text"
-            placeholder="Add title"
-            required
-            class="title-input"
-          />
-        </div>
-
-        <div class="content-section">
-          <TiptapEditor v-model="form.content" placeholder="Start writing your post content..." />
-        </div>
+  <form @submit.prevent="handleSubmit" class="space-y-8 pb-12">
+    <!-- Header Area -->
+    <div class="flex items-center justify-between">
+      <div>
+        <h1
+          class="bg-linear-to-r from-white to-gray-400 bg-clip-text text-3xl font-bold text-transparent"
+        >
+          {{ isEditing ? "Edit Post" : "Create New Post" }}
+        </h1>
+        <p class="mt-1 text-sm text-gray-400">Draft your thoughts and share them with the world.</p>
       </div>
+      <div class="flex items-center gap-3">
+        <Button variant="secondary" size="md" text="Cancel" @click="$emit('cancel')" />
+        <Button
+          variant="primary"
+          size="md"
+          :text="isEditing ? 'Update Post' : 'Publish Post'"
+          :loading="isLoading"
+          type="submit"
+        />
+      </div>
+    </div>
 
-      <div class="sidebar">
-        <div class="sidebar-section publish-box">
-          <h3 class="sidebar-title">Publish</h3>
-          <div class="publish-status">
-            <span class="status-label">Status:</span>
-            <div class="flex items-center gap-2">
-              <button
-                type="button"
-                role="switch"
-                :aria-checked="form.published"
-                @click="form.published = !form.published"
-                :class="form.published ? 'bg-[#6d28d9]' : 'bg-gray-700'"
-                class="toggle-switch"
-              >
-                <span
-                  :class="form.published ? 'translate-x-5' : 'translate-x-0'"
-                  class="toggle-thumb"
-                />
-              </button>
-              <span class="status-text">
-                {{ form.published ? "Published" : "Draft" }}
-              </span>
-            </div>
-          </div>
-          <div class="publish-actions">
-            <Button variant="ghost" text="Cancel" @click="$emit('cancel')" type="button" />
-            <Button
-              variant="primary"
-              :text="isEditing ? 'Update' : 'Publish'"
-              :loading="isLoading"
-              type="submit"
+    <!-- Main Grid -->
+    <div class="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_350px]">
+      <!-- Left Column: Content -->
+      <div class="space-y-6">
+        <!-- Title Input Card -->
+        <div
+          class="group relative rounded-3xl border border-white/10 bg-white/5 p-1 transition-all hover:border-white/20"
+        >
+          <div class="p-6">
+            <input
+              v-model="form.title"
+              type="text"
+              placeholder="Enter post title..."
+              required
+              class="w-full border-none bg-transparent text-4xl font-extrabold text-white placeholder-white/20 outline-none focus:ring-0"
             />
           </div>
         </div>
 
-        <div class="sidebar-section">
-          <h3 class="sidebar-title">Categories</h3>
-          <div class="categories-list">
-            <div v-if="loadingCategories" class="loading-state">Loading categories...</div>
-            <div v-else-if="availableCategories.length === 0" class="empty-state">
-              No categories available
+        <!-- Editor Card -->
+        <div class="overflow-hidden rounded-3xl border border-white/10 bg-white/5">
+          <div class="p-1">
+            <TiptapEditor v-model="form.content" placeholder="Start writing something amazing..." />
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Sidebar -->
+      <div class="space-y-6">
+        <!-- Publish Widget -->
+        <div class="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
+          <h3 class="mb-6 text-sm font-semibold tracking-wider text-gray-400 uppercase">
+            Status & Visibility
+          </h3>
+
+          <div class="group flex items-center justify-between">
+            <div class="space-y-0.5">
+              <span class="block font-medium text-white">Published</span>
+              <span class="text-xs text-gray-500">{{
+                form.published ? "Visible to everyone" : "Only you can see this"
+              }}</span>
+            </div>
+            <button
+              type="button"
+              role="switch"
+              :aria-checked="form.published"
+              @click="form.published = !form.published"
+              class="relative inline-flex h-7 w-12 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-all duration-300 ease-in-out focus:outline-none"
+              :class="form.published ? 'bg-purple-600' : 'bg-white/10'"
+            >
+              <span
+                class="pointer-events-none inline-block h-6 w-6 transform rounded-full bg-white shadow-lg ring-0 transition-transform duration-300 ease-in-out"
+                :class="form.published ? 'translate-x-5' : 'translate-x-0'"
+              />
+            </button>
+          </div>
+
+          <div class="mt-8 space-y-4 border-t border-white/5 pt-6">
+            <div class="flex items-center gap-2 text-xs text-gray-500 italic">
+              <IconPhoto class="h-4 w-4" />
+              Last saved: Just now
+            </div>
+          </div>
+        </div>
+
+        <!-- Categories Widget -->
+        <div class="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
+          <h3 class="mb-6 text-sm font-semibold tracking-wider text-gray-400 uppercase">
+            Categories
+          </h3>
+
+          <div class="custom-scrollbar max-h-48 space-y-2 overflow-y-auto pr-2">
+            <div v-if="loadingCategories" class="flex items-center justify-center py-4">
+              <div
+                class="h-5 w-5 animate-spin rounded-full border-2 border-purple-500 border-t-transparent"
+              ></div>
+            </div>
+            <div
+              v-else-if="availableCategories.length === 0"
+              class="py-4 text-center text-sm text-gray-500"
+            >
+              No categories found.
             </div>
             <label
               v-else
               v-for="category in availableCategories"
               :key="category.id"
-              class="category-item"
+              class="group flex cursor-pointer items-center rounded-xl p-2 transition-colors hover:bg-white/5"
             >
-              <input
-                type="checkbox"
-                :value="category.id"
-                :checked="form.categories.includes(category.id)"
-                @change="toggleCategory(category.id)"
-                class="category-checkbox"
-              />
-              <span class="category-name">{{ category.name }}</span>
+              <div class="relative flex h-5 w-5 items-center justify-center">
+                <input
+                  type="checkbox"
+                  :value="category.id"
+                  :checked="form.categories.includes(category.id)"
+                  @change="toggleCategory(category.id)"
+                  class="peer h-5 w-5 cursor-pointer appearance-none rounded-lg border border-white/10 bg-white/5 transition-all checked:border-purple-600 checked:bg-purple-600"
+                />
+                <svg
+                  class="pointer-events-none absolute h-3 w-3 text-white opacity-0 transition-opacity peer-checked:opacity-100"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="3"
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+              </div>
+              <span class="ml-3 text-sm text-gray-300 transition-colors group-hover:text-white">{{
+                category.name
+              }}</span>
             </label>
           </div>
         </div>
 
-        <div class="sidebar-section">
-          <h3 class="sidebar-title">Tags</h3>
-          <div class="tags-container">
-            <div class="tag-list">
-              <span v-for="(tag, index) in form.tags" :key="index" class="tag-item">
+        <!-- Tags Widget -->
+        <div class="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
+          <h3 class="mb-6 text-sm font-semibold tracking-wider text-gray-400 uppercase">Tags</h3>
+
+          <div class="space-y-4">
+            <Input
+              v-model="newTag"
+              placeholder="Press Enter to add tags..."
+              @keydown.enter.prevent="addTag"
+              class="border-white/10! bg-white/5! shadow-none focus:border-purple-500/50!"
+            />
+
+            <div class="flex flex-wrap gap-2">
+              <span
+                v-for="(tag, index) in form.tags"
+                :key="index"
+                class="inline-flex items-center rounded-full border border-purple-500/20 bg-purple-500/10 px-3 py-1 text-xs font-medium text-purple-300 transition-all hover:bg-purple-500/20"
+              >
                 {{ tag }}
-                <button type="button" @click="removeTag(index)" class="tag-remove">×</button>
+                <button
+                  type="button"
+                  @click="removeTag(index)"
+                  class="ml-2 text-purple-400 transition-colors hover:text-white"
+                >
+                  <IconX class="h-3.5 w-3.5" />
+                </button>
               </span>
             </div>
-            <input
-              v-model="newTag"
-              @keydown.enter.prevent="addTag"
-              class="tag-input"
-              placeholder="Add tag and press Enter"
-            />
           </div>
         </div>
 
-        <div class="sidebar-section">
-          <h3 class="sidebar-title">Featured Image</h3>
-          <div class="featured-image">
-            <div v-if="preview.cover" class="image-preview">
-              <img :src="preview.cover" alt="Cover" class="preview-img" />
-              <button type="button" @click="removeCover" class="remove-image">Remove</button>
+        <!-- Featured Image Widget -->
+        <div class="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
+          <h3 class="mb-6 text-sm font-semibold tracking-wider text-gray-400 uppercase">
+            Cover Image
+          </h3>
+
+          <div
+            class="group relative aspect-video overflow-hidden rounded-2xl border-2 border-dashed border-white/10 bg-white/5 transition-all hover:border-purple-500/50"
+          >
+            <div v-if="preview.cover" class="h-full w-full">
+              <img
+                :src="preview.cover"
+                alt="Cover"
+                class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+              <div
+                class="absolute inset-0 flex items-center justify-center gap-3 bg-black/60 opacity-0 transition-opacity group-hover:opacity-100"
+              >
+                <label
+                  for="cover-upload-replace"
+                  class="cursor-pointer rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/20"
+                >
+                  <IconPhoto class="h-5 w-5" />
+                </label>
+                <button
+                  type="button"
+                  @click="removeCover"
+                  class="rounded-full bg-red-500/20 p-2 text-red-500 transition-colors hover:bg-red-500/40"
+                >
+                  <IconTrash class="h-5 w-5" />
+                </button>
+              </div>
+              <input
+                type="file"
+                accept="image/*"
+                @change="handleCoverUpload"
+                id="cover-upload-replace"
+                class="hidden"
+              />
             </div>
-            <div v-else class="image-upload">
+
+            <label
+              v-else
+              for="cover-upload"
+              class="flex h-full w-full cursor-pointer flex-col items-center justify-center p-4 text-center"
+            >
+              <div
+                class="mb-3 rounded-full bg-white/5 p-4 transition-transform group-hover:scale-110"
+              >
+                <IconPhoto class="h-8 w-8 text-gray-400" />
+              </div>
+              <span class="block text-sm font-medium text-white">Upload Image</span>
+              <span class="mt-1 text-xs text-gray-500">PNG, JPG, max 2MB</span>
               <input
                 type="file"
                 accept="image/*"
                 @change="handleCoverUpload"
                 id="cover-upload"
-                class="file-input"
+                class="hidden"
               />
-              <label for="cover-upload" class="upload-label">
-                <IconPhoto class="h-8 w-8 text-gray-400" />
-                <span class="upload-text">Click to upload</span>
-                <span class="upload-hint">Recommended: 1200x630px</span>
-              </label>
-            </div>
+            </label>
           </div>
         </div>
       </div>
@@ -126,9 +242,10 @@
 <script setup lang="ts">
 import { reactive, onMounted, ref } from "vue";
 import { useCategory } from "@/hooks/useCategory";
-import { IconPhoto } from "@tabler/icons-vue";
+import { IconPhoto, IconX, IconTrash } from "@tabler/icons-vue";
 import TiptapEditor from "@/components/Admin/Shared/TiptapEditor.vue";
 import Button from "@/components/Button.vue";
+import Input from "@/components/Input.vue";
 import type { Post } from "@/interfaces/post";
 
 const props = defineProps<{
@@ -218,331 +335,3 @@ const handleSubmit = () => {
   emit("submit", payload);
 };
 </script>
-
-<style>
-.wordpress-editor {
-  min-height: 100vh;
-}
-
-.editor-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.5rem;
-}
-
-@media (min-width: 1024px) {
-  .editor-grid {
-    grid-template-columns: 1fr 320px;
-  }
-}
-
-.main-content {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.title-section {
-  border-radius: 0.75rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background-color: #1e1e1e;
-  padding: 1.5rem;
-}
-
-.title-input {
-  width: 100%;
-  border: none;
-  background-color: transparent;
-  font-size: 1.875rem;
-  line-height: 2.25rem;
-  font-weight: 700;
-  color: white;
-  outline: none;
-}
-
-.title-input::placeholder {
-  color: rgb(107, 114, 128);
-}
-
-.content-section {
-  border-radius: 0.75rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background-color: #1e1e1e;
-  padding: 1.5rem;
-}
-
-.sidebar {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.sidebar-section {
-  border-radius: 0.75rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background-color: #1e1e1e;
-  padding: 1rem;
-}
-
-.publish-box {
-  position: sticky;
-  top: 1rem;
-}
-
-.sidebar-title {
-  margin-bottom: 0.75rem;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  font-weight: 600;
-  color: white;
-}
-
-.publish-status {
-  margin-bottom: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding-bottom: 0.75rem;
-}
-
-.status-label {
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  color: rgb(156, 163, 175);
-}
-
-.toggle-switch {
-  position: relative;
-  display: inline-flex;
-  height: 1.5rem;
-  width: 2.75rem;
-  flex-shrink: 0;
-  cursor: pointer;
-  border-radius: 9999px;
-  border-width: 2px;
-  border-color: transparent;
-  transition-property: color, background-color, border-color;
-  transition-duration: 200ms;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  outline: none;
-}
-
-.toggle-switch:focus {
-  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 2px #1e1e1e;
-  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + 2px) #6d28d9;
-  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow);
-}
-
-.toggle-thumb {
-  pointer-events: none;
-  display: inline-block;
-  height: 1.25rem;
-  width: 1.25rem;
-  transform: translateX(0);
-  border-radius: 9999px;
-  background-color: white;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
-  transition-property: transform;
-  transition-duration: 200ms;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.status-text {
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  font-weight: 500;
-  color: rgb(209, 213, 219);
-}
-
-.publish-actions {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.categories-list {
-  max-height: 16rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  overflow-y: auto;
-}
-
-.loading-state,
-.empty-state {
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-  text-align: center;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  color: rgb(107, 114, 128);
-}
-
-.category-item {
-  display: flex;
-  cursor: pointer;
-  align-items: center;
-  gap: 0.5rem;
-  border-radius: 0.25rem;
-  padding: 0.5rem;
-  transition-property: color, background-color;
-  transition-duration: 150ms;
-}
-
-.category-item:hover {
-  background-color: rgba(255, 255, 255, 0.05);
-}
-
-.category-checkbox {
-  height: 1rem;
-  width: 1rem;
-  border-radius: 0.25rem;
-  border-color: rgb(75, 85, 99);
-  background-color: rgb(55, 65, 81);
-  color: #6d28d9;
-}
-
-.category-checkbox:focus {
-  --tw-ring-shadow: 0 0 0 2px #6d28d9;
-  box-shadow: var(--tw-ring-shadow);
-  --tw-ring-offset-width: 0;
-}
-
-.category-name {
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  color: white;
-}
-
-.tags-container {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.tag-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.tag-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-  border-radius: 9999px;
-  background-color: rgba(59, 130, 246, 0.2);
-  padding: 0.25rem 0.75rem;
-  font-size: 0.75rem;
-  line-height: 1rem;
-  color: rgb(147, 197, 253);
-}
-
-.tag-remove {
-  color: rgb(147, 197, 253);
-}
-
-.tag-remove:hover {
-  color: white;
-}
-
-.tag-input {
-  width: 100%;
-  border-radius: 0.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background-color: rgba(255, 255, 255, 0.05);
-  padding: 0.5rem;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  color: white;
-  outline: none;
-}
-
-.tag-input::placeholder {
-  color: rgb(107, 114, 128);
-}
-
-.tag-input:focus {
-  border-color: #6d28d9;
-  --tw-ring-shadow: 0 0 0 1px #6d28d9;
-  box-shadow: var(--tw-ring-shadow);
-}
-
-.featured-image {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.image-preview {
-  position: relative;
-  overflow: hidden;
-  border-radius: 0.5rem;
-}
-
-.preview-img {
-  height: 12rem;
-  width: 100%;
-  object-fit: cover;
-}
-
-.remove-image {
-  position: absolute;
-  bottom: 0.5rem;
-  right: 0.5rem;
-  border-radius: 0.25rem;
-  background-color: rgb(239, 68, 68);
-  padding: 0.25rem 0.75rem;
-  font-size: 0.75rem;
-  line-height: 1rem;
-  color: white;
-  transition-property: background-color;
-  transition-duration: 150ms;
-}
-
-.remove-image:hover {
-  background-color: rgb(220, 38, 38);
-}
-
-.image-upload {
-  position: relative;
-}
-
-.file-input {
-  display: none;
-}
-
-.upload-label {
-  display: flex;
-  height: 12rem;
-  cursor: pointer;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  border-radius: 0.5rem;
-  border: 2px dashed rgba(255, 255, 255, 0.1);
-  background-color: rgba(255, 255, 255, 0.05);
-  transition-property: color, background-color, border-color;
-  transition-duration: 150ms;
-}
-
-.upload-label:hover {
-  border-color: rgba(255, 255, 255, 0.2);
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-.upload-text {
-  margin-top: 0.5rem;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  font-weight: 500;
-  color: white;
-}
-
-.upload-hint {
-  margin-top: 0.25rem;
-  font-size: 0.75rem;
-  line-height: 1rem;
-  color: rgb(107, 114, 128);
-}
-</style>

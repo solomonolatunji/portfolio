@@ -1,176 +1,307 @@
 <template>
-  <form @submit.prevent="handleSubmit" class="wordpress-editor">
-    <div class="editor-grid">
-      <div class="main-content">
-        <div class="title-section">
-          <input
-            v-model="form.title"
-            type="text"
-            placeholder="Add project title"
-            required
-            class="title-input"
-          />
-          <div class="year-role-row">
-            <input v-model="form.year" type="text" placeholder="Year" required class="year-input" />
+  <form @submit.prevent="handleSubmit" class="space-y-8 pb-12">
+    <!-- Header Area -->
+    <div class="flex items-center justify-between">
+      <div>
+        <h1
+          class="bg-linear-to-r from-white to-gray-400 bg-clip-text text-3xl font-bold text-transparent"
+        >
+          {{ isEditing ? "Edit Project" : "Create New Project" }}
+        </h1>
+        <p class="mt-1 text-sm text-gray-400">
+          Showcase your work and share your professional journey.
+        </p>
+      </div>
+      <div class="flex items-center gap-3">
+        <Button variant="secondary" size="md" text="Cancel" @click="$emit('cancel')" />
+        <Button
+          variant="primary"
+          size="md"
+          :text="isEditing ? 'Update Project' : 'Publish Project'"
+          :loading="isLoading"
+          type="submit"
+        />
+      </div>
+    </div>
+
+    <!-- Main Grid -->
+    <div class="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_360px]">
+      <!-- Left Column: Primary Info -->
+      <div class="space-y-8">
+        <!-- Title & Basic Info Card -->
+        <div
+          class="space-y-8 rounded-3xl border border-white/10 bg-white/5 p-8 transition-all hover:border-white/20"
+        >
+          <div class="space-y-2">
+            <label class="text-xs font-semibold tracking-widest text-gray-500 uppercase"
+              >Project Title</label
+            >
             <input
-              v-model="form.role"
+              v-model="form.title"
               type="text"
-              placeholder="Your Role"
+              placeholder="Enter project name..."
               required
-              class="role-input"
+              class="w-full border-none bg-transparent p-0 text-4xl font-extrabold text-white placeholder-white/10 outline-none focus:ring-0"
+            />
+          </div>
+
+          <div class="grid grid-cols-2 gap-6 border-t border-white/5 pt-6">
+            <Input
+              v-model="form.year"
+              label="Development Year"
+              placeholder="e.g. 2024"
+              required
+              class="border-white/10! bg-white/5!"
+            />
+            <Input
+              v-model="form.role"
+              label="Your Role"
+              placeholder="e.g. Lead Developer"
+              required
+              class="border-white/10! bg-white/5!"
             />
           </div>
         </div>
 
-        <div class="content-section">
-          <label class="section-label">Project Description</label>
-          <TiptapEditor
-            v-model="form.detailedDescription"
-            placeholder="Describe your project in detail..."
-          />
-        </div>
+        <!-- Detailed Content Cards -->
+        <div class="space-y-6">
+          <div class="overflow-hidden rounded-3xl border border-white/10 bg-white/5">
+            <div class="border-b border-white/10 bg-white/5 p-6">
+              <h3 class="text-sm font-semibold tracking-wider text-white uppercase">
+                Project Story
+              </h3>
+              <p class="mt-1 text-xs text-gray-400">Deep dive into what this project is about.</p>
+            </div>
+            <div class="p-2">
+              <TiptapEditor
+                v-model="form.detailedDescription"
+                placeholder="Write the narrative of this project..."
+                class="min-h-[400px]"
+              />
+            </div>
+          </div>
 
-        <div class="content-section">
-          <label class="section-label">Challenges & Solutions</label>
-          <TiptapEditor
-            v-model="form.challenges"
-            placeholder="Describe technical challenges and how you solved them..."
-          />
+          <div class="overflow-hidden rounded-3xl border border-white/10 bg-white/5">
+            <div class="border-b border-white/10 bg-white/5 p-6">
+              <h3 class="text-sm font-semibold tracking-wider text-white uppercase">
+                Challenges & Solutions
+              </h3>
+              <p class="mt-1 text-xs text-gray-400">What technical hurdles did you overcome?</p>
+            </div>
+            <div class="p-2">
+              <TiptapEditor
+                v-model="form.challenges"
+                placeholder="Detail the technical milestones..."
+                class="min-h-[300px]"
+              />
+            </div>
+          </div>
         </div>
       </div>
 
-      <div class="sidebar">
-        <div class="sidebar-section publish-box">
-          <h3 class="sidebar-title">Publish</h3>
-          <div class="publish-actions">
-            <Button variant="ghost" text="Cancel" @click="$emit('cancel')" type="button" />
-            <Button
-              variant="primary"
-              :text="isEditing ? 'Update' : 'Publish'"
-              :loading="isLoading"
-              type="submit"
+      <!-- Right Column: Metadata -->
+      <div class="space-y-6">
+        <!-- Project Assets (Sidebar) -->
+
+        <!-- Links Section -->
+        <div class="space-y-6 rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
+          <h3 class="mb-2 text-sm font-semibold tracking-wider text-gray-400 uppercase">
+            Platform & Links
+          </h3>
+          <div class="space-y-4">
+            <Input
+              v-model="form.demoUrl"
+              label="Live Preview"
+              placeholder="https://"
+              class="border-white/10! bg-white/5!"
+            />
+            <Input
+              v-model="form.codeUrl"
+              label="Source Repository"
+              placeholder="https://"
+              class="border-white/10! bg-white/5!"
+            />
+            <Input
+              v-model="form.googlePlayUrl"
+              label="Play Store"
+              placeholder="https://"
+              class="border-white/10! bg-white/5!"
+            />
+            <Input
+              v-model="form.appleStoreUrl"
+              label="App Store"
+              placeholder="https://"
+              class="border-white/10! bg-white/5!"
             />
           </div>
         </div>
 
-        <div class="sidebar-section">
-          <h3 class="sidebar-title">Links</h3>
-          <div class="links-container">
-            <Input v-model="form.demoUrl" label="Live Demo" placeholder="https://" />
-            <Input v-model="form.codeUrl" label="Source Code" placeholder="https://github.com/" />
-            <Input v-model="form.googlePlayUrl" label="Google Play" placeholder="https://" />
-            <Input v-model="form.appleStoreUrl" label="App Store" placeholder="https://" />
-          </div>
-        </div>
-
-        <div class="sidebar-section">
-          <h3 class="sidebar-title">Technologies</h3>
-          <div class="tags-container">
-            <div class="tag-list">
-              <span v-for="(tech, index) in form.technologies" :key="index" class="tag-item">
+        <!-- Taxonomies (Tech, Categories, Features) -->
+        <div class="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
+          <h3 class="mb-6 text-sm font-semibold tracking-wider text-gray-400 uppercase">
+            Technologies
+          </h3>
+          <div class="space-y-4">
+            <Input
+              v-model="newTech"
+              placeholder="Press Enter to add tech..."
+              @keydown.enter.prevent="addTech"
+              class="border-white/10! bg-white/5! shadow-none focus:border-blue-500/50!"
+            />
+            <div class="flex flex-wrap gap-2">
+              <span
+                v-for="(tech, index) in form.technologies"
+                :key="index"
+                class="inline-flex items-center rounded-lg border border-blue-500/20 bg-blue-500/10 px-2.5 py-0.5 text-xs font-medium text-blue-300"
+              >
                 {{ tech }}
-                <button type="button" @click="removeTech(index)" class="tag-remove">×</button>
+                <button
+                  @click="removeTech(index)"
+                  class="ml-1.5 transition-colors hover:text-white"
+                >
+                  <IconX class="h-3.5 w-3.5" />
+                </button>
               </span>
             </div>
-            <input
-              v-model="newTech"
-              @keydown.enter.prevent="addTech"
-              class="tag-input"
-              placeholder="Add technology and press Enter"
-            />
           </div>
-        </div>
 
-        <div class="sidebar-section">
-          <h3 class="sidebar-title">Categories</h3>
-          <div class="tags-container">
-            <div class="tag-list">
+          <h3 class="mt-8 mb-6 text-sm font-semibold tracking-wider text-gray-400 uppercase">
+            Categories
+          </h3>
+          <div class="space-y-4">
+            <Input
+              v-model="newCategory"
+              placeholder="Add category..."
+              @keydown.enter.prevent="addCategory"
+              class="border-white/10! bg-white/5! shadow-none focus:border-purple-500/50!"
+            />
+            <div class="flex flex-wrap gap-2">
               <span
                 v-for="(cat, index) in form.categories"
                 :key="index"
-                class="tag-item category-tag"
+                class="inline-flex items-center rounded-lg border border-purple-500/20 bg-purple-500/10 px-2.5 py-0.5 text-xs font-medium text-purple-300"
               >
                 {{ cat }}
-                <button type="button" @click="removeCategory(index)" class="tag-remove">×</button>
+                <button
+                  @click="removeCategory(index)"
+                  class="ml-1.5 transition-colors hover:text-white"
+                >
+                  <IconX class="h-3.5 w-3.5" />
+                </button>
               </span>
             </div>
-            <input
-              v-model="newCategory"
-              @keydown.enter.prevent="addCategory"
-              class="tag-input"
-              placeholder="Add category and press Enter"
-            />
           </div>
         </div>
 
-        <div class="sidebar-section">
-          <h3 class="sidebar-title">Features</h3>
-          <div class="tags-container">
-            <div class="tag-list">
+        <!-- Features Widget -->
+        <div class="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
+          <h3 class="mb-6 text-sm font-semibold tracking-wider text-gray-400 uppercase">
+            Key Features
+          </h3>
+          <div class="space-y-4">
+            <Input
+              v-model="newFeature"
+              placeholder="Add a standout feature..."
+              @keydown.enter.prevent="addFeature"
+              class="border-white/10! bg-white/5! shadow-none focus:border-green-500/50!"
+            />
+            <div class="flex flex-wrap gap-2">
               <span
                 v-for="(feat, index) in form.features"
                 :key="index"
-                class="tag-item feature-tag"
+                class="inline-flex items-center rounded-lg border border-green-500/20 bg-green-500/10 px-2.5 py-0.5 text-xs font-medium text-green-300"
               >
                 {{ feat }}
-                <button type="button" @click="removeFeature(index)" class="tag-remove">×</button>
+                <button
+                  @click="removeFeature(index)"
+                  class="ml-1.5 transition-colors hover:text-white"
+                >
+                  <IconX class="h-3.5 w-3.5" />
+                </button>
               </span>
             </div>
-            <input
-              v-model="newFeature"
-              @keydown.enter.prevent="addFeature"
-              class="tag-input"
-              placeholder="Add feature and press Enter"
-            />
           </div>
         </div>
 
-        <div class="sidebar-section">
-          <h3 class="sidebar-title">Main Image</h3>
-          <div class="featured-image">
-            <div v-if="preview.image" class="image-preview">
-              <img :src="preview.image" alt="Main" class="preview-img" />
-              <button type="button" @click="removeMainImage" class="remove-image">Remove</button>
-            </div>
-            <div v-else class="image-upload">
-              <input
-                type="file"
-                accept="image/*"
-                @change="handleImageUpload"
-                id="main-upload"
-                class="file-input"
-              />
-              <label for="main-upload" class="upload-label">
+        <!-- Visuals -->
+        <div class="space-y-8 rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
+          <h3 class="mb-2 text-sm font-semibold tracking-wider text-gray-400 uppercase">
+            Media Assets
+          </h3>
+
+          <!-- Main Image -->
+          <div class="space-y-3">
+            <label class="text-xs font-medium text-gray-500">Main Presentation Image</label>
+            <div
+              class="group relative aspect-video overflow-hidden rounded-2xl border-2 border-dashed border-white/10 bg-white/5 transition-all hover:border-purple-500/50"
+            >
+              <div v-if="preview.image" class="h-full w-full">
+                <img :src="preview.image" alt="Main" class="h-full w-full object-cover" />
+                <div
+                  class="absolute inset-0 flex items-center justify-center gap-2 bg-black/60 opacity-0 transition-opacity group-hover:opacity-100"
+                >
+                  <button
+                    type="button"
+                    @click="removeMainImage"
+                    class="rounded-full bg-red-500/20 p-2 text-red-500 hover:bg-red-500/40"
+                  >
+                    <IconTrash class="h-5 w-5" />
+                  </button>
+                </div>
+              </div>
+              <label
+                v-else
+                for="main-upload"
+                class="flex h-full w-full cursor-pointer flex-col items-center justify-center p-4"
+              >
                 <IconPhoto class="h-8 w-8 text-gray-400" />
-                <span class="upload-text">Upload main image</span>
-                <span class="upload-hint">1920x1080px recommended</span>
+                <span class="mt-2 text-xs text-gray-500">16:9 Aspect Ratio</span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  @change="handleImageUpload"
+                  id="main-upload"
+                  class="hidden"
+                />
               </label>
             </div>
           </div>
-        </div>
 
-        <div class="sidebar-section">
-          <h3 class="sidebar-title">Gallery</h3>
-          <div class="gallery-grid" v-if="preview.gallery.length > 0">
-            <div v-for="(img, index) in preview.gallery" :key="index" class="gallery-item">
-              <img :src="img" alt="Gallery" class="gallery-img" />
-              <button type="button" @click="removeGalleryItem(index)" class="gallery-remove">
-                ×
-              </button>
+          <!-- Gallery -->
+          <div class="space-y-4">
+            <label class="text-xs font-medium text-gray-500">Project Gallery</label>
+            <div class="grid grid-cols-2 gap-3" v-if="preview.gallery.length > 0">
+              <div
+                v-for="(img, index) in preview.gallery"
+                :key="index"
+                class="group relative aspect-square overflow-hidden rounded-xl"
+              >
+                <img :src="img" alt="Gallery" class="h-full w-full object-cover" />
+                <button
+                  @click="removeGalleryItem(index)"
+                  class="absolute top-2 right-2 rounded-lg bg-black/60 p-1.5 text-white opacity-0 transition-opacity group-hover:opacity-100 hover:bg-red-500"
+                >
+                  <IconX class="h-4 w-4" />
+                </button>
+              </div>
             </div>
+
+            <label
+              for="gallery-upload"
+              class="flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-gray-300 transition-colors hover:bg-white/10"
+            >
+              <IconPhotoPlus class="h-5 w-5" />
+              <span>Append Images</span>
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                @change="handleGalleryUpload"
+                id="gallery-upload"
+                class="hidden"
+              />
+            </label>
           </div>
-          <input
-            type="file"
-            accept="image/*"
-            multiple
-            @change="handleGalleryUpload"
-            id="gallery-upload"
-            class="file-input"
-          />
-          <label for="gallery-upload" class="gallery-upload-btn">
-            <IconPhotoPlus class="h-4 w-4" />
-            <span>Add Images</span>
-          </label>
         </div>
       </div>
     </div>
@@ -179,7 +310,7 @@
 
 <script setup lang="ts">
 import { reactive, onMounted, ref } from "vue";
-import { IconPhoto, IconPhotoPlus } from "@tabler/icons-vue";
+import { IconPhoto, IconPhotoPlus, IconX, IconTrash } from "@tabler/icons-vue";
 import TiptapEditor from "@/components/Admin/Shared/TiptapEditor.vue";
 import Button from "@/components/Button.vue";
 import Input from "@/components/Input.vue";
@@ -316,352 +447,3 @@ const handleSubmit = () => {
   emit("submit", payload);
 };
 </script>
-
-<style>
-.wordpress-editor {
-  min-height: 100vh;
-}
-
-.editor-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.5rem;
-}
-
-@media (min-width: 1024px) {
-  .editor-grid {
-    grid-template-columns: 1fr 320px;
-  }
-}
-
-.main-content {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.title-section {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  border-radius: 0.75rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background-color: #1e1e1e;
-  padding: 1.5rem;
-}
-
-.title-input {
-  width: 100%;
-  border: none;
-  background-color: transparent;
-  font-size: 1.875rem;
-  line-height: 2.25rem;
-  font-weight: 700;
-  color: white;
-  outline: none;
-}
-
-.title-input::placeholder {
-  color: rgb(107, 114, 128);
-}
-
-.year-role-row {
-  display: flex;
-  gap: 0.75rem;
-}
-
-.year-input,
-.role-input {
-  border-radius: 0.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background-color: rgba(255, 255, 255, 0.05);
-  padding: 0.5rem 0.75rem;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  color: white;
-  outline: none;
-}
-
-.year-input::placeholder,
-.role-input::placeholder {
-  color: rgb(107, 114, 128);
-}
-
-.year-input:focus,
-.role-input:focus {
-  border-color: #6d28d9;
-  --tw-ring-shadow: 0 0 0 1px #6d28d9;
-  box-shadow: var(--tw-ring-shadow);
-}
-
-.year-input {
-  width: 6rem;
-}
-
-.role-input {
-  flex: 1;
-}
-
-.content-section {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  border-radius: 0.75rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background-color: #1e1e1e;
-  padding: 1.5rem;
-}
-
-.section-label {
-  display: block;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  font-weight: 600;
-  color: white;
-}
-
-.sidebar {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.sidebar-section {
-  border-radius: 0.75rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background-color: #1e1e1e;
-  padding: 1rem;
-}
-
-.publish-box {
-  position: sticky;
-  top: 1rem;
-}
-
-.sidebar-title {
-  margin-bottom: 0.75rem;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  font-weight: 600;
-  color: white;
-}
-
-.publish-actions {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.links-container {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.tags-container {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.tag-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.tag-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-  border-radius: 9999px;
-  background-color: rgba(59, 130, 246, 0.2);
-  padding: 0.25rem 0.75rem;
-  font-size: 0.75rem;
-  line-height: 1rem;
-  color: rgb(147, 197, 253);
-}
-
-.category-tag {
-  background-color: rgba(109, 40, 217, 0.2);
-  color: rgb(216, 180, 254);
-}
-
-.feature-tag {
-  background-color: rgba(34, 197, 94, 0.2);
-  color: rgb(134, 239, 172);
-}
-
-.tag-remove {
-  color: currentColor;
-}
-
-.tag-remove:hover {
-  color: white;
-}
-
-.tag-input {
-  width: 100%;
-  border-radius: 0.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background-color: rgba(255, 255, 255, 0.05);
-  padding: 0.5rem;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  color: white;
-  outline: none;
-}
-
-.tag-input::placeholder {
-  color: rgb(107, 114, 128);
-}
-
-.tag-input:focus {
-  border-color: #6d28d9;
-  --tw-ring-shadow: 0 0 0 1px #6d28d9;
-  box-shadow: var(--tw-ring-shadow);
-}
-
-.featured-image {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.image-preview {
-  position: relative;
-  overflow: hidden;
-  border-radius: 0.5rem;
-}
-
-.preview-img {
-  height: 12rem;
-  width: 100%;
-  object-fit: cover;
-}
-
-.remove-image {
-  position: absolute;
-  bottom: 0.5rem;
-  right: 0.5rem;
-  border-radius: 0.25rem;
-  background-color: rgb(239, 68, 68);
-  padding: 0.25rem 0.75rem;
-  font-size: 0.75rem;
-  line-height: 1rem;
-  color: white;
-  transition-property: background-color;
-  transition-duration: 150ms;
-}
-
-.remove-image:hover {
-  background-color: rgb(220, 38, 38);
-}
-
-.image-upload {
-  position: relative;
-}
-
-.file-input {
-  display: none;
-}
-
-.upload-label {
-  display: flex;
-  height: 12rem;
-  cursor: pointer;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  border-radius: 0.5rem;
-  border: 2px dashed rgba(255, 255, 255, 0.1);
-  background-color: rgba(255, 255, 255, 0.05);
-  transition-property: color, background-color, border-color;
-  transition-duration: 150ms;
-}
-
-.upload-label:hover {
-  border-color: rgba(255, 255, 255, 0.2);
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-.upload-text {
-  margin-top: 0.5rem;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  font-weight: 500;
-  color: white;
-}
-
-.upload-hint {
-  margin-top: 0.25rem;
-  font-size: 0.75rem;
-  line-height: 1rem;
-  color: rgb(107, 114, 128);
-}
-
-.gallery-grid {
-  margin-bottom: 0.75rem;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.5rem;
-}
-
-.gallery-item {
-  position: relative;
-  aspect-ratio: 16 / 9;
-  overflow: hidden;
-  border-radius: 0.5rem;
-}
-
-.gallery-img {
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
-}
-
-.gallery-remove {
-  position: absolute;
-  top: 0.25rem;
-  right: 0.25rem;
-  border-radius: 9999px;
-  background-color: rgba(0, 0, 0, 0.5);
-  padding-left: 0.375rem;
-  padding-right: 0.375rem;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  color: white;
-  opacity: 0;
-  transition-property: opacity;
-  transition-duration: 150ms;
-}
-
-.gallery-item:hover .gallery-remove {
-  opacity: 1;
-}
-
-.gallery-remove:hover {
-  background-color: rgb(239, 68, 68);
-}
-
-.gallery-upload-btn {
-  display: flex;
-  cursor: pointer;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  border-radius: 0.5rem;
-  border: 1px dashed rgba(255, 255, 255, 0.1);
-  background-color: rgba(255, 255, 255, 0.05);
-  padding: 0.75rem;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  color: white;
-  transition-property: color, background-color, border-color;
-  transition-duration: 150ms;
-}
-
-.gallery-upload-btn:hover {
-  border-color: rgba(255, 255, 255, 0.2);
-  background-color: rgba(255, 255, 255, 0.1);
-}
-</style>

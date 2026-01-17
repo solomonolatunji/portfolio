@@ -1,116 +1,191 @@
 <template>
-  <div class="tiptap-editor">
-    <div v-if="editor" class="toolbar">
-      <button
-        @click="editor.chain().focus().toggleBold().run()"
-        :class="{ 'is-active': editor.isActive('bold') }"
-        type="button"
-        title="Bold"
-      >
-        <IconBold class="h-4 w-4" />
-      </button>
-      <button
-        @click="editor.chain().focus().toggleItalic().run()"
-        :class="{ 'is-active': editor.isActive('italic') }"
-        type="button"
-        title="Italic"
-      >
-        <IconItalic class="h-4 w-4" />
-      </button>
-      <button
-        @click="editor.chain().focus().toggleStrike().run()"
-        :class="{ 'is-active': editor.isActive('strike') }"
-        type="button"
-        title="Strikethrough"
-      >
-        <IconStrikethrough class="h-4 w-4" />
-      </button>
-      <div class="divider"></div>
-      <button
-        @click="editor.chain().focus().toggleHeading({ level: 1 }).run()"
-        :class="{ 'is-active': editor.isActive('heading', { level: 1 }) }"
-        type="button"
-        title="Heading 1"
-      >
-        <IconH1 class="h-4 w-4" />
-      </button>
-      <button
-        @click="editor.chain().focus().toggleHeading({ level: 2 }).run()"
-        :class="{ 'is-active': editor.isActive('heading', { level: 2 }) }"
-        type="button"
-        title="Heading 2"
-      >
-        <IconH2 class="h-4 w-4" />
-      </button>
-      <button
-        @click="editor.chain().focus().toggleHeading({ level: 3 }).run()"
-        :class="{ 'is-active': editor.isActive('heading', { level: 3 }) }"
-        type="button"
-        title="Heading 3"
-      >
-        <IconH3 class="h-4 w-4" />
-      </button>
-      <div class="divider"></div>
-      <button
-        @click="editor.chain().focus().toggleBulletList().run()"
-        :class="{ 'is-active': editor.isActive('bulletList') }"
-        type="button"
-        title="Bullet List"
-      >
-        <IconList class="h-4 w-4" />
-      </button>
-      <button
-        @click="editor.chain().focus().toggleOrderedList().run()"
-        :class="{ 'is-active': editor.isActive('orderedList') }"
-        type="button"
-        title="Numbered List"
-      >
-        <IconListNumbers class="h-4 w-4" />
-      </button>
-      <button
-        @click="editor.chain().focus().toggleBlockquote().run()"
-        :class="{ 'is-active': editor.isActive('blockquote') }"
-        type="button"
-        title="Blockquote"
-      >
-        <IconBlockquote class="h-4 w-4" />
-      </button>
-      <button
-        @click="editor.chain().focus().toggleCodeBlock().run()"
-        :class="{ 'is-active': editor.isActive('codeBlock') }"
-        type="button"
-        title="Code Block"
-      >
-        <IconCode class="h-4 w-4" />
-      </button>
-      <div class="divider"></div>
-      <button
-        @click="setLink"
-        :class="{ 'is-active': editor.isActive('link') }"
-        type="button"
-        title="Add Link"
-      >
-        <IconLink class="h-4 w-4" />
-      </button>
-      <div class="divider"></div>
-      <button
-        @click="editor.chain().focus().undo().run()"
-        :disabled="!editor.can().undo()"
-        type="button"
-        title="Undo"
-      >
-        <IconArrowBackUp class="h-4 w-4" />
-      </button>
-      <button
-        @click="editor.chain().focus().redo().run()"
-        :disabled="!editor.can().redo()"
-        type="button"
-        title="Redo"
-      >
-        <IconArrowForwardUp class="h-4 w-4" />
-      </button>
+  <div
+    class="flex flex-col overflow-hidden rounded-3xl border border-white/10 bg-white/5 transition-all focus-within:border-purple-500/30"
+  >
+    <!-- Toolbar -->
+    <div
+      v-if="editor"
+      class="flex flex-wrap items-center gap-1 border-b border-white/10 bg-white/5 p-3 backdrop-blur-md"
+    >
+      <div class="flex items-center gap-1 border-r border-white/10 px-2">
+        <button
+          @click="editor.chain().focus().toggleBold().run()"
+          :class="
+            editor.isActive('bold')
+              ? 'bg-purple-500/20 text-purple-300'
+              : 'text-gray-400 hover:bg-white/10 hover:text-white'
+          "
+          class="rounded-xl p-2 transition-all duration-200"
+          type="button"
+          title="Bold"
+        >
+          <IconBold class="h-4 w-4" />
+        </button>
+        <button
+          @click="editor.chain().focus().toggleItalic().run()"
+          :class="
+            editor.isActive('italic')
+              ? 'bg-purple-500/20 text-purple-300'
+              : 'text-gray-400 hover:bg-white/10 hover:text-white'
+          "
+          class="rounded-xl p-2 transition-all duration-200"
+          type="button"
+          title="Italic"
+        >
+          <IconItalic class="h-4 w-4" />
+        </button>
+        <button
+          @click="editor.chain().focus().toggleStrike().run()"
+          :class="
+            editor.isActive('strike')
+              ? 'bg-purple-500/20 text-purple-300'
+              : 'text-gray-400 hover:bg-white/10 hover:text-white'
+          "
+          class="rounded-xl p-2 transition-all duration-200"
+          type="button"
+          title="Strikethrough"
+        >
+          <IconStrikethrough class="h-4 w-4" />
+        </button>
+      </div>
+
+      <div class="flex items-center gap-1 border-r border-white/10 px-2">
+        <button
+          @click="editor.chain().focus().toggleHeading({ level: 1 }).run()"
+          :class="
+            editor.isActive('heading', { level: 1 })
+              ? 'bg-purple-500/20 text-purple-300'
+              : 'text-gray-400 hover:bg-white/10 hover:text-white'
+          "
+          class="rounded-xl p-2 transition-all duration-200"
+          type="button"
+          title="Heading 1"
+        >
+          <IconH1 class="h-4 w-4" />
+        </button>
+        <button
+          @click="editor.chain().focus().toggleHeading({ level: 2 }).run()"
+          :class="
+            editor.isActive('heading', { level: 2 })
+              ? 'bg-purple-500/20 text-purple-300'
+              : 'text-gray-400 hover:bg-white/10 hover:text-white'
+          "
+          class="rounded-xl p-2 transition-all duration-200"
+          type="button"
+          title="Heading 2"
+        >
+          <IconH2 class="h-4 w-4" />
+        </button>
+        <button
+          @click="editor.chain().focus().toggleHeading({ level: 3 }).run()"
+          :class="
+            editor.isActive('heading', { level: 3 })
+              ? 'bg-purple-500/20 text-purple-300'
+              : 'text-gray-400 hover:bg-white/10 hover:text-white'
+          "
+          class="rounded-xl p-2 transition-all duration-200"
+          type="button"
+          title="Heading 3"
+        >
+          <IconH3 class="h-4 w-4" />
+        </button>
+      </div>
+
+      <div class="flex items-center gap-1 border-r border-white/10 px-2">
+        <button
+          @click="editor.chain().focus().toggleBulletList().run()"
+          :class="
+            editor.isActive('bulletList')
+              ? 'bg-purple-500/20 text-purple-300'
+              : 'text-gray-400 hover:bg-white/10 hover:text-white'
+          "
+          class="rounded-xl p-2 transition-all duration-200"
+          type="button"
+          title="Bullet List"
+        >
+          <IconList class="h-4 w-4" />
+        </button>
+        <button
+          @click="editor.chain().focus().toggleOrderedList().run()"
+          :class="
+            editor.isActive('orderedList')
+              ? 'bg-purple-500/20 text-purple-300'
+              : 'text-gray-400 hover:bg-white/10 hover:text-white'
+          "
+          class="rounded-xl p-2 transition-all duration-200"
+          type="button"
+          title="Numbered List"
+        >
+          <IconListNumbers class="h-4 w-4" />
+        </button>
+        <button
+          @click="editor.chain().focus().toggleBlockquote().run()"
+          :class="
+            editor.isActive('blockquote')
+              ? 'bg-purple-500/20 text-purple-300'
+              : 'text-gray-400 hover:bg-white/10 hover:text-white'
+          "
+          class="rounded-xl p-2 transition-all duration-200"
+          type="button"
+          title="Blockquote"
+        >
+          <IconBlockquote class="h-4 w-4" />
+        </button>
+        <button
+          @click="editor.chain().focus().toggleCodeBlock().run()"
+          :class="
+            editor.isActive('codeBlock')
+              ? 'bg-purple-500/20 text-purple-300'
+              : 'text-gray-400 hover:bg-white/10 hover:text-white'
+          "
+          class="rounded-xl p-2 transition-all duration-200"
+          type="button"
+          title="Code Block"
+        >
+          <IconCode class="h-4 w-4" />
+        </button>
+      </div>
+
+      <div class="flex items-center gap-1 border-r border-white/10 px-2">
+        <button
+          @click="setLink"
+          :class="
+            editor.isActive('link')
+              ? 'bg-purple-500/20 text-purple-300'
+              : 'text-gray-400 hover:bg-white/10 hover:text-white'
+          "
+          class="rounded-xl p-2 transition-all duration-200"
+          type="button"
+          title="Add Link"
+        >
+          <IconLink class="h-4 w-4" />
+        </button>
+      </div>
+
+      <div class="flex items-center gap-1 px-2">
+        <button
+          @click="editor.chain().focus().undo().run()"
+          :disabled="!editor.can().undo()"
+          class="rounded-xl p-2 text-gray-400 transition-all duration-200 hover:bg-white/10 hover:text-white disabled:cursor-not-allowed disabled:opacity-20"
+          type="button"
+          title="Undo"
+        >
+          <IconArrowBackUp class="h-4 w-4" />
+        </button>
+        <button
+          @click="editor.chain().focus().redo().run()"
+          :disabled="!editor.can().redo()"
+          class="rounded-xl p-2 text-gray-400 transition-all duration-200 hover:bg-white/10 hover:text-white disabled:cursor-not-allowed disabled:opacity-20"
+          type="button"
+          title="Redo"
+        >
+          <IconArrowForwardUp class="h-4 w-4" />
+        </button>
+      </div>
     </div>
-    <EditorContent :editor="editor" class="editor-content" />
+
+    <!-- Content Area -->
+    <EditorContent :editor="editor" class="prose-editor min-h-[400px] p-8" />
   </div>
 </template>
 
@@ -195,150 +270,118 @@ onBeforeUnmount(() => {
 </script>
 
 <style>
-.tiptap-editor {
-  border-radius: 0.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background-color: rgba(255, 255, 255, 0.05);
-}
-
-.toolbar {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.25rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  background-color: rgba(255, 255, 255, 0.05);
-  padding: 0.5rem;
-}
-
-.toolbar button {
-  border-radius: 0.25rem;
-  padding: 0.375rem;
-  color: rgb(156, 163, 175);
-  transition-property: color, background-color;
-  transition-duration: 150ms;
-}
-
-.toolbar button:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  color: white;
-}
-
-.toolbar button.is-active {
-  background-color: rgba(109, 40, 217, 0.2);
-  color: rgb(216, 180, 254);
-}
-
-.toolbar button:disabled {
-  cursor: not-allowed;
-  opacity: 0.5;
-}
-
-.divider {
-  margin-left: 0.25rem;
-  margin-right: 0.25rem;
-  height: 1.5rem;
-  width: 1px;
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-.editor-content {
-  min-height: 400px;
-  padding: 1rem;
-}
-
-:deep(.ProseMirror) {
-  color: white;
+.prose-editor :deep(.ProseMirror) {
+  color: #e5e7eb;
   outline: none;
+  font-size: 1.1rem;
+  line-height: 1.7;
 }
 
-:deep(.ProseMirror p.is-editor-empty:first-child::before) {
-  color: rgb(107, 114, 128);
+.prose-editor :deep(.ProseMirror p.is-editor-empty:first-child::before) {
+  color: rgba(255, 255, 255, 0.15);
   content: attr(data-placeholder);
   float: left;
   height: 0;
   pointer-events: none;
 }
 
-:deep(.ProseMirror h1) {
+.prose-editor :deep(.ProseMirror h1) {
+  margin-top: 2.5rem;
+  margin-bottom: 1.5rem;
+  font-size: 2.25rem;
+  line-height: 1.2;
+  font-weight: 800;
+  color: white;
+}
+
+.prose-editor :deep(.ProseMirror h2) {
+  margin-top: 2rem;
   margin-bottom: 1rem;
   font-size: 1.875rem;
-  line-height: 2.25rem;
+  line-height: 1.3;
   font-weight: 700;
+  color: white;
 }
 
-:deep(.ProseMirror h2) {
+.prose-editor :deep(.ProseMirror h3) {
+  margin-top: 1.5rem;
   margin-bottom: 0.75rem;
   font-size: 1.5rem;
-  line-height: 2rem;
-  font-weight: 700;
+  line-height: 1.4;
+  font-weight: 600;
+  color: white;
 }
 
-:deep(.ProseMirror h3) {
-  margin-bottom: 0.5rem;
-  font-size: 1.25rem;
-  line-height: 1.75rem;
-  font-weight: 700;
+.prose-editor :deep(.ProseMirror p) {
+  margin-bottom: 1.25rem;
 }
 
-:deep(.ProseMirror p) {
-  margin-bottom: 0.75rem;
-}
-
-:deep(.ProseMirror ul),
-:deep(.ProseMirror ol) {
+.prose-editor :deep(.ProseMirror ul),
+.prose-editor :deep(.ProseMirror ol) {
   margin-left: 1.5rem;
-  margin-bottom: 0.75rem;
+  margin-bottom: 1.5rem;
+  padding-left: 0.5rem;
 }
 
-:deep(.ProseMirror ul) {
+.prose-editor :deep(.ProseMirror ul) {
   list-style-type: disc;
 }
 
-:deep(.ProseMirror ol) {
+.prose-editor :deep(.ProseMirror ol) {
   list-style-type: decimal;
 }
 
-:deep(.ProseMirror blockquote) {
-  border-left-width: 4px;
-  border-color: rgb(107, 114, 128);
-  padding-left: 1rem;
+.prose-editor :deep(.ProseMirror li) {
+  margin-bottom: 0.5rem;
+}
+
+.prose-editor :deep(.ProseMirror blockquote) {
+  border-left: 4px solid #6d28d9;
+  padding: 1rem 1.5rem;
+  margin: 2rem 0;
   font-style: italic;
-  color: rgb(209, 213, 219);
+  background: rgba(109, 40, 217, 0.05);
+  border-radius: 0 1rem 1rem 0;
+  color: #d1d5db;
 }
 
-:deep(.ProseMirror pre) {
-  border-radius: 0.25rem;
-  background-color: rgba(0, 0, 0, 0.5);
-  padding: 1rem;
+.prose-editor :deep(.ProseMirror pre) {
+  border-radius: 1rem;
+  background-color: #000;
+  padding: 1.5rem;
+  margin: 2rem 0;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.prose-editor :deep(.ProseMirror code) {
+  border-radius: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 0.2rem 0.4rem;
   font-family: ui-monospace, monospace;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
+  font-size: 0.9em;
 }
 
-:deep(.ProseMirror code) {
-  border-radius: 0.25rem;
-  background-color: rgba(0, 0, 0, 0.5);
-  padding-left: 0.25rem;
-  padding-right: 0.25rem;
-  padding-top: 0.125rem;
-  padding-bottom: 0.125rem;
-  font-family: ui-monospace, monospace;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-}
-
-:deep(.ProseMirror a) {
-  color: rgb(216, 180, 254);
+.prose-editor :deep(.ProseMirror a) {
+  color: #a78bfa;
   text-decoration: underline;
+  text-underline-offset: 4px;
+  transition: color 0.2s;
 }
 
-:deep(.ProseMirror a:hover) {
-  color: rgb(167, 139, 250);
+.prose-editor :deep(.ProseMirror a:hover) {
+  color: #c4b5fd;
 }
 
-:deep(.ProseMirror img) {
+.prose-editor :deep(.ProseMirror img) {
   max-width: 100%;
-  border-radius: 0.25rem;
+  border-radius: 1.5rem;
+  margin: 2.5rem 0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 </style>
