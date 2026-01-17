@@ -78,7 +78,7 @@
               </td>
               <td class="px-6 py-4">
                 <button
-                  @click="toggleFeatured(post.id)"
+                  @click="openFeaturedModal(post)"
                   class="inline-flex items-center text-xs font-medium transition-colors"
                   :class="
                     post.isFeatured
@@ -168,6 +168,33 @@
         <Button variant="primary" @click="isFilterModalOpen = false" text="Apply Filters" />
       </template>
     </Modal>
+
+    <Modal
+      :is-open="isFeaturedModalOpen"
+      :title="selectedPost?.isFeatured ? 'Remove from Featured' : 'Mark as Featured'"
+      @close="closeFeaturedModal"
+    >
+      <p class="text-gray-300">
+        Are you sure you want to
+        {{
+          selectedPost?.isFeatured
+            ? "remove this post from featured posts"
+            : "mark this post as featured"
+        }}?
+      </p>
+      <p class="mt-2 text-sm text-gray-400">
+        <span class="font-medium text-white">{{ selectedPost?.title }}</span>
+      </p>
+      <template #footer>
+        <Button variant="ghost" @click="closeFeaturedModal" text="Cancel" />
+        <Button
+          variant="primary"
+          :loading="isLoading"
+          @click="confirmToggleFeatured"
+          :text="selectedPost?.isFeatured ? 'Remove' : 'Mark as Featured'"
+        />
+      </template>
+    </Modal>
   </div>
 </template>
 
@@ -196,6 +223,7 @@ const { posts, total, currentPage, isLoading, fetchPosts, toggleFeatured, delete
 const search = ref("");
 const isDeleteModalOpen = ref(false);
 const isFilterModalOpen = ref(false);
+const isFeaturedModalOpen = ref(false);
 const selectedPost = ref<any>(null);
 
 const formatDate = (date: any) => {
@@ -213,6 +241,26 @@ const navigateToCreate = () => {
 
 const navigateToEdit = (post: any) => {
   router.push({ name: "EditPost", params: { id: post.id } });
+};
+
+const openFeaturedModal = (post: any) => {
+  selectedPost.value = post;
+  isFeaturedModalOpen.value = true;
+};
+
+const closeFeaturedModal = () => {
+  isFeaturedModalOpen.value = false;
+  selectedPost.value = null;
+};
+
+const confirmToggleFeatured = async () => {
+  if (!selectedPost.value) return;
+  try {
+    await toggleFeatured(selectedPost.value.id);
+    closeFeaturedModal();
+  } catch (error) {
+    console.error("Failed to toggle featured", error);
+  }
 };
 
 const openDeleteModal = (post: any) => {

@@ -1,6 +1,13 @@
 <template>
   <div class="space-y-6">
-    <div class="flex items-center justify-between">
+    <div class="mb-6 flex items-center gap-4">
+      <button
+        @click="goBack"
+        class="rounded-lg p-2 text-gray-400 transition-colors hover:bg-white/10 hover:text-white"
+        title="Back to Projects"
+      >
+        <IconArrowLeft class="h-5 w-5" />
+      </button>
       <div>
         <h1 class="text-2xl font-bold text-white">Edit Project</h1>
         <p class="text-sm text-gray-400">Update project details</p>
@@ -32,6 +39,7 @@ import { useRoute, useRouter } from "vue-router";
 import { useProjectStore } from "@/stores/projectStore"; // Access store directly to find project
 import { useProject } from "@/hooks/useProject";
 import { projectService } from "@/services/projectService";
+import { IconArrowLeft } from "@tabler/icons-vue";
 import ProjectForm from "@/components/Admin/Project/ProjectForm.vue";
 import type { Project } from "@/interfaces/project";
 

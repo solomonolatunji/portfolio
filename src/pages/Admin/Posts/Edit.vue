@@ -1,6 +1,13 @@
 <template>
   <div class="space-y-6">
-    <div class="flex items-center justify-between">
+    <div class="mb-6 flex items-center gap-4">
+      <button
+        @click="goBack"
+        class="rounded-lg p-2 text-gray-400 transition-colors hover:bg-white/10 hover:text-white"
+        title="Back to Posts"
+      >
+        <IconArrowLeft class="h-5 w-5" />
+      </button>
       <div>
         <h1 class="text-2xl font-bold text-white">Edit Post</h1>
         <p class="text-sm text-gray-400">Update post content</p>
@@ -32,6 +39,7 @@ import { useRoute, useRouter } from "vue-router";
 import { usePostStore } from "@/stores/postStore";
 import { usePost } from "@/hooks/usePost";
 import { postService } from "@/services/postService";
+import { IconArrowLeft } from "@tabler/icons-vue";
 import PostForm from "@/components/Admin/Post/PostForm.vue";
 import type { Post } from "@/interfaces/post";
 
@@ -50,14 +58,12 @@ const goBack = () => {
 onMounted(async () => {
   const id = route.params.id as string;
 
-  // Try to find in store first
   const existing = postStore.getPostById(id);
 
   if (existing) {
     post.value = existing;
     loadingPost.value = false;
   } else {
-    // Fetch if not in store
     try {
       const data = await postService.getPostById(id);
       post.value = data;

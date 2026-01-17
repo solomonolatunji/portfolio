@@ -87,11 +87,15 @@
                 {{ formatDate(user.createdAt) }}
               </td>
               <td class="px-6 py-4 text-right">
-                <button
-                  class="rounded p-1 text-gray-400 group-hover:block hover:bg-white/10 hover:text-white"
-                >
-                  <IconDotsVertical class="h-4 w-4" />
-                </button>
+                <div class="flex justify-end gap-2">
+                  <button
+                    @click="openRoleModal(user)"
+                    class="p-1 text-gray-400 hover:text-white"
+                    title="Change Role"
+                  >
+                    <IconUserCog class="h-4 w-4" />
+                  </button>
+                </div>
               </td>
             </tr>
           </tbody>
@@ -142,6 +146,31 @@
         <Button variant="primary" @click="isFilterModalOpen = false" text="Apply Filters" />
       </template>
     </Modal>
+
+    <Modal :is-open="isRoleModalOpen" title="Change User Role" @close="closeRoleModal">
+      <p class="mb-4 text-gray-300">
+        Change role for <span class="font-bold text-white">{{ selectedUser?.username }}</span>
+      </p>
+      <div>
+        <label class="mb-2 block text-sm font-medium text-gray-300">Role</label>
+        <select
+          v-model="newRole"
+          class="w-full rounded-lg border border-white/10 bg-white/5 p-2 text-sm text-white focus:border-[#6d28d9] focus:outline-none"
+        >
+          <option value="USER">User</option>
+          <option value="ADMIN">Admin</option>
+        </select>
+      </div>
+      <template #footer>
+        <Button variant="ghost" @click="closeRoleModal" text="Cancel" />
+        <Button
+          variant="primary"
+          :loading="isLoading"
+          @click="confirmRoleChange"
+          text="Update Role"
+        />
+      </template>
+    </Modal>
   </div>
 </template>
 
@@ -149,16 +178,19 @@
 import { ref, onMounted, watch } from "vue";
 import { refDebounced } from "@vueuse/core";
 import { useUser } from "@/hooks/useUser";
-import { IconSearch, IconDotsVertical, IconPlus, IconFilter } from "@tabler/icons-vue";
+import { IconSearch, IconUserCog, IconPlus, IconFilter } from "@tabler/icons-vue";
 import Button from "@/components/Button.vue";
 import Input from "@/components/Input.vue";
 import Modal from "@/components/Admin/Shared/Modal.vue";
 import Pagination from "@/components/Pagination.vue";
 
-const { users, total, currentPage, isLoading, fetchUsers } = useUser();
+const { users, total, currentPage, isLoading, fetchUsers, updateUserRole } = useUser();
 const search = ref("");
 const debouncedSearch = refDebounced(search, 500);
 const isFilterModalOpen = ref(false);
+const isRoleModalOpen = ref(false);
+const selectedUser = ref<any>(null);
+const newRole = ref("");
 
 const formatDate = (date: any) => {
   if (!date) return "-";
@@ -179,6 +211,29 @@ const changePage = (page: number) => {
     limit: 10,
     username: debouncedSearch.value || undefined,
   });
+};
+
+const openRoleModal = (user: any) => {
+  selectedUser.value = user;
+  newRole.value = user.role;
+  isRoleModalOpen.value = true;
+};
+
+const closeRoleModal = () => {
+  isRoleModalOpen.value = false;
+  selectedUser.value = null;
+  newRole.value = "";
+};
+
+const confirmRoleChange = async () => {
+  if (!selectedUser.value || !newRole.value) return;
+  try {
+    await updateUserRole(selectedUser.value.id, newRole.value as any);
+    closeRoleModal();
+    fetchUsers({ page: currentPage.value, limit: 10 });
+  } catch (error) {
+    console.error("Failed to update user role", error);
+  }
 };
 
 onMounted(() => {
