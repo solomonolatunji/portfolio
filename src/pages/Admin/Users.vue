@@ -1,44 +1,46 @@
 <template>
   <div class="space-y-6">
-    <!-- Header -->
     <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
       <div>
         <h1 class="text-2xl font-bold text-white">Users</h1>
-        <p class="text-sm text-gray-400">Manage your application users</p>
+        <p class="text-sm text-gray-400">Manage user accounts and permissions</p>
       </div>
       <div class="flex gap-4">
-        <button
-          class="flex items-center gap-2 rounded-lg bg-[#6d28d9] px-4 py-2 text-sm font-medium text-white hover:bg-[#5b21b6]"
-        >
-          <!-- Placeholder for create/export if needed -->
-          Refresh
-        </button>
+        <!-- Visual only for now as per requirement -->
+        <Button variant="primary" text="Add User" :disabled="true">
+          <template #iconLeft>
+            <IconPlus class="h-4 w-4" />
+          </template>
+        </Button>
       </div>
     </div>
 
-    <!-- Filters -->
-    <div class="flex flex-col gap-4 rounded-xl border border-white/10 bg-[#1e1e1e] p-4 md:flex-row">
-      <div class="relative flex-1">
-        <IconSearch class="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-500" />
-        <input
-          v-model="search"
-          type="text"
-          placeholder="Search users..."
-          class="h-10 w-full rounded-lg border border-white/10 bg-white/5 pr-4 pl-10 text-sm text-white focus:border-[#6d28d9] focus:outline-none"
-        />
+    <!-- Filters & Search -->
+    <div
+      class="flex flex-col justify-between gap-4 rounded-xl border border-white/10 bg-[#1e1e1e] p-4 sm:flex-row sm:items-center"
+    >
+      <div class="w-full sm:w-72">
+        <Input v-model="search" placeholder="Search users...">
+          <template #iconLeft>
+            <IconSearch />
+          </template>
+        </Input>
       </div>
-      <!-- Role Filter could go here -->
+      <Button variant="secondary" text="Filters" @click="isFilterModalOpen = true">
+        <template #iconLeft>
+          <IconFilter class="h-4 w-4" />
+        </template>
+      </Button>
     </div>
 
-    <!-- Table -->
     <div class="overflow-hidden rounded-xl border border-white/10 bg-[#1e1e1e]">
       <div class="overflow-x-auto">
         <table class="w-full text-left text-sm text-gray-400">
           <thead class="bg-white/5 text-xs text-gray-400 uppercase">
             <tr>
               <th scope="col" class="px-6 py-4">User</th>
-              <th scope="col" class="px-6 py-4">Role</th>
               <th scope="col" class="px-6 py-4">Status</th>
+              <th scope="col" class="px-6 py-4">Role</th>
               <th scope="col" class="px-6 py-4">Joined</th>
               <th scope="col" class="px-6 py-4 text-right">Actions</th>
             </tr>
@@ -54,7 +56,7 @@
               <td class="px-6 py-4">
                 <div class="flex items-center gap-3">
                   <div
-                    class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-700 text-xs font-bold text-white"
+                    class="flex h-10 w-10 items-center justify-center rounded-full bg-[#6d28d9] font-bold text-white"
                   >
                     {{ user.username.charAt(0).toUpperCase() }}
                   </div>
@@ -66,7 +68,14 @@
               </td>
               <td class="px-6 py-4">
                 <span
-                  class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium"
+                  class="inline-flex rounded-full bg-green-500/10 px-2.5 py-0.5 text-xs font-medium text-green-400"
+                >
+                  Active
+                </span>
+              </td>
+              <td class="px-6 py-4">
+                <span
+                  class="inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium"
                   :class="
                     user.role === 'ADMIN'
                       ? 'bg-purple-500/10 text-purple-400'
@@ -77,19 +86,13 @@
                 </span>
               </td>
               <td class="px-6 py-4">
-                <span
-                  class="inline-flex items-center gap-1.5 rounded-full bg-green-500/10 px-2 py-1 text-xs font-medium text-green-400"
-                >
-                  <span class="h-1.5 w-1.5 rounded-full bg-green-400"></span>
-                  Active
-                </span>
-              </td>
-              <td class="px-6 py-4">
                 {{ formatDate(user.createdAt) }}
               </td>
               <td class="px-6 py-4 text-right">
-                <button class="text-gray-400 hover:text-white">
-                  <IconDotsVertical class="h-5 w-5" />
+                <button
+                  class="rounded p-1 text-gray-400 group-hover:block hover:bg-white/10 hover:text-white"
+                >
+                  <IconDotsVertical class="h-4 w-4" />
                 </button>
               </td>
             </tr>
@@ -98,29 +101,51 @@
       </div>
 
       <!-- Pagination -->
-      <div class="flex items-center justify-between border-t border-white/10 px-6 py-4">
-        <div class="text-xs text-gray-500">
+      <div class="border-t border-white/10 px-6 py-4">
+        <Pagination
+          :current-page="currentPage"
+          :total-pages="Math.ceil(total / 10)"
+          @prev="changePage(currentPage - 1)"
+          @next="changePage(currentPage + 1)"
+          @goto="changePage"
+        />
+        <div class="mt-2 text-center text-xs text-gray-500">
           Showing <span class="text-white">{{ users.length }}</span> of
-          <span class="text-white">{{ total }}</span> users
-        </div>
-        <div class="flex gap-2">
-          <button
-            :disabled="!hasPrev"
-            @click="changePage(currentPage - 1)"
-            class="rounded px-3 py-1 text-xs font-medium text-gray-400 hover:bg-white/10 disabled:opacity-50"
-          >
-            Previous
-          </button>
-          <button
-            :disabled="!hasNext"
-            @click="changePage(currentPage + 1)"
-            class="rounded px-3 py-1 text-xs font-medium text-gray-400 hover:bg-white/10 disabled:opacity-50"
-          >
-            Next
-          </button>
+          <span class="text-white">{{ total }}</span>
+          users
         </div>
       </div>
     </div>
+
+    <!-- Filter Modal -->
+    <Modal :is-open="isFilterModalOpen" title="Filter Users" @close="isFilterModalOpen = false">
+      <div class="space-y-4">
+        <div>
+          <label class="mb-2 block text-sm font-medium text-gray-300">Role</label>
+          <select
+            class="w-full rounded-lg border border-white/10 bg-white/5 p-2 text-sm text-white focus:border-[#6d28d9] focus:outline-none"
+          >
+            <option value="">All Roles</option>
+            <option value="ADMIN">Admin</option>
+            <option value="USER">User</option>
+          </select>
+        </div>
+        <div>
+          <label class="mb-2 block text-sm font-medium text-gray-300">Status</label>
+          <select
+            class="w-full rounded-lg border border-white/10 bg-white/5 p-2 text-sm text-white focus:border-[#6d28d9] focus:outline-none"
+          >
+            <option value="">All Statuses</option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+        </div>
+      </div>
+      <template #footer>
+        <Button variant="ghost" @click="isFilterModalOpen = false" text="Cancel" />
+        <Button variant="primary" @click="isFilterModalOpen = false" text="Apply Filters" />
+      </template>
+    </Modal>
   </div>
 </template>
 
@@ -128,11 +153,16 @@
 import { ref, onMounted, watch } from "vue";
 import { refDebounced } from "@vueuse/core";
 import { useUser } from "@/hooks/useUser";
-import { IconSearch, IconDotsVertical } from "@tabler/icons-vue";
+import { IconSearch, IconDotsVertical, IconPlus, IconFilter } from "@tabler/icons-vue";
+import Button from "@/components/Button.vue";
+import Input from "@/components/Input.vue";
+import Modal from "@/components/Admin/Shared/Modal.vue";
+import Pagination from "@/components/Pagination.vue";
 
-const { users, total, currentPage, hasNext, hasPrev, isLoading, fetchUsers } = useUser();
+const { users, total, currentPage, isLoading, fetchUsers } = useUser();
 const search = ref("");
 const debouncedSearch = refDebounced(search, 500);
+const isFilterModalOpen = ref(false);
 
 const formatDate = (date: any) => {
   if (!date) return "-";

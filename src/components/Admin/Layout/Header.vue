@@ -39,11 +39,13 @@
           class="flex items-center gap-3 rounded-full border border-white/10 bg-white/5 p-1 pr-3 hover:bg-white/10"
         >
           <div
-            class="flex h-8 w-8 items-center justify-center rounded-full bg-[#6d28d9] text-xs font-bold text-white"
+            class="flex h-8 w-8 items-center justify-center rounded-full bg-[#6d28d9] text-xs font-bold text-white uppercase"
           >
-            AD
+            {{ userInitials }}
           </div>
-          <span class="hidden text-sm font-medium text-white md:block">Admin</span>
+          <span class="hidden text-sm font-medium text-white md:block">{{
+            authStore.user?.username || "Admin"
+          }}</span>
           <IconChevronDown class="h-4 w-4 text-gray-400" />
         </button>
 
@@ -55,27 +57,21 @@
         >
           <div class="border-b border-white/10 px-4 py-3">
             <p class="text-xs text-gray-400">Signed in as</p>
-            <p class="truncate text-sm font-medium text-white">admin@example.com</p>
+            <p class="truncate text-sm font-medium text-white">{{ authStore.user?.email }}</p>
           </div>
 
           <div class="py-1">
-            <a
-              href="#"
-              class="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-white"
-            >
-              <IconUser class="mr-3 h-4 w-4" /> Profile
-            </a>
-            <a
-              href="#"
+            <router-link
+              to="/admin/settings"
               class="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-white"
             >
               <IconSettings class="mr-3 h-4 w-4" /> Settings
-            </a>
+            </router-link>
           </div>
 
           <div class="border-t border-white/10 py-1">
             <button
-              @click="handleLogout"
+              @click="confirmLogout"
               class="flex w-full items-center px-4 py-2 text-sm text-red-400 hover:bg-red-500/10"
             >
               <IconLogout class="mr-3 h-4 w-4" /> Sign out
@@ -84,32 +80,51 @@
         </div>
       </div>
     </div>
+
+    <!-- Logout Modal -->
+    <Modal :is-open="isLogoutModalOpen" title="Confirm Sign Out" @close="isLogoutModalOpen = false">
+      <p class="text-gray-300">Are you sure you want to sign out?</p>
+      <template #footer>
+        <Button variant="ghost" @click="isLogoutModalOpen = false" text="Cancel" />
+        <Button variant="primary" @click="handleLogout" text="Sign Out" />
+      </template>
+    </Modal>
   </header>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/authStore";
+import Modal from "@/components/Admin/Shared/Modal.vue";
+import Button from "@/components/Button.vue";
 import {
   IconMenu2,
   IconSearch,
   IconBell,
   IconChevronDown,
-  IconUser,
   IconSettings,
   IconLogout,
-} from "@tabler/icons-vue"; // Using tabler icons as preferred
+} from "@tabler/icons-vue";
 
 const router = useRouter();
 const authStore = useAuthStore();
 const isProfileOpen = ref(false);
+const isLogoutModalOpen = ref(false);
 
 const closeProfile = () => {
   isProfileOpen.value = false;
 };
 
-// Simple click-outside directive
+const userInitials = computed(() => {
+  return authStore.user?.username?.substring(0, 2) || "AD";
+});
+
+const confirmLogout = () => {
+  isProfileOpen.value = false;
+  isLogoutModalOpen.value = true;
+};
+
 const vClickOutside = {
   mounted(el: any, binding: any) {
     el.clickOutsideEvent = (event: Event) => {
@@ -126,6 +141,7 @@ const vClickOutside = {
 
 const handleLogout = async () => {
   authStore.clearAuth();
-  router.push("/admin/login");
+  isLogoutModalOpen.value = false;
+  router.push("/admin");
 };
 </script>

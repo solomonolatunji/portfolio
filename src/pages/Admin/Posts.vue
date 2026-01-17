@@ -6,13 +6,30 @@
         <p class="text-sm text-gray-400">Manage your blog posts</p>
       </div>
       <div class="flex gap-4">
-        <button
-          class="flex items-center gap-2 rounded-lg bg-[#6d28d9] px-4 py-2 text-sm font-medium text-white hover:bg-[#5b21b6]"
-        >
-          <IconPlus class="h-4 w-4" />
-          New Post
-        </button>
+        <Button variant="primary" text="New Post" @click="openCreateModal">
+          <template #iconLeft>
+            <IconPlus class="h-4 w-4" />
+          </template>
+        </Button>
       </div>
+    </div>
+
+    <!-- Filters placeholder -->
+    <div
+      class="flex flex-col justify-between gap-4 rounded-xl border border-white/10 bg-[#1e1e1e] p-4 sm:flex-row sm:items-center"
+    >
+      <div class="w-full sm:w-72">
+        <Input v-model="search" placeholder="Search posts...">
+          <template #iconLeft>
+            <IconSearch />
+          </template>
+        </Input>
+      </div>
+      <Button variant="secondary" text="Filters" @click="isFilterModalOpen = true">
+        <template #iconLeft>
+          <IconFilter class="h-4 w-4" />
+        </template>
+      </Button>
     </div>
 
     <div class="overflow-hidden rounded-xl border border-white/10 bg-[#1e1e1e]">
@@ -80,10 +97,18 @@
               </td>
               <td class="px-6 py-4 text-right">
                 <div class="flex justify-end gap-2">
-                  <button class="p-1 text-gray-400 hover:text-white" title="Edit">
+                  <button
+                    class="p-1 text-gray-400 hover:text-white"
+                    title="Edit"
+                    @click="openEditModal(post)"
+                  >
                     <IconEdit class="h-4 w-4" />
                   </button>
-                  <button class="p-1 text-gray-400 hover:text-red-400" title="Delete">
+                  <button
+                    class="p-1 text-gray-400 hover:text-red-400"
+                    title="Delete"
+                    @click="openDeleteModal(post)"
+                  >
                     <IconTrash class="h-4 w-4" />
                   </button>
                 </div>
@@ -93,34 +118,104 @@
         </table>
       </div>
 
-      <div class="flex items-center justify-between border-t border-white/10 px-6 py-4">
-        <div class="text-xs text-gray-500">
+      <!-- Pagination -->
+      <div class="border-t border-white/10 px-6 py-4">
+        <Pagination
+          :current-page="currentPage"
+          :total-pages="Math.ceil(total / 10)"
+          @prev="changePage(currentPage - 1)"
+          @next="changePage(currentPage + 1)"
+          @goto="changePage"
+        />
+        <div class="mt-2 text-center text-xs text-gray-500">
           Showing <span class="text-white">{{ posts.length }}</span> of
-          <span class="text-white">{{ total }}</span> posts
-        </div>
-        <div class="flex gap-2">
-          <button
-            :disabled="!hasPrev"
-            @click="changePage(currentPage - 1)"
-            class="rounded px-3 py-1 text-xs font-medium text-gray-400 hover:bg-white/10 disabled:opacity-50"
-          >
-            Previous
-          </button>
-          <button
-            :disabled="!hasNext"
-            @click="changePage(currentPage + 1)"
-            class="rounded px-3 py-1 text-xs font-medium text-gray-400 hover:bg-white/10 disabled:opacity-50"
-          >
-            Next
-          </button>
+          <span class="text-white">{{ total }}</span>
+          posts
         </div>
       </div>
     </div>
+
+    <!-- Create/Edit Modal -->
+    <Modal
+      :is-open="isFormModalOpen"
+      :title="isEditing ? 'Edit Post' : 'New Post'"
+      @close="closeFormModal"
+    >
+      <form @submit.prevent="handleSubmit" class="space-y-4">
+        <Input v-model="form.title" label="Title" placeholder="Post title" required />
+        <!-- Rich text editor placeholder -->
+        <div>
+          <label class="mb-2 block text-sm font-medium text-gray-300">Content</label>
+          <textarea
+            v-model="form.content"
+            rows="4"
+            class="w-full rounded-lg border border-white/10 bg-white/5 p-3 text-sm text-white focus:border-[#6d28d9] focus:outline-none"
+          ></textarea>
+        </div>
+        <!-- Category and other fields placeholder -->
+        <div class="flex items-center gap-2">
+          <input
+            type="checkbox"
+            v-model="form.published"
+            id="published"
+            class="rounded border-white/10 bg-white/5 text-[#6d28d9] focus:ring-[#6d28d9]"
+          />
+          <label for="published" class="text-sm text-gray-300">Published</label>
+        </div>
+      </form>
+      <template #footer>
+        <Button variant="ghost" @click="closeFormModal" text="Cancel" />
+        <Button
+          variant="primary"
+          @click="handleSubmit"
+          :text="isEditing ? 'Save Changes' : 'Create Post'"
+          :loading="isLoading"
+        />
+      </template>
+    </Modal>
+
+    <!-- Delete Modal -->
+    <Modal :is-open="isDeleteModalOpen" title="Delete Post" @close="closeDeleteModal">
+      <p class="text-gray-300">
+        Are you sure you want to delete
+        <span class="font-bold text-white">{{ selectedPost?.title }}</span
+        >? This action cannot be undone.
+      </p>
+      <template #footer>
+        <Button variant="ghost" @click="closeDeleteModal" text="Cancel" />
+        <Button
+          variant="primary"
+          @click="confirmDelete"
+          text="Delete"
+          class="!hover:bg-red-700 border-none! bg-red-600!"
+        />
+      </template>
+    </Modal>
+
+    <!-- Filter Modal -->
+    <Modal :is-open="isFilterModalOpen" title="Filter Posts" @close="isFilterModalOpen = false">
+      <div class="space-y-4">
+        <div>
+          <label class="mb-2 block text-sm font-medium text-gray-300">Status</label>
+          <select
+            class="w-full rounded-lg border border-white/10 bg-white/5 p-2 text-sm text-white focus:border-[#6d28d9] focus:outline-none"
+          >
+            <option value="">All Statuses</option>
+            <option value="published">Published</option>
+            <option value="draft">Draft</option>
+          </select>
+        </div>
+      </div>
+      <template #footer>
+        <Button variant="ghost" @click="isFilterModalOpen = false" text="Cancel" />
+        <Button variant="primary" @click="isFilterModalOpen = false" text="Apply Filters" />
+      </template>
+    </Modal>
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted } from "vue";
+import { ref, reactive, onMounted } from "vue";
 import { usePost } from "@/hooks/usePost";
 import {
   IconPlus,
@@ -129,10 +224,40 @@ import {
   IconFileText,
   IconStar,
   IconStarFilled,
+  IconSearch,
+  IconFilter,
 } from "@tabler/icons-vue";
+import Button from "@/components/Button.vue";
+import Input from "@/components/Input.vue";
+import Modal from "@/components/Admin/Shared/Modal.vue";
+import Pagination from "@/components/Pagination.vue";
 
-const { posts, total, currentPage, hasNext, hasPrev, isLoading, fetchPosts, toggleFeatured } =
-  usePost();
+const {
+  posts,
+  total,
+  currentPage,
+  isLoading,
+  fetchPosts,
+  toggleFeatured,
+  createPost,
+  updatePost,
+  deletePost,
+} = usePost();
+const search = ref("");
+const isFormModalOpen = ref(false);
+const isDeleteModalOpen = ref(false);
+const isFilterModalOpen = ref(false);
+const isEditing = ref(false);
+const selectedPost = ref<any>(null);
+
+const form = reactive({
+  title: "",
+  content: "",
+  published: false,
+  cover: "",
+  categories: [],
+  tags: [],
+});
 
 const formatDate = (date: any) => {
   if (!date) return "-";
@@ -141,6 +266,64 @@ const formatDate = (date: any) => {
 
 const changePage = (page: number) => {
   fetchPosts({ page, limit: 10 });
+};
+
+const openCreateModal = () => {
+  isEditing.value = false;
+  form.title = "";
+  form.content = "";
+  form.published = false;
+  isFormModalOpen.value = true;
+};
+
+const openEditModal = (post: any) => {
+  isEditing.value = true;
+  selectedPost.value = post;
+  form.title = post.title;
+  form.content = post.content;
+  form.published = post.published;
+  isFormModalOpen.value = true;
+};
+
+const closeFormModal = () => {
+  isFormModalOpen.value = false;
+  selectedPost.value = null;
+};
+
+const openDeleteModal = (post: any) => {
+  selectedPost.value = post;
+  isDeleteModalOpen.value = true;
+};
+
+const closeDeleteModal = () => {
+  isDeleteModalOpen.value = false;
+  selectedPost.value = null;
+};
+
+const handleSubmit = async () => {
+  try {
+    if (isEditing.value && selectedPost.value) {
+      await updatePost(selectedPost.value.id, form);
+    } else {
+      await createPost(form);
+    }
+    closeFormModal();
+    fetchPosts({ page: currentPage.value, limit: 10 });
+  } catch (error) {
+    console.error("Failed to save post", error);
+  }
+};
+
+const confirmDelete = async () => {
+  if (selectedPost.value) {
+    try {
+      await deletePost(selectedPost.value.id);
+      closeDeleteModal();
+      fetchPosts({ page: currentPage.value, limit: 10 });
+    } catch (error) {
+      console.error("Failed to delete post", error);
+    }
+  }
 };
 
 onMounted(() => {
