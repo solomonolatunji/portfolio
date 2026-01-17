@@ -2,6 +2,7 @@
 import { computed } from "vue";
 import { useRoute } from "vue-router";
 import MainLayout from "@/components/nav/MainLayout.vue";
+import AuthModal from "@/components/auth/AuthModal.vue";
 import { usePageTitle } from "@/hooks/usePageTitle";
 
 const route = useRoute();
@@ -13,4 +14,6 @@ usePageTitle();
 <template>
   <MainLayout v-if="!isAdminRoute" />
   <router-view v-else />
+
+  <AuthModal />
 </template>

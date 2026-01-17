@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-10 border-t border-[#333] pt-6 sm:mt-12">
+  <div v-if="tags && tags.length" class="mt-10 border-t border-[#333] pt-6 sm:mt-12">
     <h3 class="mb-4 flex items-center text-lg font-semibold text-white">
       <HashtagIcon class="mr-2 h-4 w-4 text-purple-400" />
       Tags
@@ -24,7 +24,7 @@ import type { PropType } from "vue";
 defineProps({
   tags: {
     type: Array as PropType<string[]>,
-    required: true,
+    default: () => [],
   },
 });
 </script>

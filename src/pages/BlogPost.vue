@@ -11,121 +11,62 @@
         <span class="text-sm font-medium sm:text-base">Back to all posts</span>
       </router-link>
 
-      <div v-if="post" class="animate-fadeIn mb-12 sm:mb-16">
-        <BlogHeader :post="post" />
+      <div v-if="isLoading" class="flex items-center justify-center py-20">
+        <div
+          class="h-10 w-10 animate-spin rounded-full border-4 border-solid border-purple-500 border-r-transparent"
+        ></div>
+      </div>
+
+      <div v-else-if="error" class="py-20 text-center text-red-400">
+        {{ error }}
+        <button @click="loadPost" class="mx-auto mt-4 block text-purple-400 underline">
+          Try Again
+        </button>
+      </div>
+
+      <div v-else-if="currentPost" class="animate-fadeIn mb-12 sm:mb-16">
+        <!-- Header -->
+        <div class="container mx-auto mb-8">
+          <BlogHeader :post="currentPost" />
+        </div>
 
         <div
-          class="fixed top-0 left-0 z-50 h-1 bg-gradient-to-r from-purple-600 to-indigo-600 transition-all duration-200"
+          class="fixed top-0 left-0 z-50 h-1 bg-linear-to-r from-purple-600 to-indigo-600 transition-all duration-200"
           :style="{ width: `${readingProgress}%` }"
         ></div>
 
-        <BlogTableOfContents :headings="tableOfContents" />
+        <!-- TOC -->
+        <BlogTableOfContents v-if="tableOfContents.length" :headings="tableOfContents" />
 
         <div class="mb-8 sm:mb-10">
           <div class="relative max-w-full overflow-hidden rounded-2xl shadow-xl">
             <img
-              :src="post.image"
-              :alt="post.title"
+              :src="currentPost.cover"
+              :alt="currentPost.title"
               class="h-auto max-h-[500px] w-full object-cover"
             />
-            <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+            <div class="absolute inset-0 bg-linear-to-t from-black/50 to-transparent"></div>
           </div>
         </div>
 
         <div
           class="prose prose-sm sm:prose lg:prose-lg prose-invert prose-purple clear-both max-w-none"
         >
-          <div v-if="post.content" v-html="post.content"></div>
-
-          <div v-else>
-            <p class="lead">{{ post.excerpt }}</p>
-
-            <p>
-              In today's rapidly evolving tech landscape, staying ahead of emerging trends and best
-              practices is essential for developers who want to build successful, future-proof
-              applications. This article explores key concepts and techniques that can help elevate
-              your development skills.
-            </p>
-
-            <h2 id="heading-0">Understanding Core Principles</h2>
-            <p>
-              Whether you're building web applications, mobile apps, or desktop software, certain
-              fundamental principles remain consistent across platforms. These include:
-            </p>
-            <ul>
-              <li>Writing clean, maintainable code with clear organization</li>
-              <li>Prioritizing user experience and accessibility</li>
-              <li>Implementing proper error handling and logging</li>
-              <li>Designing with performance in mind from the start</li>
-            </ul>
-
-            <h2 id="heading-1">Best Practices for Modern Development</h2>
-            <p>
-              As frameworks and tools evolve, so do the best practices for using them effectively.
-              Some current approaches worth adopting include:
-            </p>
-
-            <div class="my-6 rounded-lg bg-[#2d2d2d] p-4">
-              <h3 class="text-lg font-bold text-white">Pro Tip</h3>
-              <p class="mb-0">
-                When working with modern frameworks, consider using a component-based architecture
-                that promotes reusability and maintainability.
-              </p>
-            </div>
-
-            <pre><code>function processData(rawData) {
-  if (!rawData || typeof rawData !== 'object') {
-    throw new Error('Invalid data format');
-  }
-
-  return {
-    ...rawData,
-    processed: true,
-    timestamp: new Date().toISOString()
-  };
-}</code></pre>
-
-            <h2 id="heading-2">Implementation Strategies</h2>
-            <p>
-              When implementing these concepts in real-world applications, consider these
-              approaches:
-            </p>
-            <ol>
-              <li>Start with a clear architecture pattern appropriate for your use case</li>
-              <li>Break functionality into small, testable components or modules</li>
-              <li>Implement comprehensive testing for critical paths</li>
-              <li>Document code thoroughly, especially public APIs and interfaces</li>
-            </ol>
-
-            <h2 id="heading-3">Looking Forward</h2>
-            <p>
-              As we look to the future of development, several trends are likely to shape how we
-              build applications:
-            </p>
-            <blockquote>
-              <p>
-                "The most successful developers will be those who continually adapt to emerging
-                technologies while maintaining strong fundamentals and focusing on user needs."
-              </p>
-            </blockquote>
-
-            <h2 id="heading-4">Conclusion</h2>
-            <p>
-              By applying these principles and staying informed about industry trends, you'll be
-              well-positioned to build robust, maintainable applications that provide real value to
-              users.
-            </p>
-          </div>
+          <div v-html="currentPost.content"></div>
         </div>
 
-        <BlogTags :tags="postTags" />
+        <BlogTags :tags="currentPost.tags" />
 
-        <BlogShareButtons :title="post.title" :url="currentUrl" />
+        <ReactionSection :post-id="currentPost.id" />
+
+        <BlogShareButtons :title="currentPost.title" :url="currentUrl" />
+
+        <BlogAuthorBio :author="authorForBio" />
+
+        <CommentSection :post-id="currentPost.id" />
       </div>
 
-      <BlogAuthorBio v-if="post" :author="post.author" />
-
-      <BlogRelatedPosts :articles="relatedArticles" />
+      <BlogRelatedPosts v-if="relatedPosts.length" :articles="relatedPosts" />
 
       <Newsletter />
     </div>
@@ -133,45 +74,71 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from "vue";
+import { ref, computed, onMounted, onUnmounted, watch } from "vue";
 import { useRoute } from "vue-router";
 import { ArrowLeftIcon } from "@heroicons/vue/24/solid";
 import Newsletter from "../components/Newsletter.vue";
-import BlogHeader from "../components/blog/BlogHeader.vue";
-import BlogTableOfContents from "../components/blog/BlogTableOfContents.vue";
 import BlogTags from "../components/blog/BlogTags.vue";
 import BlogShareButtons from "../components/blog/BlogShareButtons.vue";
 import BlogAuthorBio from "../components/blog/BlogAuthorBio.vue";
 import BlogRelatedPosts from "../components/blog/BlogRelatedPosts.vue";
-import { articles } from "../constants/blogArticles";
+import CommentSection from "../components/blog/CommentSection.vue";
+import ReactionSection from "../components/blog/ReactionSection.vue";
+import BlogHeader from "../components/blog/BlogHeader.vue";
+import BlogTableOfContents from "../components/blog/BlogTableOfContents.vue";
+import { usePost } from "@/hooks/usePost";
 
 const route = useRoute();
+const {
+  fetchPostById,
+  fetchRelatedPosts,
+  currentPost,
+  relatedPosts,
+  isLoading,
+  error,
+  clearCurrentPost,
+} = usePost();
+
 const readingProgress = ref(0);
 const currentUrl = ref(window.location.href);
 
-const tableOfContents = [
-  "Understanding Core Principles",
-  "Best Practices for Modern Development",
-  "Implementation Strategies",
-  "Looking Forward",
-  "Conclusion",
-];
+const authorForBio = computed(() => {
+  if (!currentPost.value?.author) return null;
+  return {
+    name: currentPost.value.author.username,
+    bio: "Content creator and software engineer.", // Fallback/Placeholder
+    // Generate avatar using username initials if needed
+    avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(currentPost.value.author.username)}&background=random`,
+  };
+});
 
-const post = computed(() => {
+const tableOfContents = computed(() => {
+  if (!currentPost.value?.content) return [];
+  // Extract h2/h3 headings
+  const regex = /<h[23][^>]*>(.*?)<\/h[23]>/g;
+  const headings: string[] = [];
+  let match: RegExpExecArray | null;
+  while ((match = regex.exec(currentPost.value.content)) !== null) {
+    if (match[1]) {
+      // Strip HTML tags from heading text
+      const text = match[1].replace(/<[^>]*>/g, "");
+      headings.push(text);
+    }
+  }
+  return headings;
+});
+
+const loadPost = async () => {
   const postId = route.params.id as string;
-  return articles.find((article) => article.id === postId);
-});
-
-const relatedArticles = computed(() => {
-  if (!post.value) return [];
-  return articles
-    .filter((article) => article.id !== post.value?.id && article.category === post.value?.category)
-    .slice(0, 3);
-});
-
-const postTags = computed(() => {
-  return post.value?.tags || ["Development", "Web", "Technology", "Programming"];
-});
+  if (postId) {
+    // Reset current post to avoid showing old data while loading
+    if (currentPost.value?.id !== postId) {
+      clearCurrentPost();
+    }
+    await fetchPostById(postId);
+    await fetchRelatedPosts(postId);
+  }
+};
 
 const updateReadingProgress = () => {
   const contentElement = document.querySelector(".prose") as HTMLElement;
@@ -191,18 +158,34 @@ const updateReadingProgress = () => {
   readingProgress.value = Math.min(100, Math.max(0, progress));
 };
 
-onMounted(() => {
+onMountedAsync(async () => {
   window.addEventListener("scroll", updateReadingProgress);
-  updateReadingProgress();
-  currentUrl.value = window.location.href;
+  currentUrl.value = window.location.href; // Ensure browser URL is used
+  await loadPost();
 });
+
+// Helper for async mounted
+async function onMountedAsync(fn: () => Promise<void>) {
+  onMounted(() => {
+    fn();
+  });
+}
 
 onUnmounted(() => {
   window.removeEventListener("scroll", updateReadingProgress);
 });
+
+watch(
+  () => route.params.id,
+  () => {
+    loadPost(); // Params changed, load new post
+    window.scrollTo(0, 0);
+  }
+);
 </script>
 
 <style>
+/* ... keep existing styles ... */
 .clear-both {
   clear: both;
 }
@@ -265,156 +248,106 @@ onUnmounted(() => {
   color: #a78bfa;
   text-decoration: underline;
   transition: color 0.15s ease;
-  word-break: break-word;
 }
 
 .prose a:hover {
-  color: #8b5cf6;
+  color: #c4b5fd;
 }
 
-.prose ul {
-  list-style-type: disc;
-  padding-left: 1.5em;
-  margin-top: 1.25em;
-  margin-bottom: 1.25em;
-}
-
+.prose ul,
 .prose ol {
-  list-style-type: decimal;
-  padding-left: 1.5em;
   margin-top: 1.25em;
   margin-bottom: 1.25em;
+  padding-left: 1.625em;
 }
 
 .prose li {
   margin-top: 0.5em;
   margin-bottom: 0.5em;
-  padding-left: 0.5em;
+  padding-left: 0.375rem;
 }
 
-.prose li::marker {
-  color: #8b5cf6;
+.prose ul > li {
+  list-style-type: disc;
+}
+
+.prose ol > li {
+  list-style-type: decimal;
 }
 
 .prose blockquote {
+  font-weight: 500;
   font-style: italic;
-  border-left: 4px solid #8b5cf6;
-  padding-left: 1rem;
-  margin-left: 0;
-  margin-right: 0;
-  margin-top: 2rem;
-  margin-bottom: 2rem;
-  color: #d1d5db;
-}
-
-.prose pre {
-  background-color: #1a1a1a;
-  border-radius: 0.375rem;
+  color: #e9d5ff;
+  border-left-width: 0.25rem;
+  border-left-color: #7c3aed;
+  margin-top: 1.6em;
+  margin-bottom: 1.6em;
+  padding-left: 1em;
+  background-color: rgba(124, 58, 237, 0.1);
   padding: 1rem;
-  overflow-x: auto;
-  margin: 1.75em 0;
-  border: 1px solid #2d2d2d;
-  max-width: 100%;
-  -webkit-overflow-scrolling: touch;
-}
-
-@media (min-width: 640px) {
-  .prose pre {
-    padding: 1.25rem;
-  }
+  border-radius: 0.5rem;
 }
 
 .prose code {
-  color: #e5e7eb;
-  background-color: #2d2d2d;
-  padding: 0.2em 0.4em;
-  border-radius: 0.25rem;
+  color: #e9d5ff;
+  font-weight: 600;
   font-size: 0.875em;
-  font-family:
-    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
-    monospace;
-  word-break: break-word;
+}
+
+.prose code::before {
+  content: "`";
+}
+
+.prose code::after {
+  content: "`";
+}
+
+.prose pre {
+  color: #e5e7eb;
+  background-color: #1e1e1e;
+  overflow-x: auto;
+  font-size: 0.875em;
+  line-height: 1.7142857;
+  margin-top: 1.7142857em;
+  margin-bottom: 1.7142857em;
+  border-radius: 0.375rem;
+  padding: 0.8571429em 1.1428571em;
+  border: 1px solid #333;
 }
 
 .prose pre code {
   background-color: transparent;
-  padding: 0;
+  border-width: 0;
   border-radius: 0;
-  font-size: 0.875em;
-  color: #d1d5db;
-  word-break: normal;
+  padding: 0;
+  font-weight: 400;
+  color: inherit;
+  font-size: inherit;
+  font-family: inherit;
+  line-height: inherit;
+}
+
+.prose pre code::before {
+  content: none;
+}
+
+.prose pre code::after {
+  content: none;
 }
 
 .prose img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 0.375rem;
-  margin: 1.5em 0;
+  margin-top: 2em;
+  margin-bottom: 2em;
+  border-radius: 0.5rem;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
-.prose .lead {
-  font-size: 1.125em;
-  line-height: 1.8;
-  margin-top: 1.5em;
-  margin-bottom: 1.5em;
-  color: #a78bfa;
-}
-
-.animate-fadeIn {
-  animation: fadeIn 0.5s ease-in-out;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@media (max-width: 640px) {
-  .prose table {
-    display: block;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .prose iframe {
-    max-width: 100%;
-    height: auto;
-  }
-
-  .prose blockquote {
-    margin-left: 0.5rem;
-    margin-right: 0.5rem;
-    padding-left: 0.75rem;
-  }
-
-  .prose img {
-    max-width: 100%;
-    height: auto;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .prose pre {
-    padding-left: 0.75rem;
-    padding-right: 0.75rem;
-    font-size: 0.8rem;
-  }
-
-  .container {
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-
-  h1.text-2xl {
-    font-size: 1.75rem;
-    line-height: 2.1rem;
-  }
+.prose hr {
+  border-color: #374151;
+  margin-top: 3em;
+  margin-bottom: 3em;
 }
 </style>

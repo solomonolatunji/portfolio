@@ -1,16 +1,19 @@
 <template>
   <div v-if="post" class="mb-8 sm:mb-10">
     <div class="mb-4 flex flex-wrap items-center gap-2">
-      <span class="rounded-full bg-purple-600 px-3 py-1 text-xs font-medium text-white">
-        {{ post.category }}
+      <span
+        v-if="post.categories?.length"
+        class="rounded-full bg-purple-600 px-3 py-1 text-xs font-medium text-white"
+      >
+        {{ post.categories[0]?.category.name }}
       </span>
       <span class="flex items-center text-xs text-gray-400">
         <ClockIcon class="mr-1 h-3.5 w-3.5" />
-        {{ post.readTime || "5 min read" }}
+        {{ "5 min read" }}
       </span>
       <span class="flex items-center text-xs text-gray-400">
         <CalendarIcon class="mr-1 h-3.5 w-3.5" />
-        {{ post.date }}
+        {{ new Date(post.createdAt).toLocaleDateString() }}
       </span>
     </div>
     <h1
@@ -20,15 +23,17 @@
     </h1>
     <div class="flex items-center">
       <img
-        :src="post.author.avatar"
-        :alt="post.author.name"
+        :src="getAuthorAvatar(post.author.username)"
+        :alt="post.author.username"
         class="mr-4 h-12 w-12 rounded-full border-2 border-purple-600 sm:h-14 sm:w-14"
       />
       <div>
         <div class="text-sm font-medium text-white sm:text-base">
-          {{ post.author.name }}
+          {{ post.author.username }}
         </div>
-        <div class="text-xs text-gray-400 sm:text-sm">Published on {{ post.date }}</div>
+        <div class="text-xs text-gray-400 sm:text-sm">
+          Published on {{ new Date(post.createdAt).toLocaleDateString() }}
+        </div>
       </div>
     </div>
   </div>
@@ -37,24 +42,16 @@
 <script setup lang="ts">
 import { ClockIcon, CalendarIcon } from "@heroicons/vue/24/solid";
 import type { PropType } from "vue";
+import type { Post } from "@/interfaces/post";
 
-interface Author {
-  name: string;
-  avatar: string;
-}
-
-interface Post {
-  category: string;
-  readTime?: string;
-  date: string;
-  title: string;
-  author: Author;
-}
-
-defineProps({
+const props = defineProps({
   post: {
     type: Object as PropType<Post | null>,
     required: true,
   },
 });
+
+const getAuthorAvatar = (name: string) => {
+  return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=random`;
+};
 </script>
