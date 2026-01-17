@@ -11,12 +11,22 @@
         <IconMenu2 class="h-6 w-6" />
       </button>
 
-      <!-- Optional: Breadcrumbs or Page Title could go here -->
+      <nav class="hidden items-center gap-2 text-sm text-gray-400 md:flex">
+        <template v-for="(crumb, index) in breadcrumbs" :key="crumb.url">
+          <IconChevronRight v-if="index > 0" class="h-4 w-4 text-gray-600" />
+          <router-link
+            v-if="!crumb.isLast"
+            :to="crumb.url"
+            class="transition-colors hover:text-white"
+          >
+            {{ crumb.label }}
+          </router-link>
+          <span v-else class="font-medium text-white">{{ crumb.label }}</span>
+        </template>
+      </nav>
     </div>
 
-    <!-- Right: Actions & Profile -->
     <div class="flex items-center gap-4">
-      <!-- Search (Visual Only) -->
       <div class="relative hidden md:block">
         <IconSearch class="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-500" />
         <input
@@ -26,13 +36,11 @@
         />
       </div>
 
-      <!-- Notifications -->
       <button class="relative rounded-lg p-2 text-gray-400 hover:bg-white/5 hover:text-white">
         <IconBell class="h-5 w-5" />
         <span class="absolute top-2 right-2 h-2 w-2 rounded-full bg-red-500"></span>
       </button>
 
-      <!-- Profile Dropdown -->
       <div class="relative">
         <button
           @click="isProfileOpen = !isProfileOpen"
@@ -49,7 +57,6 @@
           <IconChevronDown class="h-4 w-4 text-gray-400" />
         </button>
 
-        <!-- Dropdown Menu -->
         <div
           v-if="isProfileOpen"
           v-click-outside="closeProfile"
@@ -81,7 +88,6 @@
       </div>
     </div>
 
-    <!-- Logout Modal -->
     <Modal :is-open="isLogoutModalOpen" title="Confirm Sign Out" @close="isLogoutModalOpen = false">
       <p class="text-gray-300">Are you sure you want to sign out?</p>
       <template #footer>
@@ -94,7 +100,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { useAuthStore } from "@/stores/authStore";
 import Modal from "@/components/Admin/Shared/Modal.vue";
 import Button from "@/components/Button.vue";
@@ -105,9 +111,11 @@ import {
   IconChevronDown,
   IconSettings,
   IconLogout,
+  IconChevronRight,
 } from "@tabler/icons-vue";
 
 const router = useRouter();
+const route = useRoute();
 const authStore = useAuthStore();
 const isProfileOpen = ref(false);
 const isLogoutModalOpen = ref(false);
@@ -118,6 +126,23 @@ const closeProfile = () => {
 
 const userInitials = computed(() => {
   return authStore.user?.username?.substring(0, 2) || "AD";
+});
+
+const breadcrumbs = computed(() => {
+  const path = route.path;
+  const segments = path.split("/").filter((s) => s);
+
+  return segments.map((segment, index) => {
+    const isLast = index === segments.length - 1;
+    const url = "/" + segments.slice(0, index + 1).join("/");
+    const label = segment.charAt(0).toUpperCase() + segment.slice(1);
+
+    return {
+      label,
+      url,
+      isLast,
+    };
+  });
 });
 
 const confirmLogout = () => {
@@ -132,7 +157,10 @@ const vClickOutside = {
         binding.value(event);
       }
     };
-    document.body.addEventListener("click", el.clickOutsideEvent);
+    // Add delay to prevent immediate closing from the opening click
+    setTimeout(() => {
+      document.body.addEventListener("click", el.clickOutsideEvent);
+    }, 0);
   },
   unmounted(el: any) {
     document.body.removeEventListener("click", el.clickOutsideEvent);

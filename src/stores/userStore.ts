@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import type { User, UserRole } from "@/interfaces/auth";
-import type { UserState } from "@/interfaces/user";
+import type { UserState, UsersListResponse } from "@/interfaces/user";
 
 /**
  * Users Store
@@ -65,23 +65,13 @@ export const useUserStore = defineStore("user", {
     /**
      * Set users with pagination metadata
      */
-    setUsers(data: {
-      data: User[];
-      meta: {
-        total: number;
-        pages: number;
-        currentPage: number;
-        hasNext: boolean;
-        hasPrev: boolean;
-        nextPage?: number;
-      };
-    }): void {
-      this.users = data.data;
-      this.total = data.meta.total;
-      this.pages = data.meta.pages;
-      this.currentPage = data.meta.currentPage;
-      this.hasNext = data.meta.hasNext;
-      this.hasPrev = data.meta.hasPrev;
+    setUsers(data: UsersListResponse): void {
+      this.users = data.users;
+      this.total = data.total;
+      this.pages = data.pages;
+      this.currentPage = data.currentPage;
+      this.hasNext = data.hasNext;
+      this.hasPrev = data.hasPrev;
     },
 
     /**
