@@ -255,8 +255,9 @@ const closeFeaturedModal = () => {
 
 const confirmToggleFeatured = async () => {
   if (!selectedPost.value) return;
+  const newFeaturedState = !selectedPost.value.isFeatured;
   try {
-    await toggleFeatured(selectedPost.value.id);
+    await toggleFeatured(selectedPost.value.id, newFeaturedState);
     closeFeaturedModal();
   } catch (error) {
     console.error("Failed to toggle featured", error);

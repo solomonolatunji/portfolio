@@ -6,7 +6,7 @@
         <p class="text-sm text-gray-400">Manage user accounts and permissions</p>
       </div>
       <div class="flex gap-4">
-        <Button variant="primary" text="Add User" :disabled="true">
+        <Button @click="openCreateModal" variant="primary" text="Add User">
           <template #iconLeft>
             <IconPlus class="h-4 w-4" />
           </template>
@@ -95,6 +95,13 @@
                   >
                     <IconUserCog class="h-4 w-4" />
                   </button>
+                  <button
+                    @click="openDeleteModal(user)"
+                    class="p-1 text-gray-400 hover:text-red-400"
+                    title="Delete User"
+                  >
+                    <IconTrash class="h-4 w-4" />
+                  </button>
                 </div>
               </td>
             </tr>
@@ -171,6 +178,63 @@
         />
       </template>
     </Modal>
+
+    <Modal :is-open="isCreateModalOpen" title="Create User" @close="closeCreateModal">
+      <form @submit.prevent="handleCreateUser" class="space-y-4">
+        <Input v-model="createForm.username" label="Username" placeholder="johndoe" required />
+        <Input
+          v-model="createForm.email"
+          label="Email"
+          type="email"
+          placeholder="john@example.com"
+          required
+        />
+        <Input
+          v-model="createForm.password"
+          label="Password"
+          type="password"
+          placeholder="Secure password"
+          required
+        />
+        <div>
+          <label class="mb-2 block text-sm font-medium text-gray-300">Role</label>
+          <select
+            v-model="createForm.role"
+            class="w-full rounded-lg border border-white/10 bg-white/5 p-2 text-sm text-white focus:border-[#6d28d9] focus:outline-none"
+          >
+            <option value="USER">User</option>
+            <option value="ADMIN">Admin</option>
+          </select>
+        </div>
+      </form>
+      <template #footer>
+        <Button variant="ghost" @click="closeCreateModal" text="Cancel" />
+        <Button
+          variant="primary"
+          :loading="isLoading"
+          @click="handleCreateUser"
+          text="Create User"
+        />
+      </template>
+    </Modal>
+
+    <Modal :is-open="isDeleteModalOpen" title="Delete User" @close="closeDeleteModal">
+      <p class="text-gray-300">
+        Are you sure you want to delete user
+        <span class="font-bold text-white">{{ selectedUser?.username }}</span
+        >?
+      </p>
+      <p class="mt-2 text-sm text-gray-400">This action cannot be undone.</p>
+      <template #footer>
+        <Button variant="ghost" @click="closeDeleteModal" text="Cancel" />
+        <Button
+          variant="danger"
+          :loading="isLoading"
+          @click="confirmDeleteUser"
+          text="Delete User"
+        />
+      </template>
+    </Modal>
   </div>
 </template>
 
@@ -178,19 +242,28 @@
 import { ref, onMounted, watch } from "vue";
 import { refDebounced } from "@vueuse/core";
 import { useUser } from "@/hooks/useUser";
-import { IconSearch, IconUserCog, IconPlus, IconFilter } from "@tabler/icons-vue";
+import { IconSearch, IconUserCog, IconPlus, IconFilter, IconTrash } from "@tabler/icons-vue";
 import Button from "@/components/Button.vue";
 import Input from "@/components/Input.vue";
 import Modal from "@/components/Admin/Shared/Modal.vue";
 import Pagination from "@/components/Pagination.vue";
 
-const { users, total, currentPage, isLoading, fetchUsers, updateUserRole } = useUser();
+const { users, total, currentPage, isLoading, fetchUsers, updateUserRole, createUser, deleteUser } =
+  useUser();
 const search = ref("");
 const debouncedSearch = refDebounced(search, 500);
 const isFilterModalOpen = ref(false);
 const isRoleModalOpen = ref(false);
+const isCreateModalOpen = ref(false);
+const isDeleteModalOpen = ref(false);
 const selectedUser = ref<any>(null);
 const newRole = ref("");
+const createForm = ref({
+  username: "",
+  email: "",
+  password: "",
+  role: "USER" as any,
+});
 
 const formatDate = (date: any) => {
   if (!date) return "-";
@@ -233,6 +306,51 @@ const confirmRoleChange = async () => {
     fetchUsers({ page: currentPage.value, limit: 10 });
   } catch (error) {
     console.error("Failed to update user role", error);
+  }
+};
+
+const openCreateModal = () => {
+  createForm.value = {
+    username: "",
+    email: "",
+    password: "",
+    role: "USER",
+  };
+  isCreateModalOpen.value = true;
+};
+
+const closeCreateModal = () => {
+  isCreateModalOpen.value = false;
+};
+
+const handleCreateUser = async () => {
+  try {
+    await createUser(createForm.value);
+    closeCreateModal();
+    fetchUsers({ page: currentPage.value, limit: 10 });
+  } catch (error) {
+    console.error("Failed to create user", error);
+  }
+};
+
+const openDeleteModal = (user: any) => {
+  selectedUser.value = user;
+  isDeleteModalOpen.value = true;
+};
+
+const closeDeleteModal = () => {
+  isDeleteModalOpen.value = false;
+  selectedUser.value = null;
+};
+
+const confirmDeleteUser = async () => {
+  if (!selectedUser.value) return;
+  try {
+    await deleteUser(selectedUser.value.id);
+    closeDeleteModal();
+    fetchUsers({ page: currentPage.value, limit: 10 });
+  } catch (error) {
+    console.error("Failed to delete user", error);
   }
 };
 

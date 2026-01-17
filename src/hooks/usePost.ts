@@ -176,12 +176,12 @@ export function usePost() {
   /**
    * Toggle featured status (Admin only)
    */
-  const toggleFeatured = async (id: string): Promise<void> => {
+  const toggleFeatured = async (id: string, isFeatured: boolean): Promise<void> => {
     postStore.setLoading(true);
     postStore.clearError();
 
     try {
-      const data = await postService.toggleFeatured(id);
+      const data = await postService.toggleFeatured(id, isFeatured);
       postStore.updatePostItem(data);
       if (postStore.currentPost?.id === id) {
         postStore.setCurrentPost(data);

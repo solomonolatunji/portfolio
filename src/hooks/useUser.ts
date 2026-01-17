@@ -87,6 +87,45 @@ export function useUser() {
     }
   };
 
+  const createUser = async (payload: {
+    username: string;
+    email: string;
+    password: string;
+    role: UserRole;
+  }): Promise<void> => {
+    userStore.setLoading(true);
+    userStore.clearError();
+
+    try {
+      await userService.createUser(payload);
+      toast.success("User created successfully");
+    } catch (err: any) {
+      const errorMessage = err.response?.data?.message || err.message || "Failed to create user";
+      userStore.setError(errorMessage);
+      toast.error(errorMessage);
+      throw err;
+    } finally {
+      userStore.setLoading(false);
+    }
+  };
+
+  const deleteUser = async (userId: string): Promise<void> => {
+    userStore.setLoading(true);
+    userStore.clearError();
+
+    try {
+      await userService.deleteUser(userId);
+      toast.success("User deleted successfully");
+    } catch (err: any) {
+      const errorMessage = err.response?.data?.message || err.message || "Failed to delete user";
+      userStore.setError(errorMessage);
+      toast.error(errorMessage);
+      throw err;
+    } finally {
+      userStore.setLoading(false);
+    }
+  };
+
   /**
    * Get user by ID
    */
@@ -117,6 +156,8 @@ export function useUser() {
     fetchCurrentUser,
     fetchUsers,
     updateUserRole,
+    createUser,
+    deleteUser,
 
     // Utilities
     getUserById,

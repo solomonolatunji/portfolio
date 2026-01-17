@@ -20,6 +20,20 @@ class UserService {
     const response = await api.put<ApiResponse<User>>(`/users/${userId}/role`, { name: role });
     return response.data.data;
   }
+
+  async createUser(payload: {
+    username: string;
+    email: string;
+    password: string;
+    role: UserRole;
+  }): Promise<User> {
+    const response = await api.post<ApiResponse<User>>("/users", payload);
+    return response.data.data;
+  }
+
+  async deleteUser(userId: string): Promise<void> {
+    await api.delete(`/users/${userId}`);
+  }
 }
 
 export const userService = new UserService();

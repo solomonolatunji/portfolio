@@ -72,8 +72,8 @@ class PostService {
   /**
    * Mark post as featured or unfeatured (Admin only)
    */
-  async toggleFeatured(id: string): Promise<Post> {
-    const response = await api.patch<ApiResponse<Post>>(`/posts/${id}/featured`);
+  async toggleFeatured(id: string, isFeatured: boolean): Promise<Post> {
+    const response = await api.patch<ApiResponse<Post>>(`/posts/${id}/featured`, { isFeatured });
     return response.data.data;
   }
 }
