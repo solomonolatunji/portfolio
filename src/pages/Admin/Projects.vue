@@ -6,7 +6,7 @@
         <p class="text-sm text-gray-400">Manage your portfolio projects</p>
       </div>
       <div class="flex gap-4">
-        <Button variant="primary" text="New Project" @click="openCreateModal">
+        <Button variant="primary" text="New Project" @click="navigateToCreate">
           <template #iconLeft>
             <IconPlus class="h-4 w-4" />
           </template>
@@ -92,7 +92,7 @@
                   <button
                     class="p-1 text-gray-400 hover:text-white"
                     title="Edit"
-                    @click="openEditModal(project)"
+                    @click="navigateToEdit(project)"
                   >
                     <IconEdit class="h-4 w-4" />
                   </button>
@@ -126,39 +126,6 @@
         </div>
       </div>
     </div>
-
-    <!-- Create/Edit Modal -->
-    <Modal
-      :is-open="isFormModalOpen"
-      :title="isEditing ? 'Edit Project' : 'New Project'"
-      @close="closeFormModal"
-    >
-      <form @submit.prevent="handleSubmit" class="space-y-4">
-        <Input v-model="form.title" label="Title" placeholder="Project title" required />
-        <Input v-model="form.description" label="Short Description" placeholder="Brief summary" />
-        <Input v-model="form.year" label="Year" placeholder="e.g. 2024" />
-        <Input v-model="form.demoUrl" label="Demo URL" placeholder="https://" />
-        <Input v-model="form.codeUrl" label="Code URL" placeholder="https://" />
-        <!-- Rich text editor placeholder for detailed description -->
-        <div>
-          <label class="mb-2 block text-sm font-medium text-gray-300">Detailed Description</label>
-          <textarea
-            v-model="form.detailedDescription"
-            rows="3"
-            class="w-full rounded-lg border border-white/10 bg-white/5 p-3 text-sm text-white focus:border-[#6d28d9] focus:outline-none"
-          ></textarea>
-        </div>
-      </form>
-      <template #footer>
-        <Button variant="ghost" @click="closeFormModal" text="Cancel" />
-        <Button
-          variant="primary"
-          @click="handleSubmit"
-          :text="isEditing ? 'Save Changes' : 'Create Project'"
-          :loading="isLoading"
-        />
-      </template>
-    </Modal>
 
     <!-- Delete Modal -->
     <Modal :is-open="isDeleteModalOpen" title="Delete Project" @close="closeDeleteModal">
@@ -201,7 +168,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted } from "vue";
+import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
 import { useProject } from "@/hooks/useProject";
 import {
   IconPlus,
@@ -216,68 +184,24 @@ import Input from "@/components/Input.vue";
 import Modal from "@/components/Admin/Shared/Modal.vue";
 import Pagination from "@/components/Pagination.vue";
 
-const {
-  projects,
-  total,
-  currentPage,
-  isLoading,
-  fetchProjects,
-  createProject,
-  updateProject,
-  deleteProject,
-} = useProject();
+const router = useRouter();
+const { projects, total, currentPage, isLoading, fetchProjects, deleteProject } = useProject();
+
 const search = ref("");
-const isFormModalOpen = ref(false);
 const isDeleteModalOpen = ref(false);
 const isFilterModalOpen = ref(false);
-const isEditing = ref(false);
 const selectedProject = ref<any>(null);
-
-const form = reactive({
-  title: "",
-  description: "",
-  detailedDescription: "",
-  year: new Date().getFullYear().toString(),
-  demoUrl: "",
-  codeUrl: "",
-  categories: [],
-  technologies: [],
-  features: [],
-  role: "",
-  challenges: "",
-  image: "",
-  gallery: [],
-});
 
 const changePage = (page: number) => {
   fetchProjects({ page, limit: 10 });
 };
 
-const openCreateModal = () => {
-  isEditing.value = false;
-  form.title = "";
-  form.description = "";
-  form.detailedDescription = "";
-  ((form.year = new Date().getFullYear().toString()), (form.demoUrl = ""));
-  form.codeUrl = "";
-  isFormModalOpen.value = true;
+const navigateToCreate = () => {
+  router.push({ name: "CreateProject" });
 };
 
-const openEditModal = (project: any) => {
-  isEditing.value = true;
-  selectedProject.value = project;
-  form.title = project.title;
-  form.description = project.description;
-  form.detailedDescription = project.detailedDescription;
-  form.year = project.year;
-  form.demoUrl = project.demoUrl;
-  form.codeUrl = project.codeUrl;
-  isFormModalOpen.value = true;
-};
-
-const closeFormModal = () => {
-  isFormModalOpen.value = false;
-  selectedProject.value = null;
+const navigateToEdit = (project: any) => {
+  router.push({ name: "EditProject", params: { id: project.id } });
 };
 
 const openDeleteModal = (project: any) => {
@@ -288,20 +212,6 @@ const openDeleteModal = (project: any) => {
 const closeDeleteModal = () => {
   isDeleteModalOpen.value = false;
   selectedProject.value = null;
-};
-
-const handleSubmit = async () => {
-  try {
-    if (isEditing.value && selectedProject.value) {
-      await updateProject(selectedProject.value.id, form);
-    } else {
-      await createProject(form);
-    }
-    closeFormModal();
-    fetchProjects({ page: currentPage.value, limit: 10 });
-  } catch (error) {
-    console.error("Failed to save project", error);
-  }
 };
 
 const confirmDelete = async () => {

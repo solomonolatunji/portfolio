@@ -2,10 +2,6 @@ import { defineStore } from "pinia";
 import type { Comment, CommentState } from "@/interfaces/comment";
 import type { PaginatedData } from "@/interfaces/base";
 
-/**
- * Comments Store
- * State management for comments
- */
 export const useCommentStore = defineStore("comment", {
   state: (): CommentState => ({
     comments: [],
@@ -19,35 +15,20 @@ export const useCommentStore = defineStore("comment", {
   }),
 
   getters: {
-    /**
-     * Check if comments are loading
-     */
     isLoadingComments: (state): boolean => state.isLoading,
 
-    /**
-     * Get comment by ID
-     */
     getCommentById:
       (state) =>
       (id: string): Comment | undefined => {
         return state.comments.find((comment) => comment.id === id);
       },
 
-    /**
-     * Check if has comments
-     */
     hasComments: (state): boolean => state.comments.length > 0,
 
-    /**
-     * Get comments count
-     */
     commentsCount: (state): number => state.comments.length,
   },
 
   actions: {
-    /**
-     * Set comments with pagination metadata
-     */
     setComments(data: PaginatedData<Comment>): void {
       this.comments = data.data;
       this.total = data.meta.total;
@@ -57,17 +38,11 @@ export const useCommentStore = defineStore("comment", {
       this.currentPage = data.meta.page;
     },
 
-    /**
-     * Add comment to list
-     */
     addComment(comment: Comment): void {
       this.comments.unshift(comment);
       this.total += 1;
     },
 
-    /**
-     * Remove comment from list
-     */
     removeComment(id: string): void {
       const index = this.comments.findIndex((c) => c.id === id);
       if (index !== -1) {
@@ -76,37 +51,22 @@ export const useCommentStore = defineStore("comment", {
       }
     },
 
-    /**
-     * Set loading state
-     */
     setLoading(loading: boolean): void {
       this.isLoading = loading;
     },
 
-    /**
-     * Set error
-     */
     setError(error: string | null): void {
       this.error = error;
     },
 
-    /**
-     * Clear error
-     */
     clearError(): void {
       this.error = null;
     },
 
-    /**
-     * Set current page
-     */
     setCurrentPage(page: number): void {
       this.currentPage = page;
     },
 
-    /**
-     * Clear all state
-     */
     clearState(): void {
       this.comments = [];
       this.isLoading = false;

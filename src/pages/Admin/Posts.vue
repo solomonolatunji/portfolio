@@ -6,7 +6,7 @@
         <p class="text-sm text-gray-400">Manage your blog posts</p>
       </div>
       <div class="flex gap-4">
-        <Button variant="primary" text="New Post" @click="openCreateModal">
+        <Button variant="primary" text="New Post" @click="navigateToCreate">
           <template #iconLeft>
             <IconPlus class="h-4 w-4" />
           </template>
@@ -100,7 +100,7 @@
                   <button
                     class="p-1 text-gray-400 hover:text-white"
                     title="Edit"
-                    @click="openEditModal(post)"
+                    @click="navigateToEdit(post)"
                   >
                     <IconEdit class="h-4 w-4" />
                   </button>
@@ -134,45 +134,6 @@
         </div>
       </div>
     </div>
-
-    <!-- Create/Edit Modal -->
-    <Modal
-      :is-open="isFormModalOpen"
-      :title="isEditing ? 'Edit Post' : 'New Post'"
-      @close="closeFormModal"
-    >
-      <form @submit.prevent="handleSubmit" class="space-y-4">
-        <Input v-model="form.title" label="Title" placeholder="Post title" required />
-        <!-- Rich text editor placeholder -->
-        <div>
-          <label class="mb-2 block text-sm font-medium text-gray-300">Content</label>
-          <textarea
-            v-model="form.content"
-            rows="4"
-            class="w-full rounded-lg border border-white/10 bg-white/5 p-3 text-sm text-white focus:border-[#6d28d9] focus:outline-none"
-          ></textarea>
-        </div>
-        <!-- Category and other fields placeholder -->
-        <div class="flex items-center gap-2">
-          <input
-            type="checkbox"
-            v-model="form.published"
-            id="published"
-            class="rounded border-white/10 bg-white/5 text-[#6d28d9] focus:ring-[#6d28d9]"
-          />
-          <label for="published" class="text-sm text-gray-300">Published</label>
-        </div>
-      </form>
-      <template #footer>
-        <Button variant="ghost" @click="closeFormModal" text="Cancel" />
-        <Button
-          variant="primary"
-          @click="handleSubmit"
-          :text="isEditing ? 'Save Changes' : 'Create Post'"
-          :loading="isLoading"
-        />
-      </template>
-    </Modal>
 
     <!-- Delete Modal -->
     <Modal :is-open="isDeleteModalOpen" title="Delete Post" @close="closeDeleteModal">
@@ -215,7 +176,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted } from "vue";
+import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
 import { usePost } from "@/hooks/usePost";
 import {
   IconPlus,
@@ -232,32 +194,13 @@ import Input from "@/components/Input.vue";
 import Modal from "@/components/Admin/Shared/Modal.vue";
 import Pagination from "@/components/Pagination.vue";
 
-const {
-  posts,
-  total,
-  currentPage,
-  isLoading,
-  fetchPosts,
-  toggleFeatured,
-  createPost,
-  updatePost,
-  deletePost,
-} = usePost();
+const router = useRouter();
+const { posts, total, currentPage, isLoading, fetchPosts, toggleFeatured, deletePost } = usePost();
+
 const search = ref("");
-const isFormModalOpen = ref(false);
 const isDeleteModalOpen = ref(false);
 const isFilterModalOpen = ref(false);
-const isEditing = ref(false);
 const selectedPost = ref<any>(null);
-
-const form = reactive({
-  title: "",
-  content: "",
-  published: false,
-  cover: "",
-  categories: [],
-  tags: [],
-});
 
 const formatDate = (date: any) => {
   if (!date) return "-";
@@ -268,26 +211,12 @@ const changePage = (page: number) => {
   fetchPosts({ page, limit: 10 });
 };
 
-const openCreateModal = () => {
-  isEditing.value = false;
-  form.title = "";
-  form.content = "";
-  form.published = false;
-  isFormModalOpen.value = true;
+const navigateToCreate = () => {
+  router.push({ name: "CreatePost" });
 };
 
-const openEditModal = (post: any) => {
-  isEditing.value = true;
-  selectedPost.value = post;
-  form.title = post.title;
-  form.content = post.content;
-  form.published = post.published;
-  isFormModalOpen.value = true;
-};
-
-const closeFormModal = () => {
-  isFormModalOpen.value = false;
-  selectedPost.value = null;
+const navigateToEdit = (post: any) => {
+  router.push({ name: "EditPost", params: { id: post.id } });
 };
 
 const openDeleteModal = (post: any) => {
@@ -298,20 +227,6 @@ const openDeleteModal = (post: any) => {
 const closeDeleteModal = () => {
   isDeleteModalOpen.value = false;
   selectedPost.value = null;
-};
-
-const handleSubmit = async () => {
-  try {
-    if (isEditing.value && selectedPost.value) {
-      await updatePost(selectedPost.value.id, form);
-    } else {
-      await createPost(form);
-    }
-    closeFormModal();
-    fetchPosts({ page: currentPage.value, limit: 10 });
-  } catch (error) {
-    console.error("Failed to save post", error);
-  }
 };
 
 const confirmDelete = async () => {

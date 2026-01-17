@@ -16,6 +16,10 @@ import AdminActivity from "@/pages/Admin/Activity.vue";
 import AdminSettings from "@/pages/Admin/Settings.vue";
 import AdminPosts from "@/pages/Admin/Posts.vue";
 import AdminCategories from "@/pages/Admin/Categories.vue";
+import CreateProject from "@/pages/Admin/Projects/Create.vue";
+import EditProject from "@/pages/Admin/Projects/Edit.vue";
+import CreatePost from "@/pages/Admin/Posts/Create.vue";
+import EditPost from "@/pages/Admin/Posts/Edit.vue";
 import { useAuthStore } from "@/stores/authStore";
 
 const routes = [
@@ -78,9 +82,29 @@ const routes = [
         component: AdminProjects,
       },
       {
+        path: "projects/create",
+        name: "CreateProject",
+        component: CreateProject,
+      },
+      {
+        path: "projects/:id/edit",
+        name: "EditProject",
+        component: EditProject,
+      },
+      {
         path: "posts",
         name: "AdminPosts",
         component: AdminPosts,
+      },
+      {
+        path: "posts/create",
+        name: "CreatePost",
+        component: CreatePost,
+      },
+      {
+        path: "posts/:id/edit",
+        name: "EditPost",
+        component: EditPost,
       },
       {
         path: "categories",

@@ -26,9 +26,6 @@ export const useEmailStore = defineStore("email", {
   }),
 
   actions: {
-    /**
-     * Initialize EmailJS with environment variables
-     */
     initialize(): void {
       if (this.isInitialized) return;
 
@@ -88,9 +85,6 @@ export const useEmailStore = defineStore("email", {
       }
     },
 
-    /**
-     * Clear error and success messages
-     */
     clearMessages(): void {
       this.error = null;
       this.successMessage = null;

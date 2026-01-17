@@ -50,9 +50,6 @@ export const useSubscribeStore = defineStore("subscribe", {
       }
     },
 
-    /**
-     * Clear error and success messages
-     */
     clearMessages(): void {
       this.error = null;
       this.successMessage = null;

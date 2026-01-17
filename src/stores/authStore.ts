@@ -5,10 +5,6 @@ const AUTH_TOKEN_KEY = "auth_token";
 const AUTH_REFRESH_TOKEN_KEY = "auth_refresh_token";
 const AUTH_USER_KEY = "auth_user";
 
-/**
- * Authentication Store
- * State management only - no API calls
- */
 export const useAuthStore = defineStore("auth", {
   state: (): AuthState => ({
     user: null,
@@ -20,32 +16,20 @@ export const useAuthStore = defineStore("auth", {
   }),
 
   getters: {
-    /**
-     * Check if user is authenticated
-     */
     isLoggedIn: (state): boolean => {
       return state.isAuthenticated && !!state.token && !!state.user;
     },
 
-    /**
-     * Get current user
-     */
     currentUser: (state): User | null => {
       return state.user;
     },
 
-    /**
-     * Get user role
-     */
     userRole: (state): string | null => {
       return state.user?.role || null;
     },
   },
 
   actions: {
-    /**
-     * Set authentication data
-     */
     setAuth(token: string, refreshToken: string, user: User): void {
       this.token = token;
       this.refreshToken = refreshToken;
@@ -58,9 +42,6 @@ export const useAuthStore = defineStore("auth", {
       localStorage.setItem(AUTH_USER_KEY, JSON.stringify(user));
     },
 
-    /**
-     * Update tokens (for refresh)
-     */
     updateTokens(token: string, refreshToken: string): void {
       this.token = token;
       this.refreshToken = refreshToken;
@@ -70,9 +51,6 @@ export const useAuthStore = defineStore("auth", {
       localStorage.setItem(AUTH_REFRESH_TOKEN_KEY, refreshToken);
     },
 
-    /**
-     * Clear authentication data
-     */
     clearAuth(): void {
       this.user = null;
       this.token = null;
@@ -86,9 +64,6 @@ export const useAuthStore = defineStore("auth", {
       localStorage.removeItem(AUTH_USER_KEY);
     },
 
-    /**
-     * Initialize authentication from localStorage
-     */
     initializeAuth(): void {
       const token = localStorage.getItem(AUTH_TOKEN_KEY);
       const refreshToken = localStorage.getItem(AUTH_REFRESH_TOKEN_KEY);
@@ -108,23 +83,14 @@ export const useAuthStore = defineStore("auth", {
       }
     },
 
-    /**
-     * Set loading state
-     */
     setLoading(loading: boolean): void {
       this.isLoading = loading;
     },
 
-    /**
-     * Set error
-     */
     setError(error: string | null): void {
       this.error = error;
     },
 
-    /**
-     * Clear error message
-     */
     clearError(): void {
       this.error = null;
     },
