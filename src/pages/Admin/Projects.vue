@@ -14,7 +14,6 @@
       </div>
     </div>
 
-    <!-- Filters placeholder -->
     <div
       class="flex flex-col justify-between gap-4 rounded-xl border border-white/10 bg-[#1e1e1e] p-4 sm:flex-row sm:items-center"
     >
@@ -32,7 +31,6 @@
       </Button>
     </div>
 
-    <!-- Table -->
     <div class="overflow-hidden rounded-xl border border-white/10 bg-[#1e1e1e]">
       <div class="overflow-x-auto">
         <table class="w-full text-left text-sm text-gray-400">
@@ -110,7 +108,6 @@
         </table>
       </div>
 
-      <!-- Pagination -->
       <div class="border-t border-white/10 px-6 py-4">
         <Pagination
           :current-page="currentPage"
@@ -127,7 +124,6 @@
       </div>
     </div>
 
-    <!-- Delete Modal -->
     <Modal :is-open="isDeleteModalOpen" title="Delete Project" @close="closeDeleteModal">
       <p class="text-gray-300">
         Are you sure you want to delete
@@ -145,7 +141,6 @@
       </template>
     </Modal>
 
-    <!-- Filter Modal -->
     <Modal :is-open="isFilterModalOpen" title="Filter Projects" @close="isFilterModalOpen = false">
       <div class="space-y-4">
         <div>

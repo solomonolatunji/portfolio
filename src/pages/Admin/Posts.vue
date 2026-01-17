@@ -14,7 +14,6 @@
       </div>
     </div>
 
-    <!-- Filters placeholder -->
     <div
       class="flex flex-col justify-between gap-4 rounded-xl border border-white/10 bg-[#1e1e1e] p-4 sm:flex-row sm:items-center"
     >
@@ -118,7 +117,6 @@
         </table>
       </div>
 
-      <!-- Pagination -->
       <div class="border-t border-white/10 px-6 py-4">
         <Pagination
           :current-page="currentPage"
@@ -135,7 +133,6 @@
       </div>
     </div>
 
-    <!-- Delete Modal -->
     <Modal :is-open="isDeleteModalOpen" title="Delete Post" @close="closeDeleteModal">
       <p class="text-gray-300">
         Are you sure you want to delete
@@ -153,7 +150,6 @@
       </template>
     </Modal>
 
-    <!-- Filter Modal -->
     <Modal :is-open="isFilterModalOpen" title="Filter Posts" @close="isFilterModalOpen = false">
       <div class="space-y-4">
         <div>

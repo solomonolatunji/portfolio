@@ -1,6 +1,5 @@
 <template>
   <div class="space-y-6">
-    <!-- Page Header -->
     <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
       <div>
         <h1 class="text-2xl font-bold text-white">Categories</h1>
@@ -14,16 +13,13 @@
       </Button>
     </div>
 
-    <!-- Loading State -->
     <div v-if="isLoading && !categories.length" class="flex h-64 items-center justify-center">
       <div
         class="h-8 w-8 animate-spin rounded-full border-2 border-[#6d28d9] border-t-transparent"
       ></div>
     </div>
 
-    <!-- Content -->
     <div v-else class="overflow-hidden rounded-xl border border-white/10 bg-[#1e1e1e]">
-      <!-- Search -->
       <div class="border-b border-white/10 p-4">
         <div class="relative max-w-md">
           <IconSearch class="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
@@ -36,7 +32,6 @@
         </div>
       </div>
 
-      <!-- Table -->
       <div class="overflow-x-auto">
         <table class="w-full text-left text-sm">
           <thead class="bg-white/5 text-xs text-gray-400 uppercase">
@@ -60,9 +55,7 @@
               </td>
               <td class="px-6 py-4 text-gray-400">{{ category.slug }}</td>
               <td class="px-6 py-4 text-right">
-                <div
-                  class="flex items-center justify-end gap-2 opacity-0 transition-opacity group-hover:opacity-100"
-                >
+                <div class="flex items-center justify-end gap-2">
                   <button
                     @click="openEditModal(category)"
                     class="rounded-lg p-2 text-gray-400 hover:bg-white/10 hover:text-white"
@@ -85,7 +78,6 @@
       </div>
     </div>
 
-    <!-- Create/Edit Modal -->
     <Modal
       :is-open="isFormModalOpen"
       :title="isEditing ? 'Edit Category' : 'Add Category'"
@@ -100,7 +92,6 @@
           :required="true"
         />
 
-        <!-- Slug is auto-generated usually, but editable if needed -->
         <Input
           id="slug"
           v-model="formData.slug"
@@ -120,7 +111,6 @@
       </form>
     </Modal>
 
-    <!-- Delete Modal -->
     <Modal :is-open="isDeleteModalOpen" title="Delete Category" @close="closeDeleteModal">
       <div class="space-y-4">
         <p class="text-gray-300">

@@ -17,7 +17,6 @@
           <h3 class="mb-4 text-sm font-medium text-gray-500">{{ date }}</h3>
           <div class="relative space-y-6 border-l border-white/10 pl-6">
             <div v-for="item in group" :key="item.id" class="relative">
-              <!-- Timeline dot -->
               <div
                 class="absolute -left-[29px] mt-1.5 h-3 w-3 rounded-full border border-[#1e1e1e]"
                 :class="{

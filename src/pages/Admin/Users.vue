@@ -6,7 +6,6 @@
         <p class="text-sm text-gray-400">Manage user accounts and permissions</p>
       </div>
       <div class="flex gap-4">
-        <!-- Visual only for now as per requirement -->
         <Button variant="primary" text="Add User" :disabled="true">
           <template #iconLeft>
             <IconPlus class="h-4 w-4" />
@@ -15,7 +14,6 @@
       </div>
     </div>
 
-    <!-- Filters & Search -->
     <div
       class="flex flex-col justify-between gap-4 rounded-xl border border-white/10 bg-[#1e1e1e] p-4 sm:flex-row sm:items-center"
     >
@@ -100,7 +98,6 @@
         </table>
       </div>
 
-      <!-- Pagination -->
       <div class="border-t border-white/10 px-6 py-4">
         <Pagination
           :current-page="currentPage"
@@ -117,7 +114,6 @@
       </div>
     </div>
 
-    <!-- Filter Modal -->
     <Modal :is-open="isFilterModalOpen" title="Filter Users" @close="isFilterModalOpen = false">
       <div class="space-y-4">
         <div>

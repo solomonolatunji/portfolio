@@ -16,7 +16,6 @@
     </div>
 
     <div class="grid gap-6 md:grid-cols-2">
-      <!-- Profile Settings -->
       <div class="rounded-xl border border-white/10 bg-[#1e1e1e] p-6">
         <h2 class="mb-4 text-lg font-bold text-white">Profile Information</h2>
         <form id="settings-form" @submit.prevent="saveSettings" class="space-y-4">
@@ -46,7 +45,6 @@
         </form>
       </div>
 
-      <!-- Change Password -->
       <div class="rounded-xl border border-white/10 bg-[#1e1e1e] p-6">
         <h2 class="mb-4 text-lg font-bold text-white">Security</h2>
         <div class="space-y-4">
@@ -70,7 +68,6 @@
         </div>
       </div>
 
-      <!-- Appearance -->
       <div class="rounded-xl border border-white/10 bg-[#1e1e1e] p-6 md:col-span-2">
         <h2 class="mb-4 text-lg font-bold text-white">Appearance</h2>
         <div class="flex items-center justify-between rounded-lg bg-white/5 p-4">

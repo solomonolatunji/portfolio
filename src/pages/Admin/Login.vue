@@ -2,9 +2,7 @@
   <div
     class="admin-login admin-background flex min-h-screen w-full items-center justify-center px-4 py-8"
   >
-    <!-- Login Card -->
     <div class="animate-slideUp relative z-10 w-full max-w-md">
-      <!-- Logo/Header Section -->
       <div class="animate-fadeIn mb-8 text-center">
         <div class="mb-4 flex justify-center">
           <div class="relative">
@@ -31,12 +29,10 @@
         <p class="text-sm text-gray-400">Sign in to manage your portfolio</p>
       </div>
 
-      <!-- Login Form Card -->
       <div
         class="login-card animate-fadeIn rounded-2xl border border-white/10 bg-[#1e1e1e] p-8 delay-200"
       >
         <form @submit.prevent="handleLogin" class="space-y-6">
-          <!-- Email/Username Field -->
           <Input
             id="username"
             v-model="formData.username"
@@ -52,7 +48,6 @@
             </template>
           </Input>
 
-          <!-- Password Field -->
           <Input
             id="password"
             v-model="formData.password"
@@ -68,7 +63,6 @@
             </template>
           </Input>
 
-          <!-- Error Message -->
           <div
             v-if="error"
             class="error-message animate-shake rounded-lg border border-red-500/20 bg-red-500/10 p-3 text-sm text-red-400"
@@ -79,7 +73,6 @@
             </div>
           </div>
 
-          <!-- Submit Button -->
           <Button
             type="submit"
             variant="primary"
@@ -97,7 +90,6 @@
         </form>
       </div>
 
-      <!-- Footer -->
       <div class="animate-fadeIn mt-6 text-center text-sm text-gray-500 delay-300">
         <p>Protected admin area • Authorized access only</p>
       </div>

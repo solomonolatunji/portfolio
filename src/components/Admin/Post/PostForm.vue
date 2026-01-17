@@ -1,11 +1,9 @@
 <template>
   <form @submit.prevent="handleSubmit" class="space-y-6">
-    <!-- Basic Info -->
     <div class="space-y-4">
       <h3 class="text-lg font-medium text-white">Post Details</h3>
       <Input v-model="form.title" label="Title" placeholder="Post title" required />
 
-      <!-- Content (Simple Textarea for now, could be Rich Text later) -->
       <div>
         <label class="mb-2 block text-sm font-medium text-gray-300">Content</label>
         <textarea
@@ -17,7 +15,6 @@
         ></textarea>
       </div>
 
-      <!-- Published Toggle -->
       <div class="flex items-center gap-3">
         <button
           type="button"
@@ -39,40 +36,41 @@
       </div>
     </div>
 
-    <!-- Metadata (Categories, Tags) -->
     <div class="space-y-4">
       <h3 class="text-lg font-medium text-white">Metadata</h3>
 
-      <!-- Categories -->
       <div>
-        <label class="mb-2 block text-sm font-medium text-gray-300">Categories (Press Enter)</label>
+        <label class="mb-2 block text-sm font-medium text-gray-300">Categories</label>
         <div
-          class="flex flex-wrap gap-2 rounded-lg border border-white/10 bg-white/5 p-2 focus-within:border-[#6d28d9] focus-within:ring-1 focus-within:ring-[#6d28d9]"
+          class="max-h-48 space-y-2 overflow-y-auto rounded-lg border border-white/10 bg-white/5 p-3"
         >
-          <span
-            v-for="(cat, index) in form.categories"
-            :key="index"
-            class="inline-flex items-center rounded bg-[#6d28d9]/20 px-2 py-1 text-xs text-[#d8b4fe]"
+          <div v-if="loadingCategories" class="text-center text-sm text-gray-500">
+            Loading categories...
+          </div>
+          <div
+            v-else-if="availableCategories.length === 0"
+            class="text-center text-sm text-gray-500"
           >
-            {{ cat }}
-            <button
-              type="button"
-              @click="removeArrayItem('categories', index)"
-              class="ml-1 text-[#d8b4fe] hover:text-white"
-            >
-              &times;
-            </button>
-          </span>
-          <input
-            v-model="newItem.categories"
-            @keydown.enter.prevent="addArrayItem('categories')"
-            class="flex-1 bg-transparent p-1 text-sm text-white outline-none placeholder:text-gray-500"
-            placeholder="Add category..."
-          />
+            No categories available
+          </div>
+          <label
+            v-else
+            v-for="category in availableCategories"
+            :key="category.id"
+            class="flex cursor-pointer items-center gap-2 rounded p-2 hover:bg-white/5"
+          >
+            <input
+              type="checkbox"
+              :value="category.id"
+              :checked="form.categories.includes(category.id)"
+              @change="toggleCategory(category.id)"
+              class="h-4 w-4 rounded border-gray-600 bg-gray-700 text-[#6d28d9] focus:ring-2 focus:ring-[#6d28d9] focus:ring-offset-0"
+            />
+            <span class="text-sm text-white">{{ category.name }}</span>
+          </label>
         </div>
       </div>
 
-      <!-- Tags -->
       <div>
         <label class="mb-2 block text-sm font-medium text-gray-300">Tags (Press Enter)</label>
         <div
@@ -102,7 +100,6 @@
       </div>
     </div>
 
-    <!-- Cover Image -->
     <div class="space-y-4">
       <h3 class="text-lg font-medium text-white">Cover Image</h3>
       <div>
@@ -126,7 +123,6 @@
       </div>
     </div>
 
-    <!-- Actions -->
     <div class="flex justify-end gap-4 border-t border-white/10 pt-6">
       <Button variant="ghost" text="Cancel" @click="$emit('cancel')" type="button" />
       <Button
@@ -141,6 +137,7 @@
 
 <script setup lang="ts">
 import { reactive, onMounted } from "vue";
+import { useCategory } from "@/hooks/useCategory";
 import Input from "@/components/Input.vue";
 import Button from "@/components/Button.vue";
 import type { Post } from "@/interfaces/post";
@@ -155,6 +152,12 @@ const emit = defineEmits<{
   (e: "cancel"): void;
 }>();
 
+const {
+  categories: availableCategories,
+  isLoading: loadingCategories,
+  fetchCategories,
+} = useCategory();
+
 const isEditing = !!props.initialData;
 
 const form = reactive({
@@ -168,7 +171,6 @@ const form = reactive({
 
 // Helper inputs for array additions
 const newItem = reactive({
-  categories: "",
   tags: "",
 });
 
@@ -176,12 +178,13 @@ const preview = reactive({
   cover: null as string | null,
 });
 
-// Initialize form if editing
 onMounted(() => {
+  fetchCategories();
+
   if (props.initialData) {
     Object.assign(form, {
       ...props.initialData,
-      categories: props.initialData.categories?.map((c) => c.category.name) || [],
+      categories: props.initialData.categories?.map((c) => c.category.id) || [],
       tags: [...(props.initialData.tags || [])],
     });
 
@@ -189,7 +192,16 @@ onMounted(() => {
   }
 });
 
-const addArrayItem = (field: "categories" | "tags") => {
+const toggleCategory = (categoryId: string) => {
+  const index = form.categories.indexOf(categoryId);
+  if (index > -1) {
+    form.categories.splice(index, 1);
+  } else {
+    form.categories.push(categoryId);
+  }
+};
+
+const addArrayItem = (field: "tags") => {
   const value = newItem[field].trim();
   if (value && !form[field].includes(value)) {
     form[field].push(value);
@@ -197,7 +209,7 @@ const addArrayItem = (field: "categories" | "tags") => {
   }
 };
 
-const removeArrayItem = (field: "categories" | "tags", index: number) => {
+const removeArrayItem = (field: "tags", index: number) => {
   form[field].splice(index, 1);
 };
 

@@ -2,7 +2,6 @@
   <div>
     <!-- Stats Grid -->
     <div class="mb-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-      <!-- Users Card -->
       <div class="rounded-xl border border-white/10 bg-[#1e1e1e] p-6">
         <div class="flex items-center justify-between">
           <div>
@@ -15,7 +14,6 @@
         </div>
       </div>
 
-      <!-- Projects Card -->
       <div class="rounded-xl border border-white/10 bg-[#1e1e1e] p-6">
         <div class="flex items-center justify-between">
           <div>
@@ -28,7 +26,6 @@
         </div>
       </div>
 
-      <!-- Posts Card -->
       <div class="rounded-xl border border-white/10 bg-[#1e1e1e] p-6">
         <div class="flex items-center justify-between">
           <div>
@@ -41,7 +38,6 @@
         </div>
       </div>
 
-      <!-- Activity Card -->
       <div class="rounded-xl border border-white/10 bg-[#1e1e1e] p-6">
         <div class="flex items-center justify-between">
           <div>
@@ -55,7 +51,6 @@
       </div>
     </div>
 
-    <!-- Recent Activity Section -->
     <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
       <!-- Recent Projects -->
       <div class="rounded-xl border border-white/10 bg-[#1e1e1e] p-6">
