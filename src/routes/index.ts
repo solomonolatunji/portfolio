@@ -15,6 +15,7 @@ import AdminProjects from "@/pages/Admin/Projects.vue";
 import AdminActivity from "@/pages/Admin/Activity.vue";
 import AdminSettings from "@/pages/Admin/Settings.vue";
 import AdminPosts from "@/pages/Admin/Posts.vue";
+import { useAuthStore } from "@/stores/authStore";
 
 const routes = [
   {
@@ -46,19 +47,19 @@ const routes = [
     component: BlogPost,
   },
   {
+    path: "/admin/login",
+    name: "AdminLogin",
+    component: AdminLogin,
+    meta: { guestOnly: true },
+  },
+  {
     path: "/admin",
     component: AdminLayout,
     meta: { requiresAuth: true, requiresAdmin: true },
     children: [
       {
-        path: "login",
-        name: "AdminLogin",
-        component: AdminLogin,
-        meta: { layout: "default" },
-      },
-      {
         path: "",
-        redirect: "/admin/dashboard",
+        redirect: { name: "AdminDashboard" },
       },
       {
         path: "dashboard",
@@ -105,6 +106,25 @@ const router = createRouter({
   scrollBehavior(_to, _from, _savedPosition) {
     return { top: 0 };
   },
+});
+
+router.beforeEach((to, _from, next) => {
+  const authStore = useAuthStore();
+
+  // Initialize auth if not done (e.g. page refresh)
+  if (!authStore.isAuthenticated && localStorage.getItem("auth_token")) {
+    authStore.initializeAuth();
+  }
+
+  const isAuthenticated = authStore.isLoggedIn;
+
+  if (to.meta.requiresAuth && !isAuthenticated) {
+    next({ name: "AdminLogin" });
+  } else if (to.meta.guestOnly && isAuthenticated) {
+    next({ name: "AdminDashboard" });
+  } else {
+    next();
+  }
 });
 
 export default router;

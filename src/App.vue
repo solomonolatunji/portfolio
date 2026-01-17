@@ -5,7 +5,7 @@ import MainLayout from "@/components/nav/MainLayout.vue";
 import { usePageTitle } from "@/hooks/usePageTitle";
 
 const route = useRoute();
-const isAdminRoute = computed(() => route.path === "/admin");
+const isAdminRoute = computed(() => route.path.startsWith("/admin"));
 
 usePageTitle();
 </script>

@@ -124,7 +124,7 @@ const formData = ref({
 const handleLogin = async () => {
   try {
     await loginAdmin(formData.value);
-    router.push("/");
+    router.push({ name: "AdminDashboard" });
   } catch (err) {
     console.error("Login error:", err);
   }
