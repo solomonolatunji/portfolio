@@ -1,224 +1,188 @@
 <template>
-  <form @submit.prevent="handleSubmit" class="space-y-6">
-    <!-- Basic Info -->
-    <div class="space-y-4">
-      <h3 class="text-lg font-medium text-white">Basic Information</h3>
-      <div class="grid gap-4 md:grid-cols-2">
-        <Input v-model="form.title" label="Title" placeholder="Project title" required />
-        <Input v-model="form.year" label="Year" placeholder="e.g. 2024" required />
-      </div>
-      <Input
-        v-model="form.description"
-        label="Short Description"
-        placeholder="Brief summary"
-        required
-      />
-
-      <div>
-        <label class="mb-2 block text-sm font-medium text-gray-300">Detailed Description</label>
-        <textarea
-          v-model="form.detailedDescription"
-          rows="5"
-          required
-          class="w-full rounded-lg border border-white/10 bg-white/5 p-3 text-sm text-white focus:border-[#6d28d9] focus:ring-1 focus:ring-[#6d28d9] focus:outline-none"
-          placeholder="Full project description..."
-        ></textarea>
-      </div>
-    </div>
-
-    <!-- URLs -->
-    <div class="space-y-4">
-      <h3 class="text-lg font-medium text-white">Links</h3>
-      <div class="grid gap-4 md:grid-cols-2">
-        <Input v-model="form.demoUrl" label="Demo URL" placeholder="https://" />
-        <Input v-model="form.codeUrl" label="Code URL" placeholder="https://" />
-        <Input v-model="form.googlePlayUrl" label="Google Play URL" placeholder="https://" />
-        <Input v-model="form.appleStoreUrl" label="Apple Store URL" placeholder="https://" />
-      </div>
-    </div>
-
-    <!-- Role & Details -->
-    <div class="space-y-4">
-      <h3 class="text-lg font-medium text-white">Role & Challenges</h3>
-      <Input v-model="form.role" label="Your Role" placeholder="e.g. Lead Developer" required />
-      <div>
-        <label class="mb-2 block text-sm font-medium text-gray-300">Challenges</label>
-        <textarea
-          v-model="form.challenges"
-          rows="4"
-          required
-          class="w-full rounded-lg border border-white/10 bg-white/5 p-3 text-sm text-white focus:border-[#6d28d9] focus:ring-1 focus:ring-[#6d28d9] focus:outline-none"
-          placeholder="Describe technical challenges..."
-        ></textarea>
-      </div>
-    </div>
-
-    <!-- Arrays (Categories, Technologies, Features) -->
-    <div class="space-y-4">
-      <h3 class="text-lg font-medium text-white">Tags & Features</h3>
-
-      <!-- Categories -->
-      <div>
-        <label class="mb-2 block text-sm font-medium text-gray-300">Categories (Press Enter)</label>
-        <div
-          class="flex flex-wrap gap-2 rounded-lg border border-white/10 bg-white/5 p-2 focus-within:border-[#6d28d9] focus-within:ring-1 focus-within:ring-[#6d28d9]"
-        >
-          <span
-            v-for="(cat, index) in form.categories"
-            :key="index"
-            class="inline-flex items-center rounded bg-[#6d28d9]/20 px-2 py-1 text-xs text-[#d8b4fe]"
-          >
-            {{ cat }}
-            <button
-              type="button"
-              @click="removeArrayItem('categories', index)"
-              class="ml-1 text-[#d8b4fe] hover:text-white"
-            >
-              &times;
-            </button>
-          </span>
+  <form @submit.prevent="handleSubmit" class="wordpress-editor">
+    <div class="editor-grid">
+      <div class="main-content">
+        <div class="title-section">
           <input
-            v-model="newItem.categories"
-            @keydown.enter.prevent="addArrayItem('categories')"
-            class="flex-1 bg-transparent p-1 text-sm text-white outline-none placeholder:text-gray-500"
-            placeholder="Add category..."
+            v-model="form.title"
+            type="text"
+            placeholder="Add project title"
+            required
+            class="title-input"
           />
-        </div>
-      </div>
-
-      <!-- Technologies -->
-      <div>
-        <label class="mb-2 block text-sm font-medium text-gray-300"
-          >Technologies (Press Enter)</label
-        >
-        <div
-          class="flex flex-wrap gap-2 rounded-lg border border-white/10 bg-white/5 p-2 focus-within:border-[#6d28d9] focus-within:ring-1 focus-within:ring-[#6d28d9]"
-        >
-          <span
-            v-for="(tech, index) in form.technologies"
-            :key="index"
-            class="inline-flex items-center rounded bg-blue-500/20 px-2 py-1 text-xs text-blue-300"
-          >
-            {{ tech }}
-            <button
-              type="button"
-              @click="removeArrayItem('technologies', index)"
-              class="ml-1 text-blue-300 hover:text-white"
-            >
-              &times;
-            </button>
-          </span>
-          <input
-            v-model="newItem.technologies"
-            @keydown.enter.prevent="addArrayItem('technologies')"
-            class="flex-1 bg-transparent p-1 text-sm text-white outline-none placeholder:text-gray-500"
-            placeholder="Add technology..."
-          />
-        </div>
-      </div>
-
-      <!-- Features -->
-      <div>
-        <label class="mb-2 block text-sm font-medium text-gray-300">Features (Press Enter)</label>
-        <div
-          class="flex flex-wrap gap-2 rounded-lg border border-white/10 bg-white/5 p-2 focus-within:border-[#6d28d9] focus-within:ring-1 focus-within:ring-[#6d28d9]"
-        >
-          <span
-            v-for="(feat, index) in form.features"
-            :key="index"
-            class="inline-flex items-center rounded bg-green-500/20 px-2 py-1 text-xs text-green-300"
-          >
-            {{ feat }}
-            <button
-              type="button"
-              @click="removeArrayItem('features', index)"
-              class="ml-1 text-green-300 hover:text-white"
-            >
-              &times;
-            </button>
-          </span>
-          <input
-            v-model="newItem.features"
-            @keydown.enter.prevent="addArrayItem('features')"
-            class="flex-1 bg-transparent p-1 text-sm text-white outline-none placeholder:text-gray-500"
-            placeholder="Add feature..."
-          />
-        </div>
-      </div>
-    </div>
-
-    <!-- Media -->
-    <div class="space-y-4">
-      <h3 class="text-lg font-medium text-white">Media</h3>
-
-      <!-- Main Image -->
-      <div>
-        <label class="mb-2 block text-sm font-medium text-gray-300">Main Image</label>
-        <div class="flex items-center gap-4">
-          <div
-            v-if="preview.image"
-            class="h-32 w-48 overflow-hidden rounded-lg border border-white/10"
-          >
-            <img :src="preview.image" class="h-full w-full object-cover" />
-          </div>
-          <div class="flex-1">
+          <div class="year-role-row">
+            <input v-model="form.year" type="text" placeholder="Year" required class="year-input" />
             <input
-              type="file"
-              accept="image/*"
-              @change="handleImageUpload"
-              class="block w-full text-sm text-gray-400 file:mr-4 file:rounded-full file:border-0 file:bg-[#6d28d9]/10 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-[#d8b4fe] hover:file:bg-[#6d28d9]/20"
+              v-model="form.role"
+              type="text"
+              placeholder="Your Role"
+              required
+              class="role-input"
             />
-            <p class="mt-1 text-xs text-gray-500">Recommended: 1920x1080px (16:9)</p>
           </div>
+        </div>
+
+        <div class="content-section">
+          <label class="section-label">Project Description</label>
+          <TiptapEditor
+            v-model="form.detailedDescription"
+            placeholder="Describe your project in detail..."
+          />
+        </div>
+
+        <div class="content-section">
+          <label class="section-label">Challenges & Solutions</label>
+          <TiptapEditor
+            v-model="form.challenges"
+            placeholder="Describe technical challenges and how you solved them..."
+          />
         </div>
       </div>
 
-      <!-- Gallery -->
-      <div>
-        <label class="mb-2 block text-sm font-medium text-gray-300">Gallery Images</label>
-        <div class="mb-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
-          <div
-            v-for="(img, index) in preview.gallery"
-            :key="index"
-            class="group relative aspect-video overflow-hidden rounded-lg border border-white/10"
-          >
-            <img :src="img" class="h-full w-full object-cover" />
-            <button
-              type="button"
-              @click="removeGalleryItem(index)"
-              class="absolute top-1 right-1 rounded-full bg-black/50 p-1 text-white opacity-0 transition-opacity group-hover:opacity-100 hover:bg-red-500"
-            >
-              &times;
-            </button>
+      <div class="sidebar">
+        <div class="sidebar-section publish-box">
+          <h3 class="sidebar-title">Publish</h3>
+          <div class="publish-actions">
+            <Button variant="ghost" text="Cancel" @click="$emit('cancel')" type="button" />
+            <Button
+              variant="primary"
+              :text="isEditing ? 'Update' : 'Publish'"
+              :loading="isLoading"
+              type="submit"
+            />
           </div>
         </div>
-        <input
-          type="file"
-          accept="image/*"
-          multiple
-          @change="handleGalleryUpload"
-          class="block w-full text-sm text-gray-400 file:mr-4 file:rounded-full file:border-0 file:bg-[#6d28d9]/10 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-[#d8b4fe] hover:file:bg-[#6d28d9]/20"
-        />
-      </div>
-    </div>
 
-    <!-- Actions -->
-    <div class="flex justify-end gap-4 border-t border-white/10 pt-6">
-      <Button variant="ghost" text="Cancel" @click="$emit('cancel')" type="button" />
-      <Button
-        variant="primary"
-        :text="isEditing ? 'Save Changes' : 'Create Project'"
-        :loading="isLoading"
-        type="submit"
-      />
+        <div class="sidebar-section">
+          <h3 class="sidebar-title">Links</h3>
+          <div class="links-container">
+            <Input v-model="form.demoUrl" label="Live Demo" placeholder="https://" />
+            <Input v-model="form.codeUrl" label="Source Code" placeholder="https://github.com/" />
+            <Input v-model="form.googlePlayUrl" label="Google Play" placeholder="https://" />
+            <Input v-model="form.appleStoreUrl" label="App Store" placeholder="https://" />
+          </div>
+        </div>
+
+        <div class="sidebar-section">
+          <h3 class="sidebar-title">Technologies</h3>
+          <div class="tags-container">
+            <div class="tag-list">
+              <span v-for="(tech, index) in form.technologies" :key="index" class="tag-item">
+                {{ tech }}
+                <button type="button" @click="removeTech(index)" class="tag-remove">×</button>
+              </span>
+            </div>
+            <input
+              v-model="newTech"
+              @keydown.enter.prevent="addTech"
+              class="tag-input"
+              placeholder="Add technology and press Enter"
+            />
+          </div>
+        </div>
+
+        <div class="sidebar-section">
+          <h3 class="sidebar-title">Categories</h3>
+          <div class="tags-container">
+            <div class="tag-list">
+              <span
+                v-for="(cat, index) in form.categories"
+                :key="index"
+                class="tag-item category-tag"
+              >
+                {{ cat }}
+                <button type="button" @click="removeCategory(index)" class="tag-remove">×</button>
+              </span>
+            </div>
+            <input
+              v-model="newCategory"
+              @keydown.enter.prevent="addCategory"
+              class="tag-input"
+              placeholder="Add category and press Enter"
+            />
+          </div>
+        </div>
+
+        <div class="sidebar-section">
+          <h3 class="sidebar-title">Features</h3>
+          <div class="tags-container">
+            <div class="tag-list">
+              <span
+                v-for="(feat, index) in form.features"
+                :key="index"
+                class="tag-item feature-tag"
+              >
+                {{ feat }}
+                <button type="button" @click="removeFeature(index)" class="tag-remove">×</button>
+              </span>
+            </div>
+            <input
+              v-model="newFeature"
+              @keydown.enter.prevent="addFeature"
+              class="tag-input"
+              placeholder="Add feature and press Enter"
+            />
+          </div>
+        </div>
+
+        <div class="sidebar-section">
+          <h3 class="sidebar-title">Main Image</h3>
+          <div class="featured-image">
+            <div v-if="preview.image" class="image-preview">
+              <img :src="preview.image" alt="Main" class="preview-img" />
+              <button type="button" @click="removeMainImage" class="remove-image">Remove</button>
+            </div>
+            <div v-else class="image-upload">
+              <input
+                type="file"
+                accept="image/*"
+                @change="handleImageUpload"
+                id="main-upload"
+                class="file-input"
+              />
+              <label for="main-upload" class="upload-label">
+                <IconPhoto class="h-8 w-8 text-gray-400" />
+                <span class="upload-text">Upload main image</span>
+                <span class="upload-hint">1920x1080px recommended</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="sidebar-section">
+          <h3 class="sidebar-title">Gallery</h3>
+          <div class="gallery-grid" v-if="preview.gallery.length > 0">
+            <div v-for="(img, index) in preview.gallery" :key="index" class="gallery-item">
+              <img :src="img" alt="Gallery" class="gallery-img" />
+              <button type="button" @click="removeGalleryItem(index)" class="gallery-remove">
+                ×
+              </button>
+            </div>
+          </div>
+          <input
+            type="file"
+            accept="image/*"
+            multiple
+            @change="handleGalleryUpload"
+            id="gallery-upload"
+            class="file-input"
+          />
+          <label for="gallery-upload" class="gallery-upload-btn">
+            <IconPhotoPlus class="h-4 w-4" />
+            <span>Add Images</span>
+          </label>
+        </div>
+      </div>
     </div>
   </form>
 </template>
 
 <script setup lang="ts">
-import { reactive, onMounted } from "vue";
-import Input from "@/components/Input.vue";
+import { reactive, onMounted, ref } from "vue";
+import { IconPhoto, IconPhotoPlus } from "@tabler/icons-vue";
+import TiptapEditor from "@/components/Admin/Shared/TiptapEditor.vue";
 import Button from "@/components/Button.vue";
+import Input from "@/components/Input.vue";
 import type { Project } from "@/interfaces/project";
 
 const props = defineProps<{
@@ -251,46 +215,64 @@ const form = reactive({
   gallery: [] as (File | string)[],
 });
 
-// Helper inputs for array additions
-const newItem = reactive({
-  categories: "",
-  technologies: "",
-  features: "",
-});
+const newCategory = ref("");
+const newTech = ref("");
+const newFeature = ref("");
 
 const preview = reactive({
   image: null as string | null,
   gallery: [] as string[],
 });
 
-// Initialize form if editing
 onMounted(() => {
   if (props.initialData) {
     Object.assign(form, {
       ...props.initialData,
-      // Ensure arrays are arrays
       categories: [...props.initialData.categories],
       technologies: [...props.initialData.technologies],
       features: [...props.initialData.features],
       gallery: [...props.initialData.gallery],
     });
 
-    // Set previews
     preview.image = props.initialData.image;
     preview.gallery = [...props.initialData.gallery];
   }
 });
 
-const addArrayItem = (field: "categories" | "technologies" | "features") => {
-  const value = newItem[field].trim();
-  if (value && !form[field].includes(value)) {
-    form[field].push(value);
-    newItem[field] = "";
+const addCategory = () => {
+  const value = newCategory.value.trim();
+  if (value && !form.categories.includes(value)) {
+    form.categories.push(value);
+    newCategory.value = "";
   }
 };
 
-const removeArrayItem = (field: "categories" | "technologies" | "features", index: number) => {
-  form[field].splice(index, 1);
+const removeCategory = (index: number) => {
+  form.categories.splice(index, 1);
+};
+
+const addTech = () => {
+  const value = newTech.value.trim();
+  if (value && !form.technologies.includes(value)) {
+    form.technologies.push(value);
+    newTech.value = "";
+  }
+};
+
+const removeTech = (index: number) => {
+  form.technologies.splice(index, 1);
+};
+
+const addFeature = () => {
+  const value = newFeature.value.trim();
+  if (value && !form.features.includes(value)) {
+    form.features.push(value);
+    newFeature.value = "";
+  }
+};
+
+const removeFeature = (index: number) => {
+  form.features.splice(index, 1);
 };
 
 const handleImageUpload = (event: Event) => {
@@ -300,6 +282,11 @@ const handleImageUpload = (event: Event) => {
     form.image = file;
     preview.image = URL.createObjectURL(file);
   }
+};
+
+const removeMainImage = () => {
+  form.image = null;
+  preview.image = null;
 };
 
 const handleGalleryUpload = (event: Event) => {
@@ -318,8 +305,363 @@ const removeGalleryItem = (index: number) => {
 };
 
 const handleSubmit = () => {
-  // Clone and prepare payload
+  if (!form.description && form.detailedDescription) {
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = form.detailedDescription;
+    const textContent = tempDiv.textContent || tempDiv.innerText || "";
+    form.description = textContent.substring(0, 160) + (textContent.length > 160 ? "..." : "");
+  }
+
   const payload = { ...form };
   emit("submit", payload);
 };
 </script>
+
+<style>
+.wordpress-editor {
+  min-height: 100vh;
+}
+
+.editor-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+  .editor-grid {
+    grid-template-columns: 1fr 320px;
+  }
+}
+
+.main-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.title-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: #1e1e1e;
+  padding: 1.5rem;
+}
+
+.title-input {
+  width: 100%;
+  border: none;
+  background-color: transparent;
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  font-weight: 700;
+  color: white;
+  outline: none;
+}
+
+.title-input::placeholder {
+  color: rgb(107, 114, 128);
+}
+
+.year-role-row {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.year-input,
+.role-input {
+  border-radius: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: white;
+  outline: none;
+}
+
+.year-input::placeholder,
+.role-input::placeholder {
+  color: rgb(107, 114, 128);
+}
+
+.year-input:focus,
+.role-input:focus {
+  border-color: #6d28d9;
+  --tw-ring-shadow: 0 0 0 1px #6d28d9;
+  box-shadow: var(--tw-ring-shadow);
+}
+
+.year-input {
+  width: 6rem;
+}
+
+.role-input {
+  flex: 1;
+}
+
+.content-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: #1e1e1e;
+  padding: 1.5rem;
+}
+
+.section-label {
+  display: block;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 600;
+  color: white;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.sidebar-section {
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: #1e1e1e;
+  padding: 1rem;
+}
+
+.publish-box {
+  position: sticky;
+  top: 1rem;
+}
+
+.sidebar-title {
+  margin-bottom: 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 600;
+  color: white;
+}
+
+.publish-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.links-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.tags-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tag-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  border-radius: 9999px;
+  background-color: rgba(59, 130, 246, 0.2);
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: rgb(147, 197, 253);
+}
+
+.category-tag {
+  background-color: rgba(109, 40, 217, 0.2);
+  color: rgb(216, 180, 254);
+}
+
+.feature-tag {
+  background-color: rgba(34, 197, 94, 0.2);
+  color: rgb(134, 239, 172);
+}
+
+.tag-remove {
+  color: currentColor;
+}
+
+.tag-remove:hover {
+  color: white;
+}
+
+.tag-input {
+  width: 100%;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: white;
+  outline: none;
+}
+
+.tag-input::placeholder {
+  color: rgb(107, 114, 128);
+}
+
+.tag-input:focus {
+  border-color: #6d28d9;
+  --tw-ring-shadow: 0 0 0 1px #6d28d9;
+  box-shadow: var(--tw-ring-shadow);
+}
+
+.featured-image {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.image-preview {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.5rem;
+}
+
+.preview-img {
+  height: 12rem;
+  width: 100%;
+  object-fit: cover;
+}
+
+.remove-image {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  border-radius: 0.25rem;
+  background-color: rgb(239, 68, 68);
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: white;
+  transition-property: background-color;
+  transition-duration: 150ms;
+}
+
+.remove-image:hover {
+  background-color: rgb(220, 38, 38);
+}
+
+.image-upload {
+  position: relative;
+}
+
+.file-input {
+  display: none;
+}
+
+.upload-label {
+  display: flex;
+  height: 12rem;
+  cursor: pointer;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  border: 2px dashed rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.05);
+  transition-property: color, background-color, border-color;
+  transition-duration: 150ms;
+}
+
+.upload-label:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.upload-text {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  color: white;
+}
+
+.upload-hint {
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: rgb(107, 114, 128);
+}
+
+.gallery-grid {
+  margin-bottom: 0.75rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+}
+
+.gallery-item {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 0.5rem;
+}
+
+.gallery-img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.gallery-remove {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.25rem;
+  border-radius: 9999px;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding-left: 0.375rem;
+  padding-right: 0.375rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: white;
+  opacity: 0;
+  transition-property: opacity;
+  transition-duration: 150ms;
+}
+
+.gallery-item:hover .gallery-remove {
+  opacity: 1;
+}
+
+.gallery-remove:hover {
+  background-color: rgb(239, 68, 68);
+}
+
+.gallery-upload-btn {
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: white;
+  transition-property: color, background-color, border-color;
+  transition-duration: 150ms;
+}
+
+.gallery-upload-btn:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.1);
+}
+</style>
