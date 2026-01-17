@@ -10,15 +10,10 @@ class CommentService {
   /**
    * Get comments with optional filters
    */
-  async getComments(
-    params?: CommentsQueryParams
-  ): Promise<PaginatedData<Comment> & { comments: Comment[] }> {
-    const response = await api.get<ApiResponse<PaginatedData<Comment> & { comments: Comment[] }>>(
-      "/comments",
-      {
-        params,
-      }
-    );
+  async getComments(params?: CommentsQueryParams): Promise<PaginatedData<Comment>> {
+    const response = await api.get<ApiResponse<PaginatedData<Comment>>>("/comments", {
+      params,
+    });
     return response.data.data;
   }
 

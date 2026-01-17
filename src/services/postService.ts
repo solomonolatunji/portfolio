@@ -15,8 +15,8 @@ class PostService {
   /**
    * Get public posts with optional filters
    */
-  async getPosts(params?: PostsQueryParams): Promise<PaginatedData<Post> & { posts: Post[] }> {
-    const response = await api.get<ApiResponse<PaginatedData<Post> & { posts: Post[] }>>("/posts", {
+  async getPosts(params?: PostsQueryParams): Promise<PaginatedData<Post>> {
+    const response = await api.get<ApiResponse<PaginatedData<Post>>>("/posts", {
       params,
     });
     return response.data.data;

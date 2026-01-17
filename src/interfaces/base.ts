@@ -34,12 +34,8 @@ export interface PaginationMeta {
  * Paginated response data wrapper
  */
 export interface PaginatedData<T> {
-  [key: string]: T[] | number | boolean | number | undefined;
-  total: number;
-  pages: number;
-  hasNext: boolean;
-  hasPrev: boolean;
-  nextPage?: number;
+  data: T[];
+  meta: PaginationMeta;
 }
 
 /**

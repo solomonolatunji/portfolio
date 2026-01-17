@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import type { Comment, CommentState } from "@/interfaces/comment";
+import type { PaginatedData } from "@/interfaces/base";
 
 /**
  * Comments Store
@@ -47,21 +48,13 @@ export const useCommentStore = defineStore("comment", {
     /**
      * Set comments with pagination metadata
      */
-    setComments(data: {
-      comments: Comment[];
-      total: number;
-      pages: number;
-      hasNext: boolean;
-      hasPrev: boolean;
-      nextPage?: number;
-      currentPage?: number;
-    }): void {
-      this.comments = data.comments;
-      this.total = data.total;
-      this.pages = data.pages;
-      this.hasNext = data.hasNext;
-      this.hasPrev = data.hasPrev;
-      this.currentPage = data.currentPage || 1;
+    setComments(data: PaginatedData<Comment>): void {
+      this.comments = data.data;
+      this.total = data.meta.total;
+      this.pages = data.meta.totalPages;
+      this.hasNext = data.meta.hasNext;
+      this.hasPrev = data.meta.hasPrev;
+      this.currentPage = data.meta.page;
     },
 
     /**

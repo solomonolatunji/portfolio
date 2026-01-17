@@ -4,8 +4,9 @@ import type { PaginationMeta } from "@/interfaces/base";
 /**
  * Users list response structure
  */
-export interface UsersListResponse extends PaginationMeta {
-  users: User[];
+export interface UsersListResponse {
+  data: User[];
+  meta: PaginationMeta;
 }
 
 /**

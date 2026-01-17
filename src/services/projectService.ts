@@ -15,15 +15,10 @@ class ProjectService {
   /**
    * Get all projects with optional filters
    */
-  async getProjects(
-    params?: ProjectsQueryParams
-  ): Promise<PaginatedData<Project> & { projects: Project[] }> {
-    const response = await api.get<ApiResponse<PaginatedData<Project> & { projects: Project[] }>>(
-      "/projects",
-      {
-        params,
-      }
-    );
+  async getProjects(params?: ProjectsQueryParams): Promise<PaginatedData<Project>> {
+    const response = await api.get<ApiResponse<PaginatedData<Project>>>("/projects", {
+      params,
+    });
     return response.data.data;
   }
 

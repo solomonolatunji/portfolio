@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import type { Project, ProjectState } from "@/interfaces/project";
+import type { PaginatedData } from "@/interfaces/base";
 
 /**
  * Projects Store
@@ -97,21 +98,13 @@ export const useProjectStore = defineStore("project", {
     /**
      * Set projects with pagination metadata
      */
-    setProjects(data: {
-      projects: Project[];
-      total: number;
-      pages: number;
-      hasNext: boolean;
-      hasPrev: boolean;
-      nextPage?: number;
-      currentPage?: number;
-    }): void {
-      this.projects = data.projects;
-      this.total = data.total;
-      this.pages = data.pages;
-      this.hasNext = data.hasNext;
-      this.hasPrev = data.hasPrev;
-      this.currentPage = data.currentPage || 1;
+    setProjects(data: PaginatedData<Project>): void {
+      this.projects = data.data;
+      this.total = data.meta.total;
+      this.pages = data.meta.totalPages;
+      this.hasNext = data.meta.hasNext;
+      this.hasPrev = data.meta.hasPrev;
+      this.currentPage = data.meta.page;
     },
 
     /**

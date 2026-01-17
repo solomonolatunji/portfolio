@@ -66,12 +66,12 @@ export const useUserStore = defineStore("user", {
      * Set users with pagination metadata
      */
     setUsers(data: UsersListResponse): void {
-      this.users = data.users;
-      this.total = data.total;
-      this.pages = data.totalPages;
-      this.currentPage = data.page;
-      this.hasNext = data.hasNext;
-      this.hasPrev = data.hasPrev;
+      this.users = data.data;
+      this.total = data.meta.total;
+      this.pages = data.meta.totalPages;
+      this.currentPage = data.meta.page;
+      this.hasNext = data.meta.hasNext;
+      this.hasPrev = data.meta.hasPrev;
     },
 
     /**

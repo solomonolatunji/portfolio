@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import type { Post, PostState } from "@/interfaces/post";
+import type { PaginatedData } from "@/interfaces/base";
 
 /**
  * Posts Store
@@ -55,19 +56,12 @@ export const usePostStore = defineStore("post", {
     /**
      * Set posts with pagination metadata
      */
-    setPosts(data: {
-      posts: Post[];
-      total: number;
-      pages: number;
-      hasNext: boolean;
-      hasPrev: boolean;
-      nextPage?: number;
-    }): void {
-      this.posts = data.posts;
-      this.total = data.total;
-      this.pages = data.pages;
-      this.hasNext = data.hasNext;
-      this.hasPrev = data.hasPrev;
+    setPosts(data: PaginatedData<Post>): void {
+      this.posts = data.data;
+      this.total = data.meta.total;
+      this.pages = data.meta.totalPages;
+      this.hasNext = data.meta.hasNext;
+      this.hasPrev = data.meta.hasPrev;
     },
 
     /**
