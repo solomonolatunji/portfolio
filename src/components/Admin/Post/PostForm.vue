@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="handleSubmit" class="space-y-8 pb-12">
+  <form @submit.prevent="handleSubmit" class="space-y-6 pb-12">
     <!-- Header Area -->
     <div class="flex items-center justify-between">
       <div>
@@ -23,12 +23,12 @@
     </div>
 
     <!-- Main Grid -->
-    <div class="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_350px]">
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_350px]">
       <!-- Left Column: Content -->
       <div class="space-y-6">
         <!-- Title Input Card -->
         <div
-          class="group relative rounded-3xl border border-white/10 bg-white/5 p-1 transition-all hover:border-white/20"
+          class="group relative rounded-2xl border border-white/5 bg-white/5 p-1 transition-all hover:border-white/20"
         >
           <div class="p-6">
             <input
@@ -42,9 +42,70 @@
         </div>
 
         <!-- Editor Card -->
-        <div class="overflow-hidden rounded-3xl border border-white/10 bg-white/5">
-          <div class="p-1">
-            <TiptapEditor v-model="form.content" placeholder="Start writing something amazing..." />
+        <div class="overflow-hidden rounded-2xl border border-white/5 bg-white/5">
+          <div class="p-6">
+            <textarea
+              v-model="form.content"
+              placeholder="Start writing something amazing (HTML supported)..."
+              class="min-h-[300px] w-full resize-y border-none bg-transparent text-lg leading-relaxed text-gray-200 placeholder-white/10 outline-none focus:ring-0"
+            ></textarea>
+          </div>
+        </div>
+
+        <!-- Categories Card -->
+        <div class="rounded-2xl border border-white/5 bg-white/5 p-6">
+          <h3 class="mb-6 text-sm font-semibold tracking-wider text-gray-400 uppercase">
+            Categories
+          </h3>
+
+          <div class="space-y-2 pr-2">
+            <div v-if="loadingCategories" class="flex items-center justify-center py-4">
+              <div
+                class="h-5 w-5 animate-spin rounded-full border-2 border-purple-500 border-t-transparent"
+              ></div>
+            </div>
+            <div
+              v-else-if="availableCategories.length === 0"
+              class="py-4 text-center text-sm text-gray-500"
+            >
+              No categories found.
+            </div>
+            <div v-else class="flex flex-wrap gap-3">
+              <label
+                v-for="category in availableCategories"
+                :key="category.id"
+                class="group flex cursor-pointer items-center rounded-2xl border border-white/5 bg-white/5 px-4 py-2 transition-all hover:border-purple-500/30 hover:bg-purple-500/5"
+                :class="{
+                  'border-purple-500/50 bg-purple-500/10': form.categories.includes(category.id),
+                }"
+              >
+                <div class="relative flex h-5 w-5 items-center justify-center">
+                  <input
+                    type="checkbox"
+                    :value="category.id"
+                    :checked="form.categories.includes(category.id)"
+                    @change="toggleCategory(category.id)"
+                    class="peer h-5 w-5 cursor-pointer appearance-none rounded-lg border border-white/10 bg-white/5 transition-all checked:border-purple-600 checked:bg-purple-600"
+                  />
+                  <svg
+                    class="pointer-events-none absolute h-3 w-3 text-white opacity-0 transition-opacity peer-checked:opacity-100"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="3"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                </div>
+                <span class="ml-3 text-sm text-gray-300 transition-colors group-hover:text-white">{{
+                  category.name
+                }}</span>
+              </label>
+            </div>
           </div>
         </div>
       </div>
@@ -52,7 +113,7 @@
       <!-- Right Column: Sidebar -->
       <div class="space-y-6">
         <!-- Publish Widget -->
-        <div class="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
+        <div class="rounded-2xl border border-white/5 bg-white/5 p-6 backdrop-blur-xl">
           <h3 class="mb-6 text-sm font-semibold tracking-wider text-gray-400 uppercase">
             Status & Visibility
           </h3>
@@ -87,61 +148,8 @@
           </div>
         </div>
 
-        <!-- Categories Widget -->
-        <div class="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
-          <h3 class="mb-6 text-sm font-semibold tracking-wider text-gray-400 uppercase">
-            Categories
-          </h3>
-
-          <div class="custom-scrollbar max-h-48 space-y-2 overflow-y-auto pr-2">
-            <div v-if="loadingCategories" class="flex items-center justify-center py-4">
-              <div
-                class="h-5 w-5 animate-spin rounded-full border-2 border-purple-500 border-t-transparent"
-              ></div>
-            </div>
-            <div
-              v-else-if="availableCategories.length === 0"
-              class="py-4 text-center text-sm text-gray-500"
-            >
-              No categories found.
-            </div>
-            <label
-              v-else
-              v-for="category in availableCategories"
-              :key="category.id"
-              class="group flex cursor-pointer items-center rounded-xl p-2 transition-colors hover:bg-white/5"
-            >
-              <div class="relative flex h-5 w-5 items-center justify-center">
-                <input
-                  type="checkbox"
-                  :value="category.id"
-                  :checked="form.categories.includes(category.id)"
-                  @change="toggleCategory(category.id)"
-                  class="peer h-5 w-5 cursor-pointer appearance-none rounded-lg border border-white/10 bg-white/5 transition-all checked:border-purple-600 checked:bg-purple-600"
-                />
-                <svg
-                  class="pointer-events-none absolute h-3 w-3 text-white opacity-0 transition-opacity peer-checked:opacity-100"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="3"
-                    d="M5 13l4 4L19 7"
-                  />
-                </svg>
-              </div>
-              <span class="ml-3 text-sm text-gray-300 transition-colors group-hover:text-white">{{
-                category.name
-              }}</span>
-            </label>
-          </div>
-        </div>
-
         <!-- Tags Widget -->
-        <div class="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
+        <div class="rounded-2xl border border-white/5 bg-white/5 p-6 backdrop-blur-xl">
           <h3 class="mb-6 text-sm font-semibold tracking-wider text-gray-400 uppercase">Tags</h3>
 
           <div class="space-y-4">
@@ -149,7 +157,7 @@
               v-model="newTag"
               placeholder="Press Enter to add tags..."
               @keydown.enter.prevent="addTag"
-              class="border-white/10! bg-white/5! shadow-none focus:border-purple-500/50!"
+              class="border-white/5! bg-transparent! shadow-none focus:border-purple-500/50!"
             />
 
             <div class="flex flex-wrap gap-2">
@@ -172,7 +180,7 @@
         </div>
 
         <!-- Featured Image Widget -->
-        <div class="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
+        <div class="rounded-2xl border border-white/5 bg-white/5 p-6 backdrop-blur-xl">
           <h3 class="mb-6 text-sm font-semibold tracking-wider text-gray-400 uppercase">
             Cover Image
           </h3>
@@ -243,7 +251,6 @@
 import { reactive, onMounted, ref } from "vue";
 import { useCategory } from "@/hooks/useCategory";
 import { IconPhoto, IconX, IconTrash } from "@tabler/icons-vue";
-import TiptapEditor from "@/components/Admin/Shared/TiptapEditor.vue";
 import Button from "@/components/Button.vue";
 import Input from "@/components/Input.vue";
 import type { Post } from "@/interfaces/post";

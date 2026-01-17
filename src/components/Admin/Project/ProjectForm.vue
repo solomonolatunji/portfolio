@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="handleSubmit" class="space-y-8 pb-12">
+  <form @submit.prevent="handleSubmit" class="space-y-6 pb-12">
     <!-- Header Area -->
     <div class="flex items-center justify-between">
       <div>
@@ -25,12 +25,12 @@
     </div>
 
     <!-- Main Grid -->
-    <div class="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_360px]">
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_360px]">
       <!-- Left Column: Primary Info -->
-      <div class="space-y-8">
+      <div class="space-y-6">
         <!-- Title & Basic Info Card -->
         <div
-          class="space-y-8 rounded-3xl border border-white/10 bg-white/5 p-8 transition-all hover:border-white/20"
+          class="space-y-6 rounded-2xl border border-white/5 bg-white/5 p-6 transition-all hover:border-white/20"
         >
           <div class="space-y-2">
             <label class="text-xs font-semibold tracking-widest text-gray-500 uppercase"
@@ -51,49 +51,49 @@
               label="Development Year"
               placeholder="e.g. 2024"
               required
-              class="border-white/10! bg-white/5!"
+              class="border-white/5! bg-transparent!"
             />
             <Input
               v-model="form.role"
               label="Your Role"
               placeholder="e.g. Lead Developer"
               required
-              class="border-white/10! bg-white/5!"
+              class="border-white/5! bg-transparent!"
             />
           </div>
         </div>
 
         <!-- Detailed Content Cards -->
         <div class="space-y-6">
-          <div class="overflow-hidden rounded-3xl border border-white/10 bg-white/5">
+          <div class="overflow-hidden rounded-2xl border border-white/5 bg-white/5">
             <div class="border-b border-white/10 bg-white/5 p-6">
               <h3 class="text-sm font-semibold tracking-wider text-white uppercase">
                 Project Story
               </h3>
               <p class="mt-1 text-xs text-gray-400">Deep dive into what this project is about.</p>
             </div>
-            <div class="p-2">
-              <TiptapEditor
+            <div class="p-6">
+              <textarea
                 v-model="form.detailedDescription"
-                placeholder="Write the narrative of this project..."
-                class="min-h-[400px]"
-              />
+                placeholder="Write the narrative of this project (HTML supported)..."
+                class="min-h-[200px] w-full resize-y border-none bg-transparent text-lg leading-relaxed text-gray-200 placeholder-white/10 outline-none focus:ring-0"
+              ></textarea>
             </div>
           </div>
 
-          <div class="overflow-hidden rounded-3xl border border-white/10 bg-white/5">
-            <div class="border-b border-white/10 bg-white/5 p-6">
+          <div class="overflow-hidden rounded-2xl border border-white/5 bg-white/5">
+            <div class="border-b border-white/5 bg-white/5 p-6">
               <h3 class="text-sm font-semibold tracking-wider text-white uppercase">
                 Challenges & Solutions
               </h3>
               <p class="mt-1 text-xs text-gray-400">What technical hurdles did you overcome?</p>
             </div>
-            <div class="p-2">
-              <TiptapEditor
+            <div class="p-6">
+              <textarea
                 v-model="form.challenges"
-                placeholder="Detail the technical milestones..."
-                class="min-h-[300px]"
-              />
+                placeholder="Detail the technical milestones (HTML supported)..."
+                class="min-h-[200px] w-full resize-y border-none bg-transparent text-lg leading-relaxed text-gray-200 placeholder-white/10 outline-none focus:ring-0"
+              ></textarea>
             </div>
           </div>
         </div>
@@ -104,7 +104,7 @@
         <!-- Project Assets (Sidebar) -->
 
         <!-- Links Section -->
-        <div class="space-y-6 rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
+        <div class="space-y-6 rounded-2xl border border-white/5 bg-white/5 p-6 backdrop-blur-xl">
           <h3 class="mb-2 text-sm font-semibold tracking-wider text-gray-400 uppercase">
             Platform & Links
           </h3>
@@ -113,31 +113,31 @@
               v-model="form.demoUrl"
               label="Live Preview"
               placeholder="https://"
-              class="border-white/10! bg-white/5!"
+              class="border-white/5! bg-transparent!"
             />
             <Input
               v-model="form.codeUrl"
               label="Source Repository"
               placeholder="https://"
-              class="border-white/10! bg-white/5!"
+              class="border-white/5! bg-transparent!"
             />
             <Input
               v-model="form.googlePlayUrl"
               label="Play Store"
               placeholder="https://"
-              class="border-white/10! bg-white/5!"
+              class="border-white/5! bg-transparent!"
             />
             <Input
               v-model="form.appleStoreUrl"
               label="App Store"
               placeholder="https://"
-              class="border-white/10! bg-white/5!"
+              class="border-white/5! bg-transparent!"
             />
           </div>
         </div>
 
         <!-- Taxonomies (Tech, Categories, Features) -->
-        <div class="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
+        <div class="rounded-2xl border border-white/5 bg-white/5 p-6 backdrop-blur-xl">
           <h3 class="mb-6 text-sm font-semibold tracking-wider text-gray-400 uppercase">
             Technologies
           </h3>
@@ -146,7 +146,7 @@
               v-model="newTech"
               placeholder="Press Enter to add tech..."
               @keydown.enter.prevent="addTech"
-              class="border-white/10! bg-white/5! shadow-none focus:border-blue-500/50!"
+              class="border-white/5! bg-transparent! shadow-none focus:border-blue-500/50!"
             />
             <div class="flex flex-wrap gap-2">
               <span
@@ -173,7 +173,7 @@
               v-model="newCategory"
               placeholder="Add category..."
               @keydown.enter.prevent="addCategory"
-              class="border-white/10! bg-white/5! shadow-none focus:border-purple-500/50!"
+              class="border-white/5! bg-transparent! shadow-none focus:border-purple-500/50!"
             />
             <div class="flex flex-wrap gap-2">
               <span
@@ -194,7 +194,7 @@
         </div>
 
         <!-- Features Widget -->
-        <div class="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
+        <div class="rounded-2xl border border-white/5 bg-white/5 p-6 backdrop-blur-xl">
           <h3 class="mb-6 text-sm font-semibold tracking-wider text-gray-400 uppercase">
             Key Features
           </h3>
@@ -203,7 +203,7 @@
               v-model="newFeature"
               placeholder="Add a standout feature..."
               @keydown.enter.prevent="addFeature"
-              class="border-white/10! bg-white/5! shadow-none focus:border-green-500/50!"
+              class="border-white/5! bg-transparent! shadow-none focus:border-green-500/50!"
             />
             <div class="flex flex-wrap gap-2">
               <span
@@ -224,7 +224,7 @@
         </div>
 
         <!-- Visuals -->
-        <div class="space-y-8 rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
+        <div class="space-y-6 rounded-2xl border border-white/5 bg-white/5 p-6 backdrop-blur-xl">
           <h3 class="mb-2 text-sm font-semibold tracking-wider text-gray-400 uppercase">
             Media Assets
           </h3>
@@ -311,7 +311,6 @@
 <script setup lang="ts">
 import { reactive, onMounted, ref } from "vue";
 import { IconPhoto, IconPhotoPlus, IconX, IconTrash } from "@tabler/icons-vue";
-import TiptapEditor from "@/components/Admin/Shared/TiptapEditor.vue";
 import Button from "@/components/Button.vue";
 import Input from "@/components/Input.vue";
 import type { Project } from "@/interfaces/project";
