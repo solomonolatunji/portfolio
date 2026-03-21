@@ -7,6 +7,20 @@ import kulipalImg from "@/assets/images/kulipal.png";
 import xdriveImg from "@/assets/images/xdrive.jpg";
 import devpulseImg from "@/assets/images/devpulse.jpg";
 
+const projectImportanceOrder: Record<string, number> = {
+  "1": 1, // TakeNTrade
+  "11": 2, // DevPulse
+  "6": 3, // Tickvo
+  "8": 4, // Tercescrow
+  "9": 5, // Kulipal
+  "10": 6, // XDrive
+  "2": 7, // Estudylab
+  "3": 8, // Martsity
+  "4": 9, // Learnmonie
+  "5": 10, // Kinpeak
+  "7": 11, // Econnect
+};
+
 export const projects: Project[] = [
   {
     id: "1",
@@ -346,4 +360,8 @@ export const projects: Project[] = [
       "A key challenge was presenting dense WakaTime analytics in a compact, readable mobile UI while keeping data refreshes fast and reliable. This was addressed with streamlined dashboard design and efficient API data handling.",
     gallery: [devpulseImg],
   },
-];
+].sort((a, b) => {
+  const rankA = projectImportanceOrder[a.id] ?? Number.MAX_SAFE_INTEGER;
+  const rankB = projectImportanceOrder[b.id] ?? Number.MAX_SAFE_INTEGER;
+  return rankA - rankB;
+}) as Project[];
