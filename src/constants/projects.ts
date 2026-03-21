@@ -5,6 +5,7 @@ import tickvoImg from "@/assets/images/tickvo.png";
 import tercescrowImg from "@/assets/images/tercescrow.jpg";
 import kulipalImg from "@/assets/images/kulipal.png";
 import xdriveImg from "@/assets/images/xdrive.jpg";
+import devpulseImg from "@/assets/images/devpulse.jpg";
 
 export const projects: Project[] = [
   {
@@ -318,5 +319,31 @@ export const projects: Project[] = [
       "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
       "https://images.unsplash.com/photo-1503376763036-066120622c74?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
     ],
+  },
+  {
+    id: "11",
+    title: "DevPulse",
+    description:
+      "An Android WakaTime client that helps developers track coding activity, daily goals, and project-level insights from their WakaTime data.",
+    detailedDescription:
+      "DevPulse is a native Android companion for WakaTime users, designed to make coding stats easy to understand on mobile. It surfaces daily and weekly coding activity, project breakdowns, and language usage with a clean, focused interface so developers can monitor productivity anywhere.",
+    image: devpulseImg,
+    year: "2026",
+    category: "mobile",
+    technologies: ["Android", "Kotlin", "WakaTime API"],
+    demoUrl: "https://wakatime.com/",
+    googlePlayUrl: "https://play.google.com/store/apps/details?id=com.techx.devpulse&hl=en",
+    codeUrl: "https://github.com/eminisolomon",
+    features: [
+      "Daily coding activity overview from WakaTime",
+      "Project and language usage breakdowns",
+      "Coding streak and productivity tracking",
+      "Mobile-first dashboard for quick insights",
+      "Secure connection to WakaTime account data",
+    ],
+    role: "Android developer responsible for building the mobile client experience and integrating WakaTime data into clear, actionable productivity views.",
+    challenges:
+      "A key challenge was presenting dense WakaTime analytics in a compact, readable mobile UI while keeping data refreshes fast and reliable. This was addressed with streamlined dashboard design and efficient API data handling.",
+    gallery: [devpulseImg],
   },
 ];
