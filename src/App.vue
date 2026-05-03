@@ -10,7 +10,7 @@ import WhatsAppIcon from "@/components/icons/WhatsAppIcon.vue";
 import XIcon from "@/components/icons/XIcon.vue";
 import { projects } from "@/constants/projects";
 
-document.title = "Solomon Olatunji | Portfolio";
+document.title = "Akinlabi Olatunji | Portfolio";
 
 const categoryLabels: Record<string, string> = {
   web: "Web",

@@ -1,10 +1,7 @@
 {
-  "name": "Solomon Olatunji",
-  "short_name": "Solomon",
-  "icons": [
-    { "src": "/android-chrome-192x192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "/android-chrome-512x512.png", "sizes": "512x512", "type": "image/png" }
-  ],
+  "name": "Akinlabi Olatunji",
+  "short_name": "Akinlabi",
+  "icons": [{ "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }],
   "theme_color": "#09111f",
   "background_color": "#09111f",
   "display": "standalone"

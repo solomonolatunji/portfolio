@@ -3,8 +3,8 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "author": "Solomon Olatunji",
-  "description": "Solomon Olatunji's personal portfolio website",
+  "author": "Akinlabi Olatunji",
+  "description": "Akinlabi Olatunji's personal portfolio website",
   "email": "me@solomonolatunji.com",
   "scripts": {
     "dev": "vite",

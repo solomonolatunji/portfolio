@@ -1,5 +1,5 @@
 export const aboutData = {
-  name: "SOLOMON OLATUNJI",
+  name: "AKINLABI OLATUNJI",
   description:
     "Software engineer building clean, useful web and mobile products across fintech, commerce, education, and developer tooling.",
 };
