@@ -40,6 +40,12 @@ const projectLinkIcons = {
         <p class="eyebrow">Portfolio</p>
         <h1>{{ aboutData.name }}</h1>
         <p class="summary">{{ aboutData.description }}</p>
+        <p class="hero-support">
+          I build products end-to-end, from mobile clients and frontends to backend systems that
+          need to ship and hold up in production.
+        </p>
+
+        <a class="hero-cta" href="#projects">View Projects</a>
 
         <div class="contact-row" aria-label="Profile links">
           <a
@@ -58,18 +64,23 @@ const projectLinkIcons = {
       </div>
     </section>
 
-    <section class="projects-section">
+    <section id="projects" class="projects-section">
       <div class="section-heading">
         <p class="eyebrow">Selected Work</p>
         <h2>Projects</h2>
         <p class="section-copy">
-          Product and engineering work across fintech, mobile apps, education, commerce, and
-          internal tools.
+          A focused selection up front, with the full project list still available below when you
+          want to browse everything.
         </p>
       </div>
 
       <div class="projects-grid">
-        <article v-for="project in projects" :key="project.id" class="project-card">
+        <article
+          v-for="project in projects"
+          :key="project.id"
+          class="project-card"
+          :class="{ 'project-card-featured': project.featured }"
+        >
           <div class="project-meta">
             <span class="project-category">
               {{ categoryLabels[project.category] ?? project.category }}
@@ -78,7 +89,10 @@ const projectLinkIcons = {
           </div>
 
           <div class="project-body">
-            <h3>{{ project.title }}</h3>
+            <div class="project-heading">
+              <h3>{{ project.title }}</h3>
+              <span v-if="project.featured" class="featured-badge">Featured</span>
+            </div>
             <p>{{ project.description }}</p>
           </div>
 

@@ -1,7 +1,6 @@
 export const aboutData = {
   name: "AKINLABI OLATUNJI",
-  description:
-    "Software engineer building clean, useful web and mobile products across fintech, commerce, education, and developer tooling.",
+  description: "Software engineer building production-ready web and mobile products.",
 };
 
 export const profileLinks = [
@@ -13,8 +12,8 @@ export const profileLinks = [
   },
   {
     label: "Email",
-    value: "me@solomonolatunji.com",
-    href: "mailto:me@solomonolatunji.com",
+    value: "iamsolomonolatunj@gmail.com",
+    href: "mailto:iamsolomonolatunj@gmail.com",
     icon: "email",
   },
   {

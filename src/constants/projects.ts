@@ -6,8 +6,9 @@ export const projects: Project[] = [
     title: "DevPulse",
     year: "2026",
     category: "mobile",
+    featured: true,
     description:
-      "A React Native and Expo mobile client for WakaTime with focused coding stats, streak tracking, and project-level insight.",
+      "Built the React Native and Expo client for WakaTime users, turning coding activity into clearer daily, weekly, and project-level mobile insight.",
     technologies: ["React Native", "Expo", "TypeScript", "WakaTime API"],
     links: [
       {
@@ -25,8 +26,9 @@ export const projects: Project[] = [
     title: "TakeNTrade",
     year: "2024",
     category: "mobile",
+    featured: true,
     description:
-      "A fintech product for airtime, data, electricity, transfers, savings, loans, and investments across web and mobile.",
+      "Built across web, mobile, and backend to help users handle payments, savings, loans, and investments from one fintech product.",
     technologies: ["React", "React Native", "NestJS", "TypeScript", "PostgreSQL"],
     links: [
       { label: "Live", href: "https://takentrade.com" },
@@ -46,13 +48,13 @@ export const projects: Project[] = [
     year: "2025",
     category: "mobile",
     description:
-      "A vehicle marketplace with a customer-facing mobile app and a Laravel backend for listings, search, and real-time updates.",
+      "Built the mobile app and backend stack for a vehicle marketplace, making listings, search, and real-time updates work reliably across platforms.",
     technologies: ["React Native", "Expo", "TypeScript", "Laravel", "MySQL", "WebSockets"],
     links: [
       { label: "Live", href: "https://www.xdriveautos.com" },
       {
-        label: "Android Build",
-        href: "https://expo.dev/accounts/realsolomon/projects/xdrive/builds/12326bd6-ca28-4299-b67a-8881b2f544b8",
+        label: "Google Play",
+        href: "https://play.google.com/store/apps/details?id=com.xdrive.app",
       },
     ],
   },
@@ -62,7 +64,7 @@ export const projects: Project[] = [
     year: "2025",
     category: "mobile",
     description:
-      "A gift card and crypto trading app focused on quick settlements, secure transactions, and a smooth mobile experience.",
+      "Built the mobile trading experience for gift cards and crypto, improving transaction speed, trust, and day-to-day usability for users.",
     technologies: ["React Native", "TypeScript", "Node.js", "Express", "MongoDB"],
     links: [
       { label: "Live", href: "https://tercescrow.com" },
@@ -82,7 +84,7 @@ export const projects: Project[] = [
     year: "2025",
     category: "web",
     description:
-      "An event platform for contests, awards, causes, ticketing, and audience engagement with strong operations tooling.",
+      "Built the event operations platform for contests, awards, causes, and ticketing, giving organizers stronger control over engagement and workflows.",
     technologies: ["Laravel", "React", "Tailwind CSS", "PostgreSQL"],
     links: [{ label: "Live", href: "https://tickvo.com/" }],
   },
@@ -92,7 +94,7 @@ export const projects: Project[] = [
     year: "2025",
     category: "mobile",
     description:
-      "A lifestyle app for food ordering, bookings, rentals, and event discovery built around convenience and local commerce.",
+      "Built the mobile experience for food orders, bookings, rentals, and event discovery so users could handle everyday local commerce in one app.",
     technologies: ["React Native", "TypeScript", "Node.js", "Express", "MongoDB"],
     links: [
       { label: "Live", href: "https://kulipal.com" },
@@ -112,7 +114,7 @@ export const projects: Project[] = [
     year: "2023",
     category: "mobile",
     description:
-      "An edtech platform for learning content, student progress, and mobile-first delivery for students and educators.",
+      "Built the learning platform across web and mobile to make educational content, progress tracking, and delivery more accessible for students and educators.",
     technologies: ["React", "React Native", "NestJS"],
     links: [{ label: "Live", href: "http://e-studylab.com/" }],
   },
@@ -122,7 +124,7 @@ export const projects: Project[] = [
     year: "2023",
     category: "web",
     description:
-      "An ecommerce platform with catalog management, checkout flows, order handling, and business-side admin operations.",
+      "Built the ecommerce platform and admin workflows needed to manage products, checkout, orders, and core business operations.",
     technologies: ["PHP", "Laravel", "Bootstrap", "MySQL"],
     links: [{ label: "Live", href: "https://martsity.com/" }],
   },
@@ -132,7 +134,7 @@ export const projects: Project[] = [
     year: "2022",
     category: "web",
     description:
-      "An affiliate platform for partnership management, performance tracking, and commission reporting.",
+      "Built the affiliate platform for tracking partnerships, commissions, and performance so operators could manage growth with better visibility.",
     technologies: ["PHP", "Bootstrap", "JavaScript", "MySQL"],
     links: [{ label: "Live", href: "https://learnmonie.com/" }],
   },
