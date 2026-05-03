@@ -1,6 +1,5 @@
 User-agent: *
 Allow: /
-Disallow: /admin/
 
 # Sitemap
 Sitemap: https://solomonolatunji.com/sitemap.xml

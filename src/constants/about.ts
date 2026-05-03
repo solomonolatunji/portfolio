@@ -1,39 +1,38 @@
-import avatarImg from "@/assets/avatar.jpg";
-
 export const aboutData = {
-  greeting: "HELLO THERE 👋",
-  name: "SOLOMON OLATUNJI",
-  roles: ["SOFTWARE ENGINEER", "FULL STACK DEVELOPER", "MOBILE APP DEVELOPER", "TECHNICAL WRITER"],
+  name: "AKINLABI OLATUNJI",
   description:
-    "Full Stack Engineer building modern, scalable web & mobile apps with clean code and performance in mind.",
-  profileImage: {
-    src: avatarImg,
-    alt: "Solomon Olatunji",
-  },
-  socialLinks: [
-    {
-      platform: "GitHub",
-      url: "https://github.com/eminisolomon",
-      ariaLabel: "GitHub Profile",
-      icon: "IconBrandGithub",
-    },
-    {
-      platform: "Twitter",
-      url: "https://twitter.com/eminisolomon",
-      ariaLabel: "Twitter Profile",
-      icon: "IconBrandTwitter",
-    },
-    {
-      platform: "Telegram",
-      url: "https://t.me/eminisolomon",
-      ariaLabel: "Telegram Profile",
-      icon: "IconBrandTelegram",
-    },
-    {
-      platform: "WhatsApp",
-      url: "https://wa.me/2348130690998",
-      ariaLabel: "WhatsApp Contact",
-      icon: "IconBrandWhatsapp",
-    },
-  ],
+    "Software engineer building clean, useful web and mobile products across fintech, commerce, education, and developer tooling.",
 };
+
+export const profileLinks = [
+  {
+    label: "GitHub",
+    value: "github.com/eminisolomon",
+    href: "https://github.com/eminisolomon",
+    icon: "github",
+  },
+  {
+    label: "Email",
+    value: "me@solomonolatunji.com",
+    href: "mailto:me@solomonolatunji.com",
+    icon: "email",
+  },
+  {
+    label: "X",
+    value: "@eminisolomon",
+    href: "https://twitter.com/eminisolomon",
+    icon: "x",
+  },
+  {
+    label: "LinkedIn",
+    value: "linkedin.com/in/realsolomon",
+    href: "https://www.linkedin.com/in/realsolomon",
+    icon: "linkedin",
+  },
+  {
+    label: "WhatsApp",
+    value: "+2348130690998",
+    href: "https://wa.me/2348130690998",
+    icon: "whatsapp",
+  },
+] as const;
