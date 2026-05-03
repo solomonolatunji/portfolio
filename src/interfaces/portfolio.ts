@@ -9,6 +9,7 @@ export interface Project {
   year: string;
   category: "web" | "mobile" | "ui";
   description: string;
+  featured?: boolean;
   technologies: string[];
   links: ProjectLink[];
 }
