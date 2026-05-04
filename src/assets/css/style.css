@@ -107,31 +107,20 @@ a {
   line-height: 1.75;
 }
 
-.hero-cta {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: fit-content;
-  margin-top: 1.5rem;
-  padding: 0.9rem 1.15rem;
-  border: 1px solid #3a3a3a;
-  border-radius: 999px;
-  background: #111111;
-  color: var(--text);
-  font-size: 0.82rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  transition:
-    transform 160ms ease,
-    border-color 160ms ease,
-    background 160ms ease;
+.hero-currently {
+  margin: 1.2rem 0 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.75;
 }
 
-.hero-cta:hover {
-  transform: translateY(-2px);
-  border-color: #575757;
-  background: #151515;
+.hero-currently span {
+  margin-right: 0.55rem;
+  color: var(--text);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
 }
 
 .contact-row {
@@ -176,37 +165,12 @@ a {
   fill: currentColor;
 }
 
-.contact-tooltip,
 .project-category,
 .project-links a {
   font-size: 0.77rem;
   text-transform: uppercase;
   letter-spacing: 0.16em;
   font-weight: 700;
-}
-
-.contact-tooltip {
-  position: absolute;
-  top: calc(100% + 0.7rem);
-  left: 50%;
-  transform: translateX(-50%) translateY(-0.2rem);
-  opacity: 0;
-  pointer-events: none;
-  padding: 0.45rem 0.6rem;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: rgba(12, 12, 12, 0.96);
-  color: var(--soft);
-  white-space: nowrap;
-  transition:
-    opacity 160ms ease,
-    transform 160ms ease;
-}
-
-.contact-icon-button:hover .contact-tooltip,
-.contact-icon-button:focus-visible .contact-tooltip {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
 }
 
 .projects-section {

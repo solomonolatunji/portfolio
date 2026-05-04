@@ -28,6 +28,7 @@ const profileIcons = {
 
 const projectLinkIcons = {
   Live: LiveIcon,
+  GitHub: GitHubIcon,
   "Google Play": GooglePlayIcon,
   "App Store": AppleIcon,
 } as const;
@@ -45,7 +46,11 @@ const projectLinkIcons = {
           need to ship and hold up in production.
         </p>
 
-        <a class="hero-cta" href="#projects">View Projects</a>
+        <p class="hero-currently">
+          <span>Currently</span>
+          building production mobile apps, backend systems, and product-focused software for real
+          users.
+        </p>
 
         <div class="contact-row" aria-label="Profile links">
           <a
@@ -58,7 +63,6 @@ const projectLinkIcons = {
             :rel="link.label === 'Email' ? undefined : 'noreferrer'"
           >
             <component :is="profileIcons[link.icon]" aria-hidden="true" />
-            <span class="contact-tooltip">{{ link.label }}</span>
           </a>
         </div>
       </div>
@@ -69,8 +73,8 @@ const projectLinkIcons = {
         <p class="eyebrow">Selected Work</p>
         <h2>Projects</h2>
         <p class="section-copy">
-          A focused selection up front, with the full project list still available below when you
-          want to browse everything.
+          Product and engineering work across fintech, mobility, commerce, education, and internal
+          tools.
         </p>
       </div>
 

@@ -16,6 +16,10 @@ export const projects: Project[] = [
         href: "https://play.google.com/store/apps/details?id=com.techx.devpulse&hl=en",
       },
       {
+        label: "GitHub",
+        href: "https://github.com/eminisolomon/DevPulse.git",
+      },
+      {
         label: "WakaTime",
         href: "https://wakatime.com/",
       },
