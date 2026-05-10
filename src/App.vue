@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import axios from "axios";
+import { onMounted, ref } from "vue";
 import { aboutData, profileLinks } from "@/constants/about";
 import AppleIcon from "@/components/icons/AppleIcon.vue";
 import EmailIcon from "@/components/icons/EmailIcon.vue";
@@ -8,6 +10,7 @@ import LinkedInIcon from "@/components/icons/LinkedInIcon.vue";
 import LiveIcon from "@/components/icons/LiveIcon.vue";
 import WhatsAppIcon from "@/components/icons/WhatsAppIcon.vue";
 import XIcon from "@/components/icons/XIcon.vue";
+import type { NowPlaying } from "@/interfaces/now-playing";
 import { projects } from "@/constants/projects";
 
 document.title = "Solomon Olatunji | Portfolio";
@@ -32,6 +35,25 @@ const projectLinkIcons = {
   "Google Play": GooglePlayIcon,
   "App Store": AppleIcon,
 } as const;
+
+const nowPlaying = ref<NowPlaying | null>(null);
+const nowPlayingLoaded = ref(false);
+
+onMounted(async () => {
+  try {
+    const response = await axios.get<NowPlaying>("/api/now-playing", {
+      validateStatus: (status) => status === 200 || status === 204,
+    });
+
+    if (response.status === 200) {
+      nowPlaying.value = response.data;
+    }
+  } catch {
+    // Silent failure keeps the hero minimal when music APIs aren't configured.
+  } finally {
+    nowPlayingLoaded.value = true;
+  }
+});
 </script>
 
 <template>
@@ -47,6 +69,43 @@ const projectLinkIcons = {
           building production mobile apps, backend systems, and product-focused software for real
           users.
         </p>
+
+        <div v-if="nowPlaying" class="listening-card" aria-label="Currently listening">
+          <img
+            v-if="nowPlaying.artworkUrl"
+            :src="nowPlaying.artworkUrl"
+            :alt="`${nowPlaying.title} cover art`"
+            class="listening-artwork"
+            loading="lazy"
+          />
+
+          <div class="listening-copy">
+            <span class="listening-label">
+              {{ nowPlaying.isPlaying ? "Currently Listening" : "Last Played" }}
+            </span>
+            <p class="listening-track">{{ nowPlaying.title }}</p>
+            <p class="listening-artist">{{ nowPlaying.artist }}</p>
+            <div class="listening-links">
+              <a :href="nowPlaying.spotifyUrl" target="_blank" rel="noreferrer">Spotify</a>
+              <a
+                v-if="nowPlaying.appleMusicUrl"
+                :href="nowPlaying.appleMusicUrl"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Apple Music
+              </a>
+              <a v-if="nowPlaying.youtubeUrl" :href="nowPlaying.youtubeUrl" target="_blank" rel="noreferrer">
+                YouTube
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div v-else-if="nowPlayingLoaded" class="listening-fallback" aria-label="Listening unavailable">
+          <span class="listening-label">Currently Listening</span>
+          <p>No live track right now.</p>
+        </div>
 
         <div class="contact-row" aria-label="Profile links">
           <a
