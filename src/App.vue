@@ -1,13 +1,18 @@
 <script setup lang="ts">
 import axios from "axios";
-import { onMounted, ref } from "vue";
-import { aboutData, profileLinks } from "@/constants/about";
+import { useQuery } from "@tanstack/vue-query";
+import { computed } from "vue";
+import { aboutData, activeProducts, profileLinks } from "@/constants/about";
 import AppleIcon from "@/components/icons/AppleIcon.vue";
+import AppleMusicIcon from "@/components/icons/AppleMusicIcon.vue";
 import EmailIcon from "@/components/icons/EmailIcon.vue";
 import GitHubIcon from "@/components/icons/GitHubIcon.vue";
 import GooglePlayIcon from "@/components/icons/GooglePlayIcon.vue";
 import LinkedInIcon from "@/components/icons/LinkedInIcon.vue";
+import ListeningBarsIcon from "@/components/icons/ListeningBarsIcon.vue";
 import LiveIcon from "@/components/icons/LiveIcon.vue";
+import SpotifyIcon from "@/components/icons/SpotifyIcon.vue";
+import YouTubeMusicIcon from "@/components/icons/YouTubeMusicIcon.vue";
 import WhatsAppIcon from "@/components/icons/WhatsAppIcon.vue";
 import XIcon from "@/components/icons/XIcon.vue";
 import type { NowPlaying } from "@/interfaces/now-playing";
@@ -36,24 +41,37 @@ const projectLinkIcons = {
   "App Store": AppleIcon,
 } as const;
 
-const nowPlaying = ref<NowPlaying | null>(null);
-const nowPlayingLoaded = ref(false);
-
-onMounted(async () => {
-  try {
+const nowPlayingQuery = useQuery({
+  queryKey: ["now-playing"],
+  queryFn: async () => {
     const response = await axios.get<NowPlaying>("/api/now-playing", {
+      headers: {
+        "Cache-Control": "no-cache",
+        Pragma: "no-cache",
+      },
+      params: {
+        t: Date.now(),
+      },
       validateStatus: (status) => status === 200 || status === 204,
     });
 
     if (response.status === 200) {
-      nowPlaying.value = response.data;
+      return response.data;
     }
-  } catch {
-    // Silent failure keeps the hero minimal when music APIs aren't configured.
-  } finally {
-    nowPlayingLoaded.value = true;
-  }
+
+    return null;
+  },
+  placeholderData: (previousData) => previousData,
+  refetchInterval: 5000,
+  refetchIntervalInBackground: true,
+  refetchOnWindowFocus: true,
+  staleTime: 0,
+  gcTime: 60_000,
+  retry: false,
 });
+
+const nowPlaying = computed(() => nowPlayingQuery.data.value ?? null);
+const nowPlayingLoaded = computed(() => nowPlayingQuery.isFetched.value);
 </script>
 
 <template>
@@ -62,13 +80,19 @@ onMounted(async () => {
       <div class="hero-copy">
         <p class="eyebrow">Software Engineer</p>
         <h1>{{ aboutData.name }}</h1>
-        <p class="summary">{{ aboutData.description }}</p>
 
-        <p class="hero-currently">
-          <span>Currently</span>
-          building production mobile apps, backend systems, and product-focused software for real
-          users.
-        </p>
+        <div class="hero-building-row" aria-label="Products currently building">
+          <span class="hero-building-label">Building</span>
+          <template v-for="(product, index) in activeProducts" :key="product.label">
+            <div class="hero-building-item">
+              <img :src="product.logo" :alt="`${product.label} logo`" class="hero-building-logo" />
+              <span>{{ product.label }}</span>
+            </div>
+            <span v-if="index < activeProducts.length - 1" class="hero-building-separator"
+              >and</span
+            >
+          </template>
+        </div>
 
         <div v-if="nowPlaying" class="listening-card" aria-label="Currently listening">
           <img
@@ -83,26 +107,58 @@ onMounted(async () => {
             <span class="listening-label">
               {{ nowPlaying.isPlaying ? "Currently Listening" : "Last Played" }}
             </span>
-            <p class="listening-track">{{ nowPlaying.title }}</p>
-            <p class="listening-artist">{{ nowPlaying.artist }}</p>
-            <div class="listening-links">
-              <a :href="nowPlaying.spotifyUrl" target="_blank" rel="noreferrer">Spotify</a>
-              <a
-                v-if="nowPlaying.appleMusicUrl"
-                :href="nowPlaying.appleMusicUrl"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Apple Music
-              </a>
-              <a v-if="nowPlaying.youtubeUrl" :href="nowPlaying.youtubeUrl" target="_blank" rel="noreferrer">
-                YouTube
-              </a>
+            <div class="listening-main">
+              <div class="listening-text">
+                <p class="listening-track">{{ nowPlaying.title }}</p>
+                <p class="listening-artist">{{ nowPlaying.artist }}</p>
+              </div>
+
+              <div class="listening-side">
+                <div
+                  class="listening-beam"
+                  :class="{ paused: !nowPlaying.isPlaying }"
+                  aria-hidden="true"
+                >
+                  <ListeningBarsIcon />
+                </div>
+                <div class="listening-links" aria-label="Listening links">
+                  <a
+                    :href="nowPlaying.spotifyUrl"
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label="Open on Spotify"
+                  >
+                    <SpotifyIcon />
+                  </a>
+                  <a
+                    v-if="nowPlaying.appleMusicUrl"
+                    :href="nowPlaying.appleMusicUrl"
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label="Open on Apple Music"
+                  >
+                    <AppleMusicIcon />
+                  </a>
+                  <a
+                    v-if="nowPlaying.youtubeUrl"
+                    :href="nowPlaying.youtubeUrl"
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label="Open on YouTube Music"
+                  >
+                    <YouTubeMusicIcon />
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
-        <div v-else-if="nowPlayingLoaded" class="listening-fallback" aria-label="Listening unavailable">
+        <div
+          v-else-if="nowPlayingLoaded"
+          class="listening-fallback"
+          aria-label="Listening unavailable"
+        >
           <span class="listening-label">Currently Listening</span>
           <p>No live track right now.</p>
         </div>
@@ -130,11 +186,7 @@ onMounted(async () => {
       </div>
 
       <div class="projects-grid">
-        <article
-          v-for="project in projects"
-          :key="project.id"
-          class="project-row"
-        >
+        <article v-for="project in projects" :key="project.id" class="project-row">
           <div class="project-meta">
             <span class="project-category">
               {{ categoryLabels[project.category] ?? project.category }}

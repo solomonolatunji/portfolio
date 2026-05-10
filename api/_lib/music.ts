@@ -35,7 +35,13 @@ interface SpotifyTrackResponse {
   };
 }
 
-const SPOTIFY_SCOPES = ["user-read-currently-playing"];
+interface SpotifyRecentTracksResponse {
+  items?: Array<{
+    track?: SpotifyTrackResponse["item"];
+  }>;
+}
+
+const SPOTIFY_SCOPES = ["user-read-currently-playing", "user-read-recently-played"];
 
 function invariant(value: string | undefined, name: string) {
   if (!value) {
@@ -51,7 +57,7 @@ async function fetchJson<T>(
     method?: string;
     headers?: Record<string, string>;
     body?: URLSearchParams | string;
-  },
+  }
 ): Promise<T> {
   const response = await axios.request<T>({
     url,
@@ -141,7 +147,7 @@ async function fetchSpotifyNowPlaying(accessToken: string) {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
-      },
+      }
     );
 
     return response.data;
@@ -152,7 +158,34 @@ async function fetchSpotifyNowPlaying(accessToken: string) {
 
     if (error.response) {
       throw new Error(
-        `${error.response.status} ${error.response.statusText}: ${JSON.stringify(error.response.data)}`,
+        `${error.response.status} ${error.response.statusText}: ${JSON.stringify(error.response.data)}`
+      );
+    }
+
+    throw error;
+  }
+}
+
+async function fetchSpotifyRecentlyPlayed(accessToken: string) {
+  try {
+    const response = await axios.get<SpotifyRecentTracksResponse>(
+      "https://api.spotify.com/v1/me/player/recently-played?limit=1",
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    return response.data.items?.[0]?.track ?? null;
+  } catch (error: any) {
+    if (error.response?.status === 401 || error.response?.status === 403) {
+      return null;
+    }
+
+    if (error.response) {
+      throw new Error(
+        `${error.response.status} ${error.response.statusText}: ${JSON.stringify(error.response.data)}`
       );
     }
 
@@ -164,7 +197,7 @@ async function resolveAppleMusicUrl(
   env: MusicEnv,
   isrc: string | undefined,
   title: string,
-  artist: string,
+  artist: string
 ) {
   const developerToken = env.APPLE_MUSIC_DEVELOPER_TOKEN;
 
@@ -182,9 +215,9 @@ async function resolveAppleMusicUrl(
       data?: Array<{ attributes?: { url?: string } }>;
     }>(
       `https://api.music.apple.com/v1/catalog/${storefront}/songs?filter[isrc]=${encodeURIComponent(
-        isrc,
+        isrc
       )}`,
-      { headers },
+      { headers }
     );
 
     const directMatch = byIsrc.data?.[0]?.attributes?.url;
@@ -203,9 +236,9 @@ async function resolveAppleMusicUrl(
     };
   }>(
     `https://api.music.apple.com/v1/catalog/${storefront}/search?types=songs&limit=1&term=${encodeURIComponent(
-      term,
+      term
     )}`,
-    { headers },
+    { headers }
   );
 
   return bySearch.results?.songs?.data?.[0]?.attributes?.url;
@@ -223,29 +256,30 @@ async function resolveYouTubeUrl(env: MusicEnv, title: string, artist: string) {
     items?: Array<{ id?: { videoId?: string } }>;
   }>(
     `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&videoCategoryId=10&maxResults=1&q=${encodeURIComponent(
-      query,
-    )}&key=${encodeURIComponent(apiKey)}`,
+      query
+    )}&key=${encodeURIComponent(apiKey)}`
   );
 
   const videoId = response.items?.[0]?.id?.videoId;
 
-  return videoId ? `https://www.youtube.com/watch?v=${videoId}` : undefined;
+  return videoId ? `https://music.youtube.com/watch?v=${videoId}` : undefined;
 }
 
-export async function getNowPlaying(env: MusicEnv): Promise<NowPlayingPayload | null> {
-  const accessToken = await refreshSpotifyAccessToken(env);
-  const spotify = await fetchSpotifyNowPlaying(accessToken);
-
-  if (!spotify?.item?.name || !spotify.item.external_urls?.spotify) {
+async function buildNowPlayingPayload(
+  env: MusicEnv,
+  track: SpotifyTrackResponse["item"] | null | undefined,
+  isPlaying: boolean
+) {
+  if (!track?.name || !track.external_urls?.spotify) {
     return null;
   }
 
-  const title = spotify.item.name;
-  const artist = spotify.item.artists?.map((entry) => entry.name).join(", ") || "Unknown artist";
-  const album = spotify.item.album?.name;
-  const artworkUrl = spotify.item.album?.images?.[0]?.url;
-  const spotifyUrl = spotify.item.external_urls.spotify;
-  const isrc = spotify.item.external_ids?.isrc;
+  const title = track.name;
+  const artist = track.artists?.map((entry) => entry.name).join(", ") || "Unknown artist";
+  const album = track.album?.name;
+  const artworkUrl = track.album?.images?.[0]?.url;
+  const spotifyUrl = track.external_urls.spotify;
+  const isrc = track.external_ids?.isrc;
 
   const [appleMusicUrl, youtubeUrl] = await Promise.all([
     resolveAppleMusicUrl(env, isrc, title, artist),
@@ -253,7 +287,7 @@ export async function getNowPlaying(env: MusicEnv): Promise<NowPlayingPayload | 
   ]);
 
   return {
-    isPlaying: spotify.is_playing,
+    isPlaying,
     title,
     artist,
     album,
@@ -262,6 +296,18 @@ export async function getNowPlaying(env: MusicEnv): Promise<NowPlayingPayload | 
     appleMusicUrl,
     youtubeUrl,
   };
+}
+
+export async function getNowPlaying(env: MusicEnv): Promise<NowPlayingPayload | null> {
+  const accessToken = await refreshSpotifyAccessToken(env);
+  const spotify = await fetchSpotifyNowPlaying(accessToken);
+
+  if (spotify?.item?.name && spotify.item.external_urls?.spotify) {
+    return buildNowPlayingPayload(env, spotify.item, spotify.is_playing);
+  }
+
+  const recentTrack = await fetchSpotifyRecentlyPlayed(accessToken);
+  return buildNowPlayingPayload(env, recentTrack, false);
 }
 
 export function renderSpotifyCallbackHtml(params: {

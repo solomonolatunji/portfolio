@@ -1,7 +1,23 @@
+import kicktribeLogo from "@/assets/images/kicktribe-small.png";
+import viardexLogo from "@/assets/images/viardex-small.png";
+
 export const aboutData = {
   name: "Solomon Olatunji",
   description: "Software engineer building production-ready web and mobile products.",
 };
+
+export const activeProducts = [
+  {
+    label: "KickTribe",
+    description: "sports predictions and betting product",
+    logo: kicktribeLogo,
+  },
+  {
+    label: "Viardex",
+    description: "modern finance app",
+    logo: viardexLogo,
+  },
+] as const;
 
 export const profileLinks = [
   {

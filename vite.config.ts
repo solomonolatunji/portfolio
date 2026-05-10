@@ -80,14 +80,14 @@ function musicApiDevPlugin(mode: string) {
               renderSpotifyCallbackHtml({
                 refreshToken: token.refresh_token,
                 scope: token.scope,
-              }),
+              })
             );
           } catch (exchangeError: any) {
             res.statusCode = 500;
             res.end(
               renderSpotifyCallbackHtml({
                 error: exchangeError.message || "Spotify token exchange failed.",
-              }),
+              })
             );
           }
 

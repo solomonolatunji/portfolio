@@ -30,7 +30,8 @@ export const projects: Project[] = [
     year: "2024",
     category: "mobile",
     featured: true,
-    description: "Fintech product for payments, savings, loans, and investments across web and mobile.",
+    description:
+      "Fintech product for payments, savings, loans, and investments across web and mobile.",
     technologies: ["React", "React Native", "NestJS", "TypeScript", "PostgreSQL"],
     links: [
       { label: "Live", href: "https://takentrade.com" },

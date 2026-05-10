@@ -19,7 +19,7 @@ pnpm dev
 ## Live Music Setup
 
 This project supports an automatic `currently listening` row powered by Spotify, with optional
-Apple Music and YouTube link resolution.
+Apple Music and YouTube Music link resolution.
 
 ### Environment
 
@@ -45,6 +45,8 @@ YOUTUBE_API_KEY=
    `http://localhost:5173/api/spotify/login`
 4. After authorizing, copy the refresh token shown on the callback page into
    `SPOTIFY_REFRESH_TOKEN`.
+5. If you add new Spotify scopes later, re-run the authorization flow and replace the stored refresh
+   token.
 
 Spotify docs:
 
@@ -54,6 +56,8 @@ Spotify docs:
   <https://developer.spotify.com/documentation/web-api/tutorials/refreshing-tokens>
 - Current playback:
   <https://developer.spotify.com/documentation/web-api/reference/get-the-users-currently-playing-track>
+- Recently played:
+  <https://developer.spotify.com/documentation/web-api/reference/get-recently-played>
 
 ### Apple Music setup
 
