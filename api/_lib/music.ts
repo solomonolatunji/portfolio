@@ -265,6 +265,14 @@ async function resolveYouTubeUrl(env: MusicEnv, title: string, artist: string) {
   return videoId ? `https://music.youtube.com/watch?v=${videoId}` : undefined;
 }
 
+async function resolveOptionalLink<T>(resolver: () => Promise<T | undefined>) {
+  try {
+    return await resolver();
+  } catch {
+    return undefined;
+  }
+}
+
 async function buildNowPlayingPayload(
   env: MusicEnv,
   track: SpotifyTrackResponse["item"] | null | undefined,
@@ -282,8 +290,8 @@ async function buildNowPlayingPayload(
   const isrc = track.external_ids?.isrc;
 
   const [appleMusicUrl, youtubeUrl] = await Promise.all([
-    resolveAppleMusicUrl(env, isrc, title, artist),
-    resolveYouTubeUrl(env, title, artist),
+    resolveOptionalLink(() => resolveAppleMusicUrl(env, isrc, title, artist)),
+    resolveOptionalLink(() => resolveYouTubeUrl(env, title, artist)),
   ]);
 
   return {
