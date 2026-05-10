@@ -30,12 +30,10 @@ export default async function handler(req: any, res: any) {
     );
   } catch (exchangeError: any) {
     res.setHeader("Content-Type", "text/html; charset=utf-8");
-    res
-      .status(500)
-      .send(
-        renderSpotifyCallbackHtml({
-          error: exchangeError.message || "Spotify token exchange failed.",
-        })
-      );
+    res.status(500).send(
+      renderSpotifyCallbackHtml({
+        error: exchangeError.message || "Spotify token exchange failed.",
+      })
+    );
   }
 }

@@ -21,6 +21,11 @@ export interface NowPlayingPayload {
   youtubeUrl?: string;
 }
 
+interface ResolvedLinks {
+  appleMusicUrl?: string;
+  youtubeUrl?: string;
+}
+
 interface SpotifyTrackResponse {
   is_playing: boolean;
   item?: {
@@ -42,6 +47,7 @@ interface SpotifyRecentTracksResponse {
 }
 
 const SPOTIFY_SCOPES = ["user-read-currently-playing", "user-read-recently-played"];
+const RESOLVED_LINKS_CACHE = new Map<string, ResolvedLinks>();
 
 function invariant(value: string | undefined, name: string) {
   if (!value) {
@@ -273,6 +279,41 @@ async function resolveOptionalLink<T>(resolver: () => Promise<T | undefined>) {
   }
 }
 
+function buildTrackCacheKey(isrc: string | undefined, title: string, artist: string) {
+  if (isrc) {
+    return `isrc:${isrc}`;
+  }
+
+  return `search:${title.toLowerCase()}::${artist.toLowerCase()}`;
+}
+
+async function resolveLinksForTrack(
+  env: MusicEnv,
+  isrc: string | undefined,
+  title: string,
+  artist: string
+) {
+  const cacheKey = buildTrackCacheKey(isrc, title, artist);
+  const cached = RESOLVED_LINKS_CACHE.get(cacheKey);
+
+  if (cached) {
+    return cached;
+  }
+
+  const [appleMusicUrl, youtubeUrl] = await Promise.all([
+    resolveOptionalLink(() => resolveAppleMusicUrl(env, isrc, title, artist)),
+    resolveOptionalLink(() => resolveYouTubeUrl(env, title, artist)),
+  ]);
+
+  const resolved = {
+    appleMusicUrl,
+    youtubeUrl,
+  };
+
+  RESOLVED_LINKS_CACHE.set(cacheKey, resolved);
+  return resolved;
+}
+
 async function buildNowPlayingPayload(
   env: MusicEnv,
   track: SpotifyTrackResponse["item"] | null | undefined,
@@ -289,10 +330,7 @@ async function buildNowPlayingPayload(
   const spotifyUrl = track.external_urls.spotify;
   const isrc = track.external_ids?.isrc;
 
-  const [appleMusicUrl, youtubeUrl] = await Promise.all([
-    resolveOptionalLink(() => resolveAppleMusicUrl(env, isrc, title, artist)),
-    resolveOptionalLink(() => resolveYouTubeUrl(env, title, artist)),
-  ]);
+  const { appleMusicUrl, youtubeUrl } = await resolveLinksForTrack(env, isrc, title, artist);
 
   return {
     isPlaying,
