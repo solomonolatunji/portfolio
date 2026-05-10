@@ -1,5 +1,5 @@
-import type { MusicEnv } from "../../server/music";
-import { exchangeSpotifyCodeForRefreshToken, renderSpotifyCallbackHtml } from "../../server/music";
+import type { MusicEnv } from "../_lib/music.js";
+import { exchangeSpotifyCodeForRefreshToken, renderSpotifyCallbackHtml } from "../_lib/music.js";
 
 export default async function handler(req: any, res: any) {
   const code = req.query?.code;

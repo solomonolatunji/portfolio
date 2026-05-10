@@ -1,5 +1,5 @@
-import type { MusicEnv } from "../../server/music";
-import { createSpotifyAuthorizationUrl } from "../../server/music";
+import type { MusicEnv } from "../_lib/music.js";
+import { createSpotifyAuthorizationUrl } from "../_lib/music.js";
 
 export default async function handler(_req: any, res: any) {
   try {

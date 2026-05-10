@@ -2,7 +2,13 @@ import { defineConfig, loadEnv } from "vite";
 import vue from "@vitejs/plugin-vue";
 import { fileURLToPath, URL } from "node:url";
 import tailwindcss from "@tailwindcss/vite";
-import { createSpotifyAuthorizationUrl, exchangeSpotifyCodeForRefreshToken, getNowPlaying, renderSpotifyCallbackHtml, type MusicEnv } from "./server/music";
+import {
+  createSpotifyAuthorizationUrl,
+  exchangeSpotifyCodeForRefreshToken,
+  getNowPlaying,
+  renderSpotifyCallbackHtml,
+  type MusicEnv,
+} from "./api/_lib/music";
 
 function musicApiDevPlugin(mode: string) {
   const env = {
