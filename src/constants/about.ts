@@ -1,5 +1,5 @@
-import kicktribeLogo from "@/assets/images/kicktribe-small.png";
-import viardexLogo from "@/assets/images/viardex-small.png";
+import kicktribeLogo from "@/assets/kicktribe-small.png";
+import viardexLogo from "@/assets/viardex-small.png";
 
 export const aboutData = {
   name: "Solomon Olatunji",

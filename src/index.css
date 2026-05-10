@@ -157,6 +157,19 @@ a {
   color: var(--muted);
 }
 
+.listening-card {
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  appearance: none;
+  font: inherit;
+}
+
+.listening-card:hover {
+  border-color: var(--line-strong);
+  background: rgba(15, 15, 15, 0.8);
+}
+
 .listening-fallback {
   grid-template-columns: 1fr;
   gap: 0.25rem;
@@ -206,6 +219,9 @@ a {
   color: var(--text);
   font-size: 0.95rem;
   line-height: 1.35;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .listening-artist,
@@ -214,6 +230,13 @@ a {
   color: var(--muted);
   font-size: 0.82rem;
   line-height: 1.45;
+}
+
+.listening-device {
+  margin: 0;
+  color: var(--soft);
+  font-size: 0.74rem;
+  line-height: 1.4;
 }
 
 .listening-links {
@@ -232,6 +255,7 @@ a {
   grid-column: 2;
   grid-row: 1 / span 2;
   align-self: center;
+  margin-left: 0.35rem;
 }
 
 .listening-links a {
@@ -526,16 +550,22 @@ a {
 
   .listening-side {
     gap: 0.5rem;
+    margin-left: 0.15rem;
   }
 
   .listening-beam {
-    width: 3rem;
-    height: 2.2rem;
+    width: 2.7rem;
+    height: 2rem;
   }
 
   .listening-links a {
-    width: 2rem;
-    height: 2rem;
+    width: 1.8rem;
+    height: 1.8rem;
+  }
+
+  .listening-links a svg {
+    width: 0.9rem;
+    height: 0.9rem;
   }
 
   .contact-row {

@@ -13,6 +13,8 @@ export interface NowPlayingPayload {
   artist: string;
   album?: string;
   artworkUrl?: string;
+  deviceName?: string;
+  deviceType?: string;
   spotifyUrl: string;
   appleMusicUrl?: string;
   youtubeUrl?: string;
@@ -25,6 +27,10 @@ interface ResolvedLinks {
 
 interface SpotifyTrackResponse {
   is_playing: boolean;
+  device?: {
+    name?: string;
+    type?: string;
+  };
   item?: {
     name: string;
     external_urls?: { spotify?: string };
@@ -43,7 +49,20 @@ interface SpotifyRecentTracksResponse {
   }>;
 }
 
-const SPOTIFY_SCOPES = ["user-read-currently-playing", "user-read-recently-played"];
+interface SpotifyDevicesResponse {
+  devices?: Array<{
+    id?: string | null;
+    is_active?: boolean;
+    name?: string;
+    type?: string;
+  }>;
+}
+
+const SPOTIFY_SCOPES = [
+  "user-read-currently-playing",
+  "user-read-playback-state",
+  "user-read-recently-played",
+];
 const RESOLVED_LINKS_CACHE = new Map<string, ResolvedLinks>();
 
 function invariant(value: string | undefined, name: string) {
@@ -196,6 +215,33 @@ async function fetchSpotifyRecentlyPlayed(accessToken: string) {
   }
 }
 
+async function fetchSpotifyActiveDevice(accessToken: string) {
+  try {
+    const response = await axios.get<SpotifyDevicesResponse>(
+      "https://api.spotify.com/v1/me/player/devices",
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    return response.data.devices?.find((device) => device.is_active) ?? null;
+  } catch (error: any) {
+    if (error.response?.status === 401 || error.response?.status === 403) {
+      return null;
+    }
+
+    if (error.response) {
+      throw new Error(
+        `${error.response.status} ${error.response.statusText}: ${JSON.stringify(error.response.data)}`
+      );
+    }
+
+    throw error;
+  }
+}
+
 function buildAppleMusicUrl(title: string, artist: string) {
   const term = `${title} ${artist}`;
   return `https://music.apple.com/us/search?term=${encodeURIComponent(term)}`;
@@ -233,7 +279,8 @@ async function resolveLinksForTrack(isrc: string | undefined, title: string, art
 
 async function buildNowPlayingPayload(
   track: SpotifyTrackResponse["item"] | null | undefined,
-  isPlaying: boolean
+  isPlaying: boolean,
+  device?: SpotifyTrackResponse["device"]
 ) {
   if (!track?.name || !track.external_urls?.spotify) {
     return null;
@@ -254,6 +301,8 @@ async function buildNowPlayingPayload(
     artist,
     album,
     artworkUrl,
+    deviceName: device?.name,
+    deviceType: device?.type,
     spotifyUrl,
     appleMusicUrl,
     youtubeUrl,
@@ -265,7 +314,12 @@ export async function getNowPlaying(env: MusicEnv): Promise<NowPlayingPayload | 
   const spotify = await fetchSpotifyNowPlaying(accessToken);
 
   if (spotify?.item?.name && spotify.item.external_urls?.spotify) {
-    return buildNowPlayingPayload(spotify.item, spotify.is_playing);
+    const fallbackDevice =
+      spotify.device?.name || spotify.device?.type
+        ? spotify.device
+        : await fetchSpotifyActiveDevice(accessToken);
+
+    return buildNowPlayingPayload(spotify.item, spotify.is_playing, fallbackDevice ?? undefined);
   }
 
   const recentTrack = await fetchSpotifyRecentlyPlayed(accessToken);

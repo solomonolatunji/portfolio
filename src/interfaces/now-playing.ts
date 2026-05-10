@@ -4,6 +4,8 @@ export interface NowPlaying {
   artist: string;
   album?: string;
   artworkUrl?: string;
+  deviceName?: string;
+  deviceType?: string;
   spotifyUrl: string;
   appleMusicUrl?: string;
   youtubeUrl?: string;

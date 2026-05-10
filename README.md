@@ -44,6 +44,9 @@ SPOTIFY_REDIRECT_URI=http://localhost:5173/api/spotify/callback
    `SPOTIFY_REFRESH_TOKEN`.
 5. If you add new Spotify scopes later, re-run the authorization flow and replace the stored refresh
    token.
+6. This project uses Spotify playback state to show the active device when available, so if you
+   already authorized before that scope was added, re-run `/api/spotify/login` once and replace
+   the stored refresh token.
 
 Spotify docs:
 
@@ -53,6 +56,8 @@ Spotify docs:
   <https://developer.spotify.com/documentation/web-api/tutorials/refreshing-tokens>
 - Current playback:
   <https://developer.spotify.com/documentation/web-api/reference/get-the-users-currently-playing-track>
+- Available devices:
+  <https://developer.spotify.com/documentation/web-api/reference/get-a-users-available-devices>
 - Recently played:
   <https://developer.spotify.com/documentation/web-api/reference/get-recently-played>
 

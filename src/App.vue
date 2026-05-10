@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import axios from "axios";
 import { useQuery } from "@tanstack/vue-query";
-import { computed } from "vue";
+import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import { aboutData, activeProducts, profileLinks } from "@/constants/about";
 import AppleIcon from "@/components/icons/AppleIcon.vue";
 import AppleMusicIcon from "@/components/icons/AppleMusicIcon.vue";
@@ -9,6 +9,7 @@ import EmailIcon from "@/components/icons/EmailIcon.vue";
 import GitHubIcon from "@/components/icons/GitHubIcon.vue";
 import GooglePlayIcon from "@/components/icons/GooglePlayIcon.vue";
 import LinkedInIcon from "@/components/icons/LinkedInIcon.vue";
+import ListeningModal from "@/components/ListeningModal.vue";
 import ListeningBarsIcon from "@/components/icons/ListeningBarsIcon.vue";
 import LiveIcon from "@/components/icons/LiveIcon.vue";
 import SpotifyIcon from "@/components/icons/SpotifyIcon.vue";
@@ -72,6 +73,37 @@ const nowPlayingQuery = useQuery({
 
 const nowPlaying = computed(() => nowPlayingQuery.data.value ?? null);
 const nowPlayingLoaded = computed(() => nowPlayingQuery.isFetched.value);
+const isListeningModalOpen = ref(false);
+
+const listeningStateLabel = computed(() =>
+  nowPlaying.value?.isPlaying ? "Currently Listening" : "Last Played"
+);
+
+function openListeningModal() {
+  if (!nowPlaying.value) {
+    return;
+  }
+
+  isListeningModalOpen.value = true;
+}
+
+function closeListeningModal() {
+  isListeningModalOpen.value = false;
+}
+
+function handleGlobalKeydown(event: KeyboardEvent) {
+  if (event.key === "Escape" && isListeningModalOpen.value) {
+    closeListeningModal();
+  }
+}
+
+onMounted(() => {
+  window.addEventListener("keydown", handleGlobalKeydown);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("keydown", handleGlobalKeydown);
+});
 </script>
 
 <template>
@@ -94,7 +126,13 @@ const nowPlayingLoaded = computed(() => nowPlayingQuery.isFetched.value);
           </template>
         </div>
 
-        <div v-if="nowPlaying" class="listening-card" aria-label="Currently listening">
+        <button
+          v-if="nowPlaying"
+          type="button"
+          class="listening-card"
+          aria-label="Open listening details"
+          @click="openListeningModal"
+        >
           <img
             v-if="nowPlaying.artworkUrl"
             :src="nowPlaying.artworkUrl"
@@ -105,11 +143,14 @@ const nowPlayingLoaded = computed(() => nowPlayingQuery.isFetched.value);
 
           <div class="listening-copy">
             <span class="listening-label">
-              {{ nowPlaying.isPlaying ? "Currently Listening" : "Last Played" }}
+              {{ listeningStateLabel }}
             </span>
             <div class="listening-text">
               <p class="listening-track">{{ nowPlaying.title }}</p>
               <p class="listening-artist">{{ nowPlaying.artist }}</p>
+              <p v-if="nowPlaying.deviceName || nowPlaying.deviceType" class="listening-device">
+                Playing on {{ nowPlaying.deviceName ?? nowPlaying.deviceType }}
+              </p>
             </div>
             <div class="listening-side">
               <div
@@ -149,7 +190,7 @@ const nowPlayingLoaded = computed(() => nowPlayingQuery.isFetched.value);
               </div>
             </div>
           </div>
-        </div>
+        </button>
 
         <div
           v-else-if="nowPlayingLoaded"
@@ -221,5 +262,12 @@ const nowPlayingLoaded = computed(() => nowPlayingQuery.isFetched.value);
     <footer class="site-footer">
       <p>&copy; 2026 Solomon</p>
     </footer>
+
+    <ListeningModal
+      v-if="nowPlaying && isListeningModalOpen"
+      :now-playing="nowPlaying"
+      :state-label="listeningStateLabel"
+      @close="closeListeningModal"
+    />
   </main>
 </template>
