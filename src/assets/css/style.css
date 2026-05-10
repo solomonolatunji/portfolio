@@ -168,6 +168,7 @@ a {
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .listening-artwork {
@@ -511,6 +512,11 @@ a {
 
   .listening-copy {
     column-gap: 0.75rem;
+  }
+
+  .listening-label {
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
   }
 
   .listening-artwork {
