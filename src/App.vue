@@ -78,6 +78,9 @@ const isListeningModalOpen = ref(false);
 const listeningStateLabel = computed(() =>
   nowPlaying.value?.isPlaying ? "Currently Listening" : "Last Played"
 );
+const listeningDeviceLabel = computed(
+  () => nowPlaying.value?.deviceName ?? nowPlaying.value?.deviceType ?? null
+);
 
 function openListeningModal() {
   if (!nowPlaying.value) {
@@ -142,14 +145,29 @@ onBeforeUnmount(() => {
           />
 
           <div class="listening-copy">
-            <span class="listening-label">
-              {{ listeningStateLabel }}
-            </span>
+            <span class="listening-label">{{ listeningStateLabel }}</span>
             <div class="listening-text">
               <p class="listening-track">{{ nowPlaying.title }}</p>
               <p class="listening-artist">{{ nowPlaying.artist }}</p>
-              <p v-if="nowPlaying.deviceName || nowPlaying.deviceType" class="listening-device">
-                Playing on {{ nowPlaying.deviceName ?? nowPlaying.deviceType }}
+              <p v-if="listeningDeviceLabel" class="listening-device">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <rect
+                    x="2"
+                    y="3"
+                    width="20"
+                    height="14"
+                    rx="2"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                  />
+                  <path
+                    d="M8 21H16M12 17V21"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                  />
+                </svg>
+                {{ listeningDeviceLabel }}
               </p>
             </div>
             <div class="listening-side">

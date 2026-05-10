@@ -65,6 +65,25 @@ const SPOTIFY_SCOPES = [
 ];
 const RESOLVED_LINKS_CACHE = new Map<string, ResolvedLinks>();
 
+const DEVICE_NAME_MAP: Record<string, string> = {
+  fedora: "Fedora",
+  iphone: "iPhone",
+  ipad: "iPad",
+  ios: "iOS",
+  macos: "macOS",
+  "mac os": "macOS",
+  macbook: "MacBook",
+  linux: "Linux",
+  android: "Android",
+  desktop: "Desktop",
+  computer: "Computer",
+  speaker: "Speaker",
+  smartphone: "Smartphone",
+  tablet: "Tablet",
+  tv: "TV",
+  "web player": "Web Player",
+};
+
 function invariant(value: string | undefined, name: string) {
   if (!value) {
     throw new Error(`Missing environment variable: ${name}`);
@@ -93,6 +112,32 @@ async function fetchJson<T>(
 
 function basicAuth(clientId: string, clientSecret: string) {
   return Buffer.from(`${clientId}:${clientSecret}`).toString("base64");
+}
+
+function normalizeDeviceLabel(value?: string) {
+  if (!value) {
+    return undefined;
+  }
+
+  const normalized = value.trim();
+  const lookup = DEVICE_NAME_MAP[normalized.toLowerCase()];
+
+  if (lookup) {
+    return lookup;
+  }
+
+  return normalized
+    .split(/\s+/)
+    .map((part) => {
+      const mapped = DEVICE_NAME_MAP[part.toLowerCase()];
+
+      if (mapped) {
+        return mapped;
+      }
+
+      return part.charAt(0).toUpperCase() + part.slice(1);
+    })
+    .join(" ");
 }
 
 export function createSpotifyAuthorizationUrl(env: MusicEnv) {
@@ -301,8 +346,8 @@ async function buildNowPlayingPayload(
     artist,
     album,
     artworkUrl,
-    deviceName: device?.name,
-    deviceType: device?.type,
+    deviceName: normalizeDeviceLabel(device?.name),
+    deviceType: normalizeDeviceLabel(device?.type),
     spotifyUrl,
     appleMusicUrl,
     youtubeUrl,

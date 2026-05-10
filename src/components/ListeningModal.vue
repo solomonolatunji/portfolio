@@ -266,10 +266,9 @@ const emit = defineEmits<{
 }
 
 .lm-label {
-  font-size: 0.72rem;
+  font-size: 0.64rem;
   font-weight: 500;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
+  letter-spacing: 0.03em;
   color: var(--soft, #737373);
   font-family: ui-monospace, "SF Mono", "Cascadia Mono", monospace;
 }
@@ -282,7 +281,7 @@ const emit = defineEmits<{
 
 .lm-title {
   margin: 0;
-  font-size: clamp(1.25rem, 5vw, 1.6rem);
+  font-size: clamp(1.15rem, 4.4vw, 1.45rem);
   font-weight: 700;
   color: var(--text, #f5f5f5);
   letter-spacing: -0.02em;

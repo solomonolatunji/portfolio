@@ -177,10 +177,9 @@ a {
 
 .listening-label {
   color: var(--text);
-  font-size: 0.68rem;
+  font-size: 0.62rem;
   font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  letter-spacing: 0.04em;
   white-space: nowrap;
 }
 
@@ -217,7 +216,7 @@ a {
 .listening-track {
   margin: 0;
   color: var(--text);
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   line-height: 1.35;
   white-space: nowrap;
   overflow: hidden;
@@ -232,11 +231,32 @@ a {
   line-height: 1.45;
 }
 
+.listening-artist {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .listening-device {
-  margin: 0;
+  margin: 0.1rem 0 0;
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.32rem;
   color: var(--soft);
-  font-size: 0.74rem;
-  line-height: 1.4;
+  font-size: 0.68rem;
+  line-height: 1.35;
+  font-family: ui-monospace, "SF Mono", monospace;
+  background: var(--chip);
+  border: 1px solid var(--chip-border);
+  border-radius: 999px;
+  padding: 0.22rem 0.55rem;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+.listening-device svg {
+  flex: 0 0 auto;
 }
 
 .listening-links {
@@ -539,8 +559,8 @@ a {
   }
 
   .listening-label {
-    font-size: 0.62rem;
-    letter-spacing: 0.1em;
+    font-size: 0.58rem;
+    letter-spacing: 0.03em;
   }
 
   .listening-artwork {
