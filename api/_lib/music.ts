@@ -5,9 +5,6 @@ export interface MusicEnv {
   SPOTIFY_CLIENT_SECRET?: string;
   SPOTIFY_REFRESH_TOKEN?: string;
   SPOTIFY_REDIRECT_URI?: string;
-  APPLE_MUSIC_DEVELOPER_TOKEN?: string;
-  APPLE_MUSIC_STOREFRONT?: string;
-  YOUTUBE_API_KEY?: string;
 }
 
 export interface NowPlayingPayload {
@@ -199,84 +196,14 @@ async function fetchSpotifyRecentlyPlayed(accessToken: string) {
   }
 }
 
-async function resolveAppleMusicUrl(
-  env: MusicEnv,
-  isrc: string | undefined,
-  title: string,
-  artist: string
-) {
-  const developerToken = env.APPLE_MUSIC_DEVELOPER_TOKEN;
-
-  if (!developerToken) {
-    return undefined;
-  }
-
-  const storefront = env.APPLE_MUSIC_STOREFRONT || "us";
-  const headers = {
-    Authorization: `Bearer ${developerToken}`,
-  };
-
-  if (isrc) {
-    const byIsrc = await fetchJson<{
-      data?: Array<{ attributes?: { url?: string } }>;
-    }>(
-      `https://api.music.apple.com/v1/catalog/${storefront}/songs?filter[isrc]=${encodeURIComponent(
-        isrc
-      )}`,
-      { headers }
-    );
-
-    const directMatch = byIsrc.data?.[0]?.attributes?.url;
-
-    if (directMatch) {
-      return directMatch;
-    }
-  }
-
+function buildAppleMusicUrl(title: string, artist: string) {
   const term = `${title} ${artist}`;
-  const bySearch = await fetchJson<{
-    results?: {
-      songs?: {
-        data?: Array<{ attributes?: { url?: string } }>;
-      };
-    };
-  }>(
-    `https://api.music.apple.com/v1/catalog/${storefront}/search?types=songs&limit=1&term=${encodeURIComponent(
-      term
-    )}`,
-    { headers }
-  );
-
-  return bySearch.results?.songs?.data?.[0]?.attributes?.url;
+  return `https://music.apple.com/us/search?term=${encodeURIComponent(term)}`;
 }
 
-async function resolveYouTubeUrl(env: MusicEnv, title: string, artist: string) {
-  const apiKey = env.YOUTUBE_API_KEY;
-
-  if (!apiKey) {
-    return undefined;
-  }
-
+function buildYouTubeMusicUrl(title: string, artist: string) {
   const query = `${title} ${artist}`;
-  const response = await fetchJson<{
-    items?: Array<{ id?: { videoId?: string } }>;
-  }>(
-    `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&videoCategoryId=10&maxResults=1&q=${encodeURIComponent(
-      query
-    )}&key=${encodeURIComponent(apiKey)}`
-  );
-
-  const videoId = response.items?.[0]?.id?.videoId;
-
-  return videoId ? `https://music.youtube.com/watch?v=${videoId}` : undefined;
-}
-
-async function resolveOptionalLink<T>(resolver: () => Promise<T | undefined>) {
-  try {
-    return await resolver();
-  } catch {
-    return undefined;
-  }
+  return `https://music.youtube.com/search?q=${encodeURIComponent(query)}`;
 }
 
 function buildTrackCacheKey(isrc: string | undefined, title: string, artist: string) {
@@ -287,12 +214,7 @@ function buildTrackCacheKey(isrc: string | undefined, title: string, artist: str
   return `search:${title.toLowerCase()}::${artist.toLowerCase()}`;
 }
 
-async function resolveLinksForTrack(
-  env: MusicEnv,
-  isrc: string | undefined,
-  title: string,
-  artist: string
-) {
+async function resolveLinksForTrack(isrc: string | undefined, title: string, artist: string) {
   const cacheKey = buildTrackCacheKey(isrc, title, artist);
   const cached = RESOLVED_LINKS_CACHE.get(cacheKey);
 
@@ -300,14 +222,9 @@ async function resolveLinksForTrack(
     return cached;
   }
 
-  const [appleMusicUrl, youtubeUrl] = await Promise.all([
-    resolveOptionalLink(() => resolveAppleMusicUrl(env, isrc, title, artist)),
-    resolveOptionalLink(() => resolveYouTubeUrl(env, title, artist)),
-  ]);
-
   const resolved = {
-    appleMusicUrl,
-    youtubeUrl,
+    appleMusicUrl: buildAppleMusicUrl(title, artist),
+    youtubeUrl: buildYouTubeMusicUrl(title, artist),
   };
 
   RESOLVED_LINKS_CACHE.set(cacheKey, resolved);
@@ -315,7 +232,6 @@ async function resolveLinksForTrack(
 }
 
 async function buildNowPlayingPayload(
-  env: MusicEnv,
   track: SpotifyTrackResponse["item"] | null | undefined,
   isPlaying: boolean
 ) {
@@ -330,7 +246,7 @@ async function buildNowPlayingPayload(
   const spotifyUrl = track.external_urls.spotify;
   const isrc = track.external_ids?.isrc;
 
-  const { appleMusicUrl, youtubeUrl } = await resolveLinksForTrack(env, isrc, title, artist);
+  const { appleMusicUrl, youtubeUrl } = await resolveLinksForTrack(isrc, title, artist);
 
   return {
     isPlaying,
@@ -349,11 +265,11 @@ export async function getNowPlaying(env: MusicEnv): Promise<NowPlayingPayload | 
   const spotify = await fetchSpotifyNowPlaying(accessToken);
 
   if (spotify?.item?.name && spotify.item.external_urls?.spotify) {
-    return buildNowPlayingPayload(env, spotify.item, spotify.is_playing);
+    return buildNowPlayingPayload(spotify.item, spotify.is_playing);
   }
 
   const recentTrack = await fetchSpotifyRecentlyPlayed(accessToken);
-  return buildNowPlayingPayload(env, recentTrack, false);
+  return buildNowPlayingPayload(recentTrack, false);
 }
 
 export function renderSpotifyCallbackHtml(params: {

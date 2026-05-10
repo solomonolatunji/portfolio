@@ -107,48 +107,45 @@ const nowPlayingLoaded = computed(() => nowPlayingQuery.isFetched.value);
             <span class="listening-label">
               {{ nowPlaying.isPlaying ? "Currently Listening" : "Last Played" }}
             </span>
-            <div class="listening-main">
-              <div class="listening-text">
-                <p class="listening-track">{{ nowPlaying.title }}</p>
-                <p class="listening-artist">{{ nowPlaying.artist }}</p>
+            <div class="listening-text">
+              <p class="listening-track">{{ nowPlaying.title }}</p>
+              <p class="listening-artist">{{ nowPlaying.artist }}</p>
+            </div>
+            <div class="listening-side">
+              <div
+                class="listening-beam"
+                :class="{ paused: !nowPlaying.isPlaying }"
+                aria-hidden="true"
+              >
+                <ListeningBarsIcon />
               </div>
-
-              <div class="listening-side">
-                <div
-                  class="listening-beam"
-                  :class="{ paused: !nowPlaying.isPlaying }"
-                  aria-hidden="true"
+              <div class="listening-links" aria-label="Listening links">
+                <a
+                  :href="nowPlaying.spotifyUrl"
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="Open on Spotify"
                 >
-                  <ListeningBarsIcon />
-                </div>
-                <div class="listening-links" aria-label="Listening links">
-                  <a
-                    :href="nowPlaying.spotifyUrl"
-                    target="_blank"
-                    rel="noreferrer"
-                    aria-label="Open on Spotify"
-                  >
-                    <SpotifyIcon />
-                  </a>
-                  <a
-                    v-if="nowPlaying.appleMusicUrl"
-                    :href="nowPlaying.appleMusicUrl"
-                    target="_blank"
-                    rel="noreferrer"
-                    aria-label="Open on Apple Music"
-                  >
-                    <AppleMusicIcon />
-                  </a>
-                  <a
-                    v-if="nowPlaying.youtubeUrl"
-                    :href="nowPlaying.youtubeUrl"
-                    target="_blank"
-                    rel="noreferrer"
-                    aria-label="Open on YouTube Music"
-                  >
-                    <YouTubeMusicIcon />
-                  </a>
-                </div>
+                  <SpotifyIcon />
+                </a>
+                <a
+                  v-if="nowPlaying.appleMusicUrl"
+                  :href="nowPlaying.appleMusicUrl"
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="Open on Apple Music"
+                >
+                  <AppleMusicIcon />
+                </a>
+                <a
+                  v-if="nowPlaying.youtubeUrl"
+                  :href="nowPlaying.youtubeUrl"
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="Open on YouTube Music"
+                >
+                  <YouTubeMusicIcon />
+                </a>
               </div>
             </div>
           </div>

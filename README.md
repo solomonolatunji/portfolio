@@ -18,8 +18,8 @@ pnpm dev
 
 ## Live Music Setup
 
-This project supports an automatic `currently listening` row powered by Spotify, with optional
-Apple Music and YouTube Music link resolution.
+This project supports an automatic `currently listening` row powered by Spotify, with Apple Music
+and YouTube Music search links generated from the current track metadata.
 
 ### Environment
 
@@ -30,9 +30,6 @@ SPOTIFY_CLIENT_ID=
 SPOTIFY_CLIENT_SECRET=
 SPOTIFY_REFRESH_TOKEN=
 SPOTIFY_REDIRECT_URI=http://localhost:5173/api/spotify/callback
-APPLE_MUSIC_DEVELOPER_TOKEN=
-APPLE_MUSIC_STOREFRONT=us
-YOUTUBE_API_KEY=
 ```
 
 ### Spotify setup
@@ -59,32 +56,10 @@ Spotify docs:
 - Recently played:
   <https://developer.spotify.com/documentation/web-api/reference/get-recently-played>
 
-### Apple Music setup
+### Apple Music and YouTube Music
 
-Generate an Apple Music developer token and put it in `APPLE_MUSIC_DEVELOPER_TOKEN`.
-
-Apple docs:
-
-- Apple Music API overview:
-  <https://developer.apple.com/documentation/applemusicapi/>
-- Generating developer tokens:
-  <https://developer.apple.com/documentation/applemusicapi/generating-developer-tokens>
-- Search:
-  <https://developer.apple.com/documentation/applemusicapi/search>
-- ISRC song lookup:
-  <https://developer.apple.com/documentation/applemusicapi/get-multiple-catalog-songs-by-isrc>
-
-### YouTube setup
-
-Create a Google Cloud project, enable the YouTube Data API v3, then create an API key and place it
-in `YOUTUBE_API_KEY`.
-
-Google docs:
-
-- Create credentials:
-  <https://console.cloud.google.com/apis/credentials>
-- YouTube search API:
-  <https://developers.google.com/youtube/v3/docs/search/list>
+Apple Music and YouTube Music links are generated as search URLs from the Spotify track metadata,
+so no extra API keys are required for those providers.
 
 ## Build
 
