@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import AppleMusicIcon from "@/components/icons/AppleMusicIcon.vue";
-import SpotifyIcon from "@/components/icons/SpotifyIcon.vue";
-import YouTubeMusicIcon from "@/components/icons/YouTubeMusicIcon.vue";
+import { siApplemusic, siSpotify, siYoutubemusic } from "simple-icons";
 import type { NowPlaying } from "@/interfaces/now-playing";
 
 defineProps<{
@@ -20,7 +18,9 @@ defineProps<{
       class="lm-link lm-link--spotify"
     >
       <span class="lm-link-icon">
-        <SpotifyIcon />
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path :fill="`#${siSpotify.hex}`" :d="siSpotify.path" />
+        </svg>
       </span>
       <span class="lm-link-label">Spotify</span>
       <span class="lm-link-arrow" aria-hidden="true">↗</span>
@@ -34,7 +34,9 @@ defineProps<{
       class="lm-link lm-link--apple"
     >
       <span class="lm-link-icon">
-        <AppleMusicIcon />
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path :fill="`#${siApplemusic.hex}`" :d="siApplemusic.path" />
+        </svg>
       </span>
       <span class="lm-link-label">Apple Music</span>
       <span class="lm-link-arrow" aria-hidden="true">↗</span>
@@ -48,7 +50,9 @@ defineProps<{
       class="lm-link lm-link--youtube"
     >
       <span class="lm-link-icon">
-        <YouTubeMusicIcon />
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path :fill="`#${siYoutubemusic.hex}`" :d="siYoutubemusic.path" />
+        </svg>
       </span>
       <span class="lm-link-label">YouTube Music</span>
       <span class="lm-link-arrow" aria-hidden="true">↗</span>

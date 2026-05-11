@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import axios from "axios";
+import { siApplemusic, siSpotify, siYoutubemusic } from "simple-icons";
 import { useQuery } from "@tanstack/vue-query";
 import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import { aboutData, activeProducts, profileLinks } from "@/constants/about";
 import AppleIcon from "@/components/icons/AppleIcon.vue";
-import AppleMusicIcon from "@/components/icons/AppleMusicIcon.vue";
 import EmailIcon from "@/components/icons/EmailIcon.vue";
 import GitHubIcon from "@/components/icons/GitHubIcon.vue";
 import GooglePlayIcon from "@/components/icons/GooglePlayIcon.vue";
@@ -12,8 +12,6 @@ import LinkedInIcon from "@/components/icons/LinkedInIcon.vue";
 import ListeningModal from "@/components/ListeningModal.vue";
 import ListeningBarsIcon from "@/components/icons/ListeningBarsIcon.vue";
 import LiveIcon from "@/components/icons/LiveIcon.vue";
-import SpotifyIcon from "@/components/icons/SpotifyIcon.vue";
-import YouTubeMusicIcon from "@/components/icons/YouTubeMusicIcon.vue";
 import WhatsAppIcon from "@/components/icons/WhatsAppIcon.vue";
 import XIcon from "@/components/icons/XIcon.vue";
 import type { NowPlaying } from "@/interfaces/now-playing";
@@ -76,7 +74,7 @@ const nowPlayingLoaded = computed(() => nowPlayingQuery.isFetched.value);
 const isListeningModalOpen = ref(false);
 
 const listeningStateLabel = computed(() =>
-  nowPlaying.value?.isPlaying ? "Currently Listening" : "Last Played"
+  nowPlaying.value?.isPlaying ? "I'm currently listening to" : "Last Played"
 );
 const listeningDeviceLabel = computed(
   () => nowPlaying.value?.deviceName ?? nowPlaying.value?.deviceType ?? null
@@ -149,62 +147,53 @@ onBeforeUnmount(() => {
             <div class="listening-text">
               <p class="listening-track">{{ nowPlaying.title }}</p>
               <p class="listening-artist">{{ nowPlaying.artist }}</p>
-              <p v-if="listeningDeviceLabel" class="listening-device">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <rect
-                    x="2"
-                    y="3"
-                    width="20"
-                    height="14"
-                    rx="2"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                  />
-                  <path
-                    d="M8 21H16M12 17V21"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                    stroke-linecap="round"
-                  />
-                </svg>
-                {{ listeningDeviceLabel }}
-              </p>
             </div>
             <div class="listening-side">
-              <div
-                class="listening-beam"
-                :class="{ paused: !nowPlaying.isPlaying }"
-                aria-hidden="true"
-              >
-                <ListeningBarsIcon />
-              </div>
-              <div class="listening-links" aria-label="Listening links">
-                <a
-                  :href="nowPlaying.spotifyUrl"
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label="Open on Spotify"
+              <span v-if="listeningDeviceLabel" class="listening-device">
+                {{ listeningDeviceLabel }}
+              </span>
+              <div class="listening-controls-row">
+                <div
+                  class="listening-beam"
+                  :class="{ paused: !nowPlaying.isPlaying }"
+                  aria-hidden="true"
                 >
-                  <SpotifyIcon />
-                </a>
-                <a
-                  v-if="nowPlaying.appleMusicUrl"
-                  :href="nowPlaying.appleMusicUrl"
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label="Open on Apple Music"
-                >
-                  <AppleMusicIcon />
-                </a>
-                <a
-                  v-if="nowPlaying.youtubeUrl"
-                  :href="nowPlaying.youtubeUrl"
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label="Open on YouTube Music"
-                >
-                  <YouTubeMusicIcon />
-                </a>
+                  <ListeningBarsIcon />
+                </div>
+                <div class="listening-links" aria-label="Listening links">
+                  <a
+                    :href="nowPlaying.spotifyUrl"
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label="Open on Spotify"
+                  >
+                    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                      <path :fill="`#${siSpotify.hex}`" :d="siSpotify.path" />
+                    </svg>
+                  </a>
+                  <a
+                    v-if="nowPlaying.appleMusicUrl"
+                    :href="nowPlaying.appleMusicUrl"
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label="Open on Apple Music"
+                  >
+                    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                      <path :fill="`#${siApplemusic.hex}`" :d="siApplemusic.path" />
+                    </svg>
+                  </a>
+                  <a
+                    v-if="nowPlaying.youtubeUrl"
+                    :href="nowPlaying.youtubeUrl"
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label="Open on YouTube Music"
+                  >
+                    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                      <path :fill="`#${siYoutubemusic.hex}`" :d="siYoutubemusic.path" />
+                    </svg>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
