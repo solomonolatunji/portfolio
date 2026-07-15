@@ -1,5 +1,3 @@
-import axios from "axios";
-
 export interface MusicEnv {
   SPOTIFY_CLIENT_ID?: string;
   SPOTIFY_CLIENT_SECRET?: string;
@@ -100,18 +98,22 @@ async function fetchJson<T>(
     body?: URLSearchParams | string;
   }
 ): Promise<T> {
-  const response = await axios.request<T>({
-    url,
+  const response = await fetch(url, {
     method: init?.method || "GET",
     headers: init?.headers,
-    data: init?.body,
+    body: init?.body,
   });
 
-  return response.data;
+  if (!response.ok) {
+    const text = await response.text();
+    throw new Error(`${response.status} ${response.statusText}: ${text}`);
+  }
+
+  return response.json() as Promise<T>;
 }
 
 function basicAuth(clientId: string, clientSecret: string) {
-  return Buffer.from(`${clientId}:${clientSecret}`).toString("base64");
+  return btoa(`${clientId}:${clientSecret}`);
 }
 
 function normalizeDeviceLabel(value?: string) {
@@ -207,84 +209,56 @@ async function refreshSpotifyAccessToken(env: MusicEnv) {
 }
 
 async function fetchSpotifyNowPlaying(accessToken: string) {
-  try {
-    const response = await axios.get<SpotifyTrackResponse>(
-      "https://api.spotify.com/v1/me/player/currently-playing",
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    );
+  const response = await fetch("https://api.spotify.com/v1/me/player/currently-playing", {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  });
 
-    return response.data;
-  } catch (error: any) {
-    if (error.response?.status === 204) {
-      return null;
-    }
-
-    if (error.response) {
-      throw new Error(
-        `${error.response.status} ${error.response.statusText}: ${JSON.stringify(error.response.data)}`
-      );
-    }
-
-    throw error;
+  if (response.status === 204) {
+    return null;
   }
+
+  if (!response.ok) {
+    const text = await response.text();
+    throw new Error(`${response.status} ${response.statusText}: ${text}`);
+  }
+
+  return (await response.json()) as SpotifyTrackResponse;
 }
 
 async function fetchSpotifyRecentlyPlayed(accessToken: string) {
-  try {
-    const response = await axios.get<SpotifyRecentTracksResponse>(
-      "https://api.spotify.com/v1/me/player/recently-played?limit=1",
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    );
+  const response = await fetch("https://api.spotify.com/v1/me/player/recently-played?limit=1", {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  });
 
-    return response.data.items?.[0]?.track ?? null;
-  } catch (error: any) {
-    if (error.response?.status === 401 || error.response?.status === 403) {
-      return null;
-    }
-
-    if (error.response) {
-      throw new Error(
-        `${error.response.status} ${error.response.statusText}: ${JSON.stringify(error.response.data)}`
-      );
-    }
-
-    throw error;
+  if (response.status === 401 || response.status === 403) {
+    return null;
   }
+
+  if (!response.ok) {
+    const text = await response.text();
+    throw new Error(`${response.status} ${response.statusText}: ${text}`);
+  }
+
+  const data = (await response.json()) as SpotifyRecentTracksResponse;
+  return data.items?.[0]?.track ?? null;
 }
 
 async function fetchSpotifyActiveDevice(accessToken: string) {
-  try {
-    const response = await axios.get<SpotifyDevicesResponse>(
-      "https://api.spotify.com/v1/me/player/devices",
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    );
+  const response = await fetch("https://api.spotify.com/v1/me/player/devices", {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  });
 
-    return response.data.devices?.find((device) => device.is_active) ?? null;
-  } catch (error: any) {
-    if (error.response?.status === 401 || error.response?.status === 403) {
-      return null;
-    }
-
-    if (error.response) {
-      throw new Error(
-        `${error.response.status} ${error.response.statusText}: ${JSON.stringify(error.response.data)}`
-      );
-    }
-
-    throw error;
+  if (response.status === 401 || response.status === 403) {
+    return null;
   }
+
+  if (!response.ok) {
+    const text = await response.text();
+    throw new Error(`${response.status} ${response.statusText}: ${text}`);
+  }
+
+  const data = (await response.json()) as SpotifyDevicesResponse;
+  return data.devices?.find((device) => device.is_active) ?? null;
 }
 
 function buildAppleMusicUrl(title: string, artist: string) {

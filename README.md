@@ -1,6 +1,6 @@
 # Portfolio
 
-Single-page portfolio built with Vue 3, TypeScript, and Vite.
+Single-page portfolio built with Vue 3, TypeScript, Vite, and Cloudflare Pages.
 
 ## Stack
 
@@ -8,12 +8,13 @@ Single-page portfolio built with Vue 3, TypeScript, and Vite.
 - Vite
 - TypeScript
 - Tailwind CSS v4
+- Cloudflare Pages / Workers
 
 ## Development
 
 ```bash
-pnpm install
-pnpm dev
+npm install
+npm run dev
 ```
 
 ## Live Music Setup
@@ -29,7 +30,7 @@ Copy `.env.example` to `.env` and fill in:
 SPOTIFY_CLIENT_ID=
 SPOTIFY_CLIENT_SECRET=
 SPOTIFY_REFRESH_TOKEN=
-SPOTIFY_REDIRECT_URI=http://localhost:5173/api/spotify/callback
+SPOTIFY_REDIRECT_URI=http://localhost:5173/spotify/callback
 ```
 
 ### Spotify setup
@@ -37,15 +38,15 @@ SPOTIFY_REDIRECT_URI=http://localhost:5173/api/spotify/callback
 1. Create a Spotify app:
    <https://developer.spotify.com/dashboard>
 2. Add your callback URL to the app settings:
-   `http://localhost:5173/api/spotify/callback`
+   `http://localhost:5173/spotify/callback`
 3. Start the app locally, then open:
-   `http://localhost:5173/api/spotify/login`
+   `http://localhost:5173/spotify/login`
 4. After authorizing, copy the refresh token shown on the callback page into
    `SPOTIFY_REFRESH_TOKEN`.
 5. If you add new Spotify scopes later, re-run the authorization flow and replace the stored refresh
    token.
 6. This project uses Spotify playback state to show the active device when available, so if you
-   already authorized before that scope was added, re-run `/api/spotify/login` once and replace
+   already authorized before that scope was added, re-run `/spotify/login` once and replace
    the stored refresh token.
 
 Spotify docs:
@@ -66,9 +67,11 @@ Spotify docs:
 Apple Music and YouTube Music links are generated as search URLs from the Spotify track metadata,
 so no extra API keys are required for those providers.
 
-## Build
+## Build and Deploy
+
+To deploy to Cloudflare Pages:
 
 ```bash
-pnpm build
-pnpm preview
+npm run build
+npm run deploy
 ```
