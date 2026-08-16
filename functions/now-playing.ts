@@ -1,6 +1,7 @@
 import { getNowPlaying } from "./_lib/music";
+import { errorMessage, type MusicFunction } from "./_lib/types";
 
-export async function onRequest(context: any) {
+export const onRequest: MusicFunction = async (context) => {
   try {
     const payload = await getNowPlaying(context.env);
 
@@ -15,10 +16,10 @@ export async function onRequest(context: any) {
         "Content-Type": "application/json",
       },
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     return new Response(
-      JSON.stringify({ error: error.message || "Failed to fetch now playing." }),
+      JSON.stringify({ error: errorMessage(error, "Failed to fetch now playing.") }),
       { status: 500, headers: { "Content-Type": "application/json" } }
     );
   }
-}
+};

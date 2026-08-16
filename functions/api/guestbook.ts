@@ -1,8 +1,9 @@
 import { getSession, json } from "../_lib/guestbook";
+import { errorMessage, type GuestbookFunction } from "../_lib/types";
 
 const MAX_MESSAGE_LENGTH = 500;
 
-export async function onRequestGet(context: any) {
+export const onRequestGet: GuestbookFunction = async (context) => {
   try {
     const result = await context.env.GUESTBOOK_DB.prepare(
       `SELECT e.id, e.message, e.created_at AS createdAt,
@@ -12,12 +13,12 @@ export async function onRequestGet(context: any) {
     ).all();
 
     return json({ entries: result.results || [] });
-  } catch (error: any) {
-    return json({ error: error.message || "Unable to load guestbook entries." }, 500);
+  } catch (error: unknown) {
+    return json({ error: errorMessage(error, "Unable to load guestbook entries.") }, 500);
   }
-}
+};
 
-export async function onRequestPost(context: any) {
+export const onRequestPost: GuestbookFunction = async (context) => {
   try {
     const user = await getSession(context.request, context.env.GUESTBOOK_DB);
     if (!user) return json({ error: "Sign in with GitHub to leave a message." }, 401);
@@ -47,7 +48,7 @@ export async function onRequestPost(context: any) {
       .run();
 
     return json({ ok: true }, 201);
-  } catch (error: any) {
-    return json({ error: error.message || "Unable to save your message." }, 500);
+  } catch (error: unknown) {
+    return json({ error: errorMessage(error, "Unable to save your message.") }, 500);
   }
-}
+};

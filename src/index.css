@@ -50,6 +50,73 @@ a {
   padding: 2.2rem 0 2.8rem;
 }
 
+.site-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.65rem;
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  color: var(--soft);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.site-mark {
+  color: var(--text);
+  font-size: 0.76rem;
+  letter-spacing: 0.08em;
+}
+
+.site-mark span {
+  margin: 0 0.2rem;
+  color: var(--soft);
+}
+
+.site-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.site-nav a {
+  transition: color 160ms ease;
+}
+
+.site-nav a:hover,
+.site-nav a.active {
+  color: var(--text);
+}
+
+.site-github-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  margin-left: 0.35rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--muted);
+}
+
+.site-github-link:hover {
+  border-color: var(--line-strong);
+  color: var(--text);
+}
+
+.site-github-link svg,
+.guestbook-button svg,
+.guestbook-text-button svg {
+  width: 0.95rem;
+  height: 0.95rem;
+  fill: currentColor;
+  flex: 0 0 auto;
+}
+
 .hero {
   display: grid;
   gap: 1rem;
@@ -477,6 +544,9 @@ a {
 }
 
 .guestbook-text-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
   padding: 0;
   border: 0;
   background: transparent;
@@ -533,6 +603,7 @@ a {
   font-size: 0.78rem;
   font-weight: 700;
   cursor: pointer;
+  gap: 0.4rem;
   transition:
     opacity 160ms ease,
     transform 160ms ease;

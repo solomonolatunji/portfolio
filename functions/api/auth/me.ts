@@ -1,9 +1,10 @@
 import { getSession, json } from "../../_lib/guestbook";
+import { errorMessage, type GuestbookFunction } from "../../_lib/types";
 
-export async function onRequest(context: any) {
+export const onRequest: GuestbookFunction = async (context) => {
   try {
     return json({ user: await getSession(context.request, context.env.GUESTBOOK_DB) });
-  } catch (error: any) {
-    return json({ error: error.message || "Unable to load your session." }, 500);
+  } catch (error: unknown) {
+    return json({ error: errorMessage(error, "Unable to load your session.") }, 500);
   }
-}
+};

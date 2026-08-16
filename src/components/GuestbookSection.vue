@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from "vue";
+import GitHubIcon from "@/components/icons/GitHubIcon.vue";
+import LogOutIcon from "@/components/icons/LogOutIcon.vue";
+import PenIcon from "@/components/icons/PenIcon.vue";
 
 interface User {
   id: string;
@@ -94,8 +97,6 @@ onMounted(loadGuestbook);
 
 <template>
   <section class="guestbook-section">
-    <a href="/" class="guestbook-back-link">← Back home</a>
-
     <div class="section-heading guestbook-heading">
       <p class="eyebrow">A note from the internet</p>
       <h1>Guestbook</h1>
@@ -112,7 +113,10 @@ onMounted(loadGuestbook);
         />
         <div>
           <strong>{{ user.username }}</strong>
-          <button type="button" class="guestbook-text-button" @click="signOut">Sign out</button>
+          <button type="button" class="guestbook-text-button" @click="signOut">
+            <LogOutIcon />
+            Sign out
+          </button>
         </div>
       </div>
       <form @submit.prevent="submitMessage">
@@ -125,6 +129,7 @@ onMounted(loadGuestbook);
         <div class="guestbook-form-footer">
           <span>{{ remainingCharacters }} characters left</span>
           <button type="submit" class="guestbook-button" :disabled="submitting || !message.trim()">
+            <PenIcon />
             {{ submitting ? "Posting..." : "Sign guestbook" }}
           </button>
         </div>
@@ -133,7 +138,10 @@ onMounted(loadGuestbook);
 
     <div v-else-if="!loading" class="guestbook-login guestbook-card">
       <p>Want to leave a message?</p>
-      <a href="/api/auth/github" class="guestbook-button">Sign in with GitHub</a>
+      <a href="/api/auth/github" class="guestbook-button">
+        <GitHubIcon />
+        Sign in with GitHub
+      </a>
     </div>
 
     <p v-if="error" class="guestbook-error" role="alert">{{ error }}</p>

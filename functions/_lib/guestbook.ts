@@ -1,11 +1,9 @@
 const SESSION_COOKIE = "guestbook_session";
 const SESSION_TTL_SECONDS = 60 * 60 * 24 * 30;
 
-export interface GuestbookEnv {
-  GUESTBOOK_DB?: any;
-  GITHUB_CLIENT_ID?: string;
-  GITHUB_CLIENT_SECRET?: string;
-}
+import type { D1Database } from "@cloudflare/workers-types";
+import type { GuestbookEnv } from "./types";
+export type { GuestbookEnv } from "./types";
 
 export interface GuestbookUser {
   id: string;
@@ -123,7 +121,7 @@ export async function fetchGithubUser(accessToken: string) {
   } satisfies GuestbookUser;
 }
 
-export async function createSession(db: any, user: GuestbookUser) {
+export async function createSession(db: D1Database, user: GuestbookUser) {
   const token = crypto.randomUUID();
   const sessionId = await hash(token);
   const expiresAt = new Date(Date.now() + SESSION_TTL_SECONDS * 1000).toISOString();
@@ -146,7 +144,7 @@ export async function createSession(db: any, user: GuestbookUser) {
   return { token, expiresAt };
 }
 
-export async function getSession(request: Request, db: any) {
+export async function getSession(request: Request, db: D1Database) {
   const token = getCookie(request, SESSION_COOKIE);
   if (!token) return null;
 
@@ -160,10 +158,10 @@ export async function getSession(request: Request, db: any) {
     .bind(sessionId)
     .first();
 
-  return result ? (result as GuestbookUser) : null;
+  return result ? (result as unknown as GuestbookUser) : null;
 }
 
-export async function clearSession(request: Request, db: any) {
+export async function clearSession(request: Request, db: D1Database) {
   const token = getCookie(request, SESSION_COOKIE);
   if (token)
     await db

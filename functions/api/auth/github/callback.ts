@@ -6,8 +6,9 @@ import {
   json,
   sessionCookie,
 } from "../../../_lib/guestbook";
+import { errorMessage, type GuestbookFunction } from "../../../_lib/types";
 
-export async function onRequest(context: any) {
+export const onRequest: GuestbookFunction = async (context) => {
   const url = new URL(context.request.url);
   const code = url.searchParams.get("code");
   const state = url.searchParams.get("state");
@@ -27,15 +28,15 @@ export async function onRequest(context: any) {
         "Set-Cookie": sessionCookie(session.token, context.request),
       },
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     return new Response(null, {
       status: 302,
       headers: {
         Location: new URL(
-          `/guestbook?error=${encodeURIComponent(error.message || "GitHub login failed.")}`,
+          `/guestbook?error=${encodeURIComponent(errorMessage(error, "GitHub login failed."))}`,
           context.request.url
         ).toString(),
       },
     });
   }
-}
+};

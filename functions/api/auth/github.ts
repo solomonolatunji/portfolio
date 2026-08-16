@@ -1,6 +1,7 @@
 import { githubAuthorizationUrl, json, newState, stateCookie } from "../../_lib/guestbook";
+import { errorMessage, type GuestbookFunction } from "../../_lib/types";
 
-export async function onRequest(context: any) {
+export const onRequest: GuestbookFunction = async (context) => {
   try {
     const state = newState();
     return new Response(null, {
@@ -10,7 +11,7 @@ export async function onRequest(context: any) {
         "Set-Cookie": stateCookie(state, context.request),
       },
     });
-  } catch (error: any) {
-    return json({ error: error.message || "Unable to start GitHub login." }, 500);
+  } catch (error: unknown) {
+    return json({ error: errorMessage(error, "Unable to start GitHub login.") }, 500);
   }
-}
+};

@@ -1,6 +1,7 @@
 import { exchangeSpotifyCodeForRefreshToken, renderSpotifyCallbackHtml } from "../_lib/music";
+import { errorMessage, type MusicFunction } from "../_lib/types";
 
-export async function onRequest(context: any) {
+export const onRequest: MusicFunction = async (context) => {
   const url = new URL(context.request.url);
   const code = url.searchParams.get("code");
   const error = url.searchParams.get("error");
@@ -31,12 +32,12 @@ export async function onRequest(context: any) {
       }),
       { status: 200, headers: { "Content-Type": "text/html; charset=utf-8" } }
     );
-  } catch (exchangeError: any) {
+  } catch (exchangeError: unknown) {
     return new Response(
       renderSpotifyCallbackHtml({
-        error: exchangeError.message || "Spotify token exchange failed.",
+        error: errorMessage(exchangeError, "Spotify token exchange failed."),
       }),
       { status: 500, headers: { "Content-Type": "text/html; charset=utf-8" } }
     );
   }
-}
+};

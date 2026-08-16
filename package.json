@@ -7,7 +7,7 @@
   "description": "Solomon Olatunji's personal portfolio website",
   "email": "me@solomonolatunji.com",
   "scripts": {
-    "dev": "npm run build && wrangler pages dev",
+    "dev": "npm run build && CLOUDFLARE_CF_FETCH_ENABLED=false wrangler pages dev",
     "dev:ui": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "@cloudflare/vite-plugin": "^1.52.1",
+    "@cloudflare/workers-types": "^5.20260816.1",
     "@types/node": "^26.2.0",
     "@vitejs/plugin-vue": "^6.0.8",
     "@vue/tsconfig": "^0.9.1",
