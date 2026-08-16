@@ -1,4 +1,6 @@
 <template>
-  <HeroSection />
-  <ProjectsSection />
+  <div class="portfolio-page">
+    <HeroSection />
+    <ProjectsSection />
+  </div>
 </template>

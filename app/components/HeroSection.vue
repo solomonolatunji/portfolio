@@ -59,7 +59,7 @@ const {
           :alt="`${nowPlaying.title} cover art`"
           class="listening-artwork"
           loading="lazy"
-        />
+        >
 
         <div class="listening-copy">
           <span class="listening-label">{{ listeningStateLabel }}</span>

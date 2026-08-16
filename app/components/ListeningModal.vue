@@ -19,7 +19,7 @@ const emit = defineEmits<{
     <div class="lm-backdrop" role="presentation" @click="emit('close')">
       <div class="lm-shell" role="dialog" aria-modal="true" aria-labelledby="lm-title" @click.stop>
         <div class="lm-bg-layer" aria-hidden="true">
-          <img v-if="nowPlaying.artworkUrl" :src="nowPlaying.artworkUrl" alt="" class="lm-bg-img" />
+          <img v-if="nowPlaying.artworkUrl" :src="nowPlaying.artworkUrl" alt="" class="lm-bg-img" >
           <div class="lm-bg-overlay" />
           <div class="lm-bg-eclipse" />
           <div class="lm-bg-noise" />

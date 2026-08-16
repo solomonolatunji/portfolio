@@ -51,8 +51,8 @@ const projectLinkIcons = {
             rel="noreferrer"
           >
             <component
-              v-if="projectLinkIcons[link.label as keyof typeof projectLinkIcons]"
               :is="projectLinkIcons[link.label as keyof typeof projectLinkIcons]"
+              v-if="projectLinkIcons[link.label as keyof typeof projectLinkIcons]"
               aria-hidden="true"
             />
             <span class="project-link-text">{{ link.label }}</span>

@@ -100,7 +100,7 @@ onMounted(loadGuestbook);
           :src="user.avatarUrl"
           :alt="user.username"
           class="guestbook-avatar"
-        />
+        >
         <div>
           <strong>{{ user.username }}</strong>
           <button type="button" class="guestbook-text-button" @click="signOut">
@@ -128,6 +128,7 @@ onMounted(loadGuestbook);
 
     <div v-else-if="!loading" class="guestbook-login guestbook-card">
       <p>Want to leave a message?</p>
+      <!-- eslint-disable-next-line link-checker/valid-route, link-checker/valid-sitemap-link -->
       <a href="/api/auth/github" class="guestbook-button">
         <GitHubIcon />
         Sign in with GitHub
@@ -148,7 +149,7 @@ onMounted(loadGuestbook);
           :alt="entry.username"
           class="guestbook-avatar"
           loading="lazy"
-        />
+        >
         <div class="guestbook-entry-body">
           <div class="guestbook-entry-meta">
             <a :href="entry.profileUrl" target="_blank" rel="noreferrer">{{ entry.username }}</a>
