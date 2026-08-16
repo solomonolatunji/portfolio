@@ -29,22 +29,6 @@ const route = useRoute();
 const oauthError = computed(() => (typeof route.query.error === "string" ? route.query.error : ""));
 if (oauthError.value) error.value = oauthError.value;
 
-const guestbookSchema = {
-  message: {
-    type: "textarea",
-    label: "Message",
-    placeholder: "Write something nice...",
-    maxlength: 500,
-    rows: 4,
-    rules: "required|max:500",
-  },
-  submit: {
-    type: "button",
-    submits: true,
-    buttonLabel: "Sign guestbook",
-  },
-};
-
 async function request<T>(url: string, options?: Parameters<typeof $fetch>[1]) {
   return $fetch<T>(url, { timeout: 8000, ...options });
 }
@@ -90,11 +74,6 @@ async function submitMessage() {
   }
 }
 
-async function submitVueformMessage(values: { message?: string }) {
-  message.value = values.message?.trim() ?? "";
-  await submitMessage();
-}
-
 function formatDate(value: string) {
   return new Intl.DateTimeFormat(undefined, { dateStyle: "medium" }).format(
     new Date(`${value.replace(" ", "T")}Z`)
@@ -128,17 +107,21 @@ onMounted(loadGuestbook);
           </button>
         </div>
       </div>
-      <ClientOnly>
-        <Vueform
-          :schema="guestbookSchema"
-          :endpoint="false"
-          :loading="submitting"
-          @submit="submitVueformMessage"
-        />
-        <template #fallback>
-          <p class="guestbook-empty">Preparing the message form...</p>
-        </template>
-      </ClientOnly>
+      <form class="guestbook-form" @submit.prevent="submitMessage">
+        <UFormField label="Message" name="message" required>
+          <UTextarea
+            v-model="message"
+            class="w-full"
+            placeholder="Write something nice..."
+            :maxlength="500"
+            :rows="4"
+            autoresize
+          />
+        </UFormField>
+        <UButton type="submit" :loading="submitting" :disabled="!message.trim()">
+          Sign guestbook
+        </UButton>
+      </form>
     </div>
 
     <div v-else-if="!loading" class="guestbook-login guestbook-card">

@@ -35,6 +35,13 @@ SPOTIFY_CLIENT_ID=
 SPOTIFY_CLIENT_SECRET=
 SPOTIFY_REFRESH_TOKEN=
 SPOTIFY_REDIRECT_URI=http://localhost:3000/spotify/callback
+NUXT_OG_IMAGE_SECRET=
+```
+
+Generate a stable production value for `NUXT_OG_IMAGE_SECRET` with:
+
+```bash
+npx nuxt-og-image generate-secret
 ```
 
 ### Spotify setup

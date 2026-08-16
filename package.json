@@ -30,7 +30,6 @@
     "@takumi-rs/core": "^2.9.2",
     "@takumi-rs/wasm": "^2.9.2",
     "@tanstack/vue-query": "^5.101.4",
-    "@vueform/vueform": "^1.13.13",
     "dotenv": "^17.4.2",
     "drizzle-kit": "^0.31.10",
     "drizzle-orm": "^0.45.2",
