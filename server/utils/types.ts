@@ -10,7 +10,7 @@ export interface MusicEnv {
   SPOTIFY_REDIRECT_URI?: string;
 }
 
-export type CloudflareEnv = GuestbookEnv & MusicEnv;
+export type ServerEnv = GuestbookEnv & MusicEnv;
 
 export function errorMessage(error: unknown, fallback: string) {
   return error instanceof Error && error.message ? error.message : fallback;

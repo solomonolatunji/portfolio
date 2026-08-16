@@ -12,7 +12,6 @@ export default defineNuxtConfig({
     "@nuxt/test-utils/module",
     "@nuxt/ui",
     "@nuxtjs/google-fonts",
-    "@nuxthub/core",
   ],
   robots: {
     robotsTxt: false,
@@ -31,23 +30,6 @@ export default defineNuxtConfig({
   typescript: {
     strict: true,
     typeCheck: true,
-  },
-  nitro: {
-    preset: "cloudflare_pages",
-    prerender: {
-      autoSubfolderIndex: false,
-    },
-  },
-  hub: {
-    db: {
-      dialect: "mysql",
-      driver: "mysql2",
-      connection: {
-        hyperdriveId: process.env.HYPERDRIVE_ID || undefined,
-      },
-      applyMigrationsDuringBuild: false,
-      applyMigrationsDuringDev: false,
-    },
   },
   runtimeConfig: {
     githubClientId: "",

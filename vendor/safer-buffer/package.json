@@ -1,6 +1,0 @@
-{
-  "name": "safer-buffer",
-  "version": "2.1.2",
-  "main": "index.js",
-  "license": "MIT"
-}

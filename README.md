@@ -1,15 +1,15 @@
 # Portfolio
 
-Portfolio and guestbook built with Nuxt 4, Vue 3, TypeScript, AWS MySQL, and Cloudflare Pages.
+Portfolio and guestbook built with Nuxt 4, Vue 3, TypeScript, and MySQL.
 
 ## Stack
 
 - Vue 3
 - Nuxt 4 / Nitro
 - TypeScript
-- Cloudflare Pages / Workers
-- NuxtHub + Drizzle ORM
-- AWS MySQL through Cloudflare Hyperdrive
+- Nitro Node server
+- Drizzle ORM
+- AWS MySQL
 
 ## Development
 
@@ -18,9 +18,8 @@ npm install
 npm run dev
 ```
 
-`npm run dev` builds the Nuxt Cloudflare Pages worker and starts it locally so the `/api`
-server routes and Hyperdrive/MySQL binding work together. Use `npm run dev:nuxt` for the faster Nuxt UI
-development server when you do not need the Cloudflare runtime.
+`npm run dev` starts the normal Nuxt development server on port 3000. The `/api` server routes
+connect directly to MySQL through `MYSQL_URL`.
 
 ## Live Music Setup
 
@@ -35,7 +34,7 @@ Copy `.env.example` to `.env` and fill in:
 SPOTIFY_CLIENT_ID=
 SPOTIFY_CLIENT_SECRET=
 SPOTIFY_REFRESH_TOKEN=
-SPOTIFY_REDIRECT_URI=http://localhost:8788/spotify/callback
+SPOTIFY_REDIRECT_URI=http://localhost:3000/spotify/callback
 ```
 
 ### Spotify setup
@@ -43,9 +42,9 @@ SPOTIFY_REDIRECT_URI=http://localhost:8788/spotify/callback
 1. Create a Spotify app:
    <https://developer.spotify.com/dashboard>
 2. Add your callback URL to the app settings:
-   `http://localhost:8788/spotify/callback`
+   `http://localhost:3000/spotify/callback`
 3. Start the app locally, then open:
-   `http://localhost:8788/spotify/login`
+   `http://localhost:3000/spotify/login`
 4. After authorizing, copy the refresh token shown on the callback page into
    `SPOTIFY_REFRESH_TOKEN`.
 5. If you add new Spotify scopes later, re-run the authorization flow and replace the stored refresh
@@ -74,35 +73,28 @@ so no extra API keys are required for those providers.
 
 ## Build and Deploy
 
-To deploy to Cloudflare Pages:
+For Render, Railway, or another Node host:
 
 ```bash
 npm run build
-npm run deploy
+npm run start
 ```
+
+Use `npm run build` as the build command and `npm run start` as the start command.
 
 ## Guestbook Setup
 
-The guestbook uses GitHub OAuth, Nuxt server routes, NuxtHub, Drizzle, and MySQL.
+The guestbook uses GitHub OAuth, Nuxt server routes, Drizzle, and MySQL.
 
-1. Create an AWS MySQL database and allow connections from Cloudflare Hyperdrive.
-2. Create a Hyperdrive configuration:
-
-   ```bash
-   npx wrangler hyperdrive create portfolio-mysql \
-     --connection-string="mysql://USER:PASSWORD@AWS_HOST:3306/DATABASE"
-   ```
-
-3. Put the returned ID in `HYPERDRIVE_ID` while building/deploying. For local development,
-   put your development connection string in `MYSQL_URL`.
-4. Generate and apply schema migrations:
+1. Create an AWS MySQL database and set its connection string in `MYSQL_URL`.
+2. Generate and apply schema migrations:
 
    ```bash
-   npx nuxt db generate
-   npx nuxt db migrate
+   npm run db:generate
+   npm run db:migrate
    ```
 
-5. Create a GitHub OAuth App. Set its callback URL to the full URL ending in
-   `/api/auth/github/callback` (for example, `http://localhost:8788/api/auth/github/callback`).
-6. Add `GITHUB_CLIENT_ID` as a Pages environment variable and `GITHUB_CLIENT_SECRET` as a secret.
-7. Deploy the site and visit `/guestbook`.
+3. Create a GitHub OAuth App. Set its callback URL to the full URL ending in
+   `/api/auth/github/callback` (for example, `http://localhost:3000/api/auth/github/callback`).
+4. Add `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET` to the host environment.
+5. Deploy the site and visit `/guestbook`.

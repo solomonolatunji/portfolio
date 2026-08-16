@@ -1,5 +1,5 @@
 import { getQuery, setResponseHeader, setResponseStatus } from "h3";
-import { getCloudflareEnv } from "#server/utils/cloudflare";
+import { getServerEnv } from "#server/utils/env";
 import { exchangeSpotifyCodeForRefreshToken, renderSpotifyCallbackHtml } from "#server/utils/music";
 import { errorMessage } from "#server/utils/types";
 
@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
     return renderSpotifyCallbackHtml({ error: "Missing Spotify authorization code." });
   }
   try {
-    const token = await exchangeSpotifyCodeForRefreshToken(code, getCloudflareEnv(event));
+    const token = await exchangeSpotifyCodeForRefreshToken(code, getServerEnv());
     return renderSpotifyCallbackHtml({ refreshToken: token.refresh_token, scope: token.scope });
   } catch (error: unknown) {
     setResponseStatus(event, 500);

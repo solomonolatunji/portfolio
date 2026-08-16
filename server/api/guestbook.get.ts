@@ -3,7 +3,7 @@ import { getDb } from "#server/db";
 import { guestbookEntries, users } from "#server/db/schema";
 
 export default defineEventHandler(async (event) => {
-  const db = getDb(event);
+  const db = getDb();
   const entries = await db
     .select({
       id: guestbookEntries.id,

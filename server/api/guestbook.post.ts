@@ -7,7 +7,7 @@ import { getGuestbookSession } from "#server/utils/guestbook";
 const MAX_MESSAGE_LENGTH = 500;
 
 export default defineEventHandler(async (event) => {
-  const db = getDb(event);
+  const db = getDb();
   const user = await getGuestbookSession(event);
   if (!user)
     throw createError({
