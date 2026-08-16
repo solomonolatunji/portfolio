@@ -26,20 +26,14 @@ const message = ref("");
 const loading = ref(true);
 const submitting = ref(false);
 const error = ref("");
-const oauthError = new URLSearchParams(window.location.search).get("error");
-if (oauthError) error.value = oauthError;
+const route = useRoute();
+const oauthError = computed(() => (typeof route.query.error === "string" ? route.query.error : ""));
+if (oauthError.value) error.value = oauthError.value;
 
 const remainingCharacters = computed(() => 500 - message.value.length);
 
-async function request<T>(url: string, options?: RequestInit) {
-  const controller = new AbortController();
-  const timeout = window.setTimeout(() => controller.abort(), 8000);
-  const response = await fetch(url, { ...options, signal: controller.signal }).finally(() => {
-    window.clearTimeout(timeout);
-  });
-  const data = (await response.json().catch(() => ({}))) as T & { error?: string };
-  if (!response.ok) throw new Error(data.error || "Something went wrong.");
-  return data;
+async function request<T>(url: string, options?: Parameters<typeof $fetch>[1]) {
+  return $fetch<T>(url, { timeout: 8000, ...options });
 }
 
 async function loadGuestbook() {
@@ -52,11 +46,8 @@ async function loadGuestbook() {
     ]);
     user.value = session.user;
     entries.value = guestbook.entries;
-  } catch (loadError: any) {
-    error.value =
-      loadError.name === "AbortError"
-        ? "The guestbook API did not respond. Check that the Cloudflare Pages Functions server is running."
-        : loadError.message || "Unable to load the guestbook.";
+  } catch (loadError: unknown) {
+    error.value = loadError instanceof Error ? loadError.message : "Unable to load the guestbook.";
   } finally {
     loading.value = false;
   }
@@ -74,13 +65,12 @@ async function submitMessage() {
   try {
     await request("/api/guestbook", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: message.value }),
+      body: { message: message.value },
     });
     message.value = "";
     await loadGuestbook();
-  } catch (submitError: any) {
-    error.value = submitError.message || "Unable to save your message.";
+  } catch (submitError: unknown) {
+    error.value = submitError instanceof Error ? submitError.message : "Unable to save your message.";
   } finally {
     submitting.value = false;
   }

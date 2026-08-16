@@ -1,14 +1,14 @@
 # Portfolio
 
-Single-page portfolio built with Vue 3, TypeScript, Vite, and Cloudflare Pages.
+Portfolio and guestbook built with Nuxt 4, Vue 3, TypeScript, and Cloudflare Pages.
 
 ## Stack
 
 - Vue 3
-- Vite
+- Nuxt 4 / Nitro
 - TypeScript
-- Tailwind CSS v4
 - Cloudflare Pages / Workers
+- Cloudflare D1
 
 ## Development
 
@@ -17,9 +17,9 @@ npm install
 npm run dev
 ```
 
-`npm run dev` builds the site and starts Cloudflare Pages locally so the `/api` guestbook
-Functions and D1 binding work together. Use `npm run dev:ui` when you only need the Vite
-frontend server.
+`npm run dev` builds the Nuxt Cloudflare Pages worker and starts it locally so the `/api`
+server routes and D1 binding work together. Use `npm run dev:nuxt` for the faster Nuxt UI
+development server when you do not need the Cloudflare runtime.
 
 ## Live Music Setup
 
@@ -34,7 +34,7 @@ Copy `.env.example` to `.env` and fill in:
 SPOTIFY_CLIENT_ID=
 SPOTIFY_CLIENT_SECRET=
 SPOTIFY_REFRESH_TOKEN=
-SPOTIFY_REDIRECT_URI=http://localhost:5173/spotify/callback
+SPOTIFY_REDIRECT_URI=http://localhost:8788/spotify/callback
 ```
 
 ### Spotify setup
@@ -42,9 +42,9 @@ SPOTIFY_REDIRECT_URI=http://localhost:5173/spotify/callback
 1. Create a Spotify app:
    <https://developer.spotify.com/dashboard>
 2. Add your callback URL to the app settings:
-   `http://localhost:5173/spotify/callback`
+   `http://localhost:8788/spotify/callback`
 3. Start the app locally, then open:
-   `http://localhost:5173/spotify/login`
+   `http://localhost:8788/spotify/login`
 4. After authorizing, copy the refresh token shown on the callback page into
    `SPOTIFY_REFRESH_TOKEN`.
 5. If you add new Spotify scopes later, re-run the authorization flow and replace the stored refresh
@@ -82,12 +82,13 @@ npm run deploy
 
 ## Guestbook Setup
 
-The guestbook uses GitHub OAuth, Cloudflare Pages Functions, and a D1 database.
+The guestbook uses GitHub OAuth, Nuxt server routes, and a D1 database.
 
 1. Create a D1 database with `npx wrangler d1 create portfolio-guestbook` and replace
    `YOUR_DATABASE_ID` in `wrangler.json`.
 2. Apply the schema locally with `npx wrangler d1 execute portfolio-guestbook --local --file=migrations/0001_guestbook.sql`.
 3. Apply it to production with `npx wrangler d1 execute portfolio-guestbook --remote --file=migrations/0001_guestbook.sql`.
-4. Create a GitHub OAuth App. Set its callback URL to `/api/auth/github/callback` on your domain.
+4. Create a GitHub OAuth App. Set its callback URL to the full URL ending in
+   `/api/auth/github/callback` (for example, `http://localhost:8788/api/auth/github/callback`).
 5. Add `GITHUB_CLIENT_ID` as a Pages environment variable and `GITHUB_CLIENT_SECRET` as a secret.
 6. Deploy the site and visit `/guestbook`.
