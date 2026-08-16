@@ -1,8 +1,8 @@
 import { and, eq, gt } from "drizzle-orm";
 import { getCookie, getRequestURL, setCookie } from "h3";
 import type { H3Event } from "h3";
-import { db } from "@nuxthub/db";
-import { sessions, users } from "@nuxthub/db/schema";
+import { getDb } from "#server/db";
+import { sessions, users } from "#server/db/schema";
 import type { GuestbookEnv } from "./types";
 
 const SESSION_COOKIE = "guestbook_session";
@@ -99,10 +99,11 @@ export async function fetchGithubUser(accessToken: string) {
   } satisfies GuestbookUser;
 }
 
-export async function createSession(user: GuestbookUser) {
+export async function createSession(event: H3Event, user: GuestbookUser) {
   const token = crypto.randomUUID();
   const sessionId = await hash(token);
   const expiresAt = new Date(Date.now() + SESSION_TTL_SECONDS * 1000);
+  const db = getDb(event);
   await db
     .insert(users)
     .values({
@@ -123,6 +124,7 @@ export async function createSession(user: GuestbookUser) {
 }
 
 export async function getGuestbookSession(event: H3Event) {
+  const db = getDb(event);
   const token = getCookie(event, SESSION_COOKIE);
   if (!token) return null;
   const result = await db
@@ -140,6 +142,7 @@ export async function getGuestbookSession(event: H3Event) {
 }
 
 export async function clearGuestbookSession(event: H3Event) {
+  const db = getDb(event);
   const token = getCookie(event, SESSION_COOKIE);
   if (token) await db.delete(sessions).where(eq(sessions.id, await hash(token)));
 }

@@ -1,12 +1,13 @@
 import { readBody } from "h3";
 import { and, count, eq, gt } from "drizzle-orm";
-import { db } from "@nuxthub/db";
-import { guestbookEntries } from "@nuxthub/db/schema";
+import { getDb } from "#server/db";
+import { guestbookEntries } from "#server/db/schema";
 import { getGuestbookSession } from "#server/utils/guestbook";
 
 const MAX_MESSAGE_LENGTH = 500;
 
 export default defineEventHandler(async (event) => {
+  const db = getDb(event);
   const user = await getGuestbookSession(event);
   if (!user)
     throw createError({
