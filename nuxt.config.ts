@@ -10,7 +10,20 @@ export default defineNuxtConfig({
     "@nuxt/a11y",
     "@nuxt/eslint",
     "@nuxt/test-utils/module",
+    "@nuxt/ui",
+    "@nuxtjs/google-fonts",
   ],
+  robots: {
+    robotsTxt: false,
+  },
+  googleFonts: {
+    families: {
+      "DM Sans": true,
+    },
+    download: false,
+    inject: true,
+    display: "swap",
+  },
   vite: {
     plugins: [tailwindcss()],
   },
