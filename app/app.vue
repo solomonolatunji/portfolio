@@ -9,6 +9,14 @@ const isGuestbook = computed(() => route.path === "/guestbook");
 useHead(() => ({
   title: isGuestbook.value ? "Guestbook | Solomon Olatunji" : "Solomon Olatunji | Portfolio",
 }));
+
+useSeoMeta({
+  description: "Solomon Olatunji — software engineer building useful products.",
+  ogDescription: "Solomon Olatunji — software engineer building useful products.",
+  ogSiteName: "Solomon Olatunji",
+  ogType: "website",
+  twitterCard: "summary",
+});
 </script>
 
 <template>

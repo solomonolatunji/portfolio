@@ -15,9 +15,15 @@
     "format": "prettier --write ."
   },
   "dependencies": {
+    "@nuxt/image": "^2.1.0",
+    "@nuxtjs/seo": "^5.3.12",
+    "@tailwindcss/vite": "^4.3.3",
+    "@takumi-rs/wasm": "^2.9.2",
     "@tanstack/vue-query": "^5.101.4",
     "nuxt": "^4.5.2",
+    "nuxt-og-image": "^6.7.8",
     "simple-icons": "^16.28.0",
+    "tailwindcss": "^4.3.3",
     "vue": "^3.5.41",
     "vue-router": "^5.2.0"
   },

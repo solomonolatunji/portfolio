@@ -1,7 +1,13 @@
+import tailwindcss from "@tailwindcss/vite";
+
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
-  css: ["~/index.css"],
+  css: ["~/assets/css/tailwind.css", "~/index.css"],
   devtools: { enabled: false },
+  modules: ["@nuxt/image", "@nuxtjs/seo"],
+  vite: {
+    plugins: [tailwindcss()],
+  },
   typescript: {
     strict: true,
     typeCheck: true,
