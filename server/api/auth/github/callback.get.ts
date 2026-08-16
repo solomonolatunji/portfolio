@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
     const env = getCloudflareEnv(event);
     const accessToken = await exchangeGithubCode(code, env, event);
     const user = await fetchGithubUser(accessToken);
-    const session = await createSession(env.GUESTBOOK_DB, user);
+    const session = await createSession(user);
     setSessionCookie(event, session.token);
     return sendRedirect(event, new URL("/guestbook", getRequestURL(event)).toString(), 302);
   } catch (error: unknown) {

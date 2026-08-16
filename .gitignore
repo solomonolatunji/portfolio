@@ -12,6 +12,7 @@ node_modules
 dist
 dist-ssr
 .wrangler
+.data
 *.local
 .env
 .env.*

@@ -1,6 +1,8 @@
-import type { D1Database } from "@cloudflare/workers-types";
+import { and, eq, gt } from "drizzle-orm";
 import { getCookie, getRequestURL, setCookie } from "h3";
 import type { H3Event } from "h3";
+import { db } from "@nuxthub/db";
+import { sessions, users } from "@nuxthub/db/schema";
 import type { GuestbookEnv } from "./types";
 
 const SESSION_COOKIE = "guestbook_session";
@@ -79,25 +81,44 @@ export async function fetchGithubUser(accessToken: string) {
   return { id: String(user.id), username: user.login, avatarUrl: user.avatar_url || null, profileUrl: user.html_url } satisfies GuestbookUser;
 }
 
-export async function createSession(db: D1Database, user: GuestbookUser) {
+export async function createSession(user: GuestbookUser) {
   const token = crypto.randomUUID();
   const sessionId = await hash(token);
-  const expiresAt = new Date(Date.now() + SESSION_TTL_SECONDS * 1000).toISOString();
-  await db.prepare(`INSERT INTO users (id, username, avatar_url, profile_url) VALUES (?, ?, ?, ?) ON CONFLICT(id) DO UPDATE SET username = excluded.username, avatar_url = excluded.avatar_url, profile_url = excluded.profile_url`).bind(user.id, user.username, user.avatarUrl, user.profileUrl).run();
-  await db.prepare("INSERT INTO sessions (id, user_id, expires_at) VALUES (?, ?, ?)").bind(sessionId, user.id, expiresAt).run();
+  const expiresAt = new Date(Date.now() + SESSION_TTL_SECONDS * 1000);
+  await db.insert(users).values({
+    id: user.id,
+    username: user.username,
+    avatarUrl: user.avatarUrl,
+    profileUrl: user.profileUrl,
+  }).onDuplicateKeyUpdate({
+    set: {
+      username: user.username,
+      avatarUrl: user.avatarUrl,
+      profileUrl: user.profileUrl,
+    },
+  });
+  await db.insert(sessions).values({ id: sessionId, userId: user.id, expiresAt });
   return { token, expiresAt };
 }
 
-export async function getGuestbookSession(event: H3Event, db: D1Database) {
+export async function getGuestbookSession(event: H3Event) {
   const token = getCookie(event, SESSION_COOKIE);
   if (!token) return null;
-  const result = await db.prepare(`SELECT u.id, u.username, u.avatar_url AS avatarUrl, u.profile_url AS profileUrl FROM sessions s JOIN users u ON u.id = s.user_id WHERE s.id = ? AND datetime(s.expires_at) > CURRENT_TIMESTAMP`).bind(await hash(token)).first();
-  return result ? (result as unknown as GuestbookUser) : null;
+  const result = await db.select({
+    id: users.id,
+    username: users.username,
+    avatarUrl: users.avatarUrl,
+    profileUrl: users.profileUrl,
+  }).from(sessions)
+    .innerJoin(users, eq(users.id, sessions.userId))
+    .where(and(eq(sessions.id, await hash(token)), gt(sessions.expiresAt, new Date())))
+    .limit(1);
+  return result[0] || null;
 }
 
-export async function clearGuestbookSession(event: H3Event, db: D1Database) {
+export async function clearGuestbookSession(event: H3Event) {
   const token = getCookie(event, SESSION_COOKIE);
-  if (token) await db.prepare("DELETE FROM sessions WHERE id = ?").bind(await hash(token)).run();
+  if (token) await db.delete(sessions).where(eq(sessions.id, await hash(token)));
 }
 
 export function setSessionCookie(event: H3Event, token: string) {

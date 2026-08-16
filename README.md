@@ -1,6 +1,6 @@
 # Portfolio
 
-Portfolio and guestbook built with Nuxt 4, Vue 3, TypeScript, and Cloudflare Pages.
+Portfolio and guestbook built with Nuxt 4, Vue 3, TypeScript, AWS MySQL, and Cloudflare Pages.
 
 ## Stack
 
@@ -8,7 +8,8 @@ Portfolio and guestbook built with Nuxt 4, Vue 3, TypeScript, and Cloudflare Pag
 - Nuxt 4 / Nitro
 - TypeScript
 - Cloudflare Pages / Workers
-- Cloudflare D1
+- NuxtHub + Drizzle ORM
+- AWS MySQL through Cloudflare Hyperdrive
 
 ## Development
 
@@ -18,7 +19,7 @@ npm run dev
 ```
 
 `npm run dev` builds the Nuxt Cloudflare Pages worker and starts it locally so the `/api`
-server routes and D1 binding work together. Use `npm run dev:nuxt` for the faster Nuxt UI
+server routes and Hyperdrive/MySQL binding work together. Use `npm run dev:nuxt` for the faster Nuxt UI
 development server when you do not need the Cloudflare runtime.
 
 ## Live Music Setup
@@ -82,13 +83,26 @@ npm run deploy
 
 ## Guestbook Setup
 
-The guestbook uses GitHub OAuth, Nuxt server routes, and a D1 database.
+The guestbook uses GitHub OAuth, Nuxt server routes, NuxtHub, Drizzle, and MySQL.
 
-1. Create a D1 database with `npx wrangler d1 create portfolio-guestbook` and replace
-   `YOUR_DATABASE_ID` in `wrangler.json`.
-2. Apply the schema locally with `npx wrangler d1 execute portfolio-guestbook --local --file=migrations/0001_guestbook.sql`.
-3. Apply it to production with `npx wrangler d1 execute portfolio-guestbook --remote --file=migrations/0001_guestbook.sql`.
-4. Create a GitHub OAuth App. Set its callback URL to the full URL ending in
+1. Create an AWS MySQL database and allow connections from Cloudflare Hyperdrive.
+2. Create a Hyperdrive configuration:
+
+   ```bash
+   npx wrangler hyperdrive create portfolio-mysql \
+     --connection-string="mysql://USER:PASSWORD@AWS_HOST:3306/DATABASE"
+   ```
+
+3. Put the returned ID in `HYPERDRIVE_ID` while building/deploying. For local development,
+   put your development connection string in `MYSQL_URL`.
+4. Generate and apply schema migrations:
+
+   ```bash
+   npx nuxt db generate
+   npx nuxt db migrate
+   ```
+
+5. Create a GitHub OAuth App. Set its callback URL to the full URL ending in
    `/api/auth/github/callback` (for example, `http://localhost:8788/api/auth/github/callback`).
-5. Add `GITHUB_CLIENT_ID` as a Pages environment variable and `GITHUB_CLIENT_SECRET` as a secret.
-6. Deploy the site and visit `/guestbook`.
+6. Add `GITHUB_CLIENT_ID` as a Pages environment variable and `GITHUB_CLIENT_SECRET` as a secret.
+7. Deploy the site and visit `/guestbook`.
