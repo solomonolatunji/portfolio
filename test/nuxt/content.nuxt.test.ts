@@ -10,6 +10,8 @@ describe("portfolio content", () => {
 
   it("keeps every project link usable", () => {
     expect(projects.length).toBeGreaterThan(0);
-    expect(projects.every((project) => project.links.every((link) => link.href.startsWith("http")))).toBe(true);
+    expect(
+      projects.every((project) => project.links.every((link) => link.href.startsWith("http")))
+    ).toBe(true);
   });
 });

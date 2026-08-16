@@ -13,7 +13,7 @@ defineProps<{
       :alt="`${title} cover art`"
       class="artwork-img"
       loading="lazy"
-    >
+    />
     <div v-else class="artwork-placeholder">
       <svg
         width="40"

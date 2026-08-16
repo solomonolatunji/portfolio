@@ -83,7 +83,8 @@ async function submitMessage() {
     message.value = "";
     await loadGuestbook();
   } catch (submitError: unknown) {
-    error.value = submitError instanceof Error ? submitError.message : "Unable to save your message.";
+    error.value =
+      submitError instanceof Error ? submitError.message : "Unable to save your message.";
   } finally {
     submitting.value = false;
   }
@@ -118,7 +119,7 @@ onMounted(loadGuestbook);
           :src="user.avatarUrl"
           :alt="user.username"
           class="guestbook-avatar"
-        >
+        />
         <div>
           <strong>{{ user.username }}</strong>
           <button type="button" class="guestbook-text-button" @click="signOut">
@@ -163,7 +164,7 @@ onMounted(loadGuestbook);
           :alt="entry.username"
           class="guestbook-avatar"
           loading="lazy"
-        >
+        />
         <div class="guestbook-entry-body">
           <div class="guestbook-entry-meta">
             <a :href="entry.profileUrl" target="_blank" rel="noreferrer">{{ entry.username }}</a>

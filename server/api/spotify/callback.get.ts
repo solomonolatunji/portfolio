@@ -21,6 +21,8 @@ export default defineEventHandler(async (event) => {
     return renderSpotifyCallbackHtml({ refreshToken: token.refresh_token, scope: token.scope });
   } catch (error: unknown) {
     setResponseStatus(event, 500);
-    return renderSpotifyCallbackHtml({ error: errorMessage(error, "Spotify token exchange failed.") });
+    return renderSpotifyCallbackHtml({
+      error: errorMessage(error, "Spotify token exchange failed."),
+    });
   }
 });

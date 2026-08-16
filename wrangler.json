@@ -1,9 +1,7 @@
 {
-	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "solomon-olatunji",
-	"compatibility_date": "2026-08-16",
-	"compatibility_flags": [
-		"nodejs_compat"
-	],
-	"pages_build_output_dir": "./dist"
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "solomon-olatunji",
+  "compatibility_date": "2026-08-16",
+  "compatibility_flags": ["nodejs_compat", "nodejs_compat_v2"],
+  "pages_build_output_dir": "./dist"
 }
