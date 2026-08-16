@@ -1,36 +1,27 @@
 import { computed, onBeforeUnmount, onMounted, ref } from "vue";
-import { useQuery } from "@tanstack/vue-query";
 import type { NowPlaying } from "@/interfaces/now-playing";
 
-export function useNowPlaying() {
-  const nowPlayingQuery = useQuery({
-    queryKey: ["now-playing"],
-    queryFn: async () => {
-      const response = await fetch(`/now-playing?t=${Date.now()}`, {
-        headers: {
-          "Cache-Control": "no-cache",
-          Pragma: "no-cache",
-        },
-      });
-
-      if (response.status === 200) {
-        return (await response.json()) as NowPlaying;
+export async function useNowPlaying() {
+  const { data, status, refresh } = await useAsyncData<NowPlaying | null>(
+    "now-playing",
+    async () => {
+      try {
+        return await $fetch<NowPlaying | null>("/now-playing");
+      } catch {
+        return null;
       }
-
-      return null;
     },
-    placeholderData: (previousData) => previousData,
-    refetchInterval: 5000,
-    refetchIntervalInBackground: true,
-    refetchOnWindowFocus: true,
-    staleTime: 0,
-    gcTime: 60_000,
-    retry: false,
-  });
+    {
+      default: () => null,
+      dedupe: "defer",
+      server: true,
+    }
+  );
 
-  const nowPlaying = computed(() => nowPlayingQuery.data.value ?? null);
-  const nowPlayingLoaded = computed(() => nowPlayingQuery.isFetched.value);
+  const nowPlaying = computed(() => data.value ?? null);
+  const nowPlayingLoaded = computed(() => status.value !== "pending");
   const isListeningModalOpen = ref(false);
+  let refreshTimer: ReturnType<typeof setInterval> | undefined;
 
   const listeningStateLabel = computed(() =>
     nowPlaying.value?.isPlaying ? "I'm currently listening to" : "Last Played"
@@ -50,6 +41,10 @@ export function useNowPlaying() {
     isListeningModalOpen.value = false;
   }
 
+  function refreshNowPlaying() {
+    void refresh();
+  }
+
   function handleGlobalKeydown(event: KeyboardEvent) {
     if (event.key === "Escape" && isListeningModalOpen.value) {
       closeListeningModal();
@@ -58,10 +53,16 @@ export function useNowPlaying() {
 
   onMounted(() => {
     window.addEventListener("keydown", handleGlobalKeydown);
+    window.addEventListener("focus", refreshNowPlaying);
+    refreshTimer = setInterval(refreshNowPlaying, 5_000);
   });
 
   onBeforeUnmount(() => {
     window.removeEventListener("keydown", handleGlobalKeydown);
+    window.removeEventListener("focus", refreshNowPlaying);
+    if (refreshTimer) {
+      clearInterval(refreshTimer);
+    }
   });
 
   return {

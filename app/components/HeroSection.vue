@@ -26,7 +26,7 @@ const {
   listeningDeviceLabel,
   openListeningModal,
   closeListeningModal,
-} = useNowPlaying();
+} = await useNowPlaying();
 </script>
 
 <template>
