@@ -11,7 +11,7 @@
     "dev:nuxt": "nuxt dev",
     "build": "nuxt build",
     "preview": "nuxt preview",
-    "deploy": "nuxi build --preset=cloudflare_pages && wrangler pages deploy dist",
+    "deploy": "nuxt prepare && nuxi build --preset=cloudflare_pages && wrangler pages deploy dist",
     "lint": "eslint .",
     "postinstall": "nuxt prepare",
     "test": "vitest",
