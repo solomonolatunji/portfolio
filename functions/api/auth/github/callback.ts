@@ -5,7 +5,7 @@ import {
   getState,
   json,
   sessionCookie,
-} from "@functions/_lib/guestbook";
+} from "../../../_lib/guestbook";
 
 export async function onRequest(context: any) {
   const url = new URL(context.request.url);

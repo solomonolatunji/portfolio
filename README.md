@@ -17,6 +17,10 @@ npm install
 npm run dev
 ```
 
+`npm run dev` builds the site and starts Cloudflare Pages locally so the `/api` guestbook
+Functions and D1 binding work together. Use `npm run dev:ui` when you only need the Vite
+frontend server.
+
 ## Live Music Setup
 
 This project supports an automatic `currently listening` row powered by Spotify, with Apple Music

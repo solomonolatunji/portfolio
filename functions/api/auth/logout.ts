@@ -1,4 +1,4 @@
-import { clearedSessionCookie, clearSession, json } from "@functions/_lib/guestbook";
+import { clearedSessionCookie, clearSession, json } from "../../_lib/guestbook";
 
 export async function onRequestPost(context: any) {
   try {

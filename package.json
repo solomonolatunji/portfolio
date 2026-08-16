@@ -7,8 +7,9 @@
   "description": "Solomon Olatunji's personal portfolio website",
   "email": "me@solomonolatunji.com",
   "scripts": {
-    "dev": "vite",
-    "build": "vue-tsc -b && vite build",
+    "dev": "npm run build && wrangler pages dev",
+    "dev:ui": "vite",
+    "build": "tsc -b && vite build",
     "preview": "vite preview",
     "deploy": "wrangler pages deploy dist",
     "format": "prettier --write ."

@@ -1,4 +1,4 @@
-import { githubAuthorizationUrl, json, newState, stateCookie } from "@functions/_lib/guestbook";
+import { githubAuthorizationUrl, json, newState, stateCookie } from "../../_lib/guestbook";
 
 export async function onRequest(context: any) {
   try {

@@ -29,7 +29,11 @@ if (oauthError) error.value = oauthError;
 const remainingCharacters = computed(() => 500 - message.value.length);
 
 async function request<T>(url: string, options?: RequestInit) {
-  const response = await fetch(url, options);
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), 8000);
+  const response = await fetch(url, { ...options, signal: controller.signal }).finally(() => {
+    window.clearTimeout(timeout);
+  });
   const data = (await response.json().catch(() => ({}))) as T & { error?: string };
   if (!response.ok) throw new Error(data.error || "Something went wrong.");
   return data;
@@ -46,7 +50,10 @@ async function loadGuestbook() {
     user.value = session.user;
     entries.value = guestbook.entries;
   } catch (loadError: any) {
-    error.value = loadError.message || "Unable to load the guestbook.";
+    error.value =
+      loadError.name === "AbortError"
+        ? "The guestbook API did not respond. Check that the Cloudflare Pages Functions server is running."
+        : loadError.message || "Unable to load the guestbook.";
   } finally {
     loading.value = false;
   }

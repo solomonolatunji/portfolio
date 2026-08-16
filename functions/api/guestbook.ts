@@ -1,4 +1,4 @@
-import { getSession, json } from "@functions/_lib/guestbook";
+import { getSession, json } from "../_lib/guestbook";
 
 const MAX_MESSAGE_LENGTH = 500;
 

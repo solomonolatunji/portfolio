@@ -1,4 +1,4 @@
-import { getSession, json } from "@functions/_lib/guestbook";
+import { getSession, json } from "../../_lib/guestbook";
 
 export async function onRequest(context: any) {
   try {
