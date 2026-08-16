@@ -75,3 +75,15 @@ To deploy to Cloudflare Pages:
 npm run build
 npm run deploy
 ```
+
+## Guestbook Setup
+
+The guestbook uses GitHub OAuth, Cloudflare Pages Functions, and a D1 database.
+
+1. Create a D1 database with `npx wrangler d1 create portfolio-guestbook` and replace
+   `YOUR_DATABASE_ID` in `wrangler.json`.
+2. Apply the schema locally with `npx wrangler d1 execute portfolio-guestbook --local --file=migrations/0001_guestbook.sql`.
+3. Apply it to production with `npx wrangler d1 execute portfolio-guestbook --remote --file=migrations/0001_guestbook.sql`.
+4. Create a GitHub OAuth App. Set its callback URL to `/api/auth/github/callback` on your domain.
+5. Add `GITHUB_CLIENT_ID` as a Pages environment variable and `GITHUB_CLIENT_SECRET` as a secret.
+6. Deploy the site and visit `/guestbook`.

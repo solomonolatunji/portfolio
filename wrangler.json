@@ -2,5 +2,13 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "solomon-olatunji",
   "compatibility_date": "2024-04-05",
-  "pages_build_output_dir": "./dist"
+  "pages_build_output_dir": "./dist",
+  "d1_databases": [
+    {
+      "binding": "GUESTBOOK_DB",
+      "database_name": "portfolio-guestbook",
+      "database_id": "33754e95-df76-44c4-bbc0-5cf1c1ac872a",
+      "remote": true
+    }
+  ]
 }
