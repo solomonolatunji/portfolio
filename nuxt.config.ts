@@ -2,7 +2,7 @@ import tailwindcss from "@tailwindcss/vite";
 
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
-  css: ["~/assets/css/tailwind.css", "~/index.css"],
+  css: ["~/assets/css/main.css", "~/index.css", "@vueform/vueform/themes/vueform/css/index.css"],
   devtools: { enabled: true },
   modules: [
     "@nuxt/image",

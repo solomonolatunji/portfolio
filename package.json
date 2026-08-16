@@ -29,7 +29,6 @@
     "@tailwindcss/vite": "^4.3.3",
     "@takumi-rs/wasm": "^2.9.2",
     "@tanstack/vue-query": "^5.101.4",
-    "@vueform/nuxt": "^1.31.0",
     "@vueform/vueform": "^1.13.13",
     "nuxt": "^4.5.2",
     "nuxt-og-image": "^6.7.8",

@@ -2,7 +2,6 @@
 import { computed, onMounted, ref } from "vue";
 import GitHubIcon from "@/components/icons/GitHubIcon.vue";
 import LogOutIcon from "@/components/icons/LogOutIcon.vue";
-import PenIcon from "@/components/icons/PenIcon.vue";
 
 interface User {
   id: string;
@@ -30,7 +29,21 @@ const route = useRoute();
 const oauthError = computed(() => (typeof route.query.error === "string" ? route.query.error : ""));
 if (oauthError.value) error.value = oauthError.value;
 
-const remainingCharacters = computed(() => 500 - message.value.length);
+const guestbookSchema = {
+  message: {
+    type: "textarea",
+    label: "Message",
+    placeholder: "Write something nice...",
+    maxlength: 500,
+    rows: 4,
+    rules: "required|max:500",
+  },
+  submit: {
+    type: "button",
+    submits: true,
+    buttonLabel: "Sign guestbook",
+  },
+};
 
 async function request<T>(url: string, options?: Parameters<typeof $fetch>[1]) {
   return $fetch<T>(url, { timeout: 8000, ...options });
@@ -76,6 +89,11 @@ async function submitMessage() {
   }
 }
 
+async function submitVueformMessage(values: { message?: string }) {
+  message.value = values.message?.trim() ?? "";
+  await submitMessage();
+}
+
 function formatDate(value: string) {
   return new Intl.DateTimeFormat(undefined, { dateStyle: "medium" }).format(
     new Date(`${value.replace(" ", "T")}Z`)
@@ -109,30 +127,26 @@ onMounted(loadGuestbook);
           </button>
         </div>
       </div>
-      <form @submit.prevent="submitMessage">
-        <textarea
-          v-model="message"
-          maxlength="500"
-          placeholder="Write something nice..."
-          rows="4"
+      <ClientOnly>
+        <Vueform
+          :schema="guestbookSchema"
+          :endpoint="false"
+          :loading="submitting"
+          @submit="submitVueformMessage"
         />
-        <div class="guestbook-form-footer">
-          <span>{{ remainingCharacters }} characters left</span>
-          <button type="submit" class="guestbook-button" :disabled="submitting || !message.trim()">
-            <PenIcon />
-            {{ submitting ? "Posting..." : "Sign guestbook" }}
-          </button>
-        </div>
-      </form>
+        <template #fallback>
+          <p class="guestbook-empty">Preparing the message form...</p>
+        </template>
+      </ClientOnly>
     </div>
 
     <div v-else-if="!loading" class="guestbook-login guestbook-card">
       <p>Want to leave a message?</p>
       <!-- eslint-disable-next-line link-checker/valid-route, link-checker/valid-sitemap-link -->
-      <a href="/api/auth/github" class="guestbook-button">
+      <UButton as="a" href="/api/auth/github" class="guestbook-button">
         <GitHubIcon />
         Sign in with GitHub
-      </a>
+      </UButton>
     </div>
 
     <p v-if="error" class="guestbook-error" role="alert">{{ error }}</p>
