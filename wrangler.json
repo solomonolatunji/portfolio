@@ -5,11 +5,5 @@
 	"compatibility_flags": [
 		"nodejs_compat"
 	],
-	"pages_build_output_dir": "./dist",
-	"hyperdrive": [
-		{
-			"binding": "HYPERDRIVE",
-			"id": "b96514826f28466c933b422a049d5bf1"
-		}
-	]
+	"pages_build_output_dir": "./dist"
 }
