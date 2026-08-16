@@ -39,10 +39,11 @@ const {
         <span class="hero-building-label">Building</span>
         <template v-for="(product, index) in activeProducts" :key="product.label">
           <div class="hero-building-item">
-            <NuxtImg
+            <img
               :src="product.logo"
               :alt="`${product.label} logo`"
               class="hero-building-logo"
+              loading="lazy"
             />
             <span>{{ product.label }}</span>
           </div>
