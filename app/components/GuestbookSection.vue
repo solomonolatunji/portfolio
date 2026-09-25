@@ -56,15 +56,18 @@ async function signOut() {
 }
 
 async function submitMessage() {
-  if (!message.value.trim() || submitting.value) return;
+  const messageToSend = message.value.trim();
+  if (!messageToSend || submitting.value) return;
   submitting.value = true;
   error.value = "";
   try {
     await request("/api/guestbook", {
       method: "POST",
-      body: { message: message.value },
+      body: { message: messageToSend },
     });
-    message.value = "";
+    if (message.value.trim() === messageToSend) {
+      message.value = "";
+    }
     await loadGuestbook();
   } catch (submitError: unknown) {
     error.value =
@@ -111,6 +114,7 @@ onMounted(loadGuestbook);
         <UFormField label="Message" name="message" required>
           <UTextarea
             v-model="message"
+            :disabled="submitting"
             class="w-full"
             placeholder="Write something nice..."
             :maxlength="500"

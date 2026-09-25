@@ -1,24 +1,29 @@
 import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import type { NowPlaying } from "@/interfaces/now-playing";
 
+interface NowPlayingResult {
+  track: NowPlaying | null;
+}
+
 export async function useNowPlaying() {
-  const { data, status, refresh } = await useAsyncData<NowPlaying | null>(
+  const { data, status, refresh } = await useAsyncData<NowPlayingResult>(
     "now-playing",
     async () => {
       try {
-        return await $fetch<NowPlaying | null>("/now-playing");
+        const response = await $fetch<NowPlaying | null>("/now-playing");
+        return { track: response ?? null };
       } catch {
-        return null;
+        return { track: null };
       }
     },
     {
-      default: () => null,
+      default: () => ({ track: null }),
       dedupe: "defer",
       server: true,
     }
   );
 
-  const nowPlaying = computed(() => data.value ?? null);
+  const nowPlaying = computed(() => data.value?.track ?? null);
   const nowPlayingLoaded = computed(() => status.value !== "pending");
   const isListeningModalOpen = ref(false);
   let refreshTimer: ReturnType<typeof setInterval> | undefined;

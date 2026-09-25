@@ -84,12 +84,13 @@ const {
               >
                 <ListeningBarsIcon />
               </div>
-              <div class="listening-links" aria-label="Listening links">
+              <div class="listening-links" aria-label="Listening links" @click.stop>
                 <a
                   :href="nowPlaying.spotifyUrl"
                   target="_blank"
                   rel="noreferrer"
                   aria-label="Open on Spotify"
+                  @click.stop
                 >
                   <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
                     <path :fill="`#${siSpotify.hex}`" :d="siSpotify.path" />
@@ -101,6 +102,7 @@ const {
                   target="_blank"
                   rel="noreferrer"
                   aria-label="Open on Apple Music"
+                  @click.stop
                 >
                   <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
                     <path :fill="`#${siApplemusic.hex}`" :d="siApplemusic.path" />
@@ -112,6 +114,7 @@ const {
                   target="_blank"
                   rel="noreferrer"
                   aria-label="Open on YouTube Music"
+                  @click.stop
                 >
                   <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
                     <path :fill="`#${siYoutubemusic.hex}`" :d="siYoutubemusic.path" />
