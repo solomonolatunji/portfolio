@@ -2,7 +2,7 @@ import { desc, eq } from "drizzle-orm";
 import { getDb } from "#server/db";
 import { guestbookEntries, users } from "#server/db/schema";
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async (_event) => {
   const db = getDb();
   const entries = await db
     .select({
