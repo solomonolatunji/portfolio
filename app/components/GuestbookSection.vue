@@ -29,22 +29,6 @@ const route = useRoute();
 const oauthError = computed(() => (typeof route.query.error === "string" ? route.query.error : ""));
 if (oauthError.value) error.value = oauthError.value;
 
-const guestbookSchema = {
-  message: {
-    type: "textarea",
-    label: "Message",
-    placeholder: "Write something nice...",
-    maxlength: 500,
-    rows: 4,
-    rules: "required|max:500",
-  },
-  submit: {
-    type: "button",
-    submits: true,
-    buttonLabel: "Sign guestbook",
-  },
-};
-
 async function request<T>(url: string, options?: Parameters<typeof $fetch>[1]) {
   return $fetch<T>(url, { timeout: 8000, ...options });
 }
@@ -72,26 +56,25 @@ async function signOut() {
 }
 
 async function submitMessage() {
-  if (!message.value.trim() || submitting.value) return;
+  const messageToSend = message.value.trim();
+  if (!messageToSend || submitting.value) return;
   submitting.value = true;
   error.value = "";
   try {
     await request("/api/guestbook", {
       method: "POST",
-      body: { message: message.value },
+      body: { message: messageToSend },
     });
-    message.value = "";
+    if (message.value.trim() === messageToSend) {
+      message.value = "";
+    }
     await loadGuestbook();
   } catch (submitError: unknown) {
-    error.value = submitError instanceof Error ? submitError.message : "Unable to save your message.";
+    error.value =
+      submitError instanceof Error ? submitError.message : "Unable to save your message.";
   } finally {
     submitting.value = false;
   }
-}
-
-async function submitVueformMessage(values: { message?: string }) {
-  message.value = values.message?.trim() ?? "";
-  await submitMessage();
 }
 
 function formatDate(value: string) {
@@ -118,7 +101,7 @@ onMounted(loadGuestbook);
           :src="user.avatarUrl"
           :alt="user.username"
           class="guestbook-avatar"
-        >
+        />
         <div>
           <strong>{{ user.username }}</strong>
           <button type="button" class="guestbook-text-button" @click="signOut">
@@ -127,17 +110,22 @@ onMounted(loadGuestbook);
           </button>
         </div>
       </div>
-      <ClientOnly>
-        <Vueform
-          :schema="guestbookSchema"
-          :endpoint="false"
-          :loading="submitting"
-          @submit="submitVueformMessage"
-        />
-        <template #fallback>
-          <p class="guestbook-empty">Preparing the message form...</p>
-        </template>
-      </ClientOnly>
+      <form class="guestbook-form" @submit.prevent="submitMessage">
+        <UFormField label="Message" name="message" required>
+          <UTextarea
+            v-model="message"
+            :disabled="submitting"
+            class="w-full"
+            placeholder="Write something nice..."
+            :maxlength="500"
+            :rows="4"
+            autoresize
+          />
+        </UFormField>
+        <UButton type="submit" :loading="submitting" :disabled="!message.trim()">
+          Sign guestbook
+        </UButton>
+      </form>
     </div>
 
     <div v-else-if="!loading" class="guestbook-login guestbook-card">
@@ -163,7 +151,7 @@ onMounted(loadGuestbook);
           :alt="entry.username"
           class="guestbook-avatar"
           loading="lazy"
-        >
+        />
         <div class="guestbook-entry-body">
           <div class="guestbook-entry-meta">
             <a :href="entry.profileUrl" target="_blank" rel="noreferrer">{{ entry.username }}</a>

@@ -1,5 +1,5 @@
 import { getQuery, getRequestURL, sendRedirect } from "h3";
-import { getCloudflareEnv } from "#server/utils/cloudflare";
+import { getServerEnv } from "#server/utils/env";
 import {
   createSession,
   exchangeGithubCode,
@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    const env = getCloudflareEnv(event);
+    const env = getServerEnv();
     const accessToken = await exchangeGithubCode(code, env, event);
     const user = await fetchGithubUser(accessToken);
     const session = await createSession(user);

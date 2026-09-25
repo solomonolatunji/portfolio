@@ -8,19 +8,23 @@ export const users = mysqlTable("users", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
-export const sessions = mysqlTable("sessions", {
-  id: varchar("id", { length: 64 }).primaryKey(),
-  userId: varchar("user_id", { length: 64 }).notNull(),
-  expiresAt: timestamp("expires_at").notNull(),
-}, (table) => [
-  index("idx_sessions_expires_at").on(table.expiresAt),
-]);
+export const sessions = mysqlTable(
+  "sessions",
+  {
+    id: varchar("id", { length: 64 }).primaryKey(),
+    userId: varchar("user_id", { length: 64 }).notNull(),
+    expiresAt: timestamp("expires_at").notNull(),
+  },
+  (table) => [index("idx_sessions_expires_at").on(table.expiresAt)]
+);
 
-export const guestbookEntries = mysqlTable("guestbook_entries", {
-  id: int("id").autoincrement().primaryKey(),
-  userId: varchar("user_id", { length: 64 }).notNull(),
-  message: varchar("message", { length: 500 }).notNull(),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
-}, (table) => [
-  index("idx_guestbook_entries_created_at").on(table.createdAt),
-]);
+export const guestbookEntries = mysqlTable(
+  "guestbook_entries",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    userId: varchar("user_id", { length: 64 }).notNull(),
+    message: varchar("message", { length: 500 }).notNull(),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+  },
+  (table) => [index("idx_guestbook_entries_created_at").on(table.createdAt)]
+);

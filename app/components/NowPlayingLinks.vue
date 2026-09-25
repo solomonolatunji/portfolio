@@ -8,7 +8,7 @@ defineProps<{
 </script>
 
 <template>
-  <hr class="lm-divider" aria-hidden="true" >
+  <hr class="lm-divider" aria-hidden="true" />
 
   <div class="lm-links" aria-label="Listen on streaming services">
     <a

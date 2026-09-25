@@ -1,16 +1,19 @@
 import { desc, eq } from "drizzle-orm";
-import { db } from "@nuxthub/db";
-import { guestbookEntries, users } from "@nuxthub/db/schema";
+import { getDb } from "#server/db";
+import { guestbookEntries, users } from "#server/db/schema";
 
-export default defineEventHandler(async () => {
-  const entries = await db.select({
-    id: guestbookEntries.id,
-    message: guestbookEntries.message,
-    createdAt: guestbookEntries.createdAt,
-    username: users.username,
-    avatarUrl: users.avatarUrl,
-    profileUrl: users.profileUrl,
-  }).from(guestbookEntries)
+export default defineEventHandler(async (_event) => {
+  const db = getDb();
+  const entries = await db
+    .select({
+      id: guestbookEntries.id,
+      message: guestbookEntries.message,
+      createdAt: guestbookEntries.createdAt,
+      username: users.username,
+      avatarUrl: users.avatarUrl,
+      profileUrl: users.profileUrl,
+    })
+    .from(guestbookEntries)
     .innerJoin(users, eq(users.id, guestbookEntries.userId))
     .orderBy(desc(guestbookEntries.createdAt))
     .limit(100);

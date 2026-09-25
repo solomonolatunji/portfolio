@@ -7,11 +7,12 @@
   "description": "Solomon Olatunji's personal portfolio website",
   "email": "me@solomonolatunji.com",
   "scripts": {
-    "dev": "npm run build && CLOUDFLARE_CF_FETCH_ENABLED=false wrangler pages dev",
-    "dev:nuxt": "nuxt dev",
+    "dev": "nuxt dev",
     "build": "nuxt build",
     "preview": "nuxt preview",
-    "deploy": "nuxi build --preset=cloudflare_pages && wrangler pages deploy dist",
+    "start": "node .output/server/index.mjs",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
     "lint": "eslint .",
     "postinstall": "nuxt prepare",
     "test": "vitest",
@@ -23,13 +24,13 @@
   "dependencies": {
     "@nuxt/image": "^2.1.0",
     "@nuxt/ui": "^4.10.0",
-    "@nuxthub/core": "^0.10.8",
     "@nuxtjs/google-fonts": "^3.2.0",
     "@nuxtjs/seo": "^5.3.12",
     "@tailwindcss/vite": "^4.3.3",
+    "@takumi-rs/core": "^2.9.2",
     "@takumi-rs/wasm": "^2.9.2",
     "@tanstack/vue-query": "^5.101.4",
-    "@vueform/vueform": "^1.13.13",
+    "dotenv": "^17.4.2",
     "drizzle-kit": "^0.31.10",
     "drizzle-orm": "^0.45.2",
     "mysql2": "^3.23.3",
@@ -41,7 +42,6 @@
     "vue-router": "^5.2.0"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^5.20260816.1",
     "@nuxt/a11y": "^1.0.0-alpha.1",
     "@nuxt/eslint": "^1.17.0",
     "@nuxt/test-utils": "^4.1.0",
@@ -52,9 +52,9 @@
     "happy-dom": "^20.11.2",
     "playwright-core": "^1.62.1",
     "prettier": "^3.9.6",
+    "prettier-plugin-tailwindcss": "^0.8.1",
     "typescript": "^5.9.3",
     "vitest": "^4.1.10",
-    "vue-tsc": "^3.3.10",
-    "wrangler": "^4.123.0"
+    "vue-tsc": "^3.3.10"
   }
 }

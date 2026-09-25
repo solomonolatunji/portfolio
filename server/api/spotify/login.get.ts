@@ -1,5 +1,7 @@
 import { sendRedirect } from "h3";
-import { getCloudflareEnv } from "#server/utils/cloudflare";
+import { getServerEnv } from "#server/utils/env";
 import { createSpotifyAuthorizationUrl } from "#server/utils/music";
 
-export default defineEventHandler((event) => sendRedirect(event, createSpotifyAuthorizationUrl(getCloudflareEnv(event)), 302));
+export default defineEventHandler((event) =>
+  sendRedirect(event, createSpotifyAuthorizationUrl(getServerEnv()), 302)
+);

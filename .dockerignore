@@ -1,0 +1,16 @@
+.git
+.github
+.nuxt
+.output
+node_modules
+dist
+coverage
+playwright-report
+test-results
+.data
+.wrangler
+.env
+.env.*
+!.env.example
+*.log
+README.md
